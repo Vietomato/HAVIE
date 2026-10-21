@@ -1,24 +1,41 @@
 # HAVIE Badminton Store
 
-React + Vite frontend demo using semantic HTML, modern CSS, ES6+, React Router and lucide-react. **No Tailwind, Bootstrap, or external script CDN.**
+Dự án hệ thống website bán hàng cầu lông HAVIE (Frontend React + Backend Node.js / Prisma).
 
-## Run
+## Cấu trúc thư mục dự án
+
+```text
+HAVIE/
+├── frontend/               # Giao diện ứng dụng React + Vite
+│   ├── public/             # Ảnh minh họa SVG, assets tĩnh
+│   ├── src/                # Mã nguồn React (main.jsx, style.css, api/)
+│   ├── package.json
+│   └── vite.config.js      # Proxy sẵn /api -> http://localhost:3000
+│
+├── backend/                # Dịch vụ Backend API (Node.js/Express + Prisma)
+│   ├── src/                # server.js, app.js, routes, controllers
+│   ├── package.json
+│   └── README.md
+│
+├── API_CONTRACT_HAVIE_v1.md # Bản đặc tả API v1 chuẩn mực
+├── Rule.md                  # Quy định kiến trúc công nghệ
+└── README.md
+```
+
+## Hướng dẫn khởi chạy
+
+### 1. Khởi chạy Frontend
 ```bash
+cd frontend
 npm install
 npm run dev
 ```
-Open the localhost URL printed by Vite.
+Truy cập: [http://localhost:5173](http://localhost:5173)
 
-## Screens
-Home, Product Listing, Product Details, Sign In / Sign Up, Shopping Cart, Admin Dashboard. Also includes demo checkout.
-
-## Demo interactions
-Search and category filtering, sorting, product details, quantity selection, add/remove cart, demo checkout, form validation, dashboard order status. Cart and demo orders are persisted to localStorage.
-
-## Important
-This is a frontend prototype. Authentication, payment, order processing, inventory, and dashboard data are simulated locally, **not secure production implementations**. Product images are locally generated SVG illustrations (not real product photography). Replace these with licensed product photography and connect a real backend before deployment as a live store.
-
-## Architecture
-`src/main.jsx`: routes and UI state; `src/data.js`: mock catalog; `src/style.css`: mobile-first styling; `public/images/`: locally stored SVG product illustrations.
-
-`Rule.md` preserves the supplied constraints and documents the React/Vite exception.
+### 2. Khởi chạy Backend
+```bash
+cd backend
+npm install
+npm run dev
+```
+Truy cập: [http://localhost:3000/api/health](http://localhost:3000/api/health)
