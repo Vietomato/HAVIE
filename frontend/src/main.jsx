@@ -54,7 +54,7 @@ import {
   PAYMENT_METHOD_LABELS,
   PAYMENT_STATUS_LABELS,
 } from './api';
-import './style.css';
+import './style.tailwind.css';
 
 const Store = createContext(null);
 
@@ -876,7 +876,7 @@ function Cart() {
                   <Link to={'/products/' + (item.product?.slug || item.product?.id)}>
                     {item.product?.name}
                   </Link>
-                  <small style={{ color: 'var(--forest)', fontWeight: 'bold' }}>
+                  <small className="font-bold text-[var(--forest)]">
                     Phiên bản: {item.variant?.name} ({item.variant?.sku})
                   </small>
                   <span>{money(item.variant?.price || 0)}</span>
@@ -1033,10 +1033,10 @@ function Checkout() {
               </div>
               <small>Hết hạn sau: 15 phút (Mô phỏng API)</small>
             </div>
-            <p style={{ fontSize: '13px', color: 'var(--muted)' }}>
+            <p className="text-[13px] text-[var(--muted)]">
               Đây là cổng thanh toán mô phỏng theo Contract v1. Bạn có thể nhấn nút bên dưới để giả lập thanh toán thành công từ ngân hàng:
             </p>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
+            <div className="mt-[15px] flex gap-[10px]">
               <button className="btn btn-primary full" onClick={handleConfirmQrPayment}>
                 XÁC NHẬN ĐÃ THANH TOÁN
               </button>
@@ -1055,7 +1055,7 @@ function Checkout() {
           <p>
             Mã đơn hàng của bạn là <strong>{createdOrder.orderCode}</strong>.
           </p>
-          <div style={{ margin: '15px auto', maxWidth: '400px', textAlign: 'left' }}>
+          <div className="mx-auto my-[15px] max-w-[400px] text-left">
             <p><strong>Người nhận:</strong> {createdOrder.recipientName} ({createdOrder.recipientPhone})</p>
             <p><strong>Địa chỉ:</strong> {createdOrder.shippingAddress}</p>
             <p><strong>Phương thức:</strong> {PAYMENT_METHOD_LABELS[createdOrder.paymentMethod]}</p>
@@ -1067,7 +1067,7 @@ function Checkout() {
             </p>
             <p><strong>Tổng thanh toán:</strong> {money(createdOrder.totalAmount)}</p>
           </div>
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+          <div className="flex justify-center gap-3">
             <Link className="btn btn-primary" to="/auth?tab=orders">
               XEM LỊCH SỬ ĐƠN HÀNG
             </Link>
@@ -1087,7 +1087,7 @@ function Checkout() {
             </div>
           </div>
           {!account && (
-            <div className="quick-login-box" style={{ marginBottom: '24px' }}>
+            <div className="quick-login-box mb-6">
               <p>⚠️ Theo API Contract v1: Bạn cần đăng nhập để hoàn tất đặt hàng.</p>
               <Link to="/auth" className="btn-mini">
                 ĐĂNG NHẬP / ĐĂNG KÝ NGAY
@@ -1111,7 +1111,7 @@ function Checkout() {
                   placeholder="0900000000"
                 />
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div className="grid grid-cols-2 gap-3">
                 <label>
                   TỈNH / THÀNH PHỐ
                   <input
@@ -1129,7 +1129,7 @@ function Checkout() {
                   />
                 </label>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px' }}>
+              <div className="grid grid-cols-[1fr_2fr] gap-3">
                 <label>
                   PHƯỜNG / XÃ
                   <input required value={ward} onChange={(e) => setWard(e.target.value)} />
@@ -1145,9 +1145,9 @@ function Checkout() {
                 </label>
               </div>
 
-              <h2 style={{ marginTop: '24px' }}>PHƯƠNG THỨC THANH TOÁN</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h2 className="mt-6">PHƯƠNG THỨC THANH TOÁN</h2>
+              <div className="flex flex-col gap-[10px]">
+                <label className="flex items-center gap-[10px]">
                   <input
                     type="radio"
                     name="payment"
@@ -1157,7 +1157,7 @@ function Checkout() {
                   />
                   <span>Thanh toán khi nhận hàng (COD)</span>
                 </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <label className="flex items-center gap-[10px]">
                   <input
                     type="radio"
                     name="payment"
@@ -1169,7 +1169,7 @@ function Checkout() {
                 </label>
               </div>
 
-              <label style={{ marginTop: '16px' }}>
+              <label className="mt-4">
                 GHI CHÚ ĐƠN HÀNG (TÙY CHỌN)
                 <textarea
                   rows="2"
@@ -1332,14 +1332,14 @@ function Auth() {
                   <p>Số điện thoại: {account.phone || 'Chưa cập nhật'}</p>
 
                   {account.role === 'ADMIN' && (
-                    <div style={{ margin: '18px 0' }}>
+                    <div className="my-[18px]">
                       <Link to="/admin" className="btn btn-primary full">
                         TRUY CẬP ADMIN STUDIO →
                       </Link>
                     </div>
                   )}
 
-                  <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                  <div className="mt-5 flex gap-[10px]">
                     <button className="btn btn-outline full" onClick={logout}>
                       ĐĂNG XUẤT
                     </button>
@@ -1358,7 +1358,7 @@ function Auth() {
                           <div className="order-card-header">
                             <div>
                               <strong>{ord.orderCode}</strong>
-                              <small style={{ display: 'block', color: 'var(--muted)' }}>
+                              <small className="block text-[var(--muted)]">
                                 {new Date(ord.createdAt).toLocaleDateString('vi-VN')}
                               </small>
                             </div>
@@ -1384,8 +1384,7 @@ function Auth() {
                               ord.status,
                             ) && (
                               <button
-                                className="btn-mini"
-                                style={{ borderColor: '#b91c1c', color: '#b91c1c' }}
+                                className="btn-mini border-[#b91c1c] text-[#b91c1c]"
                                 onClick={() => handleCancelOrder(ord.id)}
                               >
                                 Hủy đơn
@@ -1560,7 +1559,7 @@ function Admin() {
         <ShieldAlert size={56} color="#b91c1c" />
         <h1>Yêu cầu quyền Quản trị viên (ADMIN)</h1>
         <p>Bạn cần đăng nhập tài khoản có `role = ADMIN` để truy cập trang này.</p>
-        <div style={{ marginTop: '20px' }}>
+        <div className="mt-5">
           <Link to="/auth" className="btn btn-primary">
             ĐẾN TRANG ĐĂNG NHẬP (chọn tài khoản Admin)
           </Link>
@@ -1670,7 +1669,7 @@ function Admin() {
           {/* Adjust Stock Modal */}
           {selectedVariantForAdjust && (
             <div className="qr-overlay">
-              <div className="qr-modal" style={{ textAlign: 'left' }}>
+              <div className="qr-modal text-left">
                 <h2>ĐIỀU CHỈNH TỒN KHO (CONTRACT 4.4)</h2>
                 <p>
                   Sản phẩm: <strong>{selectedVariantForAdjust.productName}</strong> (
@@ -1679,7 +1678,7 @@ function Admin() {
                 <p>SKU: <strong>{selectedVariantForAdjust.sku}</strong></p>
                 <p>Tồn kho hiện tại: <strong>{selectedVariantForAdjust.stockQuantity}</strong></p>
                 <form onSubmit={handleAdjustStock}>
-                  <label style={{ display: 'block', margin: '10px 0 5px' }}>
+                  <label className="mt-[10px] mb-[5px] block">
                     SỐ LƯỢNG THAY ĐỔI (+ HOẶC -):
                     <input
                       type="number"
@@ -1689,7 +1688,7 @@ function Admin() {
                       placeholder="+5 hoặc -2"
                     />
                   </label>
-                  <label style={{ display: 'block', margin: '10px 0 15px' }}>
+                  <label className="mt-[10px] mb-[15px] block">
                     LÝ DO ĐIỀU CHỈNH:
                     <input
                       required
@@ -1697,7 +1696,7 @@ function Admin() {
                       onChange={(e) => setAdjustReason(e.target.value)}
                     />
                   </label>
-                  <div style={{ display: 'flex', gap: '10px' }}>
+                  <div className="flex gap-[10px]">
                     <button type="submit" className="btn btn-primary full">
                       XÁC NHẬN GHI SỔ
                     </button>
@@ -1729,7 +1728,11 @@ function Admin() {
                 </article>
                 <article className="stat-card">
                   <span>CẢNH BÁO TỒN KHO</span>
-                  <strong style={{ color: dashboardData.lowStockCount ? '#b91c1c' : 'inherit' }}>
+                  <strong
+                    className={
+                      dashboardData.lowStockCount ? 'text-[#b91c1c]' : 'text-[inherit]'
+                    }
+                  >
                     {dashboardData.lowStockCount || 0}
                   </strong>
                   <small>Biến thể dưới ngưỡng an toàn (≤ 8)</small>
@@ -1741,7 +1744,7 @@ function Admin() {
                 </article>
               </div>
 
-              <section className="admin-panel orders-panel" style={{ marginTop: '24px' }}>
+              <section className="admin-panel orders-panel mt-6">
                 <div className="panel-title">
                   <h2>Đơn hàng gần đây</h2>
                 </div>
@@ -1808,7 +1811,7 @@ function Admin() {
                         <td><strong>{o.orderCode}</strong></td>
                         <td>{new Date(o.createdAt).toLocaleDateString('vi-VN')}</td>
                         <td>{o.recipientName}<br /><small>{o.recipientPhone}</small></td>
-                        <td style={{ maxWidth: '200px', fontSize: '12px' }}>{o.shippingAddress}</td>
+                        <td className="max-w-[200px] text-xs">{o.shippingAddress}</td>
                         <td><strong>{money(o.totalAmount)}</strong></td>
                         <td>
                           {o.paymentMethod} •{' '}
@@ -1867,7 +1870,7 @@ function Admin() {
                         <td>{p.category.name}</td>
                         <td>
                           {p.variants.map((v) => (
-                            <div key={v.id} style={{ fontSize: '12px', margin: '2px 0' }}>
+                            <div key={v.id} className="my-0.5 text-xs">
                               • {v.name} ({v.sku}): <strong>{money(v.price)}</strong> (Kho: {v.stockQuantity})
                             </div>
                           ))}
