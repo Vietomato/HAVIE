@@ -1,46 +1,55 @@
 import express from 'express';
 import cors from 'cors';
+import authRoutes, { getCurrentUser } from './routes/authRoutes.js';
+import catalogRoutes from './routes/catalogRoutes.js';
+import { authMiddleware } from './middlewares/authMiddleware.js';
 
 const app = express();
 
-// Middlewares
 app.use(cors({
   origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-  credentials: true
+  credentials: true,
 }));
-app.use(express.json());
+app.use(express.json({ limit: '100kb' }));
 
-// Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     message: 'HAVIE Backend API is running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
-// 404 handler
+app.use('/api/auth', authRoutes);
+app.get('/api/me', authMiddleware, getCurrentUser);
+app.use('/api', catalogRoutes);
+
 app.use((req, res) => {
   res.status(404).json({
     error: {
       code: 'NOT_FOUND',
-      message: `Đường dẫn ${req.originalUrl} không tồn tại trên hệ thống.`
-    }
+      message: `Đường dẫn ${req.originalUrl} không tồn tại trên hệ thống.`,
+    },
   });
 });
 
-// Centralized error handler conforming to API Contract v1
 app.use((err, req, res, next) => {
-  console.error(err);
-  const status = err.status || 500;
+  if (res.headersSent) return next(err);
+
+  const status = err.status || (err.type === 'entity.parse.failed' ? 400 : 500);
+  if (status >= 500) console.error(err);
   res.status(status).json({
     error: {
-      code: err.code || 'INTERNAL_SERVER_ERROR',
-      message: err.message || 'Lỗi hệ thống máy chủ',
-      details: err.details || {}
-    }
+      code: err.code || (err.type === 'entity.parse.failed' ? 'VALIDATION_ERROR' : 'INTERNAL_SERVER_ERROR'),
+      message:
+        err.type === 'entity.parse.failed'
+          ? 'Nội dung JSON không hợp lệ.'
+          : err.status
+            ? err.message
+            : 'Lỗi hệ thống máy chủ',
+      details: err.details || {},
+    },
   });
 });
 
 export default app;
-
