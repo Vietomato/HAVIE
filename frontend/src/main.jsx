@@ -43,6 +43,7 @@ import {
 } from 'lucide-react';
 import { money } from './data';
 import {
+  apiClient,
   authApi,
   catalogApi,
   cartApi,
@@ -73,6 +74,11 @@ function StoreProvider({ children }) {
 
   // Initialize Account
   useEffect(() => {
+    if (!apiClient.getToken()) {
+      setAuthLoading(false);
+      return;
+    }
+
     authApi
       .getMe()
       .then((user) => setAccount(user))
@@ -1223,10 +1229,14 @@ function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCooldown, setOtpCooldown] = useState(0);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
   const [loading, setLoading] = useState(false);
   const [myOrders, setMyOrders] = useState([]);
-  const { account, login, register, logout, setAccount } = useStore();
+  const { account, login, register, logout } = useStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -1237,9 +1247,16 @@ function Auth() {
     }
   }, [account, activeTab]);
 
+  useEffect(() => {
+    if (otpCooldown <= 0) return undefined;
+    const timer = window.setTimeout(() => setOtpCooldown((remaining) => remaining - 1), 1000);
+    return () => window.clearTimeout(timer);
+  }, [otpCooldown]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setNotice('');
 
     if (mode === 'signup') {
       if (!fullName.trim()) return setError('Vui lòng nhập họ và tên.');
@@ -1251,8 +1268,14 @@ function Auth() {
       if (mode === 'signin') {
         const u = await login(email, password);
         if (u.role === 'ADMIN') navigate('/admin');
+      } else if (!otpSent) {
+        const result = await authApi.requestRegistrationOtp({ fullName, email, phone, password });
+        setOtpSent(true);
+        setOtpCooldown(result.resendAfter || 60);
+        setNotice(result.message || 'Mã xác minh đã được gửi tới email của bạn.');
       } else {
-        await register({ fullName, email, phone, password });
+        const user = await register({ email, code: verificationCode });
+        if (user.role === 'ADMIN') navigate('/admin');
       }
     } catch (err) {
       setError(err.message || 'Lỗi xác thực.');
@@ -1261,16 +1284,20 @@ function Auth() {
     }
   };
 
-  const fillDemoCustomer = () => {
-    setMode('signin');
-    setEmail('viet@example.com');
-    setPassword('MatKhau123!');
-  };
-
-  const fillDemoAdmin = () => {
-    setMode('signin');
-    setEmail('admin@havie.vn');
-    setPassword('Admin123!');
+  const handleResendOtp = async () => {
+    setError('');
+    setNotice('');
+    try {
+      setLoading(true);
+      const result = await authApi.requestRegistrationOtp({ fullName, email, phone, password });
+      setOtpCooldown(result.resendAfter || 60);
+      setVerificationCode('');
+      setNotice(result.message || 'Mã xác minh đã được gửi lại tới email của bạn.');
+    } catch (err) {
+      setError(err.message || 'Không thể gửi lại mã xác minh.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancelOrder = async (orderId) => {
@@ -1402,19 +1429,6 @@ function Auth() {
             </>
           ) : (
             <>
-              {/* Demo Helper Box */}
-              <div className="quick-login-box">
-                <p>⚡ Tài khoản thử nghiệm theo Contract v1:</p>
-                <div className="quick-login-buttons">
-                  <button type="button" className="btn-mini" onClick={fillDemoCustomer}>
-                    Khách hàng: viet@example.com
-                  </button>
-                  <button type="button" className="btn-mini" onClick={fillDemoAdmin}>
-                    Admin: admin@havie.vn
-                  </button>
-                </div>
-              </div>
-
               <span className="eyebrow">YOUR HAVIE ACCOUNT</span>
               <h2>{mode === 'signin' ? 'Welcome back.' : 'Join the game.'}</h2>
 
@@ -1424,6 +1438,10 @@ function Auth() {
                   onClick={() => {
                     setMode('signin');
                     setError('');
+                    setNotice('');
+                    setOtpSent(false);
+                    setOtpCooldown(0);
+                    setVerificationCode('');
                   }}
                 >
                   SIGN IN
@@ -1433,6 +1451,10 @@ function Auth() {
                   onClick={() => {
                     setMode('signup');
                     setError('');
+                    setNotice('');
+                    setOtpSent(false);
+                    setOtpCooldown(0);
+                    setVerificationCode('');
                   }}
                 >
                   SIGN UP
@@ -1447,6 +1469,7 @@ function Auth() {
                       <input
                         required
                         value={fullName}
+                        disabled={otpSent}
                         onChange={(e) => setFullName(e.target.value)}
                         placeholder="Nguyễn Hoàng Việt"
                       />
@@ -1456,6 +1479,7 @@ function Auth() {
                       <input
                         type="tel"
                         value={phone}
+                        disabled={otpSent}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="0900000000"
                       />
@@ -1468,8 +1492,9 @@ function Auth() {
                     required
                     type="email"
                     value={email}
+                    disabled={mode === 'signup' && otpSent}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="viet@example.com"
+                    placeholder="ten@email.com"
                   />
                 </label>
                 <label>
@@ -1478,6 +1503,7 @@ function Auth() {
                     required
                     type="password"
                     value={password}
+                    disabled={mode === 'signup' && otpSent}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Tối thiểu 6 ký tự"
                     minLength={6}
@@ -1490,9 +1516,59 @@ function Auth() {
                       required
                       type="password"
                       value={confirm}
+                      disabled={otpSent}
                       onChange={(e) => setConfirm(e.target.value)}
                     />
                   </label>
+                )}
+                {mode === 'signup' && otpSent && (
+                  <>
+                    <p role="status">
+                      Mã xác minh đã gửi tới {email}. Mã có hiệu lực trong 10 phút.
+                    </p>
+                    <label>
+                      MÃ XÁC MINH EMAIL
+                      <input
+                        required
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        pattern="[0-9]{6}"
+                        maxLength={6}
+                        value={verificationCode}
+                        onChange={(e) =>
+                          setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))
+                        }
+                        placeholder="Nhập mã 6 chữ số"
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      className="btn-mini"
+                      disabled={loading || otpCooldown > 0}
+                      onClick={handleResendOtp}
+                    >
+                      {otpCooldown > 0 ? `GỬI LẠI MÃ SAU ${otpCooldown} GIÂY` : 'GỬI LẠI MÃ'}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-mini"
+                      disabled={loading}
+                      onClick={() => {
+                        setOtpSent(false);
+                        setOtpCooldown(0);
+                        setVerificationCode('');
+                        setError('');
+                        setNotice('');
+                      }}
+                    >
+                      ĐỔI EMAIL HOẶC THÔNG TIN ĐĂNG KÝ
+                    </button>
+                  </>
+                )}
+                {notice && (
+                  <p role="status" className="text-[13px] text-[var(--forest)]">
+                    {notice}
+                  </p>
                 )}
                 {error && (
                   <p className="form-error" role="alert">
@@ -1500,7 +1576,13 @@ function Auth() {
                   </p>
                 )}
                 <button className="btn btn-primary full" type="submit" disabled={loading}>
-                  {loading ? 'ĐANG XỬ LÝ...' : mode === 'signin' ? 'ĐĂNG NHẬP' : 'TẠO TÀI KHOẢN'}{' '}
+                  {loading
+                    ? 'ĐANG XỬ LÝ...'
+                    : mode === 'signin'
+                      ? 'ĐĂNG NHẬP'
+                      : otpSent
+                        ? 'XÁC MINH & TẠO TÀI KHOẢN'
+                        : 'GỬI MÃ XÁC MINH'}{' '}
                   <ArrowRight size={18} />
                 </button>
               </form>
@@ -1558,10 +1640,10 @@ function Admin() {
       <div className="container page-pad empty-state">
         <ShieldAlert size={56} color="#b91c1c" />
         <h1>Yêu cầu quyền Quản trị viên (ADMIN)</h1>
-        <p>Bạn cần đăng nhập tài khoản có `role = ADMIN` để truy cập trang này.</p>
+        <p>Tài khoản Admin chỉ được tạo cho email nằm trong danh sách được cho phép.</p>
         <div className="mt-5">
           <Link to="/auth" className="btn btn-primary">
-            ĐẾN TRANG ĐĂNG NHẬP (chọn tài khoản Admin)
+            ĐẾN TRANG ĐĂNG NHẬP
           </Link>
         </div>
       </div>

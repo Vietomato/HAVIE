@@ -265,40 +265,9 @@ export const INITIAL_PRODUCTS = [
   },
 ];
 
-export const INITIAL_USERS = [
-  {
-    id: 'usr-admin-1',
-    fullName: 'Quản trị viên HAVIE',
-    email: 'admin@havie.vn',
-    phone: '0988888888',
-    role: 'ADMIN',
-    isActive: true,
-    password: 'Admin123!',
-  },
-  {
-    id: 'usr-customer-1',
-    fullName: 'Nguyễn Hoàng Việt',
-    email: 'viet@example.com',
-    phone: '0900000000',
-    role: 'CUSTOMER',
-    isActive: true,
-    password: 'MatKhau123!',
-  },
-];
+export const INITIAL_USERS = [];
 
-export const INITIAL_ADDRESSES = [
-  {
-    id: 'addr-viet-1',
-    userId: 'usr-customer-1',
-    recipientName: 'Nguyễn Hoàng Việt',
-    phone: '0900000000',
-    province: 'TP. Hồ Chí Minh',
-    district: 'Gò Vấp',
-    ward: 'Phường 4',
-    streetAddress: '12 Nguyễn Văn Bảo',
-    isDefault: true,
-  },
-];
+export const INITIAL_ADDRESSES = [];
 
 export const INITIAL_ORDERS = [
   {
@@ -432,4 +401,3 @@ export const INITIAL_REVIEWS = [
     isVisible: true,
   },
 ];
-

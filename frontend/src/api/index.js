@@ -7,11 +7,19 @@ export { apiClient, ApiError } from './client';
 
 // 3.1 Auth API
 export const authApi = {
-  register: async (payload) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/auth/register', { method: 'POST', body: JSON.stringify(payload) }),
-      () => mockApi.register(payload),
-    );
+  requestRegistrationOtp: async (payload) => {
+    const res = await apiClient.request('/auth/register/request-otp', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    return res.data;
+  },
+
+  register: async ({ email, code }) => {
+    const res = await apiClient.request('/auth/register/verify-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email, code }),
+    });
     if (res.data?.accessToken) {
       apiClient.setToken(res.data.accessToken);
     }
@@ -19,10 +27,10 @@ export const authApi = {
   },
 
   login: async (payload) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/auth/login', { method: 'POST', body: JSON.stringify(payload) }),
-      () => mockApi.login(payload),
-    );
+    const res = await apiClient.request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
     if (res.data?.accessToken) {
       apiClient.setToken(res.data.accessToken);
     }
@@ -31,20 +39,14 @@ export const authApi = {
 
   logout: async () => {
     try {
-      await apiClient.callWithFallback(
-        () => apiClient.request('/auth/logout', { method: 'POST' }),
-        () => mockApi.logout(),
-      );
+      await apiClient.request('/auth/logout', { method: 'POST' });
     } finally {
       apiClient.clearToken();
     }
   },
 
   getMe: async () => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/me', { method: 'GET' }),
-      () => mockApi.getMe(),
-    );
+    const res = await apiClient.request('/me', { method: 'GET' });
     return res.data;
   },
 
@@ -281,4 +283,3 @@ export const adminApi = {
     return res.data;
   },
 };
-
