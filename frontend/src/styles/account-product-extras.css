@@ -1,0 +1,235 @@
+@layer components {
+.admin-shortcut-pill {
+  @apply inline-flex;
+  @apply items-center;
+  @apply gap-[5px];
+  @apply bg-[var(--forest)];
+  @apply text-[var(--white)];
+  @apply p-[4px_10px];
+  @apply text-[11px];
+  @apply font-bold;
+  @apply rounded-[4px];
+  @apply tracking-[0.5px];
+  @apply uppercase;
+}
+.admin-shortcut-pill:hover {
+  @apply bg-[#143528];
+}
+
+.variant-picker {
+  @apply m-[18px_0];
+}
+.variant-picker > label {
+  @apply block;
+  @apply text-[11px];
+  @apply font-extrabold;
+  @apply tracking-[1px];
+  @apply text-[var(--muted)];
+  @apply mb-2;
+}
+.variant-chips {
+  @apply flex;
+  @apply flex-wrap;
+  @apply gap-2;
+}
+.variant-chip {
+  @apply p-[8px_14px];
+  @apply border border-[var(--border)];
+  @apply bg-[var(--white)];
+  @apply text-[var(--ink)];
+  @apply text-[13px];
+  @apply font-semibold;
+  @apply rounded-[4px];
+  @apply transition-all duration-150;
+}
+.variant-chip:hover {
+  @apply border-[var(--forest)];
+}
+.variant-chip.active {
+  @apply border-[var(--forest)];
+  @apply bg-[var(--forest)];
+  @apply text-[var(--white)];
+}
+.variant-stock-info {
+  @apply text-xs;
+  @apply text-[var(--muted)];
+  @apply mt-[6px];
+}
+.variant-stock-info.low {
+  @apply text-[#b94a28];
+  @apply font-bold;
+}
+
+.status-badge {
+  @apply inline-block;
+  @apply p-[4px_9px];
+  @apply rounded-[4px];
+  @apply text-[11px];
+  @apply font-bold;
+  @apply uppercase;
+  @apply tracking-[0.5px];
+}
+.status-badge.CONFIRMED { @apply bg-[#e0f2fe]; @apply text-[#0369a1]; }
+.status-badge.SHIPPING { @apply bg-[#fef3c7]; @apply text-[#b45309]; }
+.status-badge.COMPLETED { @apply bg-[#dcfce7]; @apply text-[#15803d]; }
+.status-badge.CANCELLED { @apply bg-[#fee2e2]; @apply text-[#b91c1c]; }
+.status-badge.PENDING_PAYMENT { @apply bg-[#fef9c3]; @apply text-[#854d0e]; }
+.status-badge.PENDING_CONFIRMATION { @apply bg-[#f1f5f9]; @apply text-[#475569]; }
+.status-badge.REFUND_PENDING { @apply bg-[#ede9fe]; @apply text-[#6d28d9]; }
+
+.quick-login-box {
+  @apply bg-[rgba(32,_75,_58,_0.05)];
+  @apply border border-dashed border-[var(--forest)];
+  @apply rounded-[6px];
+  @apply p-3;
+  @apply mb-4;
+  @apply text-xs;
+}
+.quick-login-box p {
+  @apply m-[0_0_8px_0];
+  @apply font-bold;
+  @apply text-[var(--forest)];
+}
+.quick-login-buttons {
+  @apply flex;
+  @apply gap-2;
+  @apply flex-wrap;
+}
+.btn-mini {
+  @apply p-[5px_10px];
+  @apply text-[11px];
+  @apply font-bold;
+  @apply border border-[var(--forest)];
+  @apply bg-[var(--white)];
+  @apply text-[var(--forest)];
+  @apply rounded-[4px];
+}
+.btn-mini:hover {
+  @apply bg-[var(--forest)];
+  @apply text-[var(--white)];
+}
+
+.qr-overlay {
+  @apply fixed;
+  @apply inset-0;
+  @apply bg-[rgba(0,_0,_0,_0.6)];
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply z-[1000];
+  @apply p-5;
+}
+.qr-modal {
+  @apply bg-[var(--white)];
+  @apply p-[30px];
+  @apply rounded-[8px];
+  @apply max-w-[420px];
+  @apply w-full;
+  @apply text-center;
+  @apply shadow-[0_10px_25px_rgba(0,0,0,0.2)];
+}
+.qr-modal h2 {
+  @apply text-xl;
+  @apply m-[0_0_10px_0];
+  @apply text-[var(--forest)];
+}
+.qr-box {
+  @apply bg-[#f8fafc];
+  @apply border-[2px] border-dashed border-[#cbd5e1];
+  @apply p-5;
+  @apply rounded-[8px];
+  @apply m-[15px_0];
+  @apply flex;
+  @apply flex-col;
+  @apply items-center;
+  @apply gap-[10px];
+}
+.qr-code-art {
+  @apply w-[180px];
+  @apply h-[180px];
+  @apply bg-white;
+  @apply border border-[#e2e8f0];
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply font-[bold];
+  @apply text-[13px];
+  @apply text-[var(--forest)];
+  @apply shadow-[0_2px_8px_rgba(0,0,0,0.06)];
+}
+
+.orders-list {
+  @apply flex;
+  @apply flex-col;
+  @apply gap-4;
+  @apply mt-5;
+}
+.order-card {
+  @apply bg-[var(--white)];
+  @apply border border-[var(--border)];
+  @apply p-[18px];
+  @apply rounded-[6px];
+}
+.order-card-header {
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply border-b border-[#f1f5f9];
+  @apply pb-[10px];
+  @apply mb-3;
+}
+.order-card-items {
+  @apply flex;
+  @apply flex-col;
+  @apply gap-2;
+  @apply mb-3;
+}
+.order-item-row {
+  @apply flex;
+  @apply justify-between;
+  @apply text-[13px];
+}
+.order-card-footer {
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply border-t border-[#f1f5f9];
+  @apply pt-[10px];
+}
+
+.account-tabs {
+  @apply flex;
+  @apply gap-3;
+  @apply border-b border-[var(--border)];
+  @apply mb-5;
+}
+.account-tabs button {
+  @apply bg-[none];
+  @apply border-0;
+  @apply border-b-[2px] border-transparent;
+  @apply p-[10px_14px];
+  @apply font-bold;
+  @apply text-[13px];
+  @apply text-[var(--muted)];
+}
+.account-tabs button.active {
+  @apply text-[var(--forest)];
+  @apply border-[var(--forest)];
+}
+
+.reviews-section {
+  @apply mt-10;
+  @apply border-t border-[var(--border)];
+  @apply pt-[30px];
+}
+.review-item {
+  @apply border-b border-[#f1f5f9];
+  @apply p-[14px_0];
+}
+.review-header {
+  @apply flex;
+  @apply justify-between;
+  @apply mb-[6px];
+  @apply text-[13px];
+}
+}

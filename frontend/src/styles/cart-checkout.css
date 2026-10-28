@@ -1,0 +1,126 @@
+@layer components {
+.cart-layout {
+  @apply grid;
+  @apply gap-[30px];
+}
+.cart-head {
+  @apply hidden;
+}
+.cart-item {
+  @apply grid;
+  @apply grid-cols-[92px_1fr];
+  @apply gap-[14px];
+  @apply border-b border-[var(--border)];
+  @apply p-[22px_0];
+  @apply items-center;
+}
+.cart-thumb {
+  @apply bg-[#e7e9de];
+}
+.cart-thumb img {
+  @apply w-full;
+  @apply aspect-[1/1];
+  @apply object-cover;
+}
+.cart-item-desc {
+  @apply flex;
+  @apply flex-col;
+  @apply gap-2;
+}
+.cart-item-desc > a {
+  @apply text-[15px];
+  @apply font-bold;
+}
+.cart-item-desc > span:not(.eyebrow) {
+  @apply text-xs;
+  @apply text-[var(--muted)];
+}
+.remove-link {
+  @apply inline-flex;
+  @apply gap-[6px];
+  @apply items-center;
+  @apply w-max;
+  @apply border-0;
+  @apply bg-[none];
+  @apply text-[var(--muted)];
+  @apply text-[10px];
+  @apply tracking-[1px];
+  @apply p-[0];
+}
+.cart-item > .qty-control {
+  @apply col-start-1;
+}
+.cart-item > strong {
+  @apply text-[13px];
+  @apply text-[var(--forest)];
+  @apply justify-self-end;
+}
+.back-shopping {
+  @apply mt-6;
+}
+.summary {
+  @apply bg-[#eceee6];
+  @apply p-[28px_22px];
+  @apply self-start;
+}
+.summary h2,
+.checkout-form h2 {
+  @apply text-[17px];
+  @apply tracking-[1px];
+  @apply text-[var(--forest)];
+  @apply mb-[25px];
+}
+.summary > div {
+  @apply flex;
+  @apply justify-between;
+  @apply gap-[15px];
+  @apply m-[22px_0];
+  @apply text-xs;
+}
+.summary > div > strong {
+  @apply whitespace-nowrap;
+}
+.summary-total {
+  @apply border-t border-[#cbd3c7];
+  @apply pt-[23px];
+  @apply font-extrabold;
+  @apply text-[var(--forest)];
+}
+.summary-total strong {
+  @apply text-lg;
+}
+.summary > p {
+  @apply text-[11px];
+  @apply text-[var(--muted)];
+  @apply text-center;
+  @apply mt-4;
+}
+.empty-state {
+  @apply min-h-[300px];
+  @apply flex;
+  @apply flex-col;
+  @apply items-center;
+  @apply justify-center;
+  @apply text-center;
+  @apply gap-3;
+  @apply text-[var(--forest)];
+  @apply p-[40px_10px];
+}
+.empty-state h2 {
+  @apply text-[27px];
+  @apply m-[0];
+}
+.empty-state p {
+  @apply text-sm;
+  @apply text-[var(--muted)];
+}
+.checkout-form {
+  @apply grid;
+  @apply gap-[23px];
+  @apply content-start;
+}
+.form-hint {
+  @apply text-xs;
+  @apply text-[var(--muted)];
+}
+}

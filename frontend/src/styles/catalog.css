@@ -1,0 +1,131 @@
+@layer components {
+.page-pad {
+  @apply pt-8;
+  @apply pb-[90px];
+  @apply min-h-[65vh];
+}
+.breadcrumbs {
+  @apply text-[10px];
+  @apply tracking-[1px];
+  @apply text-[var(--muted)];
+  @apply mb-8;
+}
+.breadcrumbs a:hover {
+  @apply text-[var(--forest)];
+}
+.page-heading {
+  @apply flex;
+  @apply items-end;
+  @apply justify-between;
+  @apply gap-5;
+  @apply mb-[37px];
+}
+.page-heading p {
+  @apply text-sm;
+  @apply text-[var(--muted)];
+  @apply m-[14px_0_0];
+}
+.page-heading > span {
+  @apply text-[10px];
+  @apply tracking-[1px];
+  @apply text-[var(--muted)];
+  @apply whitespace-nowrap;
+}
+.catalog-layout {
+  @apply grid;
+  @apply gap-[30px];
+}
+.filters {
+  @apply border-t border-[var(--border)];
+  @apply pt-5;
+}
+.filters h2 {
+  @apply flex;
+  @apply gap-[10px];
+  @apply items-center;
+  @apply text-[15px];
+  @apply tracking-[1px];
+  @apply text-[var(--forest)];
+  @apply mb-[25px];
+}
+.filters h3 {
+  @apply text-[11px];
+  @apply tracking-[1px];
+}
+.filter-options {
+  @apply flex;
+  @apply flex-wrap;
+  @apply gap-[9px];
+}
+.filter-options button {
+  @apply bg-transparent;
+  @apply border border-[#bdcbbd];
+  @apply p-[9px_12px];
+  @apply text-[var(--ink)];
+  @apply text-xs;
+}
+.filter-options button.active {
+  @apply bg-[var(--forest)];
+  @apply text-white;
+}
+.filter-options span {
+  @apply ml-2;
+  @apply opacity-[0.65];
+}
+.filter-tip {
+  @apply text-xs;
+  @apply leading-[1.6];
+  @apply text-[var(--muted)];
+  @apply mt-[22px];
+}
+.catalog-toolbar {
+  @apply flex;
+  @apply flex-col;
+  @apply gap-[14px];
+  @apply mb-6;
+}
+.catalog-toolbar form {
+  @apply flex;
+  @apply items-center;
+  @apply gap-2;
+  @apply bg-white;
+  @apply border border-[var(--border)];
+  @apply p-[8px_12px];
+  @apply text-[var(--forest)];
+}
+.catalog-toolbar input {
+  @apply border-0;
+  @apply outline-none;
+  @apply min-w-0;
+  @apply flex-1;
+  @apply text-xs;
+}
+.catalog-toolbar form button {
+  @apply bg-[var(--forest)];
+  @apply text-white;
+  @apply border-0;
+  @apply p-[9px_12px];
+  @apply text-[11px];
+}
+.sort-select {
+  @apply flex;
+  @apply items-center;
+  @apply gap-2;
+  @apply text-[10px];
+  @apply tracking-[1px];
+  @apply text-[var(--muted)];
+  @apply whitespace-nowrap;
+}
+.sort-select select {
+  @apply border-0;
+  @apply bg-transparent;
+  @apply text-[var(--forest)];
+  @apply text-xs;
+  @apply font-bold;
+  @apply appearance-none;
+  @apply max-w-[185px];
+}
+.catalog-grid {
+  @apply gap-[27px_15px];
+}
+}

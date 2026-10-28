@@ -1,0 +1,62 @@
+@layer components {
+.campaign {
+  @apply bg-[var(--forest)];
+  @apply text-[#fff];
+  @apply mt-[65px];
+  @apply mb-[65px];
+  @apply p-[40px_25px];
+  @apply flex;
+  @apply items-center;
+  @apply justify-between;
+  @apply overflow-hidden;
+}
+.campaign .eyebrow {
+  @apply text-[var(--sage)];
+}
+.campaign h2 {
+  @apply text-[clamp(42px,_7vw,_86px)];
+  @apply leading-none;
+  @apply tracking-[-2px];
+  @apply m-[20px_0];
+}
+.campaign p {
+  @apply max-w-[410px];
+  @apply text-[#cbdad0];
+  @apply text-sm;
+  @apply leading-[1.8];
+}
+.campaign-mark {
+  @apply hidden;
+  @apply text-[250px];
+  @apply font-black;
+  @apply tracking-[-30px];
+  @apply leading-none;
+  @apply text-[#d5e4c01a];
+}
+.campaign-mark span {
+  @apply text-[#d5e4c055];
+}
+.perks {
+  @apply grid;
+  @apply gap-6;
+  @apply pb-[70px];
+}
+.perks > div {
+  @apply grid;
+  @apply grid-cols-[34px_1fr];
+  @apply gap-[4px_14px];
+  @apply items-center;
+}
+.perks svg {
+  @apply row-span-2;
+  @apply text-[var(--forest)];
+}
+.perks strong {
+  @apply text-[11px];
+  @apply tracking-[0.5px];
+}
+.perks span {
+  @apply text-xs;
+  @apply text-[var(--muted)];
+}
+}
