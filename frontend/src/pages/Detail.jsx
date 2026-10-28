@@ -5,6 +5,7 @@ import { ShoppingBag, ArrowRight, Plus, Minus, Star, Truck, ShieldCheck, CheckCi
 import { money } from '../data';
 import { catalogApi } from '../api';
 import { useStore } from '../context/StoreContext.jsx';
+import { localizeVariantName } from '../utils/product.js';
 
 export default function Detail() {
   const { id } = useParams();
@@ -45,9 +46,9 @@ export default function Detail() {
   if (!product) {
     return (
       <div className="container empty-state">
-        <h1>Product not found</h1>
+        <h1>Không tìm thấy sản phẩm</h1>
         <Link className="btn btn-primary" to="/products">
-          BACK TO SHOP
+          QUAY LẠI CỬA HÀNG
         </Link>
       </div>
     );
@@ -72,7 +73,8 @@ export default function Detail() {
   return (
     <div className="container page-pad">
       <p className="breadcrumbs">
-        <Link to="/">HOME</Link> / <Link to="/products">SHOP</Link> / {product.name.toUpperCase()}
+        <Link to="/">TRANG CHỦ</Link> / <Link to="/products">CỬA HÀNG</Link> /{' '}
+        {product.name.toUpperCase()}
       </p>
       <div className="detail-layout">
         <div className="detail-gallery">
@@ -80,13 +82,16 @@ export default function Detail() {
             <img src={product.imageUrls?.[0] || '/images/product-1.svg'} alt={product.name} />
           </div>
           <div className="detail-thumbs">
-            <img src={product.imageUrls?.[0] || '/images/product-1.svg'} alt="Product preview" />
-            <span>HAVIE / PERFORMANCE SERIES</span>
+            <img
+              src={product.imageUrls?.[0] || '/images/product-1.svg'}
+              alt={`Hình ảnh ${product.name}`}
+            />
+            <span>HAVIE / DÒNG SẢN PHẨM HIỆU SUẤT CAO</span>
           </div>
         </div>
         <section className="detail-info">
           <span className="eyebrow">
-            {product.category?.name?.toUpperCase()} / HAVIE PERFORMANCE
+            {product.category?.name?.toUpperCase()} / HIỆU SUẤT HAVIE
           </span>
           <h1>
             {product.name}
@@ -116,7 +121,7 @@ export default function Detail() {
                       setQty(1);
                     }}
                   >
-                    {v.name}
+                    {localizeVariantName(v.name)}
                   </button>
                 ))}
               </div>
@@ -139,12 +144,15 @@ export default function Detail() {
           <div className="quantity-row">
             <span>SỐ LƯỢNG</span>
             <div className="qty-control">
-              <button aria-label="Decrease quantity" onClick={() => setQty(Math.max(1, qty - 1))}>
+              <button
+                aria-label="Giảm số lượng"
+                onClick={() => setQty(Math.max(1, qty - 1))}
+              >
                 <Minus size={16} />
               </button>
               <output>{qty}</output>
               <button
-                aria-label="Increase quantity"
+                aria-label="Tăng số lượng"
                 disabled={qty >= maxStock}
                 onClick={() => setQty(Math.min(maxStock, qty + 1))}
               >

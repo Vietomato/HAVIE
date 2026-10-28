@@ -38,7 +38,8 @@
 }
 .perks {
   @apply grid;
-  @apply gap-6;
+  @apply grid-cols-1;
+  @apply gap-4;
   @apply pb-[70px];
 }
 .perks > div {
@@ -46,14 +47,21 @@
   @apply grid-cols-[34px_1fr];
   @apply gap-[4px_14px];
   @apply items-center;
+  @apply p-4;
+  @apply rounded-xl;
+  @apply border border-[var(--border)];
+  @apply bg-white;
+  @apply shadow-[0_2px_8px_rgba(0,0,0,0.02)];
 }
 .perks svg {
   @apply row-span-2;
   @apply text-[var(--forest)];
 }
 .perks strong {
-  @apply text-[11px];
-  @apply tracking-[0.5px];
+  @apply text-xs;
+  @apply font-bold;
+  @apply tracking-[0.3px];
+  @apply text-[var(--forest)];
 }
 .perks span {
   @apply text-xs;

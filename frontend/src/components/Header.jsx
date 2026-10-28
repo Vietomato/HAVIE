@@ -2,9 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Search, UserRound, ShoppingBag, Menu, X, ShieldAlert } from 'lucide-react';
-import Home from '../pages/Home.jsx';
-import Cart from '../pages/Cart.jsx';
-import Admin from '../pages/admin/Admin.jsx';
 import { useStore } from '../context/StoreContext.jsx';
 
 export default function Header() {
@@ -22,58 +19,58 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="container header-inner">
-        <Link to="/" className="brand" aria-label="HAVIE home">
+        <Link to="/" className="brand" aria-label="Trang chủ HAVIE">
           HAVIE<span>.</span>
-          <small>BADMINTON STORE</small>
+          <small>CỬA HÀNG CẦU LÔNG</small>
         </Link>
-        <nav className={'main-nav ' + (open ? 'open' : '')} aria-label="Main navigation">
+        <nav className={'main-nav ' + (open ? 'open' : '')} aria-label="Điều hướng chính">
           <NavLink to="/" onClick={() => setOpen(false)}>
-            Home
+            TRANG CHỦ
           </NavLink>
           <NavLink to="/products" onClick={() => setOpen(false)}>
-            Shop
+            CỬA HÀNG
           </NavLink>
           <NavLink to="/products?category=rackets" onClick={() => setOpen(false)}>
-            Collections
+            BỘ SƯU TẬP
           </NavLink>
           <a href="/#about" onClick={() => setOpen(false)}>
-            About
+            VỀ CHÚNG TÔI
           </a>
         </nav>
         <form className="header-search" role="search" onSubmit={submit}>
           <label className="sr-only" htmlFor="site-search">
-            Search products
+            Tìm kiếm sản phẩm
           </label>
           <input
             id="site-search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search products..."
+            placeholder="Tìm sản phẩm..."
           />
-          <button aria-label="Search" type="submit">
+          <button aria-label="Tìm kiếm" type="submit">
             <Search size={20} />
           </button>
         </form>
         <div className="header-actions">
           {account?.role === 'ADMIN' && (
             <Link to="/admin" className="admin-shortcut-pill" title="Mở trang Quản trị HAVIE">
-              <ShieldAlert size={14} /> Admin Studio
+              <ShieldAlert size={14} /> Quản trị
             </Link>
           )}
           <Link
             to="/auth"
-            aria-label={account ? 'Your account' : 'Sign in'}
+            aria-label={account ? 'Tài khoản của bạn' : 'Đăng nhập'}
             title={account?.fullName || 'Tài khoản'}
           >
             <UserRound size={22} />
           </Link>
-          <Link to="/cart" className="cart-icon" aria-label={'Cart with ' + count + ' items'}>
+          <Link to="/cart" className="cart-icon" aria-label={'Giỏ hàng có ' + count + ' sản phẩm'}>
             <ShoppingBag size={22} />
             {count > 0 && <span>{count}</span>}
           </Link>
           <button
             className="mobile-toggle"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? 'Đóng menu' : 'Mở menu'}
             aria-expanded={open}
             onClick={() => setOpen(!open)}
           >

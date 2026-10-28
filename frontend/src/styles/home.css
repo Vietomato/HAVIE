@@ -137,6 +137,74 @@ p {
   @apply mt-3;
   @apply text-[var(--forest)];
 }
+.home-banner {
+  @apply relative;
+  @apply w-full;
+  @apply overflow-hidden;
+  @apply bg-[#eeeede];
+  aspect-ratio: 2182 / 721;
+}
+.home-banner-image {
+  @apply absolute;
+  @apply inset-0;
+  @apply w-full;
+  @apply h-full;
+  @apply object-contain;
+  animation: home-banner-fade 500ms ease-out;
+}
+.home-banner-arrow {
+  @apply absolute;
+  @apply top-1/2;
+  @apply z-10;
+  @apply -translate-y-1/2;
+  @apply rounded-full;
+  @apply bg-white/90;
+  @apply p-3;
+  @apply text-[var(--forest)];
+  @apply shadow-md;
+  @apply transition-colors;
+}
+.home-banner-arrow:hover {
+  @apply bg-white;
+}
+.home-banner-previous {
+  @apply left-4;
+}
+.home-banner-next {
+  @apply right-4;
+}
+.home-banner-dots {
+  @apply absolute;
+  @apply bottom-4;
+  @apply left-1/2;
+  @apply z-10;
+  @apply flex;
+  @apply -translate-x-1/2;
+  @apply gap-2;
+}
+.home-banner-dot {
+  @apply h-[10px];
+  @apply w-[10px];
+  @apply rounded-full;
+  @apply bg-white/80;
+  @apply shadow;
+}
+.home-banner-dot.is-active {
+  @apply bg-[var(--forest)];
+}
+@keyframes home-banner-fade {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-banner-image {
+    animation: none;
+  }
+}
 .section {
   @apply pt-[65px];
   @apply pb-[65px];

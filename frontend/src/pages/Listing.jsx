@@ -14,21 +14,29 @@ export default function Listing() {
   const [productsList, setProductsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [productsError, setProductsError] = useState('');
+  const [categoriesError, setCategoriesError] = useState('');
 
   useEffect(() => setDraft(q), [q]);
 
   useEffect(() => {
-    catalogApi.getCategories().then((cats) => {
-      setCategoriesList(cats || []);
-    });
+    catalogApi
+      .getCategories()
+      .then(setCategoriesList)
+      .catch((error) => setCategoriesError(error.message));
   }, []);
 
   useEffect(() => {
     setLoading(true);
+    setProductsError('');
     catalogApi
       .getProducts({ category, q, sort })
       .then((res) => {
         setProductsList(res.data || []);
+      })
+      .catch((error) => {
+        setProductsList([]);
+        setProductsError(error.message);
       })
       .finally(() => setLoading(false));
   }, [category, q, sort]);
@@ -43,30 +51,30 @@ export default function Listing() {
   return (
     <div className="container page-pad">
       <p className="breadcrumbs">
-        <Link to="/">HOME</Link> / SHOP
+        <Link to="/">TRANG CHỦ</Link> / CỬA HÀNG
       </p>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">THE HAVIE EDIT</span>
+          <span className="eyebrow">BỘ SƯU TẬP HAVIE</span>
           <h1>
-            THE COLLECTION<span className="dot">.</span>
+            BỘ SƯU TẬP<span className="dot">.</span>
           </h1>
-          <p>Thoughtful equipment for every level of play.</p>
+          <p>Trang bị chỉn chu cho mọi trình độ và phong cách chơi.</p>
         </div>
-        <span>{productsList.length} PRODUCTS</span>
+        <span>{productsList.length} SẢN PHẨM</span>
       </div>
       <div className="catalog-layout">
         <aside className="filters">
           <h2>
-            <SlidersHorizontal size={19} /> FILTERS
+            <SlidersHorizontal size={19} /> BỘ LỌC
           </h2>
-          <h3>CATEGORIES</h3>
+          <h3>DANH MỤC</h3>
           <div className="filter-options">
             <button
               className={category === 'All' ? 'active' : ''}
               onClick={() => change('category', 'All')}
             >
-              All
+              Tất cả
             </button>
             {categoriesList.map((c) => (
               <button
@@ -78,9 +86,10 @@ export default function Listing() {
               </button>
             ))}
           </div>
-          <p className="filter-tip">Find the right equipment for your next match.</p>
+          {categoriesError && <p role="alert">{categoriesError}</p>}
+          <p className="filter-tip">Chọn trang bị phù hợp cho trận đấu tiếp theo của bạn.</p>
         </aside>
-        <section className="catalog-main" aria-label="Products">
+        <section className="catalog-main" aria-label="Danh sách sản phẩm">
           <div className="catalog-toolbar">
             <form
               onSubmit={(e) => {
@@ -89,30 +98,38 @@ export default function Listing() {
               }}
             >
               <label className="sr-only" htmlFor="catalog-search">
-                Search catalog
+                Tìm trong danh mục sản phẩm
               </label>
               <Search size={18} />
               <input
                 id="catalog-search"
-                placeholder="Search the collection"
+                placeholder="Tìm trong bộ sưu tập"
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
               />
-              <button type="submit">Search</button>
+              <button type="submit">Tìm kiếm</button>
             </form>
             <label className="sort-select">
-              SORT BY{' '}
+              SẮP XẾP:{' '}
               <select value={sort} onChange={(e) => change('sort', e.target.value)}>
-                <option value="featured">Featured</option>
-                <option value="price_asc">Price: Low to high</option>
-                <option value="price_desc">Price: High to low</option>
-                <option value="rating_desc">Top rated</option>
+                <option value="featured">Nổi bật</option>
+                <option value="price_asc">Giá: thấp đến cao</option>
+                <option value="price_desc">Giá: cao đến thấp</option>
+                <option value="rating_desc">Đánh giá cao</option>
               </select>
               <ChevronDown size={16} />
             </label>
           </div>
           {loading ? (
             <p>Đang tải danh sách sản phẩm...</p>
+          ) : productsError ? (
+            <div className="empty-state" role="alert">
+              <h2>Không thể tải sản phẩm.</h2>
+              <p>{productsError}</p>
+              <button className="btn btn-primary" onClick={() => window.location.reload()}>
+                THỬ LẠI
+              </button>
+            </div>
           ) : productsList.length ? (
             <div className="products-grid catalog-grid">
               {productsList.map((p) => (
@@ -121,10 +138,10 @@ export default function Listing() {
             </div>
           ) : (
             <div className="empty-state">
-              <h2>No products found.</h2>
-              <p>Try another search or category.</p>
+              <h2>Không tìm thấy sản phẩm.</h2>
+              <p>Hãy thử từ khóa hoặc danh mục khác.</p>
               <button className="btn btn-primary" onClick={() => setParams({})}>
-                CLEAR FILTERS
+                XÓA BỘ LỌC
               </button>
             </div>
           )}

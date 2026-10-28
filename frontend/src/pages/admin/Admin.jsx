@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LayoutDashboard, Package, ClipboardList, Users, Settings, LogOut, ShieldAlert } from 'lucide-react';
 import { money } from '../../data';
-import { adminApi, ORDER_STATUS_LABELS } from '../../api';
+import { adminApi, ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from '../../api';
 import { useStore } from '../../context/StoreContext.jsx';
 
 export default function Admin() {
@@ -123,7 +123,7 @@ export default function Admin() {
         <Link to="/" className="admin-brand">
           HAVIE.<small>ADMIN STUDIO v1</small>
         </Link>
-        <nav aria-label="Admin navigation">
+        <nav aria-label="Điều hướng quản trị">
           {nav.map(([label, Icon]) => (
             <button
               key={label}
@@ -259,7 +259,7 @@ export default function Admin() {
                           <td><strong>{o.orderCode}</strong></td>
                           <td>{o.recipientName}</td>
                           <td>
-                            {o.paymentMethod} •{' '}
+                            {PAYMENT_METHOD_LABELS[o.paymentMethod] || o.paymentMethod} •{' '}
                             <span className={'status-badge ' + o.paymentStatus}>
                               {o.paymentStatus}
                             </span>
@@ -308,7 +308,7 @@ export default function Admin() {
                         <td className="max-w-[200px] text-xs">{o.shippingAddress}</td>
                         <td><strong>{money(o.totalAmount)}</strong></td>
                         <td>
-                          {o.paymentMethod} •{' '}
+                          {PAYMENT_METHOD_LABELS[o.paymentMethod] || o.paymentMethod} •{' '}
                           <span className={'status-badge ' + o.paymentStatus}>
                             {o.paymentStatus}
                           </span>

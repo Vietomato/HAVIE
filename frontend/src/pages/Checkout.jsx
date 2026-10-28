@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { money } from '../data';
 import { orderApi, ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from '../api';
 import { useStore } from '../context/StoreContext.jsx';
+import { localizeVariantName } from '../utils/product.js';
 
 export default function Checkout() {
   const { cart, subtotal, refreshCart, account } = useStore();
@@ -14,12 +15,9 @@ export default function Checkout() {
   const [ward, setWard] = useState('Phường 4');
   const [district, setDistrict] = useState('Gò Vấp');
   const [province, setProvince] = useState('TP. Hồ Chí Minh');
-  const [paymentMethod, setPaymentMethod] = useState('COD');
   const [note, setNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [createdOrder, setCreatedOrder] = useState(null);
-  const [showQrModal, setShowQrModal] = useState(false);
-  const [qrOrder, setQrOrder] = useState(null);
   const navigate = useNavigate();
 
   const items = cart?.items || [];
@@ -51,33 +49,16 @@ export default function Checkout() {
           ward,
           streetAddress: street,
         },
-        paymentMethod,
+        paymentMethod: 'COD',
         customerNote: note,
       });
 
       await refreshCart();
       setCreatedOrder(res);
-
-      if (paymentMethod === 'MOCK_QR' && res.payment) {
-        setQrOrder(res);
-        setShowQrModal(true);
-      }
     } catch (err) {
       alert(err.message || 'Có lỗi xảy ra khi tạo đơn hàng.');
     } finally {
       setSubmitting(false);
-    }
-  };
-
-  const handleConfirmQrPayment = async () => {
-    if (!qrOrder) return;
-    try {
-      const res = await orderApi.simulateQrPaymentSuccess(qrOrder.id);
-      setCreatedOrder(res);
-      setShowQrModal(false);
-      alert('Thanh toán thành công! Trạng thái đơn hàng đã được cập nhật.');
-    } catch (err) {
-      alert('Lỗi xác nhận thanh toán.');
     }
   };
 
@@ -86,33 +67,6 @@ export default function Checkout() {
       <p className="breadcrumbs">
         <Link to="/cart">CART</Link> / CHECKOUT
       </p>
-
-      {/* QR Payment Modal */}
-      {showQrModal && qrOrder && (
-        <div className="qr-overlay">
-          <div className="qr-modal">
-            <h2>MÃ QR THANH TOÁN (MOCK_QR)</h2>
-            <p>Đơn hàng: <strong>{qrOrder.orderCode}</strong></p>
-            <div className="qr-box">
-              <div className="qr-code-art">
-                VIETQR DEMO<br />{money(qrOrder.totalAmount)}
-              </div>
-              <small>Hết hạn sau: 15 phút (Mô phỏng API)</small>
-            </div>
-            <p className="text-[13px] text-[var(--muted)]">
-              Đây là cổng thanh toán mô phỏng theo Contract v1. Bạn có thể nhấn nút bên dưới để giả lập thanh toán thành công từ ngân hàng:
-            </p>
-            <div className="mt-[15px] flex gap-[10px]">
-              <button className="btn btn-primary full" onClick={handleConfirmQrPayment}>
-                XÁC NHẬN ĐÃ THANH TOÁN
-              </button>
-              <button className="btn btn-outline" onClick={() => setShowQrModal(false)}>
-                ĐÓNG
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {createdOrder ? (
         <div className="empty-state">
@@ -214,24 +168,8 @@ export default function Checkout() {
               <h2 className="mt-6">PHƯƠNG THỨC THANH TOÁN</h2>
               <div className="flex flex-col gap-[10px]">
                 <label className="flex items-center gap-[10px]">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="COD"
-                    checked={paymentMethod === 'COD'}
-                    onChange={() => setPaymentMethod('COD')}
-                  />
+                  <input type="radio" name="payment" value="COD" checked readOnly />
                   <span>Thanh toán khi nhận hàng (COD)</span>
-                </label>
-                <label className="flex items-center gap-[10px]">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="MOCK_QR"
-                    checked={paymentMethod === 'MOCK_QR'}
-                    onChange={() => setPaymentMethod('MOCK_QR')}
-                  />
-                  <span>Mã QR thanh toán mô phỏng (MOCK_QR VietQR)</span>
                 </label>
               </div>
 
@@ -251,7 +189,8 @@ export default function Checkout() {
               {items.map((item) => (
                 <div key={item.id}>
                   <span>
-                    {item.product?.name} ({item.variant?.name}) × {item.quantity}
+                    {item.product?.name} ({localizeVariantName(item.variant?.name)}) ×{' '}
+                    {item.quantity}
                   </span>
                   <strong>{money((item.variant?.price || 0) * item.quantity)}</strong>
                 </div>

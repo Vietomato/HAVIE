@@ -6,6 +6,9 @@
 .auth-art {
   @apply bg-[var(--forest)];
   @apply text-white;
+  background-image: linear-gradient(rgba(17, 54, 42, 0.62), rgba(17, 54, 42, 0.62)), url('/images/kento-momota.jpg');
+  background-position: center;
+  background-size: cover;
   @apply p-[36px_24px];
   @apply flex;
   @apply flex-col;

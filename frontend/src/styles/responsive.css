@@ -20,25 +20,7 @@
     @apply grid-cols-[2fr_1fr_1fr_1.4fr];
   }
   .perks {
-    @apply grid-cols-[repeat(3,_1fr)];
-  }
-  .hero-grid {
-    @apply grid-cols-[1fr_1fr];
-    @apply items-stretch;
-  }
-  .hero-copy {
-    @apply p-[85px_0];
-  }
-  .hero-visual {
-    @apply p-[32px_0];
-  }
-  .hero-image {
-    @apply h-full;
-    @apply min-h-[460px];
-  }
-  .hero-sticker {
-    @apply right-[20px];
-    @apply top-[60px];
+    @apply grid-cols-[repeat(2,_1fr)];
   }
   .campaign {
     @apply p-[70px];
@@ -108,21 +90,8 @@
   .mobile-toggle {
     @apply hidden;
   }
-  .hero-copy {
-    @apply p-[115px_0];
-  }
-  .hero h1 {
-    @apply tracking-[-6px];
-  }
-  .hero-image {
-    @apply min-h-[550px];
-  }
-  .hero-visual {
-    @apply p-[35px_0];
-  }
-  .hero-sticker {
-    @apply p-[27px];
-    @apply text-xl;
+  .perks {
+    @apply grid-cols-[repeat(4,_1fr)];
   }
   .section {
     @apply pt-[95px];
@@ -205,12 +174,6 @@
   }
   .main-nav {
     @apply gap-[34px];
-  }
-  .hero h1 {
-    @apply text-[105px];
-  }
-  .hero-copy > p {
-    @apply text-[15px];
   }
   .catalog-grid {
     @apply grid-cols-[repeat(3,_minmax(0,_1fr))];

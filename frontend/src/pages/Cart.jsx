@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingBag, ArrowRight, ArrowLeft, Plus, Minus, Trash2 } from 'lucide-react';
 import { money } from '../data';
 import { useStore } from '../context/StoreContext.jsx';
+import { localizeVariantName } from '../utils/product.js';
 
 export default function Cart() {
   const { cart, update, remove, subtotal } = useStore();
@@ -11,7 +12,7 @@ export default function Cart() {
   return (
     <div className="container page-pad">
       <p className="breadcrumbs">
-        <Link to="/">HOME</Link> / SHOPPING CART
+        <Link to="/">TRANG CHỦ</Link> / GIỎ HÀNG
       </p>
       <div className="page-heading">
         <div>
@@ -43,7 +44,7 @@ export default function Cart() {
                     {item.product?.name}
                   </Link>
                   <small className="font-bold text-[var(--forest)]">
-                    Phiên bản: {item.variant?.name} ({item.variant?.sku})
+                    Phiên bản: {localizeVariantName(item.variant?.name)} ({item.variant?.sku})
                   </small>
                   <span>{money(item.variant?.price || 0)}</span>
                   <button onClick={() => remove(item.id)} className="remove-link">
@@ -52,14 +53,14 @@ export default function Cart() {
                 </div>
                 <div className="qty-control">
                   <button
-                    aria-label="Decrease quantity"
+                    aria-label="Giảm số lượng"
                     onClick={() => update(item.id, item.quantity - 1)}
                   >
                     <Minus size={15} />
                   </button>
                   <output>{item.quantity}</output>
                   <button
-                    aria-label="Increase quantity"
+                    aria-label="Tăng số lượng"
                     onClick={() => update(item.id, item.quantity + 1)}
                   >
                     <Plus size={15} />

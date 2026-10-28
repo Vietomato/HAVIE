@@ -1,9 +1,9 @@
 import React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { apiClient, authApi, cartApi } from '../api';
-import Cart from '../pages/Cart.jsx';
 
 const Store = createContext(null);
+
 
 export function StoreProvider({ children }) {
   const [account, setAccount] = useState(null);
@@ -28,12 +28,20 @@ export function StoreProvider({ children }) {
     authApi
       .getMe()
       .then((user) => setAccount(user))
-      .catch(() => setAccount(null))
+      .catch((error) => {
+        if (error.status === 401) apiClient.clearToken();
+        setAccount(null);
+      })
       .finally(() => setAuthLoading(false));
   }, []);
 
   // Fetch Cart on mount and on account change
-  const refreshCart = async () => {
+  const refreshCart = async (user = account) => {
+    if (!user) {
+      setCart({ items: [] });
+      return;
+    }
+
     try {
       setCartLoading(true);
       const res = await cartApi.getCart();
@@ -90,21 +98,19 @@ export function StoreProvider({ children }) {
   const login = async (email, password) => {
     const res = await authApi.login({ email, password });
     setAccount(res.user);
-    await refreshCart();
     return res.user;
   };
 
   const register = async (payload) => {
     const res = await authApi.register(payload);
     setAccount(res.user);
-    await refreshCart();
     return res.user;
   };
 
   const logout = async () => {
     await authApi.logout();
     setAccount(null);
-    await refreshCart();
+    await refreshCart(null);
   };
 
   const count = (cart?.items || []).reduce((sum, item) => sum + (item.quantity || 0), 0);

@@ -106,17 +106,17 @@ export default function Auth() {
           HAVIE.
         </Link>
         <div>
-          <span className="eyebrow">WELCOME TO THE CLUB</span>
+          <span className="eyebrow">CHÀO MỪNG BẠN ĐẾN VỚI HAVIE</span>
           <h1>
-            PLAY
+            CHƠI
             <br />
-            BEYOND
+            VƯỢT
             <br />
-            LIMITS<span>.</span>
+            GIỚI HẠN<span>.</span>
           </h1>
-          <p>Hệ thống tài khoản và đơn hàng theo chuẩn API Contract v1.</p>
+          <p>Đồng hành cùng bạn trên từng trận đấu và hành trình cầu lông.</p>
         </div>
-        <span>HAVIE ARCHITECTURE / 2026</span>
+        <span>HAVIE / 2026</span>
       </aside>
       <section className="auth-panel">
         <div className="auth-box">
@@ -147,7 +147,7 @@ export default function Auth() {
                   {account.role === 'ADMIN' && (
                     <div className="my-[18px]">
                       <Link to="/admin" className="btn btn-primary full">
-                        TRUY CẬP ADMIN STUDIO →
+                        TRUY CẬP TRANG QUẢN TRỊ →
                       </Link>
                     </div>
                   )}
@@ -216,7 +216,7 @@ export default function Auth() {
           ) : (
             <>
               <span className="eyebrow">YOUR HAVIE ACCOUNT</span>
-              <h2>{mode === 'signin' ? 'Welcome back.' : 'Join the game.'}</h2>
+              <h2>{mode === 'signin' ? 'Chào mừng trở lại.' : 'Bắt đầu hành trình.'}</h2>
 
               <div className="auth-tabs">
                 <button
@@ -273,7 +273,7 @@ export default function Auth() {
                   </>
                 )}
                 <label>
-                  EMAIL ADDRESS
+                  ĐỊA CHỈ EMAIL
                   <input
                     required
                     type="email"
@@ -284,7 +284,7 @@ export default function Auth() {
                   />
                 </label>
                 <label>
-                  PASSWORD
+                  MẬT KHẨU
                   <input
                     required
                     type="password"

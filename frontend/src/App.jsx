@@ -31,9 +31,9 @@ export default function App() {
                     path="*"
                     element={
                       <div className="container empty-state">
-                        <h1>Page not found.</h1>
+                        <h1>Không tìm thấy trang.</h1>
                         <Link to="/" className="btn btn-primary">
-                          BACK HOME
+                          VỀ TRANG CHỦ
                         </Link>
                       </div>
                     }

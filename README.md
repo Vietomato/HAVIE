@@ -29,7 +29,8 @@ HAVIE/
 - `src/context/StoreContext.jsx`: state và thao tác dùng chung cho tài khoản, giỏ hàng, yêu thích; export `StoreProvider` và `useStore`.
 - `src/components/`: `Header`, `Footer`, `Shell`, `ProductCard` dùng chung.
 - `src/pages/`: `Home`, `Listing`, `Detail`, `Cart`, `Checkout`, `Auth`; trang quản trị nằm tại `pages/admin/Admin.jsx`.
-- `src/api/`: HTTP client, các dịch vụ nghiệp vụ và mock; không thay đổi trong lần tách file này.
+- `src/api/`: HTTP client và các dịch vụ gọi backend thật; mock đã được bỏ theo cập nhật từ branch `dev`.
+- `src/utils/product.js`: nhãn sản phẩm và hàm hiển thị tên biến thể dùng chung.
 - `src/style.tailwind.css`: điểm import Tailwind và các stylesheet trong `styles/`.
 - `src/styles/`: chia theo base, header, home, products, campaign, footer, catalog, detail, auth, cart-checkout, admin, responsive và account-product-extras.
 
@@ -39,20 +40,20 @@ Kiểm tra biên dịch bằng `cd frontend && npm run build`. Build không thay
 
 ## Hướng dẫn khởi chạy
 
-### 1. Khởi chạy Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Truy cập: [http://localhost:5173](http://localhost:5173)
-
-Frontend xử lý CSS bằng Tailwind CSS v4 thông qua plugin Vite. Các style component nằm trong `@layer components` và ưu tiên `@apply` Tailwind utilities; arbitrary values được giữ cho các kích thước, màu sắc và giá trị tùy chỉnh để bảo toàn thiết kế. Inline styles đã được chuyển sang utility classes. Các reset và breakpoint gốc được giữ nguyên.
-
-### 2. Khởi chạy Backend
+### 1. Khởi chạy Backend
 ```bash
 cd backend
 npm install
 npm run dev
 ```
-Truy cập: [http://localhost:3000/api/health](http://localhost:3000/api/health)
+Backend dùng `backend/.env` để kết nối PostgreSQL. Để nạp dữ liệu sản phẩm lần đầu, làm theo hướng dẫn seed trong [backend/README.md](backend/README.md).
+
+### 2. Khởi chạy Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Truy cập: [http://localhost:5173](http://localhost:5173). Frontend gọi backend thật qua `/api`; khi backend hoặc PostgreSQL không sẵn sàng, lỗi kết nối sẽ được hiển thị thay vì dùng dữ liệu mẫu.
+
+Frontend xử lý CSS bằng Tailwind CSS v4 thông qua plugin Vite. Các style component nằm trong `@layer components` và ưu tiên `@apply` Tailwind utilities; arbitrary values được giữ cho các kích thước, màu sắc và giá trị tùy chỉnh để bảo toàn thiết kế. Inline styles đã được chuyển sang utility classes. Các reset và breakpoint gốc được giữ nguyên.

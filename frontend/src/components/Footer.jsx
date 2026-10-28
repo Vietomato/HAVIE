@@ -9,29 +9,29 @@ export default function Footer() {
           <Link className="footer-logo" to="/">
             HAVIE.
           </Link>
-          <p>Play beyond limits.</p>
-          <p>Built for the love of badminton.</p>
+          <p>Vượt mọi giới hạn.</p>
+          <p>Dành trọn đam mê cho cầu lông.</p>
         </section>
         <section>
-          <h3>EXPLORE</h3>
-          <Link to="/products">Shop all</Link>
+          <h3>KHÁM PHÁ</h3>
+          <Link to="/products">Tất cả sản phẩm</Link>
           <Link to="/products?category=rackets">Vợt cầu lông</Link>
           <Link to="/products?category=shoes">Giày cầu lông</Link>
         </section>
         <section>
-          <h3>SUPPORT</h3>
-          <a href="mailto:hello@havie.example">Contact us</a>
-          <Link to="/cart">Shopping cart</Link>
-          <Link to="/auth">My account</Link>
+          <h3>HỖ TRỢ</h3>
+          <a href="mailto:hello@havie.example">Liên hệ</a>
+          <Link to="/cart">Giỏ hàng</Link>
+          <Link to="/auth">Tài khoản của tôi</Link>
         </section>
         <section>
-          <h3>FOLLOW THE GAME</h3>
-          <p>Made for the court. Designed for everyday.</p>
-          <span className="footer-note">Demo Storefront • API Contract v1 Integrated</span>
+          <h3>CÙNG ĐAM MÊ CẦU LÔNG</h3>
+          <p>Thiết kế cho sân đấu, phù hợp mỗi ngày.</p>
+          <span className="footer-note">Dữ liệu sản phẩm trực tiếp từ API HAVIE</span>
         </section>
       </div>
       <div className="container footer-bottom">
-        © 2026 HAVIE Badminton Store <span>Designed with intention.</span>
+        © 2026 Cửa hàng cầu lông HAVIE <span>Chỉn chu trong từng chi tiết.</span>
       </div>
     </footer>
   );
