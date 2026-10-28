@@ -5,6 +5,12 @@ import { ArrowRight, ArrowLeft, Truck, ShieldCheck, RotateCcw, CreditCard } from
 import { catalogApi } from '../api';
 import ProductCard from '../components/ProductCard.jsx';
 
+const HOME_BANNERS = [
+  { src: '/images/banner1.png', alt: 'HAVIE — ảnh quảng bá 1' },
+  { src: '/images/banner2.png', alt: 'HAVIE — ảnh quảng bá 2' },
+  { src: '/images/banner3.png', alt: 'HAVIE — ảnh quảng bá 3' },
+];
+
 export default function Home() {
   const [featured, setFeatured] = useState([]);
   const [featuredLoading, setFeaturedLoading] = useState(true);
