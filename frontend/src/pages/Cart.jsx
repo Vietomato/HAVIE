@@ -43,7 +43,7 @@ export default function Cart() {
                   <Link to={'/products/' + (item.product?.slug || item.product?.id)}>
                     {item.product?.name}
                   </Link>
-                  <small className="font-bold text-[var(--forest)]">
+                  <small className="font-bold text-[var(--ink)]">
                     Phiên bản: {localizeVariantName(item.variant?.name)} ({item.variant?.sku})
                   </small>
                   <span>{money(item.variant?.price || 0)}</span>

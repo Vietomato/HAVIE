@@ -57,3 +57,11 @@ npm run dev
 Truy cập: [http://localhost:5173](http://localhost:5173). Frontend gọi backend thật qua `/api`; khi backend hoặc PostgreSQL không sẵn sàng, lỗi kết nối sẽ được hiển thị thay vì dùng dữ liệu mẫu.
 
 Frontend xử lý CSS bằng Tailwind CSS v4 thông qua plugin Vite. Các style component nằm trong `@layer components` và ưu tiên `@apply` Tailwind utilities; arbitrary values được giữ cho các kích thước, màu sắc và giá trị tùy chỉnh để bảo toàn thiết kế. Inline styles đã được chuyển sang utility classes. Các reset và breakpoint gốc được giữ nguyên.
+
+## Clean Racing (Option B)
+
+The frontend theme is centralized in `frontend/src/styles/theme.css`: racing red CTAs, electric blue accents, navy text, and light surfaces. Small blue text uses a darker accessible variant. Header navigation uses separate neutral outlined boxes; the current section has a heavier border and matches both pathname and category query. Typography uses Segoe UI with system fallbacks supporting Vietnamese.
+
+Component styles remain in `frontend/src/styles/`, in Tailwind's components layer. Existing 600/900/1200px breakpoints are retained; the header wraps its navigation between 900px and 1199px. Images retain their original artwork colors, and order status badges retain semantic status colors.
+
+Validation: production build passed; React render checks covered eight navigation URLs; source UTF-8 validation passed. Full desktop/mobile visual regression and authenticated admin/checkout interaction checks remain pending.

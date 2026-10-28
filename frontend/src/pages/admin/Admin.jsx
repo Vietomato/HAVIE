@@ -50,7 +50,7 @@ export default function Admin() {
   if (!account || account.role !== 'ADMIN') {
     return (
       <div className="container page-pad empty-state">
-        <ShieldAlert size={56} color="#b91c1c" />
+        <ShieldAlert size={56} color="var(--danger)" />
         <h1>Yêu cầu quyền Quản trị viên (ADMIN)</h1>
         <p>Tài khoản Admin chỉ được tạo cho email nằm trong danh sách được cho phép.</p>
         <div className="mt-5">
@@ -224,7 +224,7 @@ export default function Admin() {
                   <span>CẢNH BÁO TỒN KHO</span>
                   <strong
                     className={
-                      dashboardData.lowStockCount ? 'text-[#b91c1c]' : 'text-[inherit]'
+                      dashboardData.lowStockCount ? 'text-[var(--danger)]' : 'text-[inherit]'
                     }
                   >
                     {dashboardData.lowStockCount || 0}

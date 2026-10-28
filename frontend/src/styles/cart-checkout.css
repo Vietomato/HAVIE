@@ -15,7 +15,7 @@
   @apply items-center;
 }
 .cart-thumb {
-  @apply bg-[#e7e9de];
+  @apply bg-[var(--surface)];
 }
 .cart-thumb img {
   @apply w-full;
@@ -52,14 +52,14 @@
 }
 .cart-item > strong {
   @apply text-[13px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply justify-self-end;
 }
 .back-shopping {
   @apply mt-6;
 }
 .summary {
-  @apply bg-[#eceee6];
+  @apply bg-[var(--surface)];
   @apply p-[28px_22px];
   @apply self-start;
 }
@@ -67,7 +67,7 @@
 .checkout-form h2 {
   @apply text-[17px];
   @apply tracking-[1px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply mb-[25px];
 }
 .summary > div {
@@ -81,10 +81,10 @@
   @apply whitespace-nowrap;
 }
 .summary-total {
-  @apply border-t border-[#cbd3c7];
+  @apply border-t border-[var(--border)];
   @apply pt-[23px];
   @apply font-extrabold;
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .summary-total strong {
   @apply text-lg;
@@ -103,7 +103,7 @@
   @apply justify-center;
   @apply text-center;
   @apply gap-3;
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply p-[40px_10px];
 }
 .empty-state h2 {
@@ -123,4 +123,8 @@
   @apply text-xs;
   @apply text-[var(--muted)];
 }
+
+.summary { border: 1px solid var(--border); border-top: 3px solid var(--secondary); border-radius: 8px; box-shadow: var(--surface-shadow); }
+.summary-total strong { color: var(--primary); }
+.remove-link:hover { color: var(--danger); }
 }

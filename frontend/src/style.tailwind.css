@@ -2,6 +2,7 @@
 @import "tailwindcss/utilities.css" layer(utilities);
 
 /* Import order preserves the existing cascade, including responsive overrides. */
+@import "./styles/theme.css";
 @import "./styles/base.css";
 @import "./styles/header.css";
 @import "./styles/home.css";

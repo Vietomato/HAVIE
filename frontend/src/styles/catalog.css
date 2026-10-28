@@ -11,7 +11,7 @@
   @apply mb-8;
 }
 .breadcrumbs a:hover {
-  @apply text-[var(--forest)];
+  @apply text-[var(--link)];
 }
 .page-heading {
   @apply flex;
@@ -45,7 +45,7 @@
   @apply items-center;
   @apply text-[15px];
   @apply tracking-[1px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply mb-[25px];
 }
 .filters h3 {
@@ -59,14 +59,15 @@
 }
 .filter-options button {
   @apply bg-transparent;
-  @apply border border-[#bdcbbd];
+  @apply border border-[var(--border)];
   @apply p-[9px_12px];
   @apply text-[var(--ink)];
   @apply text-xs;
 }
 .filter-options button.active {
-  @apply bg-[var(--forest)];
-  @apply text-white;
+  @apply bg-[var(--highlight)];
+  @apply text-[var(--link)];
+  border-color: var(--secondary);
 }
 .filter-options span {
   @apply ml-2;
@@ -91,7 +92,7 @@
   @apply bg-white;
   @apply border border-[var(--border)];
   @apply p-[8px_12px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .catalog-toolbar input {
   @apply border-0;
@@ -101,7 +102,7 @@
   @apply text-xs;
 }
 .catalog-toolbar form button {
-  @apply bg-[var(--forest)];
+  @apply bg-[var(--primary)];
   @apply text-white;
   @apply border-0;
   @apply p-[9px_12px];
@@ -119,7 +120,7 @@
 .sort-select select {
   @apply border-0;
   @apply bg-transparent;
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply text-xs;
   @apply font-bold;
   @apply appearance-none;
@@ -128,4 +129,11 @@
 .catalog-grid {
   @apply gap-[27px_15px];
 }
+
+.filter-options button { border-radius: 4px; }
+.filter-options button:hover { border-color: var(--secondary); }
+.catalog-toolbar form { border-radius: 6px; }
+.catalog-toolbar form:focus-within { border-color: var(--secondary); }
+.catalog-toolbar form button { border-radius: 4px; }
+.catalog-toolbar form button:hover { background: var(--primary-hover); }
 }

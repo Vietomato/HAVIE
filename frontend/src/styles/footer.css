@@ -1,6 +1,6 @@
 @layer components {
 .footer {
-  @apply bg-[var(--forest)];
+  @apply bg-[var(--ink)];
   @apply text-white;
   @apply pt-15;
 }
@@ -16,7 +16,7 @@
 }
 .footer p {
   @apply text-xs;
-  @apply text-[#cbdacf];
+  @apply text-[var(--border)];
   @apply leading-[1.8];
   @apply m-[12px_0_0];
 }
@@ -27,13 +27,13 @@
 }
 .footer section > a:not(.footer-logo) {
   @apply block;
-  @apply text-[#dce8de];
+  @apply text-[var(--highlight)];
   @apply text-xs;
   @apply m-[0_0_14px];
 }
 .footer-note {
   @apply block;
-  @apply text-[#cbdacf];
+  @apply text-[var(--border)];
   @apply text-[11px];
   @apply mt-5;
 }
@@ -45,7 +45,10 @@
   @apply border-t border-[#ffffff33];
   @apply mt-15;
   @apply p-[20px_0];
-  @apply text-[#cbdacf];
+  @apply text-[var(--border)];
   @apply text-[11px];
 }
+
+.footer { border-top: 3px solid var(--primary); }
+.footer a:hover { color: var(--surface); text-decoration: underline; text-underline-offset: 4px; }
 }
