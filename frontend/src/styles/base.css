@@ -1,0 +1,65 @@
+@layer components {
+:root {
+  @apply font-[Arial,_Helvetica,_sans-serif];
+  @apply text-[#252525];
+  @apply bg-[#f5f2e9];
+  @apply [font-synthesis:none];
+  @apply [text-rendering:optimizeLegibility];
+  @apply [-webkit-font-smoothing:antialiased];
+  --cream: #f5f2e9;
+  --forest: #204b3a;
+  --sage: #d5e4c0;
+  --ink: #252525;
+  --muted: #76796e;
+  --border: #dcded4;
+  --white: #fff;
+  --max: 1320px;
+}
+* {
+  @apply box-border;
+}
+html {
+  @apply scroll-smooth;
+}
+body {
+  @apply m-[0];
+  @apply min-w-[320px];
+}
+button,
+input,
+select,
+textarea {
+  @apply [font:inherit];
+}
+button {
+  @apply cursor-pointer;
+}
+a {
+  @apply text-inherit;
+  @apply no-underline;
+}
+img {
+  @apply max-w-full;
+  @apply block;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  @apply [outline:3px_solid_#83ad8b];
+  @apply outline-offset-[3px];
+}
+.sr-only {
+  @apply absolute;
+  @apply w-[1px];
+  @apply h-[1px];
+  @apply overflow-hidden;
+  @apply [clip:rect(0,_0,_0,_0)];
+  @apply whitespace-nowrap;
+}
+.container {
+  @apply w-[min(var(--max),_calc(100%_-_36px))];
+  @apply mx-auto;
+}
+}

@@ -1,0 +1,271 @@
+@layer components {
+.admin-app {
+  @apply min-h-[100vh];
+  @apply bg-[#f6f7f2];
+}
+.admin-sidebar {
+  @apply hidden;
+  @apply bg-[var(--forest)];
+  @apply text-white;
+  @apply p-[30px_18px];
+}
+.admin-brand {
+  @apply text-[29px];
+  @apply font-black;
+  @apply tracking-[-1px];
+  @apply p-[0_16px];
+}
+.admin-brand small {
+  @apply block;
+  @apply text-[9px];
+  @apply tracking-[2px];
+  @apply font-medium;
+  @apply text-[var(--sage)];
+  @apply mt-[6px];
+}
+.admin-sidebar nav {
+  @apply grid;
+  @apply gap-[7px];
+  @apply mt-[58px];
+}
+.admin-sidebar nav button {
+  @apply border-0;
+  @apply bg-transparent;
+  @apply text-[#d5e4c0];
+  @apply flex;
+  @apply items-center;
+  @apply gap-[14px];
+  @apply p-4;
+  @apply rounded-[4px];
+  @apply text-left;
+  @apply text-[13px];
+}
+.admin-sidebar nav button.active,
+.admin-sidebar nav button:hover {
+  @apply bg-[#37664f];
+  @apply text-white;
+}
+.admin-exit {
+  @apply flex;
+  @apply gap-3;
+  @apply items-center;
+  @apply p-4;
+  @apply text-xs;
+  @apply mt-[45px];
+  @apply text-[var(--sage)];
+}
+.admin-main {
+  @apply min-w-0;
+}
+.admin-top {
+  @apply h-[74px];
+  @apply border-b border-[var(--border)];
+  @apply bg-white;
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply gap-3;
+  @apply p-[0_18px];
+  @apply text-[10px];
+  @apply tracking-[1px];
+  @apply text-[var(--muted)];
+}
+.admin-top strong {
+  @apply flex;
+  @apply items-center;
+  @apply gap-3;
+  @apply text-[var(--forest)];
+  @apply text-[10px];
+}
+.admin-avatar {
+  @apply grid;
+  @apply place-items-center;
+  @apply w-[32px];
+  @apply h-[32px];
+  @apply rounded-full;
+  @apply bg-[var(--sage)];
+  @apply text-[13px];
+}
+.admin-content {
+  @apply p-[35px_18px];
+}
+.admin-title {
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply mb-7;
+}
+.admin-title h1 {
+  @apply text-[clamp(32px,_5vw,_44px)];
+  @apply text-[var(--forest)];
+  @apply m-[10px_0];
+}
+.admin-title p {
+  @apply text-[13px];
+  @apply text-[var(--muted)];
+}
+.demo-pill {
+  @apply bg-[var(--sage)];
+  @apply text-[var(--forest)];
+  @apply p-[10px];
+  @apply text-[10px];
+  @apply font-extrabold;
+  @apply whitespace-nowrap;
+}
+.stat-grid {
+  @apply grid;
+  @apply grid-cols-[repeat(2,_minmax(0,_1fr))];
+  @apply gap-3;
+}
+.stat-card {
+  @apply bg-white;
+  @apply border border-[var(--border)];
+  @apply p-[22px_15px];
+  @apply flex;
+  @apply flex-col;
+  @apply gap-[18px];
+  @apply min-w-0;
+}
+.stat-card > span {
+  @apply text-[10px];
+  @apply tracking-[1px];
+  @apply text-[var(--muted)];
+}
+.stat-card strong {
+  @apply text-[clamp(17px,_3vw,_29px)];
+  @apply text-[var(--forest)];
+  @apply [overflow-wrap:anywhere];
+}
+.stat-card small {
+  @apply text-[#548265];
+  @apply text-[11px];
+}
+.admin-charts {
+  @apply grid;
+  @apply gap-5;
+  @apply mt-5;
+}
+.admin-panel {
+  @apply bg-white;
+  @apply border border-[var(--border)];
+  @apply p-[24px_18px];
+  @apply min-w-0;
+}
+.panel-title {
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply gap-3;
+  @apply mb-[25px];
+}
+.panel-title h2 {
+  @apply text-[17px];
+  @apply text-[var(--forest)];
+  @apply m-[0];
+}
+.panel-title span {
+  @apply text-[9px];
+  @apply tracking-[1px];
+  @apply text-[var(--muted)];
+}
+.bar-chart {
+  @apply h-[225px];
+  @apply flex;
+  @apply justify-around;
+  @apply items-end;
+  @apply gap-3;
+  @apply border-b border-[var(--border)];
+  @apply p-[10px];
+}
+.bar-col {
+  @apply h-full;
+  @apply flex;
+  @apply flex-col;
+  @apply justify-end;
+  @apply items-center;
+  @apply flex-1;
+  @apply max-w-[50px];
+  @apply gap-[9px];
+}
+.bar-col > span {
+  @apply w-full;
+  @apply bg-[#b9d0bd];
+  @apply min-h-[10px];
+}
+.bar-col:last-child > span {
+  @apply bg-[var(--forest)];
+}
+.bar-col small {
+  @apply text-[9px];
+  @apply text-[var(--muted)];
+}
+.status-row {
+  @apply flex;
+  @apply justify-between;
+  @apply border-b border-[var(--border)];
+  @apply p-[15px_0];
+  @apply text-[13px];
+}
+.status-row strong {
+  @apply text-[var(--forest)];
+}
+.orders-panel {
+  @apply mt-5;
+}
+.table-scroll {
+  @apply overflow-x-auto;
+}
+table {
+  @apply border-collapse;
+  @apply w-full;
+  @apply min-w-[590px];
+  @apply text-left;
+}
+th {
+  @apply bg-[#eff2eb];
+  @apply text-[10px];
+  @apply tracking-[1px];
+  @apply text-[var(--forest)];
+  @apply p-[15px];
+}
+td {
+  @apply text-xs;
+  @apply border-b border-[var(--border)];
+  @apply p-[16px_15px];
+}
+td select {
+  @apply bg-[#e9f0e7];
+  @apply border-0;
+  @apply p-[7px];
+  @apply text-[var(--forest)];
+}
+.status-chip {
+  @apply text-[var(--forest)];
+  @apply bg-[#e9f0e7];
+  @apply p-[7px_10px];
+}
+.admin-placeholder {
+  @apply text-center;
+  @apply grid;
+  @apply place-items-center;
+  @apply gap-3;
+  @apply min-h-[300px];
+  @apply text-[var(--forest)];
+}
+.admin-placeholder p {
+  @apply text-[13px];
+  @apply text-[var(--muted)];
+  @apply max-w-[400px];
+  @apply leading-[1.7];
+}
+.admin-sidebar.open {
+  @apply block;
+  @apply fixed;
+  @apply z-[40];
+  @apply top-[0];
+  @apply bottom-[0];
+  @apply left-[0];
+  @apply w-[270px];
+  @apply overflow-auto;
+}
+}

@@ -1,0 +1,51 @@
+@layer components {
+.footer {
+  @apply bg-[var(--forest)];
+  @apply text-white;
+  @apply pt-15;
+}
+.footer-grid {
+  @apply grid;
+  @apply grid-cols-[repeat(2,_1fr)];
+  @apply gap-[40px_20px];
+}
+.footer-logo {
+  @apply text-[34px];
+  @apply font-black;
+  @apply tracking-[-2px];
+}
+.footer p {
+  @apply text-xs;
+  @apply text-[#cbdacf];
+  @apply leading-[1.8];
+  @apply m-[12px_0_0];
+}
+.footer h3 {
+  @apply text-[11px];
+  @apply tracking-[1.5px];
+  @apply mb-5;
+}
+.footer section > a:not(.footer-logo) {
+  @apply block;
+  @apply text-[#dce8de];
+  @apply text-xs;
+  @apply m-[0_0_14px];
+}
+.footer-note {
+  @apply block;
+  @apply text-[#cbdacf];
+  @apply text-[11px];
+  @apply mt-5;
+}
+.footer-bottom {
+  @apply flex;
+  @apply flex-wrap;
+  @apply justify-between;
+  @apply gap-[10px];
+  @apply border-t border-[#ffffff33];
+  @apply mt-15;
+  @apply p-[20px_0];
+  @apply text-[#cbdacf];
+  @apply text-[11px];
+}
+}

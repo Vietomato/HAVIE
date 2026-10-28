@@ -1,0 +1,120 @@
+@layer components {
+.auth-layout {
+  @apply min-h-[calc(100vh_-_78px)];
+  @apply grid;
+}
+.auth-art {
+  @apply bg-[var(--forest)];
+  @apply text-white;
+  background-image: linear-gradient(rgba(17, 54, 42, 0.62), rgba(17, 54, 42, 0.62)), url('/images/kento-momota.jpg');
+  background-position: center;
+  background-size: cover;
+  @apply p-[36px_24px];
+  @apply flex;
+  @apply flex-col;
+  @apply justify-between;
+  @apply min-h-[360px];
+}
+.auth-brand {
+  @apply text-[29px];
+  @apply font-black;
+  @apply tracking-[-1px];
+}
+.auth-art .eyebrow {
+  @apply text-[var(--sage)];
+}
+.auth-art h1 {
+  @apply text-[clamp(46px,_8vw,_88px)];
+  @apply tracking-[-3px];
+  @apply leading-[0.95];
+  @apply m-[17px_0];
+}
+.auth-art h1 span {
+  @apply text-[var(--sage)];
+}
+.auth-art p {
+  @apply text-[var(--sage)];
+  @apply text-[13px];
+}
+.auth-art > span {
+  @apply text-[10px];
+  @apply tracking-[2px];
+  @apply text-[var(--sage)];
+}
+.auth-panel {
+  @apply grid;
+  @apply place-items-center;
+  @apply p-[60px_20px];
+}
+.auth-box {
+  @apply w-[min(450px,_100%)];
+}
+.auth-box h2 {
+  @apply text-[clamp(34px,_5vw,_50px)];
+  @apply tracking-[-1px];
+  @apply text-[var(--forest)];
+  @apply m-[16px_0];
+}
+.auth-box > p {
+  @apply text-[var(--muted)];
+  @apply text-[13px];
+  @apply leading-[1.6];
+}
+.auth-tabs {
+  @apply grid;
+  @apply grid-cols-[1fr_1fr];
+  @apply m-[33px_0_27px];
+  @apply border-b border-[var(--border)];
+}
+.auth-tabs button {
+  @apply bg-transparent;
+  @apply border-0;
+  @apply p-[14px];
+  @apply text-xs;
+  @apply tracking-[1px];
+  @apply font-extrabold;
+  @apply text-[var(--muted)];
+}
+.auth-tabs button.active {
+  @apply border-b-[3px] border-[var(--forest)];
+  @apply text-[var(--forest)];
+}
+.auth-form {
+  @apply grid;
+  @apply gap-5;
+}
+.auth-form label,
+.checkout-form label {
+  @apply grid;
+  @apply gap-[10px];
+  @apply text-[11px];
+  @apply font-extrabold;
+  @apply tracking-[1px];
+  @apply text-[var(--forest)];
+}
+.auth-form input,
+.checkout-form input,
+.checkout-form textarea {
+  @apply w-full;
+  @apply p-[15px];
+  @apply border border-[#cbd2c8];
+  @apply bg-white;
+  @apply [outline-color:var(--forest)];
+  @apply text-sm;
+  @apply tracking-[0];
+  @apply font-normal;
+}
+.full {
+  @apply w-full;
+}
+.auth-disclaimer {
+  font-size: 11px !important;
+  @apply mt-5;
+  @apply text-[var(--muted)];
+}
+.form-error {
+  @apply text-[#a33636];
+  @apply text-xs;
+  @apply m-[0];
+}
+}

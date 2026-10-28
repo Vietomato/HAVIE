@@ -1,0 +1,92 @@
+@layer components {
+.section-products {
+  @apply bg-[#eeeee6];
+}
+.products-grid {
+  @apply grid;
+  @apply grid-cols-[repeat(2,_minmax(0,_1fr))];
+  @apply gap-[24px_13px];
+}
+.product-card {
+  @apply min-w-0;
+}
+.product-media {
+  @apply relative;
+  @apply bg-[#e5e9df];
+  @apply aspect-[1/1.06];
+  @apply overflow-hidden;
+}
+.product-media img {
+  @apply h-full;
+  @apply w-full;
+  @apply object-cover;
+  @apply transition-transform duration-300;
+}
+.product-badge {
+  @apply absolute;
+  @apply top-[10px];
+  @apply left-[10px];
+  @apply bg-[var(--cream)];
+  @apply p-[7px_9px];
+  @apply text-[var(--forest)];
+  @apply text-[9px];
+  @apply font-extrabold;
+  @apply tracking-[0.7px];
+}
+.favorite {
+  @apply absolute;
+  @apply right-[10px];
+  @apply top-[10px];
+  @apply bg-[#f9f9f2e6];
+  @apply border-0;
+  @apply w-[32px];
+  @apply h-[32px];
+  @apply grid;
+  @apply place-items-center;
+  @apply text-[var(--forest)];
+  @apply rounded-full;
+}
+.favorite.selected {
+  @apply text-[#a84848];
+}
+.product-meta {
+  @apply flex;
+  @apply justify-between;
+  @apply m-[14px_0_9px];
+  @apply text-[var(--muted)];
+  @apply text-[10px];
+  @apply uppercase;
+  @apply tracking-[1px];
+}
+.product-meta span:last-child {
+  @apply flex;
+  @apply items-center;
+  @apply gap-1;
+  @apply text-[var(--forest)];
+}
+.product-name {
+  @apply block;
+  @apply text-sm;
+  @apply font-bold;
+}
+.product-bottom {
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply mt-3;
+  @apply text-[var(--forest)];
+  @apply text-[13px];
+}
+.add-small {
+  @apply border border-[#bdcbbd];
+  @apply text-[var(--forest)];
+  @apply bg-transparent;
+  @apply w-[32px];
+  @apply h-[32px];
+  @apply grid;
+  @apply place-items-center;
+}
+.add-small:hover {
+  @apply bg-[var(--sage)];
+}
+}

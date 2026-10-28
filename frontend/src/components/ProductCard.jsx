@@ -1,0 +1,66 @@
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Plus, Star, Heart } from 'lucide-react';
+import { money } from '../data';
+import { useStore } from '../context/StoreContext.jsx';
+import { PRODUCT_BADGE_LABELS } from '../utils/product.js';
+
+export default function ProductCard({ product }) {
+  const { add, favorites, toggleFavorite } = useStore();
+  const navigate = useNavigate();
+  const defaultVariant = product.variants?.[0];
+  const displayPrice = defaultVariant?.price || 0;
+  const imageUrl = product.imageUrls?.[0] || '/images/product-1.svg';
+
+  return (
+    <article className="product-card">
+      <div className="product-media">
+        <Link to={'/products/' + (product.slug || product.id)} aria-label={'Xem ' + product.name}>
+          <img src={imageUrl} alt={product.name} loading="lazy" />
+        </Link>
+        {product.badge && (
+          <span className="product-badge">
+            {PRODUCT_BADGE_LABELS[product.badge] || product.badge}
+          </span>
+        )}
+        <button
+          className={'favorite ' + (favorites.includes(product.id) ? 'selected' : '')}
+          aria-label={'Yêu thích ' + product.name}
+          onClick={() => toggleFavorite(product.id)}
+        >
+          <Heart size={19} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
+        </button>
+      </div>
+      <div className="product-meta">
+        <span>{product.category?.name || 'Cầu lông'}</span>
+        <span>
+          <Star size={13} fill="currentColor" /> {product.ratingAverage || 5.0}
+        </span>
+      </div>
+      <Link to={'/products/' + (product.slug || product.id)} className="product-name">
+        {product.name}
+      </Link>
+      <div className="product-bottom">
+        <strong>{money(displayPrice)}</strong>
+        <button
+          className="add-small"
+          aria-label={'Thêm ' + product.name + ' vào giỏ hàng'}
+          onClick={async () => {
+            if (defaultVariant) {
+              await add(defaultVariant.id, 1);
+              navigate('/cart');
+            }
+          }}
+        >
+          <Plus size={19} />
+        </button>
+      </div>
+    </article>
+  );
+}
+
+const HOME_BANNERS = [
+  { src: '/images/banner1.png', alt: 'HAVIE — ảnh quảng bá 1' },
+  { src: '/images/banner2.png', alt: 'HAVIE — ảnh quảng bá 2' },
+  { src: '/images/banner3.png', alt: 'HAVIE — ảnh quảng bá 3' },
+];

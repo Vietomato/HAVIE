@@ -8,7 +8,7 @@ Dự án hệ thống website bán hàng cầu lông HAVIE (Frontend React + Bac
 HAVIE/
 ├── frontend/               # Giao diện ứng dụng React + Vite
 │   ├── public/             # Ảnh minh họa SVG, assets tĩnh
-│   ├── src/                # Mã nguồn React + Tailwind CSS v4 (main.jsx, style.tailwind.css, api/)
+│   ├── src/                # React: App, components, pages, context, api và styles
 │   ├── package.json
 │   └── vite.config.js      # Proxy sẵn /api -> http://localhost:3000
 │
@@ -21,6 +21,22 @@ HAVIE/
 ├── Rule.md                  # Quy định kiến trúc công nghệ
 └── README.md
 ```
+
+## Tổ chức frontend
+
+- `src/main.jsx`: khởi tạo React và import stylesheet tổng.
+- `src/App.jsx`: khai báo routing và bọc ứng dụng trong `StoreProvider`.
+- `src/context/StoreContext.jsx`: state và thao tác dùng chung cho tài khoản, giỏ hàng, yêu thích; export `StoreProvider` và `useStore`.
+- `src/components/`: `Header`, `Footer`, `Shell`, `ProductCard` dùng chung.
+- `src/pages/`: `Home`, `Listing`, `Detail`, `Cart`, `Checkout`, `Auth`; trang quản trị nằm tại `pages/admin/Admin.jsx`.
+- `src/api/`: HTTP client và các dịch vụ gọi backend thật; mock đã được bỏ theo cập nhật từ branch `dev`.
+- `src/utils/product.js`: nhãn sản phẩm và hàm hiển thị tên biến thể dùng chung.
+- `src/style.tailwind.css`: điểm import Tailwind và các stylesheet trong `styles/`.
+- `src/styles/`: chia theo base, header, home, products, campaign, footer, catalog, detail, auth, cart-checkout, admin, responsive và account-product-extras.
+
+Các stylesheet giữ nguyên selector và nằm trong `@layer components`. Thứ tự import giữ nguyên cascade cũ; `responsive.css` giữ các breakpoint 600/900/1200px và reduced-motion, còn `account-product-extras.css` chứa các phần bổ sung ở cuối stylesheet cũ. Một số selector dùng chung vẫn ở nhóm gốc (ví dụ `.btn` trong `home.css`, input của checkout trong `auth.css`), vì vậy các file này được nạp toàn cục, không import riêng theo route. Khi sửa giao diện, ưu tiên utility trực tiếp trong JSX theo `Rule.md`.
+
+Kiểm tra biên dịch bằng `cd frontend && npm run build`. Build không thay thế việc kiểm tra giao diện ở mobile/desktop và các trạng thái tương tác.
 
 ## Hướng dẫn khởi chạy
 

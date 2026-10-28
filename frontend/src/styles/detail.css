@@ -1,0 +1,149 @@
+@layer components {
+.detail-layout {
+  @apply grid;
+  @apply gap-[35px];
+}
+.detail-photo {
+  @apply bg-[#e6e9de];
+  @apply aspect-[1/1];
+  @apply overflow-hidden;
+}
+.detail-photo img {
+  @apply w-full;
+  @apply h-full;
+  @apply object-cover;
+}
+.detail-thumbs {
+  @apply flex;
+  @apply items-center;
+  @apply gap-[15px];
+  @apply mt-[15px];
+  @apply text-[10px];
+  @apply text-[var(--muted)];
+  @apply tracking-[1px];
+}
+.detail-thumbs img {
+  @apply w-[80px];
+  @apply h-[80px];
+  @apply object-cover;
+  @apply border border-[var(--forest)];
+}
+.detail-info {
+  @apply pt-3;
+}
+.detail-info h1 {
+  @apply text-[clamp(35px,_6vw,_64px)];
+  @apply leading-[1.08];
+  @apply tracking-[-2px];
+  @apply m-[18px_0];
+  @apply text-[var(--forest)];
+}
+.rating {
+  @apply flex;
+  @apply items-center;
+  @apply gap-[7px];
+  @apply text-[var(--forest)];
+  @apply text-[13px];
+}
+.rating span {
+  @apply text-[var(--muted)];
+}
+.detail-price {
+  @apply text-3xl;
+  @apply font-extrabold;
+  @apply text-[var(--forest)];
+  @apply m-[29px_0];
+}
+.detail-price del {
+  @apply text-base;
+  @apply text-[#9a9d93];
+  @apply font-normal;
+  @apply ml-3;
+}
+.detail-description {
+  @apply text-[15px];
+  @apply leading-[1.9];
+  @apply text-[#626a61];
+  @apply border-t border-[var(--border)];
+  @apply pt-[22px];
+}
+.detail-specs {
+  @apply border-b border-[var(--border)];
+  @apply p-[15px_0_22px];
+}
+.detail-specs h3,
+.quantity-row > span {
+  @apply text-[11px];
+  @apply tracking-[1px];
+  @apply text-[var(--forest)];
+}
+.detail-specs ul {
+  @apply pl-5;
+  @apply text-[13px];
+  @apply leading-[2];
+  @apply text-[#626a61];
+}
+.quantity-row {
+  @apply flex;
+  @apply items-center;
+  @apply justify-between;
+  @apply m-[24px_0];
+}
+.qty-control {
+  @apply flex;
+  @apply items-center;
+  @apply border border-[#b9c8b9];
+  @apply min-w-[116px];
+  @apply justify-between;
+  @apply h-[41px];
+}
+.qty-control button {
+  @apply bg-transparent;
+  @apply border-0;
+  @apply grid;
+  @apply place-items-center;
+  @apply w-[36px];
+  @apply h-[39px];
+  @apply text-[var(--forest)];
+}
+.qty-control output {
+  @apply text-sm;
+}
+.detail-actions {
+  @apply flex;
+  @apply flex-wrap;
+  @apply gap-[10px];
+}
+.detail-actions .btn {
+  @apply flex-1;
+  @apply whitespace-nowrap;
+}
+.success-message {
+  @apply flex;
+  @apply gap-2;
+  @apply items-center;
+  @apply text-[var(--forest)];
+  @apply text-[13px];
+  @apply mt-[15px];
+}
+.success-message a {
+  @apply underline;
+}
+.detail-assurance {
+  @apply border-t border-[var(--border)];
+  @apply mt-7;
+  @apply pt-[22px];
+  @apply flex;
+  @apply items-center;
+  @apply gap-3;
+  @apply flex-wrap;
+  @apply text-[var(--muted)];
+  @apply text-[11px];
+}
+.detail-assurance svg {
+  @apply text-[var(--forest)];
+}
+.related {
+  @apply mt-[50px];
+}
+}

@@ -1,0 +1,113 @@
+@layer components {
+.site-header {
+  @apply bg-[var(--cream)];
+  @apply border-b border-[var(--border)];
+  @apply sticky;
+  @apply top-[0];
+  @apply z-[20];
+}
+.header-inner {
+  @apply h-[78px];
+  @apply flex;
+  @apply items-center;
+  @apply justify-between;
+  @apply gap-[15px];
+}
+.brand {
+  @apply text-[27px];
+  @apply font-black;
+  @apply tracking-[-2px];
+  @apply text-[var(--forest)];
+  @apply leading-none;
+}
+.brand span,
+.dot {
+  @apply text-[#8ba88d];
+}
+.brand small {
+  @apply block;
+  @apply tracking-[2px];
+  @apply text-[7px];
+  @apply font-bold;
+  @apply mt-[7px];
+}
+.main-nav {
+  @apply hidden;
+  @apply gap-7;
+  @apply items-center;
+}
+.main-nav a {
+  @apply text-xs;
+  @apply font-bold;
+  @apply uppercase;
+  @apply tracking-[1px];
+}
+.main-nav a:hover,
+.main-nav a.active {
+  @apply text-[#4d8462];
+}
+.header-search {
+  @apply hidden;
+  @apply items-center;
+  @apply bg-white;
+  @apply border border-[var(--border)];
+  @apply p-[0_12px];
+  @apply h-[42px];
+  @apply rounded-[25px];
+}
+.header-search input {
+  @apply w-full;
+  @apply border-0;
+  @apply outline-none;
+  @apply bg-transparent;
+  @apply text-xs;
+}
+.header-search button {
+  @apply bg-[none];
+  @apply border-0;
+  @apply grid;
+  @apply place-items-center;
+  @apply text-[var(--forest)];
+}
+.header-actions {
+  @apply flex;
+  @apply items-center;
+  @apply gap-[18px];
+  @apply text-[var(--forest)];
+}
+.cart-icon {
+  @apply relative;
+}
+.cart-icon span {
+  @apply absolute;
+  @apply right-[-8px];
+  @apply top-[-9px];
+  @apply rounded-full;
+  @apply bg-[var(--forest)];
+  @apply text-white;
+  @apply min-w-[17px];
+  @apply h-[17px];
+  @apply text-center;
+  @apply text-[10px];
+  @apply leading-[17px];
+}
+.mobile-toggle,
+.admin-mobile {
+  @apply border-0;
+  @apply bg-[none];
+  @apply text-[var(--forest)];
+  @apply p-[3px];
+}
+.main-nav.open {
+  @apply flex;
+  @apply absolute;
+  @apply top-[78px];
+  @apply left-[0];
+  @apply right-[0];
+  @apply bg-[var(--cream)];
+  @apply p-6;
+  @apply flex-col;
+  @apply items-start;
+  @apply border-b border-[var(--border)];
+}
+}
