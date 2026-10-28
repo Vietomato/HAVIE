@@ -1,11 +1,11 @@
 @layer components {
 .admin-app {
   @apply min-h-[100vh];
-  @apply bg-[#f6f7f2];
+  @apply bg-[var(--background)];
 }
 .admin-sidebar {
   @apply hidden;
-  @apply bg-[var(--forest)];
+  @apply bg-[var(--ink)];
   @apply text-white;
   @apply p-[30px_18px];
 }
@@ -20,7 +20,7 @@
   @apply text-[9px];
   @apply tracking-[2px];
   @apply font-medium;
-  @apply text-[var(--sage)];
+  @apply text-[var(--highlight)];
   @apply mt-[6px];
 }
 .admin-sidebar nav {
@@ -31,7 +31,7 @@
 .admin-sidebar nav button {
   @apply border-0;
   @apply bg-transparent;
-  @apply text-[#d5e4c0];
+  @apply text-[var(--highlight)];
   @apply flex;
   @apply items-center;
   @apply gap-[14px];
@@ -42,7 +42,7 @@
 }
 .admin-sidebar nav button.active,
 .admin-sidebar nav button:hover {
-  @apply bg-[#37664f];
+  @apply bg-[var(--link)];
   @apply text-white;
 }
 .admin-exit {
@@ -52,7 +52,7 @@
   @apply p-4;
   @apply text-xs;
   @apply mt-[45px];
-  @apply text-[var(--sage)];
+  @apply text-[var(--highlight)];
 }
 .admin-main {
   @apply min-w-0;
@@ -74,7 +74,7 @@
   @apply flex;
   @apply items-center;
   @apply gap-3;
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply text-[10px];
 }
 .admin-avatar {
@@ -83,7 +83,7 @@
   @apply w-[32px];
   @apply h-[32px];
   @apply rounded-full;
-  @apply bg-[var(--sage)];
+  @apply bg-[var(--highlight)];
   @apply text-[13px];
 }
 .admin-content {
@@ -97,7 +97,7 @@
 }
 .admin-title h1 {
   @apply text-[clamp(32px,_5vw,_44px)];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply m-[10px_0];
 }
 .admin-title p {
@@ -105,8 +105,8 @@
   @apply text-[var(--muted)];
 }
 .demo-pill {
-  @apply bg-[var(--sage)];
-  @apply text-[var(--forest)];
+  @apply bg-[var(--highlight)];
+  @apply text-[var(--ink)];
   @apply p-[10px];
   @apply text-[10px];
   @apply font-extrabold;
@@ -133,11 +133,11 @@
 }
 .stat-card strong {
   @apply text-[clamp(17px,_3vw,_29px)];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply [overflow-wrap:anywhere];
 }
 .stat-card small {
-  @apply text-[#548265];
+  @apply text-[var(--link)];
   @apply text-[11px];
 }
 .admin-charts {
@@ -160,7 +160,7 @@
 }
 .panel-title h2 {
   @apply text-[17px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply m-[0];
 }
 .panel-title span {
@@ -189,11 +189,11 @@
 }
 .bar-col > span {
   @apply w-full;
-  @apply bg-[#b9d0bd];
+  @apply bg-[var(--secondary)];
   @apply min-h-[10px];
 }
 .bar-col:last-child > span {
-  @apply bg-[var(--forest)];
+  @apply bg-[var(--primary)];
 }
 .bar-col small {
   @apply text-[9px];
@@ -207,7 +207,7 @@
   @apply text-[13px];
 }
 .status-row strong {
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .orders-panel {
   @apply mt-5;
@@ -222,10 +222,10 @@ table {
   @apply text-left;
 }
 th {
-  @apply bg-[#eff2eb];
+  @apply bg-[var(--background)];
   @apply text-[10px];
   @apply tracking-[1px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply p-[15px];
 }
 td {
@@ -234,14 +234,14 @@ td {
   @apply p-[16px_15px];
 }
 td select {
-  @apply bg-[#e9f0e7];
+  @apply bg-[var(--highlight)];
   @apply border-0;
   @apply p-[7px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .status-chip {
-  @apply text-[var(--forest)];
-  @apply bg-[#e9f0e7];
+  @apply text-[var(--ink)];
+  @apply bg-[var(--highlight)];
   @apply p-[7px_10px];
 }
 .admin-placeholder {
@@ -250,7 +250,7 @@ td select {
   @apply place-items-center;
   @apply gap-3;
   @apply min-h-[300px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .admin-placeholder p {
   @apply text-[13px];
@@ -268,4 +268,9 @@ td select {
   @apply w-[270px];
   @apply overflow-auto;
 }
+
+.stat-card, .admin-panel { border-radius: 8px; box-shadow: var(--surface-shadow); }
+.stat-card { border-top: 3px solid var(--secondary); }
+.admin-sidebar nav button.active { box-shadow: inset 3px 0 var(--secondary); }
+tbody tr:hover { background: var(--highlight); }
 }

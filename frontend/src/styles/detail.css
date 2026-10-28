@@ -4,7 +4,7 @@
   @apply gap-[35px];
 }
 .detail-photo {
-  @apply bg-[#e6e9de];
+  @apply bg-[var(--surface)];
   @apply aspect-[1/1];
   @apply overflow-hidden;
 }
@@ -26,7 +26,7 @@
   @apply w-[80px];
   @apply h-[80px];
   @apply object-cover;
-  @apply border border-[var(--forest)];
+  @apply border border-[var(--secondary)];
 }
 .detail-info {
   @apply pt-3;
@@ -36,13 +36,13 @@
   @apply leading-[1.08];
   @apply tracking-[-2px];
   @apply m-[18px_0];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .rating {
   @apply flex;
   @apply items-center;
   @apply gap-[7px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply text-[13px];
 }
 .rating span {
@@ -51,19 +51,19 @@
 .detail-price {
   @apply text-3xl;
   @apply font-extrabold;
-  @apply text-[var(--forest)];
+  @apply text-[var(--primary)];
   @apply m-[29px_0];
 }
 .detail-price del {
   @apply text-base;
-  @apply text-[#9a9d93];
+  @apply text-[var(--muted)];
   @apply font-normal;
   @apply ml-3;
 }
 .detail-description {
   @apply text-[15px];
   @apply leading-[1.9];
-  @apply text-[#626a61];
+  @apply text-[var(--muted)];
   @apply border-t border-[var(--border)];
   @apply pt-[22px];
 }
@@ -75,13 +75,13 @@
 .quantity-row > span {
   @apply text-[11px];
   @apply tracking-[1px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .detail-specs ul {
   @apply pl-5;
   @apply text-[13px];
   @apply leading-[2];
-  @apply text-[#626a61];
+  @apply text-[var(--muted)];
 }
 .quantity-row {
   @apply flex;
@@ -92,7 +92,7 @@
 .qty-control {
   @apply flex;
   @apply items-center;
-  @apply border border-[#b9c8b9];
+  @apply border border-[var(--border)];
   @apply min-w-[116px];
   @apply justify-between;
   @apply h-[41px];
@@ -104,7 +104,7 @@
   @apply place-items-center;
   @apply w-[36px];
   @apply h-[39px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .qty-control output {
   @apply text-sm;
@@ -122,7 +122,7 @@
   @apply flex;
   @apply gap-2;
   @apply items-center;
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply text-[13px];
   @apply mt-[15px];
 }
@@ -141,9 +141,14 @@
   @apply text-[11px];
 }
 .detail-assurance svg {
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .related {
   @apply mt-[50px];
 }
+
+.detail-photo { border: 1px solid var(--border); border-radius: 8px; }
+.qty-control { background: var(--surface); border-radius: 5px; }
+.qty-control button:hover { background: var(--highlight); color: var(--link); }
+.success-message { color: var(--link); }
 }

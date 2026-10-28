@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, UserRound, ShoppingBag, Menu, X, ShieldAlert } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
 
@@ -9,6 +9,16 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
+  const { pathname, search, hash } = useLocation();
+  const isCollection = pathname === '/products' && new URLSearchParams(search).get('category') === 'rackets';
+  const activeItem = pathname === '/' ? (hash === '#about' ? 'about' : 'home')
+    : pathname === '/products' || pathname.startsWith('/products/') ? (isCollection ? 'collection' : 'store')
+    : null;
+  const navProps = (item) => ({
+    className: activeItem === item ? 'active' : undefined,
+    'aria-current': activeItem === item ? 'page' : undefined,
+    onClick: () => setOpen(false),
+  });
 
   const submit = (e) => {
     e.preventDefault();
@@ -24,16 +34,16 @@ export default function Header() {
           <small>CỬA HÀNG CẦU LÔNG</small>
         </Link>
         <nav className={'main-nav ' + (open ? 'open' : '')} aria-label="Điều hướng chính">
-          <NavLink to="/" onClick={() => setOpen(false)}>
+          <Link to="/" {...navProps('home')}>
             TRANG CHỦ
-          </NavLink>
-          <NavLink to="/products" onClick={() => setOpen(false)}>
+          </Link>
+          <Link to="/products" {...navProps('store')}>
             CỬA HÀNG
-          </NavLink>
-          <NavLink to="/products?category=rackets" onClick={() => setOpen(false)}>
+          </Link>
+          <Link to="/products?category=rackets" {...navProps('collection')}>
             BỘ SƯU TẬP
-          </NavLink>
-          <a href="/#about" onClick={() => setOpen(false)}>
+          </Link>
+          <a href="/#about" {...navProps('about')}>
             VỀ CHÚNG TÔI
           </a>
         </nav>

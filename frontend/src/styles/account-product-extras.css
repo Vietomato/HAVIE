@@ -3,7 +3,7 @@
   @apply inline-flex;
   @apply items-center;
   @apply gap-[5px];
-  @apply bg-[var(--forest)];
+  @apply bg-[var(--ink)];
   @apply text-[var(--white)];
   @apply p-[4px_10px];
   @apply text-[11px];
@@ -13,7 +13,7 @@
   @apply uppercase;
 }
 .admin-shortcut-pill:hover {
-  @apply bg-[#143528];
+  @apply bg-[var(--link)];
 }
 
 .variant-picker {
@@ -43,12 +43,12 @@
   @apply transition-all duration-150;
 }
 .variant-chip:hover {
-  @apply border-[var(--forest)];
+  @apply border-[var(--secondary)];
 }
 .variant-chip.active {
-  @apply border-[var(--forest)];
-  @apply bg-[var(--forest)];
-  @apply text-[var(--white)];
+  @apply border-[var(--secondary)];
+  @apply bg-[var(--highlight)];
+  @apply text-[var(--link)];
 }
 .variant-stock-info {
   @apply text-xs;
@@ -56,7 +56,7 @@
   @apply mt-[6px];
 }
 .variant-stock-info.low {
-  @apply text-[#b94a28];
+  @apply text-[var(--danger)];
   @apply font-bold;
 }
 
@@ -74,12 +74,12 @@
 .status-badge.COMPLETED { @apply bg-[#dcfce7]; @apply text-[#15803d]; }
 .status-badge.CANCELLED { @apply bg-[#fee2e2]; @apply text-[#b91c1c]; }
 .status-badge.PENDING_PAYMENT { @apply bg-[#fef9c3]; @apply text-[#854d0e]; }
-.status-badge.PENDING_CONFIRMATION { @apply bg-[#f1f5f9]; @apply text-[#475569]; }
+.status-badge.PENDING_CONFIRMATION { @apply bg-[var(--background)]; @apply text-[#475569]; }
 .status-badge.REFUND_PENDING { @apply bg-[#ede9fe]; @apply text-[#6d28d9]; }
 
 .quick-login-box {
-  @apply bg-[rgba(32,_75,_58,_0.05)];
-  @apply border border-dashed border-[var(--forest)];
+  @apply bg-[var(--highlight)];
+  @apply border border-dashed border-[var(--ink)];
   @apply rounded-[6px];
   @apply p-3;
   @apply mb-4;
@@ -88,7 +88,7 @@
 .quick-login-box p {
   @apply m-[0_0_8px_0];
   @apply font-bold;
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .quick-login-buttons {
   @apply flex;
@@ -99,13 +99,13 @@
   @apply p-[5px_10px];
   @apply text-[11px];
   @apply font-bold;
-  @apply border border-[var(--forest)];
+  @apply border border-[var(--ink)];
   @apply bg-[var(--white)];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply rounded-[4px];
 }
 .btn-mini:hover {
-  @apply bg-[var(--forest)];
+  @apply bg-[var(--ink)];
   @apply text-[var(--white)];
 }
 
@@ -131,11 +131,11 @@
 .qr-modal h2 {
   @apply text-xl;
   @apply m-[0_0_10px_0];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .qr-box {
-  @apply bg-[#f8fafc];
-  @apply border-[2px] border-dashed border-[#cbd5e1];
+  @apply bg-[var(--background)];
+  @apply border-[2px] border-dashed border-[var(--border)];
   @apply p-5;
   @apply rounded-[8px];
   @apply m-[15px_0];
@@ -148,13 +148,13 @@
   @apply w-[180px];
   @apply h-[180px];
   @apply bg-white;
-  @apply border border-[#e2e8f0];
+  @apply border border-[var(--border)];
   @apply flex;
   @apply items-center;
   @apply justify-center;
-  @apply font-[bold];
+  @apply font-bold;
   @apply text-[13px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply shadow-[0_2px_8px_rgba(0,0,0,0.06)];
 }
 
@@ -174,7 +174,7 @@
   @apply flex;
   @apply justify-between;
   @apply items-center;
-  @apply border-b border-[#f1f5f9];
+  @apply border-b border-[var(--background)];
   @apply pb-[10px];
   @apply mb-3;
 }
@@ -193,7 +193,7 @@
   @apply flex;
   @apply justify-between;
   @apply items-center;
-  @apply border-t border-[#f1f5f9];
+  @apply border-t border-[var(--background)];
   @apply pt-[10px];
 }
 
@@ -213,8 +213,8 @@
   @apply text-[var(--muted)];
 }
 .account-tabs button.active {
-  @apply text-[var(--forest)];
-  @apply border-[var(--forest)];
+  @apply text-[var(--link)];
+  @apply border-[var(--secondary)];
 }
 
 .reviews-section {
@@ -223,7 +223,7 @@
   @apply pt-[30px];
 }
 .review-item {
-  @apply border-b border-[#f1f5f9];
+  @apply border-b border-[var(--background)];
   @apply p-[14px_0];
 }
 .review-header {
@@ -232,4 +232,8 @@
   @apply mb-[6px];
   @apply text-[13px];
 }
+
+.btn-mini { border-color: var(--secondary); color: var(--link); }
+.btn-mini:hover { background: var(--highlight); color: var(--link); }
+.qr-overlay { background: rgb(16 24 39 / 65%); }
 }

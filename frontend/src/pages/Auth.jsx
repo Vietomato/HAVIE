@@ -197,7 +197,7 @@ export default function Auth() {
                               ord.status,
                             ) && (
                               <button
-                                className="btn-mini border-[#b91c1c] text-[#b91c1c]"
+                                className="btn-mini border-[var(--danger)] text-[var(--danger)]"
                                 onClick={() => handleCancelOrder(ord.id)}
                               >
                                 Hủy đơn
@@ -352,7 +352,7 @@ export default function Auth() {
                   </>
                 )}
                 {notice && (
-                  <p role="status" className="text-[13px] text-[var(--forest)]">
+                  <p role="status" className="text-[13px] text-[var(--ink)]">
                     {notice}
                   </p>
                 )}

@@ -1,6 +1,6 @@
 @layer components {
 .campaign {
-  @apply bg-[var(--forest)];
+  @apply bg-[var(--ink)];
   @apply text-[#fff];
   @apply mt-[65px];
   @apply mb-[65px];
@@ -11,7 +11,7 @@
   @apply overflow-hidden;
 }
 .campaign .eyebrow {
-  @apply text-[var(--sage)];
+  @apply text-[var(--highlight)];
 }
 .campaign h2 {
   @apply text-[clamp(42px,_7vw,_86px)];
@@ -21,7 +21,7 @@
 }
 .campaign p {
   @apply max-w-[410px];
-  @apply text-[#cbdad0];
+  @apply text-[var(--highlight)];
   @apply text-sm;
   @apply leading-[1.8];
 }
@@ -31,10 +31,10 @@
   @apply font-black;
   @apply tracking-[-30px];
   @apply leading-none;
-  @apply text-[#d5e4c01a];
+  @apply text-[var(--watermark)];
 }
 .campaign-mark span {
-  @apply text-[#d5e4c055];
+  @apply text-[var(--secondary)];
 }
 .perks {
   @apply grid;
@@ -55,16 +55,21 @@
 }
 .perks svg {
   @apply row-span-2;
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .perks strong {
   @apply text-xs;
   @apply font-bold;
   @apply tracking-[0.3px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .perks span {
   @apply text-xs;
   @apply text-[var(--muted)];
 }
+
+.campaign { border-top: 4px solid var(--primary); border-radius: 8px; }
+.campaign .btn-light { background: var(--primary); color: var(--surface); }
+.campaign .btn-light:hover { background: var(--primary-hover); }
+.perks svg { color: var(--secondary); }
 }

@@ -1,18 +1,11 @@
 @layer components {
 :root {
-  @apply font-[Arial,_Helvetica,_sans-serif];
-  @apply text-[#252525];
-  @apply bg-[#f5f2e9];
+  font-family: var(--font-ui);
+  @apply text-[var(--ink)];
+  @apply bg-[var(--background)];
   @apply [font-synthesis:none];
   @apply [text-rendering:optimizeLegibility];
   @apply [-webkit-font-smoothing:antialiased];
-  --cream: #f5f2e9;
-  --forest: #204b3a;
-  --sage: #d5e4c0;
-  --ink: #252525;
-  --muted: #76796e;
-  --border: #dcded4;
-  --white: #fff;
   --max: 1320px;
 }
 * {
@@ -22,6 +15,8 @@ html {
   @apply scroll-smooth;
 }
 body {
+  font-family: inherit;
+  line-height: 1.5;
   @apply m-[0];
   @apply min-w-[320px];
 }
@@ -47,7 +42,7 @@ a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  @apply [outline:3px_solid_#83ad8b];
+  @apply [outline:3px_solid_var(--secondary)];
   @apply outline-offset-[3px];
 }
 .sr-only {
@@ -62,4 +57,9 @@ textarea:focus-visible {
   @apply w-[min(var(--max),_calc(100%_-_36px))];
   @apply mx-auto;
 }
+
+::selection { background: var(--highlight); color: var(--ink); }
+input, select, textarea { accent-color: var(--secondary); }
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
+button:disabled { cursor: not-allowed; opacity: 0.55; }
 }

@@ -1,0 +1,21 @@
+/* Clean Racing / Option B. Shared semantic tokens for every storefront and admin view. */
+@layer components {
+  :root {
+    --font-ui: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --primary: #F5092E;
+    --secondary: #087CFF;
+    --ink: #101827;
+    --background: #F8FAFC;
+    --surface: #FFFFFF;
+    --white: var(--surface);
+    --muted: #64748B;
+    --border: #E2E8F0;
+    --highlight: #EAF3FF;
+    /* Darker interaction variants keep small text at WCAG AA contrast. */
+    --primary-hover: #CF0827;
+    --link: #0560CA;
+    --danger: #B91C1C;
+    --watermark: rgb(234 243 255 / 10%);
+    --surface-shadow: 0 8px 24px rgb(16 24 39 / 5%);
+  }
+}

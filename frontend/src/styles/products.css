@@ -1,6 +1,6 @@
 @layer components {
 .section-products {
-  @apply bg-[#eeeee6];
+  @apply bg-[var(--background)];
 }
 .products-grid {
   @apply grid;
@@ -12,7 +12,7 @@
 }
 .product-media {
   @apply relative;
-  @apply bg-[#e5e9df];
+  @apply bg-[var(--background)];
   @apply aspect-[1/1.06];
   @apply overflow-hidden;
 }
@@ -26,9 +26,9 @@
   @apply absolute;
   @apply top-[10px];
   @apply left-[10px];
-  @apply bg-[var(--cream)];
+  @apply bg-[var(--primary)];
   @apply p-[7px_9px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--surface)];
   @apply text-[9px];
   @apply font-extrabold;
   @apply tracking-[0.7px];
@@ -37,17 +37,17 @@
   @apply absolute;
   @apply right-[10px];
   @apply top-[10px];
-  @apply bg-[#f9f9f2e6];
+  @apply bg-[var(--surface)];
   @apply border-0;
   @apply w-[32px];
   @apply h-[32px];
   @apply grid;
   @apply place-items-center;
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply rounded-full;
 }
 .favorite.selected {
-  @apply text-[#a84848];
+  @apply text-[var(--link)];
 }
 .product-meta {
   @apply flex;
@@ -62,7 +62,7 @@
   @apply flex;
   @apply items-center;
   @apply gap-1;
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .product-name {
   @apply block;
@@ -74,19 +74,27 @@
   @apply justify-between;
   @apply items-center;
   @apply mt-3;
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply text-[13px];
 }
 .add-small {
-  @apply border border-[#bdcbbd];
-  @apply text-[var(--forest)];
-  @apply bg-transparent;
+  @apply border border-[var(--primary)];
+  @apply text-[var(--surface)];
+  @apply bg-[var(--primary)];
   @apply w-[32px];
   @apply h-[32px];
   @apply grid;
   @apply place-items-center;
 }
 .add-small:hover {
-  @apply bg-[var(--sage)];
+  @apply bg-[var(--primary-hover)];
 }
+
+.product-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: var(--surface-shadow); }
+.product-meta, .product-name, .product-bottom { margin-inline: 12px; }
+.product-bottom { padding-bottom: 12px; }
+.product-name:hover { color: var(--link); }
+.product-meta { flex-wrap: wrap; gap: 6px; }
+.add-small { border-radius: 5px; flex-shrink: 0; }
+.favorite.selected { background: var(--highlight); }
 }

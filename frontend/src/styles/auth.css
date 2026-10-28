@@ -4,9 +4,9 @@
   @apply grid;
 }
 .auth-art {
-  @apply bg-[var(--forest)];
+  @apply bg-[var(--ink)];
   @apply text-white;
-  background-image: linear-gradient(rgba(17, 54, 42, 0.62), rgba(17, 54, 42, 0.62)), url('/images/kento-momota.jpg');
+  background-image: linear-gradient(rgba(16, 24, 39, 0.82), rgba(16, 24, 39, 0.82)), url('/images/kento-momota.jpg');
   background-position: center;
   background-size: cover;
   @apply p-[36px_24px];
@@ -21,7 +21,7 @@
   @apply tracking-[-1px];
 }
 .auth-art .eyebrow {
-  @apply text-[var(--sage)];
+  @apply text-[var(--highlight)];
 }
 .auth-art h1 {
   @apply text-[clamp(46px,_8vw,_88px)];
@@ -30,16 +30,16 @@
   @apply m-[17px_0];
 }
 .auth-art h1 span {
-  @apply text-[var(--sage)];
+  @apply text-[var(--highlight)];
 }
 .auth-art p {
-  @apply text-[var(--sage)];
+  @apply text-[var(--highlight)];
   @apply text-[13px];
 }
 .auth-art > span {
   @apply text-[10px];
   @apply tracking-[2px];
-  @apply text-[var(--sage)];
+  @apply text-[var(--highlight)];
 }
 .auth-panel {
   @apply grid;
@@ -52,7 +52,7 @@
 .auth-box h2 {
   @apply text-[clamp(34px,_5vw,_50px)];
   @apply tracking-[-1px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
   @apply m-[16px_0];
 }
 .auth-box > p {
@@ -76,8 +76,8 @@
   @apply text-[var(--muted)];
 }
 .auth-tabs button.active {
-  @apply border-b-[3px] border-[var(--forest)];
-  @apply text-[var(--forest)];
+  @apply border-b-[3px] border-[var(--secondary)];
+  @apply text-[var(--link)];
 }
 .auth-form {
   @apply grid;
@@ -90,16 +90,16 @@
   @apply text-[11px];
   @apply font-extrabold;
   @apply tracking-[1px];
-  @apply text-[var(--forest)];
+  @apply text-[var(--ink)];
 }
 .auth-form input,
 .checkout-form input,
 .checkout-form textarea {
   @apply w-full;
   @apply p-[15px];
-  @apply border border-[#cbd2c8];
+  @apply border border-[var(--border)];
   @apply bg-white;
-  @apply [outline-color:var(--forest)];
+  @apply [outline-color:var(--secondary)];
   @apply text-sm;
   @apply tracking-[0];
   @apply font-normal;
@@ -113,8 +113,12 @@
   @apply text-[var(--muted)];
 }
 .form-error {
-  @apply text-[#a33636];
+  @apply text-[var(--danger)];
   @apply text-xs;
   @apply m-[0];
 }
+
+.auth-panel { background: var(--surface); }
+.auth-form input, .checkout-form input, .checkout-form textarea { border-radius: 6px; }
+.auth-form input:hover, .checkout-form input:hover, .checkout-form textarea:hover { border-color: var(--secondary); }
 }
