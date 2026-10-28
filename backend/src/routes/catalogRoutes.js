@@ -39,6 +39,17 @@ router.get(
 );
 
 router.get(
+  '/brands',
+  asyncHandler(async (req, res) => {
+    const brands = await prisma.brand.findMany({
+      select: brandSelect,
+      orderBy: { name: 'asc' },
+    });
+    res.json({ data: brands, message: 'Lấy thương hiệu thành công.' });
+  }),
+);
+
+router.get(
   '/products',
   asyncHandler(async (req, res) => {
     const filters = parseCatalogQuery(req.query);

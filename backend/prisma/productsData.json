@@ -1,0 +1,1073 @@
+[
+  {
+    "name": "Vợt Cầu Lông Yonex Astrox 100ZZ Kurenai",
+    "slug": "yonex-astrox-100zz",
+    "categorySlug": "rackets",
+    "brandSlug": "yonex",
+    "description": "Vợt cầu lông đỉnh cao dành cho lối chơi tấn công uy lực với đòn đập smash cắm sàn.",
+    "imageUrls": [
+      "/images/yonex-astrox-100zz.jpg"
+    ],
+    "badge": "BEST SELLER",
+    "specs": [
+      "Trọng lượng: 3U / 4U",
+      "Chu vi cán: G5",
+      "Độ cứng: Extra Stiff",
+      "Điểm cân bằng: Nặng đầu (Head Heavy)",
+      "Mức căng tối đa: 28 lbs"
+    ],
+    "variants": [
+      {
+        "sku": "AX100ZZ-4U-G5",
+        "name": "4U / G5 (83g)",
+        "attributes": {
+          "weight": "4U",
+          "grip": "G5"
+        },
+        "price": 4350000,
+        "oldPrice": 4700000,
+        "stockQuantity": 15
+      },
+      {
+        "sku": "AX100ZZ-3U-G5",
+        "name": "3U / G5 (88g)",
+        "attributes": {
+          "weight": "3U",
+          "grip": "G5"
+        },
+        "price": 4350000,
+        "oldPrice": 4700000,
+        "stockQuantity": 8
+      }
+    ]
+  },
+  {
+    "name": "Vợt Cầu Lông Yonex Astrox 88D Pro 3rd Gen",
+    "slug": "yonex-astrox-88d-pro",
+    "categorySlug": "rackets",
+    "brandSlug": "yonex",
+    "description": "Thế hệ thứ 3 của dòng vợt đôi huyền thoại, tối ưu khả năng tấn công cầu sau.",
+    "imageUrls": [
+      "/images/yonex-astrox-88d-pro.jpg"
+    ],
+    "badge": "HOT",
+    "specs": [
+      "Trọng lượng: 3U / 4U",
+      "Chu vi cán: G5",
+      "Độ cứng: Cứng (Stiff)",
+      "Điểm cân bằng: Nặng đầu"
+    ],
+    "variants": [
+      {
+        "sku": "AX88DP-4U-G5",
+        "name": "4U / G5",
+        "attributes": {
+          "weight": "4U",
+          "grip": "G5"
+        },
+        "price": 4200000,
+        "oldPrice": 4500000,
+        "stockQuantity": 12
+      },
+      {
+        "sku": "AX88DP-3U-G5",
+        "name": "3U / G5",
+        "attributes": {
+          "weight": "3U",
+          "grip": "G5"
+        },
+        "price": 4200000,
+        "oldPrice": 4500000,
+        "stockQuantity": 6
+      }
+    ]
+  },
+  {
+    "name": "Vợt Cầu Lông Yonex Astrox 77 Pro",
+    "slug": "yonex-astrox-77-pro",
+    "categorySlug": "rackets",
+    "brandSlug": "yonex",
+    "description": "Vợt tấn công toàn diện, dẻo trợ lực tốt và cực kỳ linh hoạt.",
+    "imageUrls": [
+      "/images/yonex-astrox-77-pro.jpg"
+    ],
+    "badge": null,
+    "specs": [
+      "Trọng lượng: 4U",
+      "Chu vi cán: G5",
+      "Độ cứng: Trung bình (Medium Stiff)",
+      "Điểm cân bằng: Hơi nặng đầu"
+    ],
+    "variants": [
+      {
+        "sku": "AX77P-4U-G5",
+        "name": "4U / G5",
+        "attributes": {
+          "weight": "4U",
+          "grip": "G5"
+        },
+        "price": 3850000,
+        "oldPrice": 4100000,
+        "stockQuantity": 18
+      }
+    ]
+  },
+  {
+    "name": "Vợt Cầu Lông Yonex Arcsaber 11 Pro",
+    "slug": "yonex-arcsaber-11-pro",
+    "categorySlug": "rackets",
+    "brandSlug": "yonex",
+    "description": "Biểu tượng kiểm soát cầu, điều cầu chính xác từng milimet.",
+    "imageUrls": [
+      "/images/yonex-arcsaber-11-pro.jpg"
+    ],
+    "badge": "POPULAR",
+    "specs": [
+      "Trọng lượng: 3U / 4U",
+      "Chu vi cán: G5",
+      "Độ cứng: Cứng (Stiff)",
+      "Điểm cân bằng: Cân bằng (Even Balance)"
+    ],
+    "variants": [
+      {
+        "sku": "ARC11P-4U-G5",
+        "name": "4U / G5",
+        "attributes": {
+          "weight": "4U",
+          "grip": "G5"
+        },
+        "price": 4150000,
+        "oldPrice": 4450000,
+        "stockQuantity": 14
+      },
+      {
+        "sku": "ARC11P-3U-G5",
+        "name": "3U / G5",
+        "attributes": {
+          "weight": "3U",
+          "grip": "G5"
+        },
+        "price": 4150000,
+        "oldPrice": 4450000,
+        "stockQuantity": 7
+      }
+    ]
+  },
+  {
+    "name": "Vợt Cầu Lông Yonex Nanoflare 1000Z",
+    "slug": "yonex-nanoflare-1000z",
+    "categorySlug": "rackets",
+    "brandSlug": "yonex",
+    "description": "Vợt tốc độ cao nhất hành tinh với kỷ lục smash 565 km/h.",
+    "imageUrls": [
+      "/images/yonex-nanoflare-1000z.jpg"
+    ],
+    "badge": "HOT",
+    "specs": [
+      "Trọng lượng: 4U",
+      "Chu vi cán: G5",
+      "Độ cứng: Rất cứng (Extra Stiff)",
+      "Điểm cân bằng: Nhẹ đầu (Head Light)"
+    ],
+    "variants": [
+      {
+        "sku": "NF1000Z-4U-G5",
+        "name": "4U / G5",
+        "attributes": {
+          "weight": "4U",
+          "grip": "G5"
+        },
+        "price": 4450000,
+        "oldPrice": 4800000,
+        "stockQuantity": 20
+      }
+    ]
+  },
+  {
+    "name": "Vợt Cầu Lông Li-Ning Axforce 100 Golden Max",
+    "slug": "lining-axforce-100",
+    "categorySlug": "rackets",
+    "brandSlug": "lining",
+    "description": "Vợt tấn công đỉnh cao công nghệ carbon TB Nano và HDF Shock Absorption.",
+    "imageUrls": [
+      "/images/lining-axforce-100.jpg"
+    ],
+    "badge": "HOT",
+    "specs": [
+      "Trọng lượng: 3U / 4U",
+      "Chu vi cán: G5",
+      "Độ cứng: Cứng",
+      "Điểm cân bằng: 305mm (Rất nặng đầu)"
+    ],
+    "variants": [
+      {
+        "sku": "AXF100-4U-G5",
+        "name": "4U / G5",
+        "attributes": {
+          "weight": "4U",
+          "grip": "G5"
+        },
+        "price": 4800000,
+        "oldPrice": 5200000,
+        "stockQuantity": 10
+      },
+      {
+        "sku": "AXF100-3U-G5",
+        "name": "3U / G5",
+        "attributes": {
+          "weight": "3U",
+          "grip": "G5"
+        },
+        "price": 4800000,
+        "oldPrice": 5200000,
+        "stockQuantity": 5
+      }
+    ]
+  },
+  {
+    "name": "Vợt Cầu Lông Li-Ning Axforce 80 Chen Long",
+    "slug": "lining-axforce-80",
+    "categorySlug": "rackets",
+    "brandSlug": "lining",
+    "description": "Vũ khí gắn liền với tên tuổi tay vợt huyền thoại Chen Long.",
+    "imageUrls": [
+      "/images/lining-axforce-80.jpg"
+    ],
+    "badge": "BEST SELLER",
+    "specs": [
+      "Trọng lượng: 4U / 5U",
+      "Chu vi cán: G5",
+      "Độ cứng: Cứng",
+      "Điểm cân bằng: 300mm"
+    ],
+    "variants": [
+      {
+        "sku": "AXF80-4U-G5",
+        "name": "4U / G5",
+        "attributes": {
+          "weight": "4U",
+          "grip": "G5"
+        },
+        "price": 4100000,
+        "oldPrice": 4400000,
+        "stockQuantity": 16
+      },
+      {
+        "sku": "AXF80-5U-G6",
+        "name": "5U / G6",
+        "attributes": {
+          "weight": "5U",
+          "grip": "G6"
+        },
+        "price": 4100000,
+        "oldPrice": 4400000,
+        "stockQuantity": 8
+      }
+    ]
+  },
+  {
+    "name": "Vợt Cầu Lông Li-Ning Axforce 70",
+    "slug": "lining-axforce-70",
+    "categorySlug": "rackets",
+    "brandSlug": "lining",
+    "description": "Thiết kế hiện đại, phối màu sang trọng và cảm giác phông cầu cực thoát tay.",
+    "imageUrls": [
+      "/images/lining-axforce-70.jpg"
+    ],
+    "badge": null,
+    "specs": [
+      "Trọng lượng: 4U / 5U",
+      "Chu vi cán: G5",
+      "Độ cứng: Dẻo linh hoạt",
+      "Điểm cân bằng: Nặng đầu"
+    ],
+    "variants": [
+      {
+        "sku": "AXF70-4U-G5",
+        "name": "4U / G5",
+        "attributes": {
+          "weight": "4U",
+          "grip": "G5"
+        },
+        "price": 3650000,
+        "oldPrice": 3950000,
+        "stockQuantity": 14
+      }
+    ]
+  },
+  {
+    "name": "Vợt Cầu Lông Li-Ning Halbertec 8000",
+    "slug": "lining-halbertec-8000",
+    "categorySlug": "rackets",
+    "brandSlug": "lining",
+    "description": "Vợt công thủ toàn diện số 1 của Li-Ning, kiểm soát cầu sắc bén.",
+    "imageUrls": [
+      "/images/lining-halbertec-8000.jpg"
+    ],
+    "badge": "NEW",
+    "specs": [
+      "Trọng lượng: 3U / 4U",
+      "Chu vi cán: G5",
+      "Độ cứng: Trung bình - Cứng",
+      "Điểm cân bằng: 298mm"
+    ],
+    "variants": [
+      {
+        "sku": "HBT8000-4U-G5",
+        "name": "4U / G5",
+        "attributes": {
+          "weight": "4U",
+          "grip": "G5"
+        },
+        "price": 4500000,
+        "oldPrice": 4850000,
+        "stockQuantity": 15
+      },
+      {
+        "sku": "HBT8000-3U-G5",
+        "name": "3U / G5",
+        "attributes": {
+          "weight": "3U",
+          "grip": "G5"
+        },
+        "price": 4500000,
+        "oldPrice": 4850000,
+        "stockQuantity": 8
+      }
+    ]
+  },
+  {
+    "name": "Vợt Cầu Lông Li-Ning Tectonic 7",
+    "slug": "lining-tectonic-7",
+    "categorySlug": "rackets",
+    "brandSlug": "lining",
+    "description": "Công nghệ Tectonic tạo góc thoát cầu đàn hồi cao, phản tạt thần tốc.",
+    "imageUrls": [
+      "/images/lining-tectonic-7.jpg"
+    ],
+    "badge": null,
+    "specs": [
+      "Trọng lượng: 4U / 5U",
+      "Chu vi cán: G5",
+      "Độ cứng: Dẻo trợ lực",
+      "Điểm cân bằng: Hơi nặng đầu"
+    ],
+    "variants": [
+      {
+        "sku": "TEC7-4U-G5",
+        "name": "4U / G5",
+        "attributes": {
+          "weight": "4U",
+          "grip": "G5"
+        },
+        "price": 3800000,
+        "oldPrice": 4150000,
+        "stockQuantity": 11
+      }
+    ]
+  },
+  {
+    "name": "Giày Cầu Lông Yonex Power Cushion 65Z3 Trắng",
+    "slug": "yonex-power-cushion-65z3",
+    "categorySlug": "shoes",
+    "brandSlug": "yonex",
+    "description": "Mẫu giày toàn diện bán chạy nhất thế giới, được đa số VĐV đỉnh cao tin dùng.",
+    "imageUrls": [
+      "/images/yonex-power-cushion-65z3.jpg"
+    ],
+    "badge": "BEST SELLER",
+    "specs": [
+      "Đệm: Power Cushion+",
+      "Thân: Da nhân tạo Seamless",
+      "Đế ngoài: Cao su chống mài mòn Radial Blade Sole",
+      "Màu sắc: Trắng phối Cam"
+    ],
+    "variants": [
+      {
+        "sku": "65Z3-39",
+        "name": "Size 39",
+        "attributes": {
+          "size": "39"
+        },
+        "price": 2750000,
+        "oldPrice": 2990000,
+        "stockQuantity": 10
+      },
+      {
+        "sku": "65Z3-40",
+        "name": "Size 40",
+        "attributes": {
+          "size": "40"
+        },
+        "price": 2750000,
+        "oldPrice": 2990000,
+        "stockQuantity": 15
+      },
+      {
+        "sku": "65Z3-41",
+        "name": "Size 41",
+        "attributes": {
+          "size": "41"
+        },
+        "price": 2750000,
+        "oldPrice": 2990000,
+        "stockQuantity": 20
+      },
+      {
+        "sku": "65Z3-42",
+        "name": "Size 42",
+        "attributes": {
+          "size": "42"
+        },
+        "price": 2750000,
+        "oldPrice": 2990000,
+        "stockQuantity": 18
+      },
+      {
+        "sku": "65Z3-43",
+        "name": "Size 43",
+        "attributes": {
+          "size": "43"
+        },
+        "price": 2750000,
+        "oldPrice": 2990000,
+        "stockQuantity": 12
+      }
+    ]
+  },
+  {
+    "name": "Giày Cầu Lông Yonex Power Cushion 65Z4 New Gen",
+    "slug": "yonex-power-cushion-65z4",
+    "categorySlug": "shoes",
+    "brandSlug": "yonex",
+    "description": "Bản nâng cấp thế hệ mới, tối ưu hóa sự thông thoáng và ôm khít mu bàn chân.",
+    "imageUrls": [
+      "/images/yonex-power-cushion-65z4.jpg"
+    ],
+    "badge": "NEW",
+    "specs": [
+      "Đệm: Power Cushion+ New Gen",
+      "Trọng lượng siêu nhẹ",
+      "Hệ thống thoát khí thoáng mát"
+    ],
+    "variants": [
+      {
+        "sku": "65Z4-40",
+        "name": "Size 40",
+        "attributes": {
+          "size": "40"
+        },
+        "price": 2950000,
+        "oldPrice": 3200000,
+        "stockQuantity": 14
+      },
+      {
+        "sku": "65Z4-41",
+        "name": "Size 41",
+        "attributes": {
+          "size": "41"
+        },
+        "price": 2950000,
+        "oldPrice": 3200000,
+        "stockQuantity": 16
+      },
+      {
+        "sku": "65Z4-42",
+        "name": "Size 42",
+        "attributes": {
+          "size": "42"
+        },
+        "price": 2950000,
+        "oldPrice": 3200000,
+        "stockQuantity": 15
+      },
+      {
+        "sku": "65Z4-43",
+        "name": "Size 43",
+        "attributes": {
+          "size": "43"
+        },
+        "price": 2950000,
+        "oldPrice": 3200000,
+        "stockQuantity": 10
+      }
+    ]
+  },
+  {
+    "name": "Giày Cầu Lông Yonex Power Cushion Aerus Z2 Siêu Nhẹ",
+    "slug": "yonex-power-cushion-aerus-z2",
+    "categorySlug": "shoes",
+    "brandSlug": "yonex",
+    "description": "Đôi giày cầu lông nhẹ nhất lịch sử của Yonex (chỉ khoảng 250g/chiếc).",
+    "imageUrls": [
+      "/images/yonex-power-cushion-aerus-z2.jpg"
+    ],
+    "badge": "HOT",
+    "specs": [
+      "Trọng lượng: ~250g (Siêu nhẹ)",
+      "Đệm: Power Cushion+",
+      "Chất liệu Feather Bounce FOAM"
+    ],
+    "variants": [
+      {
+        "sku": "AERUS-Z2-40",
+        "name": "Size 40",
+        "attributes": {
+          "size": "40"
+        },
+        "price": 3150000,
+        "oldPrice": 3450000,
+        "stockQuantity": 12
+      },
+      {
+        "sku": "AERUS-Z2-41",
+        "name": "Size 41",
+        "attributes": {
+          "size": "41"
+        },
+        "price": 3150000,
+        "oldPrice": 3450000,
+        "stockQuantity": 18
+      },
+      {
+        "sku": "AERUS-Z2-42",
+        "name": "Size 42",
+        "attributes": {
+          "size": "42"
+        },
+        "price": 3150000,
+        "oldPrice": 3450000,
+        "stockQuantity": 15
+      }
+    ]
+  },
+  {
+    "name": "Giày Cầu Lông Yonex Power Cushion Comfort Z3 Đen",
+    "slug": "yonex-power-cushion-comfort-z3",
+    "categorySlug": "shoes",
+    "brandSlug": "yonex",
+    "description": "Tập trung tối đa vào độ êm ái và giảm chấn thương cho cổ chân và đầu gối.",
+    "imageUrls": [
+      "/images/yonex-power-cushion-comfort-z3.jpg"
+    ],
+    "badge": null,
+    "specs": [
+      "Đệm: Full Cushion Sole",
+      "Bảo vệ khớp tối đa",
+      "Thiết kế form chân bè thoải mái"
+    ],
+    "variants": [
+      {
+        "sku": "COMFORT-Z3-40",
+        "name": "Size 40",
+        "attributes": {
+          "size": "40"
+        },
+        "price": 2850000,
+        "oldPrice": 3100000,
+        "stockQuantity": 10
+      },
+      {
+        "sku": "COMFORT-Z3-41",
+        "name": "Size 41",
+        "attributes": {
+          "size": "41"
+        },
+        "price": 2850000,
+        "oldPrice": 3100000,
+        "stockQuantity": 14
+      },
+      {
+        "sku": "COMFORT-Z3-42",
+        "name": "Size 42",
+        "attributes": {
+          "size": "42"
+        },
+        "price": 2850000,
+        "oldPrice": 3100000,
+        "stockQuantity": 12
+      }
+    ]
+  },
+  {
+    "name": "Giày Cầu Lông Yonex Power Cushion Eclipsion Z3",
+    "slug": "yonex-power-cushion-eclipsion-z3",
+    "categorySlug": "shoes",
+    "brandSlug": "yonex",
+    "description": "Khả năng giữ thăng bằng và ổn định cực cao khi tiếp đất sau những pha bật nhảy.",
+    "imageUrls": [
+      "/images/yonex-power-cushion-eclipsion-z3.jpg"
+    ],
+    "badge": "POPULAR",
+    "specs": [
+      "Công nghệ Lateral Shell chống lật cổ chân",
+      "Đệm Power Cushion+",
+      "Độ bám sân hoàn hảo"
+    ],
+    "variants": [
+      {
+        "sku": "ECLIPSION-Z3-40",
+        "name": "Size 40",
+        "attributes": {
+          "size": "40"
+        },
+        "price": 3200000,
+        "oldPrice": 3500000,
+        "stockQuantity": 10
+      },
+      {
+        "sku": "ECLIPSION-Z3-41",
+        "name": "Size 41",
+        "attributes": {
+          "size": "41"
+        },
+        "price": 3200000,
+        "oldPrice": 3500000,
+        "stockQuantity": 15
+      },
+      {
+        "sku": "ECLIPSION-Z3-42",
+        "name": "Size 42",
+        "attributes": {
+          "size": "42"
+        },
+        "price": 3200000,
+        "oldPrice": 3500000,
+        "stockQuantity": 12
+      }
+    ]
+  },
+  {
+    "name": "Giày Cầu Lông Li-Ning Almighty V AYTT001",
+    "slug": "lining-almighty-v-aytt001",
+    "categorySlug": "shoes",
+    "brandSlug": "lining",
+    "description": "Gợi ý cho người chơi ưu tiên sự ổn định, đầm chắc khi di chuyển.",
+    "imageUrls": [
+      "/images/lining-almighty-v-aytt001.jpg"
+    ],
+    "badge": null,
+    "specs": [
+      "Môn thể thao: Cầu lông",
+      "Thương hiệu: Li-Ning",
+      "Đế cao su Non-Marking chống trơn trượt"
+    ],
+    "variants": [
+      {
+        "sku": "LINING-ALMIGHTY-V-AYTT001-39",
+        "name": "Size 39",
+        "attributes": {
+          "size": "39"
+        },
+        "price": 2050000,
+        "oldPrice": 2250000,
+        "stockQuantity": 10
+      },
+      {
+        "sku": "LINING-ALMIGHTY-V-AYTT001-40",
+        "name": "Size 40",
+        "attributes": {
+          "size": "40"
+        },
+        "price": 2050000,
+        "oldPrice": 2250000,
+        "stockQuantity": 13
+      },
+      {
+        "sku": "LINING-ALMIGHTY-V-AYTT001-41",
+        "name": "Size 41",
+        "attributes": {
+          "size": "41"
+        },
+        "price": 2050000,
+        "oldPrice": 2250000,
+        "stockQuantity": 16
+      },
+      {
+        "sku": "LINING-ALMIGHTY-V-AYTT001-42",
+        "name": "Size 42",
+        "attributes": {
+          "size": "42"
+        },
+        "price": 2050000,
+        "oldPrice": 2250000,
+        "stockQuantity": 19
+      },
+      {
+        "sku": "LINING-ALMIGHTY-V-AYTT001-43",
+        "name": "Size 43",
+        "attributes": {
+          "size": "43"
+        },
+        "price": 2050000,
+        "oldPrice": 2250000,
+        "stockQuantity": 22
+      }
+    ]
+  },
+  {
+    "name": "Giày Cầu Lông Li-Ning Blade LITE AYZT005",
+    "slug": "lining-blade-lite-ayzt005",
+    "categorySlug": "shoes",
+    "brandSlug": "lining",
+    "description": "Mẫu giày cầu lông phong cách trẻ trung dành cho luyện tập và thi đấu.",
+    "imageUrls": [
+      "/images/lining-blade-lite-ayzt005.jpg"
+    ],
+    "badge": null,
+    "specs": [
+      "Môn thể thao: Cầu lông",
+      "Thương hiệu: Li-Ning",
+      "Đệm BounSe+ đàn hồi cao"
+    ],
+    "variants": [
+      {
+        "sku": "LINING-BLADE-LITE-AYZT005-39",
+        "name": "Size 39",
+        "attributes": {
+          "size": "39"
+        },
+        "price": 2550000,
+        "oldPrice": 2750000,
+        "stockQuantity": 10
+      },
+      {
+        "sku": "LINING-BLADE-LITE-AYZT005-40",
+        "name": "Size 40",
+        "attributes": {
+          "size": "40"
+        },
+        "price": 2550000,
+        "oldPrice": 2750000,
+        "stockQuantity": 13
+      },
+      {
+        "sku": "LINING-BLADE-LITE-AYZT005-41",
+        "name": "Size 41",
+        "attributes": {
+          "size": "41"
+        },
+        "price": 2550000,
+        "oldPrice": 2750000,
+        "stockQuantity": 16
+      },
+      {
+        "sku": "LINING-BLADE-LITE-AYZT005-42",
+        "name": "Size 42",
+        "attributes": {
+          "size": "42"
+        },
+        "price": 2550000,
+        "oldPrice": 2750000,
+        "stockQuantity": 19
+      },
+      {
+        "sku": "LINING-BLADE-LITE-AYZT005-43",
+        "name": "Size 43",
+        "attributes": {
+          "size": "43"
+        },
+        "price": 2550000,
+        "oldPrice": 2750000,
+        "stockQuantity": 22
+      }
+    ]
+  },
+  {
+    "name": "Giày Cầu Lông Li-Ning Blade MAX AYAU003",
+    "slug": "lining-blade-max-ayau003",
+    "categorySlug": "shoes",
+    "brandSlug": "lining",
+    "description": "Phiên bản Blade MAX cao cấp với lớp đệm Boom êm ái vượt trội.",
+    "imageUrls": [
+      "/images/lining-blade-max-ayau003.jpg"
+    ],
+    "badge": "NEW",
+    "specs": [
+      "Công nghệ đệm Li-Ning BOOM",
+      "Tấm Carbon chống xoắn bàn chân",
+      "Chất liệu da tổng hợp cao cấp"
+    ],
+    "variants": [
+      {
+        "sku": "BLADE-MAX-40",
+        "name": "Size 40",
+        "attributes": {
+          "size": "40"
+        },
+        "price": 3100000,
+        "oldPrice": 3400000,
+        "stockQuantity": 10
+      },
+      {
+        "sku": "BLADE-MAX-41",
+        "name": "Size 41",
+        "attributes": {
+          "size": "41"
+        },
+        "price": 3100000,
+        "oldPrice": 3400000,
+        "stockQuantity": 15
+      },
+      {
+        "sku": "BLADE-MAX-42",
+        "name": "Size 42",
+        "attributes": {
+          "size": "42"
+        },
+        "price": 3100000,
+        "oldPrice": 3400000,
+        "stockQuantity": 12
+      }
+    ]
+  },
+  {
+    "name": "Giày Cầu Lông Li-Ning Blade Pro AYAT005",
+    "slug": "lining-blade-pro-ayat005",
+    "categorySlug": "shoes",
+    "brandSlug": "lining",
+    "description": "Dòng giày thi đấu chuyên nghiệp của các tuyển thủ Li-Ning quốc tế.",
+    "imageUrls": [
+      "/images/lining-blade-pro-ayat005.jpg"
+    ],
+    "badge": "POPULAR",
+    "specs": [
+      "Đế Carbon 3D",
+      "Đệm kép Boom + Light Foam",
+      "Hệ thống khóa gót chân chắc chắn"
+    ],
+    "variants": [
+      {
+        "sku": "BLADE-PRO-40",
+        "name": "Size 40",
+        "attributes": {
+          "size": "40"
+        },
+        "price": 3350000,
+        "oldPrice": 3650000,
+        "stockQuantity": 11
+      },
+      {
+        "sku": "BLADE-PRO-41",
+        "name": "Size 41",
+        "attributes": {
+          "size": "41"
+        },
+        "price": 3350000,
+        "oldPrice": 3650000,
+        "stockQuantity": 17
+      },
+      {
+        "sku": "BLADE-PRO-42",
+        "name": "Size 42",
+        "attributes": {
+          "size": "42"
+        },
+        "price": 3350000,
+        "oldPrice": 3650000,
+        "stockQuantity": 14
+      }
+    ]
+  },
+  {
+    "name": "Giày Cầu Lông Li-Ning Sonic Boom AYTV005",
+    "slug": "lining-sonic-boom-aytv005",
+    "categorySlug": "shoes",
+    "brandSlug": "lining",
+    "description": "Bứt tốc thần sầu, phản hồi lực lập tức cho từng bước di chuyển dồn dập.",
+    "imageUrls": [
+      "/images/lining-sonic-boom-aytv005.jpg"
+    ],
+    "badge": "NEW",
+    "specs": [
+      "Trọng lượng nhẹ linh hoạt",
+      "Đệm BounSe+ kết hợp TPU chống lật",
+      "Vải dệt Mesh thoáng khí tối đa"
+    ],
+    "variants": [
+      {
+        "sku": "SONIC-BOOM-40",
+        "name": "Size 40",
+        "attributes": {
+          "size": "40"
+        },
+        "price": 2690000,
+        "oldPrice": 2950000,
+        "stockQuantity": 12
+      },
+      {
+        "sku": "SONIC-BOOM-41",
+        "name": "Size 41",
+        "attributes": {
+          "size": "41"
+        },
+        "price": 2690000,
+        "oldPrice": 2950000,
+        "stockQuantity": 16
+      },
+      {
+        "sku": "SONIC-BOOM-42",
+        "name": "Size 42",
+        "attributes": {
+          "size": "42"
+        },
+        "price": 2690000,
+        "oldPrice": 2950000,
+        "stockQuantity": 14
+      }
+    ]
+  },
+  {
+    "name": "Áo Thi Đấu Cầu Lông Li-Ning National Team",
+    "slug": "ao-thi-dau-lining-national-team",
+    "categorySlug": "apparel",
+    "brandSlug": "lining",
+    "description": "Áo thể thao chất liệu mè lục giác, co giãn 4 chiều và công nghệ làm mát AT-Dry.",
+    "imageUrls": [
+      "/images/product-4.svg"
+    ],
+    "badge": null,
+    "specs": [
+      "Chất liệu: 100% Polyester công nghệ cao",
+      "Công nghệ: AT-Dry làm mát tức thì",
+      "Kiểu dáng: Unisex thể thao"
+    ],
+    "variants": [
+      {
+        "sku": "AO-LN-M",
+        "name": "Size M (52-60kg)",
+        "attributes": {
+          "size": "M"
+        },
+        "price": 350000,
+        "oldPrice": 420000,
+        "stockQuantity": 30
+      },
+      {
+        "sku": "AO-LN-L",
+        "name": "Size L (61-70kg)",
+        "attributes": {
+          "size": "L"
+        },
+        "price": 350000,
+        "oldPrice": 420000,
+        "stockQuantity": 40
+      },
+      {
+        "sku": "AO-LN-XL",
+        "name": "Size XL (71-80kg)",
+        "attributes": {
+          "size": "XL"
+        },
+        "price": 350000,
+        "oldPrice": 420000,
+        "stockQuantity": 25
+      }
+    ]
+  },
+  {
+    "name": "Quần Short Cầu Lông Yonex Tournament",
+    "slug": "quan-short-yonex-tournament",
+    "categorySlug": "apparel",
+    "brandSlug": "yonex",
+    "description": "Quần short thi đấu có túi sâu đựng cầu, chất vải VeryCool giảm 3 độ C.",
+    "imageUrls": [
+      "/images/product-6.svg"
+    ],
+    "badge": null,
+    "specs": [
+      "Công nghệ VeryCool thấm hút mồ hôi",
+      "Chống tĩnh điện",
+      "Túi sâu đựng 2-3 quả cầu tiện lợi"
+    ],
+    "variants": [
+      {
+        "sku": "QUAN-YN-M",
+        "name": "Size M",
+        "attributes": {
+          "size": "M"
+        },
+        "price": 290000,
+        "oldPrice": 350000,
+        "stockQuantity": 35
+      },
+      {
+        "sku": "QUAN-YN-L",
+        "name": "Size L",
+        "attributes": {
+          "size": "L"
+        },
+        "price": 290000,
+        "oldPrice": 350000,
+        "stockQuantity": 45
+      }
+    ]
+  },
+  {
+    "name": "Quấn Cán Vợt Cầu Lông Yonex AC102EX (Vỉ 3 Cuộn)",
+    "slug": "quan-can-yonex-ac102ex",
+    "categorySlug": "accessories",
+    "brandSlug": "yonex",
+    "description": "Quấn cán cao su dẻo dính số 1 thị trường, thấm mồ hôi và êm tay tuyệt đối.",
+    "imageUrls": [
+      "/images/yonex-ac102ex.jpg"
+    ],
+    "badge": "BEST SELLER",
+    "specs": [
+      "Quy cách: Vỉ 3 cuộn",
+      "Độ dày: 0.6 mm",
+      "Chiều rộng: 25 mm",
+      "Chiều dài: 1200 mm"
+    ],
+    "variants": [
+      {
+        "sku": "AC102EX-DEN",
+        "name": "Vỉ 3 Cuộn - Màu Đen",
+        "attributes": {
+          "color": "Đen"
+        },
+        "price": 125000,
+        "oldPrice": 150000,
+        "stockQuantity": 100
+      },
+      {
+        "sku": "AC102EX-TRANG",
+        "name": "Vỉ 3 Cuộn - Màu Trắng",
+        "attributes": {
+          "color": "Trắng"
+        },
+        "price": 125000,
+        "oldPrice": 150000,
+        "stockQuantity": 120
+      }
+    ]
+  },
+  {
+    "name": "Túi Đựng Vợt Cầu Lông Yonex Pro Tournament 9 Cây",
+    "slug": "tui-vot-yonex-pro-tournament-9",
+    "categorySlug": "accessories",
+    "brandSlug": "yonex",
+    "description": "Bao vợt chuyên nghiệp có ngăn cách nhiệt Thermo Guard bảo vệ cước và khung vợt.",
+    "imageUrls": [
+      "/images/product-8.jpg"
+    ],
+    "badge": "POPULAR",
+    "specs": [
+      "Sức chứa: 6-9 cây vợt",
+      "Ngăn riêng đựng giày có lỗ thoát mùi",
+      "Lớp lót tráng bạc cách nhiệt chống nắng"
+    ],
+    "variants": [
+      {
+        "sku": "BAG-YN-BLUE",
+        "name": "Màu Đen Phối Xanh",
+        "attributes": {
+          "color": "Đen - Xanh"
+        },
+        "price": 1550000,
+        "oldPrice": 1750000,
+        "stockQuantity": 15
+      }
+    ]
+  }
+]

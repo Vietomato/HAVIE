@@ -36,6 +36,15 @@ npx prisma generate
 
 Không chạy `prisma migrate reset` trên database có dữ liệu.
 
+Để nạp danh mục, thương hiệu, sản phẩm và biến thể trong `prisma/productsData.json`, cấu hình `DATABASE_URL` trong `backend/.env`, sau đó chạy từ thư mục `backend`:
+
+```bash
+npm run prisma:generate
+npm run prisma:seed
+```
+
+Seed có thể chạy lại để cập nhật sản phẩm theo slug và biến thể theo SKU.
+
 ## Khởi chạy và kiểm thử
 
 ```bash
@@ -53,7 +62,11 @@ Backend mặc định chạy tại `http://localhost:3000`; kiểm tra `http://l
 - `POST /api/auth/login`
 - `GET /api/auth/me`, `GET /api/me`
 - `POST /api/auth/logout`
-- `GET /api/categories`, `GET /api/products`, `GET /api/products/:slug`
+- `GET /api/categories`, `GET /api/brands`, `GET /api/products`, `GET /api/products/:slug`
 - `GET /api/products/:slug/reviews`
+- `GET /api/cart`, `POST /api/cart/items`, `PATCH /api/cart/items/:id`, `DELETE /api/cart/items/:id`
+- `POST /api/orders`, `GET /api/orders/my`, `POST /api/orders/:id/cancel`
 
 OTP hết hạn sau 10 phút, gửi lại sau 60 giây và tối đa 5 lần nhập sai. Các route sản phẩm hỗ trợ bộ lọc và phân trang theo `API_CONTRACT_HAVIE_v1.md`.
+
+Giỏ hàng và đặt hàng yêu cầu đăng nhập. API đặt hàng hiện chỉ hỗ trợ COD; thanh toán QR chưa được tích hợp.
