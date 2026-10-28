@@ -1,11 +1,14 @@
-// HAVIE API Contract v1 - High-level Domain Services
+// HAVIE API Contract v1 - HTTP Domain Services
 import { apiClient } from './client';
-import { mockApi } from './mockService';
 
 export * from './types';
 export { apiClient, ApiError } from './client';
 
-// 3.1 Auth API
+const queryString = (params) =>
+  new URLSearchParams(
+    Object.entries(params).filter(([, value]) => value !== undefined && value !== '' && value !== 'All'),
+  ).toString();
+
 export const authApi = {
   requestRegistrationOtp: async (payload) => {
     const res = await apiClient.request('/auth/register/request-otp', {
@@ -20,9 +23,7 @@ export const authApi = {
       method: 'POST',
       body: JSON.stringify({ email, code }),
     });
-    if (res.data?.accessToken) {
-      apiClient.setToken(res.data.accessToken);
-    }
+    if (res.data?.accessToken) apiClient.setToken(res.data.accessToken);
     return res.data;
   },
 
@@ -31,9 +32,7 @@ export const authApi = {
       method: 'POST',
       body: JSON.stringify(payload),
     });
-    if (res.data?.accessToken) {
-      apiClient.setToken(res.data.accessToken);
-    }
+    if (res.data?.accessToken) apiClient.setToken(res.data.accessToken);
     return res.data;
   },
 
@@ -46,240 +45,184 @@ export const authApi = {
   },
 
   getMe: async () => {
-    const res = await apiClient.request('/me', { method: 'GET' });
+    const res = await apiClient.request('/me');
     return res.data;
   },
 
   updateMe: async (payload) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/me', { method: 'PATCH', body: JSON.stringify(payload) }),
-      () => mockApi.updateMe(payload),
-    );
+    const res = await apiClient.request('/me', {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
     return res.data;
   },
 };
 
-// 3.2 Address API
 export const addressApi = {
   getAddresses: async () => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/me/addresses', { method: 'GET' }),
-      () => mockApi.getAddresses(),
-    );
+    const res = await apiClient.request('/me/addresses');
     return res.data;
   },
 
   addAddress: async (payload) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/me/addresses', { method: 'POST', body: JSON.stringify(payload) }),
-      () => mockApi.addAddress(payload),
-    );
+    const res = await apiClient.request('/me/addresses', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
     return res.data;
   },
 };
 
-// 3.3 Catalog API
 export const catalogApi = {
   getCategories: async () => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/categories', { method: 'GET' }),
-      () => mockApi.getCategories(),
-    );
+    const res = await apiClient.request('/categories');
     return res.data;
   },
 
   getBrands: async () => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/brands', { method: 'GET' }),
-      () => mockApi.getBrands(),
-    );
+    const res = await apiClient.request('/brands');
     return res.data;
   },
 
   getProducts: async (params = {}) => {
-    const qs = new URLSearchParams(
-      Object.entries(params).filter(([_, v]) => v !== undefined && v !== '' && v !== 'All'),
-    ).toString();
-    const endpoint = `/products${qs ? `?${qs}` : ''}`;
-
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(endpoint, { method: 'GET' }),
-      () => mockApi.getProducts(params),
-    );
-    return res;
+    const qs = queryString(params);
+    return apiClient.request(`/products${qs ? `?${qs}` : ''}`);
   },
 
   getProduct: async (slugOrId) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(`/products/${slugOrId}`, { method: 'GET' }),
-      () => mockApi.getProductBySlug(slugOrId),
-    );
+    const res = await apiClient.request(`/products/${encodeURIComponent(slugOrId)}`);
     return res.data;
   },
 
   getProductReviews: async (slugOrId, params = {}) => {
-    const qs = new URLSearchParams(params).toString();
-    const endpoint = `/products/${slugOrId}/reviews${qs ? `?${qs}` : ''}`;
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(endpoint, { method: 'GET' }),
-      () => mockApi.getProductReviews(slugOrId, params),
+    const qs = queryString(params);
+    return apiClient.request(
+      `/products/${encodeURIComponent(slugOrId)}/reviews${qs ? `?${qs}` : ''}`,
     );
-    return res;
   },
 };
 
-// 3.4 Cart API
 export const cartApi = {
   getCart: async () => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/cart', { method: 'GET' }),
-      () => mockApi.getCart(),
-    );
+    const res = await apiClient.request('/cart');
     return res.data;
   },
 
   addItem: async (variantId, quantity = 1) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/cart/items', { method: 'POST', body: JSON.stringify({ variantId, quantity }) }),
-      () => mockApi.addToCart({ variantId, quantity }),
-    );
+    const res = await apiClient.request('/cart/items', {
+      method: 'POST',
+      body: JSON.stringify({ variantId, quantity }),
+    });
     return res.data;
   },
 
   updateItem: async (itemId, quantity) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(`/cart/items/${itemId}`, { method: 'PATCH', body: JSON.stringify({ quantity }) }),
-      () => mockApi.updateCartItem(itemId, { quantity }),
-    );
+    const res = await apiClient.request(`/cart/items/${encodeURIComponent(itemId)}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ quantity }),
+    });
     return res.data;
   },
 
   removeItem: async (itemId) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(`/cart/items/${itemId}`, { method: 'DELETE' }),
-      () => mockApi.removeCartItem(itemId),
-    );
+    const res = await apiClient.request(`/cart/items/${encodeURIComponent(itemId)}`, {
+      method: 'DELETE',
+    });
     return res.data;
   },
 };
 
-// 3.5 Orders API
 export const orderApi = {
   createOrder: async (payload) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/orders', { method: 'POST', body: JSON.stringify(payload) }),
-      () => mockApi.createOrder(payload),
-    );
+    const res = await apiClient.request('/orders', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
     return res.data;
   },
 
   getMyOrders: async (params = {}) => {
-    const qs = new URLSearchParams(params).toString();
-    const endpoint = `/orders/my${qs ? `?${qs}` : ''}`;
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(endpoint, { method: 'GET' }),
-      () => mockApi.getMyOrders(params),
-    );
+    const qs = queryString(params);
+    const res = await apiClient.request(`/orders/my${qs ? `?${qs}` : ''}`);
     return res.data;
   },
 
   cancelOrder: async (orderId, reason) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(`/orders/${orderId}/cancel`, { method: 'POST', body: JSON.stringify({ reason }) }),
-      () => mockApi.cancelOrder(orderId, { reason }),
-    );
-    return res.data;
-  },
-
-  simulateQrPaymentSuccess: async (orderId) => {
-    const res = await mockApi.simulateQrPaymentSuccess(orderId);
+    const res = await apiClient.request(`/orders/${encodeURIComponent(orderId)}/cancel`, {
+      method: 'POST',
+      body: JSON.stringify({ reason }),
+    });
     return res.data;
   },
 };
 
-// 3.6 Reviews API
 export const reviewApi = {
   createReview: async (payload) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/reviews', { method: 'POST', body: JSON.stringify(payload) }),
-      () => mockApi.createReview(payload),
-    );
+    const res = await apiClient.request('/reviews', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
     return res.data;
   },
 };
 
-// 4. Admin API
 export const adminApi = {
   getProducts: async () => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/admin/products', { method: 'GET' }),
-      () => mockApi.adminGetProducts(),
-    );
+    const res = await apiClient.request('/admin/products');
     return res.data;
   },
 
   getOrders: async () => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/admin/orders', { method: 'GET' }),
-      () => mockApi.adminGetOrders(),
-    );
+    const res = await apiClient.request('/admin/orders');
     return res.data;
   },
 
   updateOrderStatus: async (orderId, status, note) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(`/admin/orders/${orderId}/status`, { method: 'PATCH', body: JSON.stringify({ status, note }) }),
-      () => mockApi.adminUpdateOrderStatus(orderId, status, note),
+    const res = await apiClient.request(
+      `/admin/orders/${encodeURIComponent(orderId)}/status`,
+      { method: 'PATCH', body: JSON.stringify({ status, note }) },
     );
     return res.data;
   },
 
   recordCodPayment: async (orderId) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(`/admin/orders/${orderId}/cod-payment`, { method: 'POST' }),
-      () => mockApi.adminRecordCodPayment(orderId),
+    const res = await apiClient.request(
+      `/admin/orders/${encodeURIComponent(orderId)}/cod-payment`,
+      { method: 'POST' },
     );
     return res.data;
   },
 
   getCustomers: async () => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/admin/customers', { method: 'GET' }),
-      () => mockApi.adminGetCustomers(),
-    );
+    const res = await apiClient.request('/admin/customers');
     return res.data;
   },
 
   updateCustomerStatus: async (customerId, isActive, reason) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(`/admin/customers/${customerId}/status`, { method: 'PATCH', body: JSON.stringify({ isActive, reason }) }),
-      () => mockApi.adminUpdateCustomerStatus(customerId, isActive, reason),
+    const res = await apiClient.request(
+      `/admin/customers/${encodeURIComponent(customerId)}/status`,
+      { method: 'PATCH', body: JSON.stringify({ isActive, reason }) },
     );
     return res.data;
   },
 
   getInventory: async () => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/admin/inventory', { method: 'GET' }),
-      () => mockApi.adminGetInventory(),
-    );
+    const res = await apiClient.request('/admin/inventory');
     return res.data;
   },
 
   adjustStock: async (payload) => {
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request('/admin/inventory/adjustments', { method: 'POST', body: JSON.stringify(payload) }),
-      () => mockApi.adminAdjustStock(payload),
-    );
+    const res = await apiClient.request('/admin/inventory/adjustments', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
     return res.data;
   },
 
   getDashboard: async (from, to) => {
-    const qs = from && to ? `?from=${from}&to=${to}` : '';
-    const res = await apiClient.callWithFallback(
-      () => apiClient.request(`/admin/dashboard${qs}`, { method: 'GET' }),
-      () => mockApi.adminGetDashboard(from, to),
-    );
+    const params = from && to ? { from, to } : {};
+    const qs = queryString(params);
+    const res = await apiClient.request(`/admin/dashboard${qs ? `?${qs}` : ''}`);
     return res.data;
   },
 };

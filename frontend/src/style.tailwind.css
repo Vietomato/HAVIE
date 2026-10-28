@@ -314,6 +314,74 @@ p {
   @apply mt-3;
   @apply text-[var(--forest)];
 }
+.home-banner {
+  @apply relative;
+  @apply w-full;
+  @apply overflow-hidden;
+  @apply bg-[#eeeede];
+  aspect-ratio: 2182 / 721;
+}
+.home-banner-image {
+  @apply absolute;
+  @apply inset-0;
+  @apply w-full;
+  @apply h-full;
+  @apply object-contain;
+  animation: home-banner-fade 500ms ease-out;
+}
+.home-banner-arrow {
+  @apply absolute;
+  @apply top-1/2;
+  @apply z-10;
+  @apply -translate-y-1/2;
+  @apply rounded-full;
+  @apply bg-white/90;
+  @apply p-3;
+  @apply text-[var(--forest)];
+  @apply shadow-md;
+  @apply transition-colors;
+}
+.home-banner-arrow:hover {
+  @apply bg-white;
+}
+.home-banner-previous {
+  @apply left-4;
+}
+.home-banner-next {
+  @apply right-4;
+}
+.home-banner-dots {
+  @apply absolute;
+  @apply bottom-4;
+  @apply left-1/2;
+  @apply z-10;
+  @apply flex;
+  @apply -translate-x-1/2;
+  @apply gap-2;
+}
+.home-banner-dot {
+  @apply h-[10px];
+  @apply w-[10px];
+  @apply rounded-full;
+  @apply bg-white/80;
+  @apply shadow;
+}
+.home-banner-dot.is-active {
+  @apply bg-[var(--forest)];
+}
+@keyframes home-banner-fade {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-banner-image {
+    animation: none;
+  }
+}
 .section {
   @apply pt-[65px];
   @apply pb-[65px];
@@ -506,7 +574,8 @@ p {
 }
 .perks {
   @apply grid;
-  @apply gap-6;
+  @apply grid-cols-1;
+  @apply gap-4;
   @apply pb-[70px];
 }
 .perks > div {
@@ -514,14 +583,21 @@ p {
   @apply grid-cols-[34px_1fr];
   @apply gap-[4px_14px];
   @apply items-center;
+  @apply p-4;
+  @apply rounded-xl;
+  @apply border border-[var(--border)];
+  @apply bg-white;
+  @apply shadow-[0_2px_8px_rgba(0,0,0,0.02)];
 }
 .perks svg {
   @apply row-span-2;
   @apply text-[var(--forest)];
 }
 .perks strong {
-  @apply text-[11px];
-  @apply tracking-[0.5px];
+  @apply text-xs;
+  @apply font-bold;
+  @apply tracking-[0.3px];
+  @apply text-[var(--forest)];
 }
 .perks span {
   @apply text-xs;
@@ -859,6 +935,9 @@ p {
 .auth-art {
   @apply bg-[var(--forest)];
   @apply text-white;
+  background-image: linear-gradient(rgba(17, 54, 42, 0.62), rgba(17, 54, 42, 0.62)), url('/images/kento-momota.jpg');
+  background-position: center;
+  background-size: cover;
   @apply p-[36px_24px];
   @apply flex;
   @apply flex-col;
@@ -1381,25 +1460,7 @@ td select {
     @apply grid-cols-[2fr_1fr_1fr_1.4fr];
   }
   .perks {
-    @apply grid-cols-[repeat(3,_1fr)];
-  }
-  .hero-grid {
-    @apply grid-cols-[1fr_1fr];
-    @apply items-stretch;
-  }
-  .hero-copy {
-    @apply p-[85px_0];
-  }
-  .hero-visual {
-    @apply p-[32px_0];
-  }
-  .hero-image {
-    @apply h-full;
-    @apply min-h-[460px];
-  }
-  .hero-sticker {
-    @apply right-[20px];
-    @apply top-[60px];
+    @apply grid-cols-[repeat(2,_1fr)];
   }
   .campaign {
     @apply p-[70px];
@@ -1469,21 +1530,8 @@ td select {
   .mobile-toggle {
     @apply hidden;
   }
-  .hero-copy {
-    @apply p-[115px_0];
-  }
-  .hero h1 {
-    @apply tracking-[-6px];
-  }
-  .hero-image {
-    @apply min-h-[550px];
-  }
-  .hero-visual {
-    @apply p-[35px_0];
-  }
-  .hero-sticker {
-    @apply p-[27px];
-    @apply text-xl;
+  .perks {
+    @apply grid-cols-[repeat(4,_1fr)];
   }
   .section {
     @apply pt-[95px];
@@ -1566,12 +1614,6 @@ td select {
   }
   .main-nav {
     @apply gap-[34px];
-  }
-  .hero h1 {
-    @apply text-[105px];
-  }
-  .hero-copy > p {
-    @apply text-[15px];
   }
   .catalog-grid {
     @apply grid-cols-[repeat(3,_minmax(0,_1fr))];

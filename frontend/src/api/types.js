@@ -27,12 +27,10 @@ export const ORDER_STATUS_LABELS = {
 
 export const PAYMENT_METHOD = {
   COD: 'COD',
-  MOCK_QR: 'MOCK_QR',
 };
 
 export const PAYMENT_METHOD_LABELS = {
   COD: 'Thanh toán khi nhận hàng (COD)',
-  MOCK_QR: 'Mã QR thanh toán mô phỏng',
 };
 
 export const PAYMENT_STATUS = {
@@ -52,4 +50,3 @@ export const PAYMENT_STATUS_LABELS = {
   REFUND_PENDING: 'Chờ hoàn tiền',
   REFUNDED: 'Đã hoàn tiền',
 };
-

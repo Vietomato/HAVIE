@@ -25,6 +25,7 @@ import {
   Truck,
   ShieldCheck,
   RotateCcw,
+  CreditCard,
   SlidersHorizontal,
   LayoutDashboard,
   Package,
@@ -58,6 +59,14 @@ import {
 import './style.tailwind.css';
 
 const Store = createContext(null);
+const PRODUCT_BADGE_LABELS = {
+  'BEST SELLER': 'BÁN CHẠY',
+  HOT: 'ĐANG ĐƯỢC QUAN TÂM',
+  POPULAR: 'ĐƯỢC ƯA CHUỘNG',
+  NEW: 'MỚI',
+};
+
+const localizeVariantName = (name = '') => name.replace(/^Size\b/, 'Cỡ');
 
 function StoreProvider({ children }) {
   const [account, setAccount] = useState(null);
@@ -82,12 +91,20 @@ function StoreProvider({ children }) {
     authApi
       .getMe()
       .then((user) => setAccount(user))
-      .catch(() => setAccount(null))
+      .catch((error) => {
+        if (error.status === 401) apiClient.clearToken();
+        setAccount(null);
+      })
       .finally(() => setAuthLoading(false));
   }, []);
 
   // Fetch Cart on mount and on account change
-  const refreshCart = async () => {
+  const refreshCart = async (user = account) => {
+    if (!user) {
+      setCart({ items: [] });
+      return;
+    }
+
     try {
       setCartLoading(true);
       const res = await cartApi.getCart();
@@ -144,21 +161,19 @@ function StoreProvider({ children }) {
   const login = async (email, password) => {
     const res = await authApi.login({ email, password });
     setAccount(res.user);
-    await refreshCart();
     return res.user;
   };
 
   const register = async (payload) => {
     const res = await authApi.register(payload);
     setAccount(res.user);
-    await refreshCart();
     return res.user;
   };
 
   const logout = async () => {
     await authApi.logout();
     setAccount(null);
-    await refreshCart();
+    await refreshCart(null);
   };
 
   const count = (cart?.items || []).reduce((sum, item) => sum + (item.quantity || 0), 0);
@@ -209,58 +224,58 @@ function Header() {
   return (
     <header className="site-header">
       <div className="container header-inner">
-        <Link to="/" className="brand" aria-label="HAVIE home">
+        <Link to="/" className="brand" aria-label="Trang chủ HAVIE">
           HAVIE<span>.</span>
-          <small>BADMINTON STORE</small>
+          <small>CỬA HÀNG CẦU LÔNG</small>
         </Link>
-        <nav className={'main-nav ' + (open ? 'open' : '')} aria-label="Main navigation">
+        <nav className={'main-nav ' + (open ? 'open' : '')} aria-label="Điều hướng chính">
           <NavLink to="/" onClick={() => setOpen(false)}>
-            Home
+            TRANG CHỦ
           </NavLink>
           <NavLink to="/products" onClick={() => setOpen(false)}>
-            Shop
+            CỬA HÀNG
           </NavLink>
           <NavLink to="/products?category=rackets" onClick={() => setOpen(false)}>
-            Collections
+            BỘ SƯU TẬP
           </NavLink>
           <a href="/#about" onClick={() => setOpen(false)}>
-            About
+            VỀ CHÚNG TÔI
           </a>
         </nav>
         <form className="header-search" role="search" onSubmit={submit}>
           <label className="sr-only" htmlFor="site-search">
-            Search products
+            Tìm kiếm sản phẩm
           </label>
           <input
             id="site-search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search products..."
+            placeholder="Tìm sản phẩm..."
           />
-          <button aria-label="Search" type="submit">
+          <button aria-label="Tìm kiếm" type="submit">
             <Search size={20} />
           </button>
         </form>
         <div className="header-actions">
           {account?.role === 'ADMIN' && (
             <Link to="/admin" className="admin-shortcut-pill" title="Mở trang Quản trị HAVIE">
-              <ShieldAlert size={14} /> Admin Studio
+              <ShieldAlert size={14} /> Quản trị
             </Link>
           )}
           <Link
             to="/auth"
-            aria-label={account ? 'Your account' : 'Sign in'}
+            aria-label={account ? 'Tài khoản của bạn' : 'Đăng nhập'}
             title={account?.fullName || 'Tài khoản'}
           >
             <UserRound size={22} />
           </Link>
-          <Link to="/cart" className="cart-icon" aria-label={'Cart with ' + count + ' items'}>
+          <Link to="/cart" className="cart-icon" aria-label={'Giỏ hàng có ' + count + ' sản phẩm'}>
             <ShoppingBag size={22} />
             {count > 0 && <span>{count}</span>}
           </Link>
           <button
             className="mobile-toggle"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? 'Đóng menu' : 'Mở menu'}
             aria-expanded={open}
             onClick={() => setOpen(!open)}
           >
@@ -280,29 +295,29 @@ function Footer() {
           <Link className="footer-logo" to="/">
             HAVIE.
           </Link>
-          <p>Play beyond limits.</p>
-          <p>Built for the love of badminton.</p>
+          <p>Vượt mọi giới hạn.</p>
+          <p>Dành trọn đam mê cho cầu lông.</p>
         </section>
         <section>
-          <h3>EXPLORE</h3>
-          <Link to="/products">Shop all</Link>
+          <h3>KHÁM PHÁ</h3>
+          <Link to="/products">Tất cả sản phẩm</Link>
           <Link to="/products?category=rackets">Vợt cầu lông</Link>
           <Link to="/products?category=shoes">Giày cầu lông</Link>
         </section>
         <section>
-          <h3>SUPPORT</h3>
-          <a href="mailto:hello@havie.example">Contact us</a>
-          <Link to="/cart">Shopping cart</Link>
-          <Link to="/auth">My account</Link>
+          <h3>HỖ TRỢ</h3>
+          <a href="mailto:hello@havie.example">Liên hệ</a>
+          <Link to="/cart">Giỏ hàng</Link>
+          <Link to="/auth">Tài khoản của tôi</Link>
         </section>
         <section>
-          <h3>FOLLOW THE GAME</h3>
-          <p>Made for the court. Designed for everyday.</p>
-          <span className="footer-note">Demo Storefront • API Contract v1 Integrated</span>
+          <h3>CÙNG ĐAM MÊ CẦU LÔNG</h3>
+          <p>Thiết kế cho sân đấu, phù hợp mỗi ngày.</p>
+          <span className="footer-note">Dữ liệu sản phẩm trực tiếp từ API HAVIE</span>
         </section>
       </div>
       <div className="container footer-bottom">
-        © 2026 HAVIE Badminton Store <span>Designed with intention.</span>
+        © 2026 Cửa hàng cầu lông HAVIE <span>Chỉn chu trong từng chi tiết.</span>
       </div>
     </footer>
   );
@@ -328,20 +343,24 @@ function ProductCard({ product }) {
   return (
     <article className="product-card">
       <div className="product-media">
-        <Link to={'/products/' + (product.slug || product.id)} aria-label={'View ' + product.name}>
+        <Link to={'/products/' + (product.slug || product.id)} aria-label={'Xem ' + product.name}>
           <img src={imageUrl} alt={product.name} loading="lazy" />
         </Link>
-        {product.badge && <span className="product-badge">{product.badge}</span>}
+        {product.badge && (
+          <span className="product-badge">
+            {PRODUCT_BADGE_LABELS[product.badge] || product.badge}
+          </span>
+        )}
         <button
           className={'favorite ' + (favorites.includes(product.id) ? 'selected' : '')}
-          aria-label={'Favorite ' + product.name}
+          aria-label={'Yêu thích ' + product.name}
           onClick={() => toggleFavorite(product.id)}
         >
           <Heart size={19} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
         </button>
       </div>
       <div className="product-meta">
-        <span>{product.category?.name || 'Badminton'}</span>
+        <span>{product.category?.name || 'Cầu lông'}</span>
         <span>
           <Star size={13} fill="currentColor" /> {product.ratingAverage || 5.0}
         </span>
@@ -353,7 +372,7 @@ function ProductCard({ product }) {
         <strong>{money(displayPrice)}</strong>
         <button
           className="add-small"
-          aria-label={'Add ' + product.name + ' to cart'}
+          aria-label={'Thêm ' + product.name + ' vào giỏ hàng'}
           onClick={async () => {
             if (defaultVariant) {
               await add(defaultVariant.id, 1);
@@ -368,65 +387,109 @@ function ProductCard({ product }) {
   );
 }
 
+const HOME_BANNERS = [
+  { src: '/images/banner1.png', alt: 'HAVIE — ảnh quảng bá 1' },
+  { src: '/images/banner2.png', alt: 'HAVIE — ảnh quảng bá 2' },
+  { src: '/images/banner3.png', alt: 'HAVIE — ảnh quảng bá 3' },
+];
+
 function Home() {
   const [featured, setFeatured] = useState([]);
+  const [featuredLoading, setFeaturedLoading] = useState(true);
+  const [featuredError, setFeaturedError] = useState('');
+  const [activeBanner, setActiveBanner] = useState(0);
 
   useEffect(() => {
-    catalogApi.getProducts({ pageSize: 4 }).then((res) => {
-      setFeatured(res.data || []);
-    });
+    let active = true;
+
+    catalogApi
+      .getProducts({ pageSize: 4, sort: 'rating_desc' })
+      .then((res) => {
+        if (active) setFeatured(res.data || []);
+      })
+      .catch((error) => {
+        if (active) setFeaturedError(error.message || 'Không thể tải sản phẩm nổi bật.');
+      })
+      .finally(() => {
+        if (active) setFeaturedLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveBanner((current) => (current + 1) % HOME_BANNERS.length);
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const showPreviousBanner = () => {
+    setActiveBanner((current) =>
+      current === 0 ? HOME_BANNERS.length - 1 : current - 1,
+    );
+  };
+
+  const showNextBanner = () => {
+    setActiveBanner((current) => (current + 1) % HOME_BANNERS.length);
+  };
 
   return (
     <>
-      <section className="hero">
-        <div className="container hero-grid">
-          <div className="hero-copy">
-            <span className="eyebrow">
-              <span className="eyebrow-line" /> EQUIPMENT FOR THE EVERYDAY ATHLETE
-            </span>
-            <h1>
-              EVERY POINT
-              <br />
-              <em>MATTERS.</em>
-            </h1>
-            <p>
-              Find your rhythm. Own your game. Gear made for every rally, from the first serve to
-              match point.
-            </p>
-            <Link to="/products" className="btn btn-primary">
-              EXPLORE THE COLLECTION <ArrowRight size={18} />
-            </Link>
-            <div className="hero-index">
-              01 <span /> 03 <small>DESIGNED TO PLAY</small>
-            </div>
-          </div>
-          <div className="hero-visual">
-            <div className="hero-image">
-              <img src="/images/product-1.svg" alt="HAVIE performance badminton racket" />
-            </div>
-            <div className="hero-sticker">
-              MOVE
-              <br />
-              WITH
-              <br />
-              PURPOSE <ArrowRight size={23} />
-            </div>
-            <div className="hero-caption">THE COURT IS YOURS — 2026 COLLECTION</div>
-          </div>
+      <section
+        className="home-banner"
+        aria-label="Ảnh quảng bá của cửa hàng"
+        aria-roledescription="trình chiếu ảnh"
+      >
+        <img
+          key={HOME_BANNERS[activeBanner].src}
+          className="home-banner-image"
+          src={HOME_BANNERS[activeBanner].src}
+          alt={HOME_BANNERS[activeBanner].alt}
+        />
+        <button
+          type="button"
+          className="home-banner-arrow home-banner-previous"
+          onClick={showPreviousBanner}
+          aria-label="Xem ảnh trước"
+        >
+          <ArrowLeft size={20} />
+        </button>
+        <button
+          type="button"
+          className="home-banner-arrow home-banner-next"
+          onClick={showNextBanner}
+          aria-label="Xem ảnh tiếp theo"
+        >
+          <ArrowRight size={20} />
+        </button>
+        <div className="home-banner-dots" aria-label="Chọn ảnh quảng bá">
+          {HOME_BANNERS.map((banner, index) => (
+            <button
+              key={banner.src}
+              type="button"
+              className={`home-banner-dot${index === activeBanner ? ' is-active' : ''}`}
+              onClick={() => setActiveBanner(index)}
+              aria-label={`Chuyển tới banner ${index + 1}`}
+              aria-current={index === activeBanner ? 'true' : undefined}
+            />
+          ))}
         </div>
       </section>
 
       <section className="section container">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">FIND YOUR FIT</span>
+            <span className="eyebrow">DANH MỤC</span>
             <h2>
-              SHOP BY CATEGORY<span className="dot">.</span>
+              SẢN PHẨM<span className="dot">.</span>
             </h2>
           </div>
           <Link className="text-link" to="/products">
-            SHOP ALL <ArrowRight size={17} />
+            TẤT CẢ SẢN PHẨM <ArrowRight size={17} />
           </Link>
         </div>
         <div className="category-grid">
@@ -455,37 +518,43 @@ function Home() {
         <div className="container">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">THE COMMUNITY FAVORITES</span>
+              <span className="eyebrow">ĐƯỢC YÊU THÍCH</span>
               <h2>
-                BEST SELLERS<span className="dot">.</span>
+                SẢN PHẨM BÁN CHẠY<span className="dot">.</span>
               </h2>
             </div>
             <Link className="text-link" to="/products">
-              VIEW ALL <ArrowRight size={17} />
+              XEM TẤT CẢ <ArrowRight size={17} />
             </Link>
           </div>
           <div className="products-grid">
-            {featured.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
+            {featuredLoading ? (
+              <p role="status">Đang tải sản phẩm...</p>
+            ) : featuredError ? (
+              <p role="alert">{featuredError}</p>
+            ) : featured.length ? (
+              featured.map((p) => <ProductCard key={p.id} product={p} />)
+            ) : (
+              <p>Hiện chưa có sản phẩm nổi bật.</p>
+            )}
           </div>
         </div>
       </section>
 
       <section className="campaign container">
         <div>
-          <span className="eyebrow">THE HAVIE PHILOSOPHY</span>
+          <span className="eyebrow">TRIẾT LÝ HAVIE</span>
           <h2>
-            GOOD GEAR.
+            DỤNG CỤ TỐT.
             <br />
-            GREAT GAME.
+            TRẬN ĐẤU HAY.
           </h2>
           <p>
-            Every movement matters. We believe the right equipment gives you the freedom to play
-            your way.
+            Mỗi chuyển động đều quan trọng. Trang bị phù hợp giúp bạn tự tin thể hiện lối chơi của
+            mình.
           </p>
           <Link to="/products" className="btn btn-light">
-            DISCOVER MORE <ArrowRight size={18} />
+            KHÁM PHÁ NGAY <ArrowRight size={18} />
           </Link>
         </div>
         <div className="campaign-mark">
@@ -496,18 +565,23 @@ function Home() {
       <section className="perks container">
         <div>
           <Truck size={26} />
-          <strong>READY FOR YOUR NEXT MATCH</strong>
-          <span>Giao hàng toàn quốc & COD tiện lợi</span>
+          <strong>Vận chuyển TOÀN QUỐC</strong>
+          <span>Thanh toán khi nhận hàng</span>
         </div>
         <div>
           <ShieldCheck size={26} />
-          <strong>MADE FOR PERFORMANCE</strong>
-          <span>Vợt & phụ kiện chính hãng HAVIE</span>
+          <strong>Bảo đảm chất lượng</strong>
+          <span>Sản phẩm bảo đảm chất lượng.</span>
+        </div>
+        <div>
+          <CreditCard size={26} />
+          <strong>Thanh toán thuận tiện</strong>
+          <span>Chọn hình thức phù hợp</span>
         </div>
         <div>
           <RotateCcw size={26} />
-          <strong>SHOP WITH CONFIDENCE</strong>
-          <span>Đổi trả thuận tiện & tư vấn tận tâm</span>
+          <strong>Đổi sản phẩm mới</strong>
+          <span>nếu sản phẩm lỗi</span>
         </div>
       </section>
     </>
@@ -523,21 +597,29 @@ function Listing() {
   const [productsList, setProductsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [productsError, setProductsError] = useState('');
+  const [categoriesError, setCategoriesError] = useState('');
 
   useEffect(() => setDraft(q), [q]);
 
   useEffect(() => {
-    catalogApi.getCategories().then((cats) => {
-      setCategoriesList(cats || []);
-    });
+    catalogApi
+      .getCategories()
+      .then(setCategoriesList)
+      .catch((error) => setCategoriesError(error.message));
   }, []);
 
   useEffect(() => {
     setLoading(true);
+    setProductsError('');
     catalogApi
       .getProducts({ category, q, sort })
       .then((res) => {
         setProductsList(res.data || []);
+      })
+      .catch((error) => {
+        setProductsList([]);
+        setProductsError(error.message);
       })
       .finally(() => setLoading(false));
   }, [category, q, sort]);
@@ -552,30 +634,30 @@ function Listing() {
   return (
     <div className="container page-pad">
       <p className="breadcrumbs">
-        <Link to="/">HOME</Link> / SHOP
+        <Link to="/">TRANG CHỦ</Link> / CỬA HÀNG
       </p>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">THE HAVIE EDIT</span>
+          <span className="eyebrow">BỘ SƯU TẬP HAVIE</span>
           <h1>
-            THE COLLECTION<span className="dot">.</span>
+            BỘ SƯU TẬP<span className="dot">.</span>
           </h1>
-          <p>Thoughtful equipment for every level of play.</p>
+          <p>Trang bị chỉn chu cho mọi trình độ và phong cách chơi.</p>
         </div>
-        <span>{productsList.length} PRODUCTS</span>
+        <span>{productsList.length} SẢN PHẨM</span>
       </div>
       <div className="catalog-layout">
         <aside className="filters">
           <h2>
-            <SlidersHorizontal size={19} /> FILTERS
+            <SlidersHorizontal size={19} /> BỘ LỌC
           </h2>
-          <h3>CATEGORIES</h3>
+          <h3>DANH MỤC</h3>
           <div className="filter-options">
             <button
               className={category === 'All' ? 'active' : ''}
               onClick={() => change('category', 'All')}
             >
-              All
+              Tất cả
             </button>
             {categoriesList.map((c) => (
               <button
@@ -587,9 +669,10 @@ function Listing() {
               </button>
             ))}
           </div>
-          <p className="filter-tip">Find the right equipment for your next match.</p>
+          {categoriesError && <p role="alert">{categoriesError}</p>}
+          <p className="filter-tip">Chọn trang bị phù hợp cho trận đấu tiếp theo của bạn.</p>
         </aside>
-        <section className="catalog-main" aria-label="Products">
+        <section className="catalog-main" aria-label="Danh sách sản phẩm">
           <div className="catalog-toolbar">
             <form
               onSubmit={(e) => {
@@ -598,30 +681,38 @@ function Listing() {
               }}
             >
               <label className="sr-only" htmlFor="catalog-search">
-                Search catalog
+                Tìm trong danh mục sản phẩm
               </label>
               <Search size={18} />
               <input
                 id="catalog-search"
-                placeholder="Search the collection"
+                placeholder="Tìm trong bộ sưu tập"
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
               />
-              <button type="submit">Search</button>
+              <button type="submit">Tìm kiếm</button>
             </form>
             <label className="sort-select">
-              SORT BY{' '}
+              SẮP XẾP:{' '}
               <select value={sort} onChange={(e) => change('sort', e.target.value)}>
-                <option value="featured">Featured</option>
-                <option value="price_asc">Price: Low to high</option>
-                <option value="price_desc">Price: High to low</option>
-                <option value="rating_desc">Top rated</option>
+                <option value="featured">Nổi bật</option>
+                <option value="price_asc">Giá: thấp đến cao</option>
+                <option value="price_desc">Giá: cao đến thấp</option>
+                <option value="rating_desc">Đánh giá cao</option>
               </select>
               <ChevronDown size={16} />
             </label>
           </div>
           {loading ? (
             <p>Đang tải danh sách sản phẩm...</p>
+          ) : productsError ? (
+            <div className="empty-state" role="alert">
+              <h2>Không thể tải sản phẩm.</h2>
+              <p>{productsError}</p>
+              <button className="btn btn-primary" onClick={() => window.location.reload()}>
+                THỬ LẠI
+              </button>
+            </div>
           ) : productsList.length ? (
             <div className="products-grid catalog-grid">
               {productsList.map((p) => (
@@ -630,10 +721,10 @@ function Listing() {
             </div>
           ) : (
             <div className="empty-state">
-              <h2>No products found.</h2>
-              <p>Try another search or category.</p>
+              <h2>Không tìm thấy sản phẩm.</h2>
+              <p>Hãy thử từ khóa hoặc danh mục khác.</p>
               <button className="btn btn-primary" onClick={() => setParams({})}>
-                CLEAR FILTERS
+                XÓA BỘ LỌC
               </button>
             </div>
           )}
@@ -682,9 +773,9 @@ function Detail() {
   if (!product) {
     return (
       <div className="container empty-state">
-        <h1>Product not found</h1>
+        <h1>Không tìm thấy sản phẩm</h1>
         <Link className="btn btn-primary" to="/products">
-          BACK TO SHOP
+          QUAY LẠI CỬA HÀNG
         </Link>
       </div>
     );
@@ -709,7 +800,8 @@ function Detail() {
   return (
     <div className="container page-pad">
       <p className="breadcrumbs">
-        <Link to="/">HOME</Link> / <Link to="/products">SHOP</Link> / {product.name.toUpperCase()}
+        <Link to="/">TRANG CHỦ</Link> / <Link to="/products">CỬA HÀNG</Link> /{' '}
+        {product.name.toUpperCase()}
       </p>
       <div className="detail-layout">
         <div className="detail-gallery">
@@ -717,13 +809,16 @@ function Detail() {
             <img src={product.imageUrls?.[0] || '/images/product-1.svg'} alt={product.name} />
           </div>
           <div className="detail-thumbs">
-            <img src={product.imageUrls?.[0] || '/images/product-1.svg'} alt="Product preview" />
-            <span>HAVIE / PERFORMANCE SERIES</span>
+            <img
+              src={product.imageUrls?.[0] || '/images/product-1.svg'}
+              alt={`Hình ảnh ${product.name}`}
+            />
+            <span>HAVIE / DÒNG SẢN PHẨM HIỆU SUẤT CAO</span>
           </div>
         </div>
         <section className="detail-info">
           <span className="eyebrow">
-            {product.category?.name?.toUpperCase()} / HAVIE PERFORMANCE
+            {product.category?.name?.toUpperCase()} / HIỆU SUẤT HAVIE
           </span>
           <h1>
             {product.name}
@@ -753,7 +848,7 @@ function Detail() {
                       setQty(1);
                     }}
                   >
-                    {v.name}
+                    {localizeVariantName(v.name)}
                   </button>
                 ))}
               </div>
@@ -776,12 +871,15 @@ function Detail() {
           <div className="quantity-row">
             <span>SỐ LƯỢNG</span>
             <div className="qty-control">
-              <button aria-label="Decrease quantity" onClick={() => setQty(Math.max(1, qty - 1))}>
+              <button
+                aria-label="Giảm số lượng"
+                onClick={() => setQty(Math.max(1, qty - 1))}
+              >
                 <Minus size={16} />
               </button>
               <output>{qty}</output>
               <button
-                aria-label="Increase quantity"
+                aria-label="Tăng số lượng"
                 disabled={qty >= maxStock}
                 onClick={() => setQty(Math.min(maxStock, qty + 1))}
               >
@@ -851,7 +949,7 @@ function Cart() {
   return (
     <div className="container page-pad">
       <p className="breadcrumbs">
-        <Link to="/">HOME</Link> / SHOPPING CART
+        <Link to="/">TRANG CHỦ</Link> / GIỎ HÀNG
       </p>
       <div className="page-heading">
         <div>
@@ -883,7 +981,7 @@ function Cart() {
                     {item.product?.name}
                   </Link>
                   <small className="font-bold text-[var(--forest)]">
-                    Phiên bản: {item.variant?.name} ({item.variant?.sku})
+                    Phiên bản: {localizeVariantName(item.variant?.name)} ({item.variant?.sku})
                   </small>
                   <span>{money(item.variant?.price || 0)}</span>
                   <button onClick={() => remove(item.id)} className="remove-link">
@@ -892,14 +990,14 @@ function Cart() {
                 </div>
                 <div className="qty-control">
                   <button
-                    aria-label="Decrease quantity"
+                    aria-label="Giảm số lượng"
                     onClick={() => update(item.id, item.quantity - 1)}
                   >
                     <Minus size={15} />
                   </button>
                   <output>{item.quantity}</output>
                   <button
-                    aria-label="Increase quantity"
+                    aria-label="Tăng số lượng"
                     onClick={() => update(item.id, item.quantity + 1)}
                   >
                     <Plus size={15} />
@@ -954,12 +1052,9 @@ function Checkout() {
   const [ward, setWard] = useState('Phường 4');
   const [district, setDistrict] = useState('Gò Vấp');
   const [province, setProvince] = useState('TP. Hồ Chí Minh');
-  const [paymentMethod, setPaymentMethod] = useState('COD');
   const [note, setNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [createdOrder, setCreatedOrder] = useState(null);
-  const [showQrModal, setShowQrModal] = useState(false);
-  const [qrOrder, setQrOrder] = useState(null);
   const navigate = useNavigate();
 
   const items = cart?.items || [];
@@ -991,33 +1086,16 @@ function Checkout() {
           ward,
           streetAddress: street,
         },
-        paymentMethod,
+        paymentMethod: 'COD',
         customerNote: note,
       });
 
       await refreshCart();
       setCreatedOrder(res);
-
-      if (paymentMethod === 'MOCK_QR' && res.payment) {
-        setQrOrder(res);
-        setShowQrModal(true);
-      }
     } catch (err) {
       alert(err.message || 'Có lỗi xảy ra khi tạo đơn hàng.');
     } finally {
       setSubmitting(false);
-    }
-  };
-
-  const handleConfirmQrPayment = async () => {
-    if (!qrOrder) return;
-    try {
-      const res = await orderApi.simulateQrPaymentSuccess(qrOrder.id);
-      setCreatedOrder(res);
-      setShowQrModal(false);
-      alert('Thanh toán thành công! Trạng thái đơn hàng đã được cập nhật.');
-    } catch (err) {
-      alert('Lỗi xác nhận thanh toán.');
     }
   };
 
@@ -1026,33 +1104,6 @@ function Checkout() {
       <p className="breadcrumbs">
         <Link to="/cart">CART</Link> / CHECKOUT
       </p>
-
-      {/* QR Payment Modal */}
-      {showQrModal && qrOrder && (
-        <div className="qr-overlay">
-          <div className="qr-modal">
-            <h2>MÃ QR THANH TOÁN (MOCK_QR)</h2>
-            <p>Đơn hàng: <strong>{qrOrder.orderCode}</strong></p>
-            <div className="qr-box">
-              <div className="qr-code-art">
-                VIETQR DEMO<br />{money(qrOrder.totalAmount)}
-              </div>
-              <small>Hết hạn sau: 15 phút (Mô phỏng API)</small>
-            </div>
-            <p className="text-[13px] text-[var(--muted)]">
-              Đây là cổng thanh toán mô phỏng theo Contract v1. Bạn có thể nhấn nút bên dưới để giả lập thanh toán thành công từ ngân hàng:
-            </p>
-            <div className="mt-[15px] flex gap-[10px]">
-              <button className="btn btn-primary full" onClick={handleConfirmQrPayment}>
-                XÁC NHẬN ĐÃ THANH TOÁN
-              </button>
-              <button className="btn btn-outline" onClick={() => setShowQrModal(false)}>
-                ĐÓNG
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {createdOrder ? (
         <div className="empty-state">
@@ -1154,24 +1205,8 @@ function Checkout() {
               <h2 className="mt-6">PHƯƠNG THỨC THANH TOÁN</h2>
               <div className="flex flex-col gap-[10px]">
                 <label className="flex items-center gap-[10px]">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="COD"
-                    checked={paymentMethod === 'COD'}
-                    onChange={() => setPaymentMethod('COD')}
-                  />
+                  <input type="radio" name="payment" value="COD" checked readOnly />
                   <span>Thanh toán khi nhận hàng (COD)</span>
-                </label>
-                <label className="flex items-center gap-[10px]">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="MOCK_QR"
-                    checked={paymentMethod === 'MOCK_QR'}
-                    onChange={() => setPaymentMethod('MOCK_QR')}
-                  />
-                  <span>Mã QR thanh toán mô phỏng (MOCK_QR VietQR)</span>
                 </label>
               </div>
 
@@ -1191,7 +1226,8 @@ function Checkout() {
               {items.map((item) => (
                 <div key={item.id}>
                   <span>
-                    {item.product?.name} ({item.variant?.name}) × {item.quantity}
+                    {item.product?.name} ({localizeVariantName(item.variant?.name)}) ×{' '}
+                    {item.quantity}
                   </span>
                   <strong>{money((item.variant?.price || 0) * item.quantity)}</strong>
                 </div>
@@ -1320,17 +1356,17 @@ function Auth() {
           HAVIE.
         </Link>
         <div>
-          <span className="eyebrow">WELCOME TO THE CLUB</span>
+          <span className="eyebrow">CHÀO MỪNG BẠN ĐẾN VỚI HAVIE</span>
           <h1>
-            PLAY
+            CHƠI
             <br />
-            BEYOND
+            VƯỢT
             <br />
-            LIMITS<span>.</span>
+            GIỚI HẠN<span>.</span>
           </h1>
-          <p>Hệ thống tài khoản và đơn hàng theo chuẩn API Contract v1.</p>
+          <p>Đồng hành cùng bạn trên từng trận đấu và hành trình cầu lông.</p>
         </div>
-        <span>HAVIE ARCHITECTURE / 2026</span>
+        <span>HAVIE / 2026</span>
       </aside>
       <section className="auth-panel">
         <div className="auth-box">
@@ -1361,7 +1397,7 @@ function Auth() {
                   {account.role === 'ADMIN' && (
                     <div className="my-[18px]">
                       <Link to="/admin" className="btn btn-primary full">
-                        TRUY CẬP ADMIN STUDIO →
+                        TRUY CẬP TRANG QUẢN TRỊ →
                       </Link>
                     </div>
                   )}
@@ -1430,7 +1466,7 @@ function Auth() {
           ) : (
             <>
               <span className="eyebrow">YOUR HAVIE ACCOUNT</span>
-              <h2>{mode === 'signin' ? 'Welcome back.' : 'Join the game.'}</h2>
+              <h2>{mode === 'signin' ? 'Chào mừng trở lại.' : 'Bắt đầu hành trình.'}</h2>
 
               <div className="auth-tabs">
                 <button
@@ -1487,7 +1523,7 @@ function Auth() {
                   </>
                 )}
                 <label>
-                  EMAIL ADDRESS
+                  ĐỊA CHỈ EMAIL
                   <input
                     required
                     type="email"
@@ -1498,7 +1534,7 @@ function Auth() {
                   />
                 </label>
                 <label>
-                  PASSWORD
+                  MẬT KHẨU
                   <input
                     required
                     type="password"
@@ -1711,7 +1747,7 @@ function Admin() {
         <Link to="/" className="admin-brand">
           HAVIE.<small>ADMIN STUDIO v1</small>
         </Link>
-        <nav aria-label="Admin navigation">
+        <nav aria-label="Điều hướng quản trị">
           {nav.map(([label, Icon]) => (
             <button
               key={label}
@@ -1847,7 +1883,7 @@ function Admin() {
                           <td><strong>{o.orderCode}</strong></td>
                           <td>{o.recipientName}</td>
                           <td>
-                            {o.paymentMethod} •{' '}
+                            {PAYMENT_METHOD_LABELS[o.paymentMethod] || o.paymentMethod} •{' '}
                             <span className={'status-badge ' + o.paymentStatus}>
                               {o.paymentStatus}
                             </span>
@@ -1896,7 +1932,7 @@ function Admin() {
                         <td className="max-w-[200px] text-xs">{o.shippingAddress}</td>
                         <td><strong>{money(o.totalAmount)}</strong></td>
                         <td>
-                          {o.paymentMethod} •{' '}
+                          {PAYMENT_METHOD_LABELS[o.paymentMethod] || o.paymentMethod} •{' '}
                           <span className={'status-badge ' + o.paymentStatus}>
                             {o.paymentStatus}
                           </span>
@@ -2091,9 +2127,9 @@ function App() {
                     path="*"
                     element={
                       <div className="container empty-state">
-                        <h1>Page not found.</h1>
+                        <h1>Không tìm thấy trang.</h1>
                         <Link to="/" className="btn btn-primary">
-                          BACK HOME
+                          VỀ TRANG CHỦ
                         </Link>
                       </div>
                     }
