@@ -24,20 +24,20 @@ HAVIE/
 
 ## Hướng dẫn khởi chạy
 
-### 1. Khởi chạy Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Truy cập: [http://localhost:5173](http://localhost:5173)
-
-Frontend xử lý CSS bằng Tailwind CSS v4 thông qua plugin Vite. Các style component nằm trong `@layer components` và ưu tiên `@apply` Tailwind utilities; arbitrary values được giữ cho các kích thước, màu sắc và giá trị tùy chỉnh để bảo toàn thiết kế. Inline styles đã được chuyển sang utility classes. Các reset và breakpoint gốc được giữ nguyên.
-
-### 2. Khởi chạy Backend
+### 1. Khởi chạy Backend
 ```bash
 cd backend
 npm install
 npm run dev
 ```
-Truy cập: [http://localhost:3000/api/health](http://localhost:3000/api/health)
+Backend dùng `backend/.env` để kết nối PostgreSQL. Để nạp dữ liệu sản phẩm lần đầu, làm theo hướng dẫn seed trong [backend/README.md](backend/README.md).
+
+### 2. Khởi chạy Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Truy cập: [http://localhost:5173](http://localhost:5173). Frontend gọi backend thật qua `/api`; khi backend hoặc PostgreSQL không sẵn sàng, lỗi kết nối sẽ được hiển thị thay vì dùng dữ liệu mẫu.
+
+Frontend xử lý CSS bằng Tailwind CSS v4 thông qua plugin Vite. Các style component nằm trong `@layer components` và ưu tiên `@apply` Tailwind utilities; arbitrary values được giữ cho các kích thước, màu sắc và giá trị tùy chỉnh để bảo toàn thiết kế. Inline styles đã được chuyển sang utility classes. Các reset và breakpoint gốc được giữ nguyên.

@@ -86,7 +86,7 @@ Danh sách có phân trang:
 
 ### Thanh toán
 
-- `PaymentMethod`: `COD`, `MOCK_QR`
+- `PaymentMethod`: `COD`
 - `PaymentStatus`: `PENDING`, `PAID`, `FAILED`, `EXPIRED`, `REFUND_PENDING`, `REFUNDED`
 
 ## 3. Customer API
@@ -303,7 +303,7 @@ Response COD `201`:
 }
 ```
 
-Với `MOCK_QR`, đơn bắt đầu `PENDING_PAYMENT`; response có thêm `payment: { id, amount, qrData, expiresAt }`. Thanh toán QR là mô phỏng, không kết nối ngân hàng thật.
+Đặt hàng hiện chỉ hỗ trợ `COD`. Không xác nhận thanh toán nếu chưa tích hợp cổng thanh toán thực.
 
 **Quy tắc transaction:** tạo đơn, chụp tên/SKU/giá vào `OrderItem`, kiểm tra và trừ tồn, ghi `StockMovement`, tạo `Payment` và xóa giỏ phải nhất quán trong transaction. Nếu bất kỳ phần nào lỗi thì rollback. Khi QR thất bại/hết hạn hoặc đơn bị hủy, hoàn tồn đúng một lần.
 
@@ -455,5 +455,4 @@ QR demo, hoàn tiền, review, supplier/purchase order, analytics, gợi ý, d�
 
 ## 7. Ghi chú đối chiếu frontend hiện tại
 
-Frontend mẫu hiện dùng `product.id` để thêm giỏ. Sau khi áp dụng contract, cần đổi sang `variantId`; đồng thời thay dữ liệu `localStorage` cho tài khoản/đơn/giỏ bằng các API tương ứng. Có thể tiếp tục dùng mock service tạm thời, miễn là kiểu dữ liệu mock khớp response trên.
-
+Frontend dùng API backend làm nguồn dữ liệu cho danh mục, sản phẩm, tài khoản, giỏ hàng và đơn hàng; không dùng mock service làm phương án dự phòng. Thêm giỏ hàng bằng `variantId` của sản phẩm.
