@@ -2,13 +2,12 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { money } from '../data';
-import { authApi, orderApi, ORDER_STATUS_LABELS } from '../api';
+import { authApi } from '../api';
 import { useStore } from '../context/StoreContext.jsx';
 
 export default function Auth() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = searchParams.get('tab') || 'profile';
+  const [searchParams] = useSearchParams();
+  const returnTo = searchParams.get('returnTo') === '/account/orders' ? '/account/orders' : null;
   const [mode, setMode] = useState('signin');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
@@ -21,17 +20,8 @@ export default function Auth() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [loading, setLoading] = useState(false);
-  const [myOrders, setMyOrders] = useState([]);
   const { account, login, register, logout } = useStore();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (account && activeTab === 'orders') {
-      orderApi.getMyOrders().then((res) => {
-        setMyOrders(res || []);
-      });
-    }
-  }, [account, activeTab]);
 
   useEffect(() => {
     if (otpCooldown <= 0) return undefined;
@@ -54,6 +44,7 @@ export default function Auth() {
       if (mode === 'signin') {
         const u = await login(email, password);
         if (u.role === 'ADMIN') navigate('/admin');
+        else if (returnTo) navigate(returnTo);
       } else if (!otpSent) {
         const result = await authApi.requestRegistrationOtp({ fullName, email, phone, password });
         setOtpSent(true);
@@ -62,6 +53,7 @@ export default function Auth() {
       } else {
         const user = await register({ email, code: verificationCode });
         if (user.role === 'ADMIN') navigate('/admin');
+        else if (returnTo) navigate(returnTo);
       }
     } catch (err) {
       setError(err.message || 'Lỗi xác thực.');
@@ -83,19 +75,6 @@ export default function Auth() {
       setError(err.message || 'Không thể gửi lại mã xác minh.');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleCancelOrder = async (orderId) => {
-    const reason = prompt('Vui lòng nhập lý do hủy đơn:');
-    if (!reason) return;
-    try {
-      await orderApi.cancelOrder(orderId, reason);
-      const updated = await orderApi.getMyOrders();
-      setMyOrders(updated || []);
-      alert('Đã hủy đơn hàng thành công.');
-    } catch (err) {
-      alert(err.message || 'Không thể hủy đơn hàng.');
     }
   };
 
@@ -122,96 +101,33 @@ export default function Auth() {
         <div className="auth-box">
           {account ? (
             <>
-              <div className="account-tabs">
-                <button
-                  className={activeTab === 'profile' ? 'active' : ''}
-                  onClick={() => setSearchParams({ tab: 'profile' })}
-                >
-                  HỒ SƠ TÀI KHOẢN
-                </button>
-                <button
-                  className={activeTab === 'orders' ? 'active' : ''}
-                  onClick={() => setSearchParams({ tab: 'orders' })}
-                >
-                  ĐƠN HÀNG CỦA TÔI
-                </button>
-              </div>
+              <span className="eyebrow">ROLE: {account.role}</span>
+              <h2>Xin chào, {account.fullName}.</h2>
+              <p>Email: {account.email}</p>
+              <p>Số điện thoại: {account.phone || 'Chưa cập nhật'}</p>
 
-              {activeTab === 'profile' ? (
-                <>
-                  <span className="eyebrow">ROLE: {account.role}</span>
-                  <h2>Xin chào, {account.fullName}.</h2>
-                  <p>Email: {account.email}</p>
-                  <p>Số điện thoại: {account.phone || 'Chưa cập nhật'}</p>
-
-                  {account.role === 'ADMIN' && (
-                    <div className="my-[18px]">
-                      <Link to="/admin" className="btn btn-primary full">
-                        TRUY CẬP TRANG QUẢN TRỊ →
-                      </Link>
-                    </div>
-                  )}
-
-                  <div className="mt-5 flex gap-[10px]">
-                    <button className="btn btn-outline full" onClick={logout}>
-                      ĐĂNG XUẤT
-                    </button>
-                    <Link to="/products" className="btn btn-primary full">
-                      TIẾP TỤC MUA SẮM
-                    </Link>
-                  </div>
-                </>
+              {account.role === 'ADMIN' ? (
+                <div className="my-[18px]">
+                  <Link to="/admin" className="btn btn-primary full">
+                    TRUY CẬP TRANG QUẢN TRỊ →
+                  </Link>
+                </div>
               ) : (
-                <>
-                  <h2>LỊCH SỬ ĐƠN HÀNG</h2>
-                  {myOrders.length ? (
-                    <div className="orders-list">
-                      {myOrders.map((ord) => (
-                        <div key={ord.id} className="order-card">
-                          <div className="order-card-header">
-                            <div>
-                              <strong>{ord.orderCode}</strong>
-                              <small className="block text-[var(--muted)]">
-                                {new Date(ord.createdAt).toLocaleDateString('vi-VN')}
-                              </small>
-                            </div>
-                            <span className={'status-badge ' + ord.status}>
-                              {ORDER_STATUS_LABELS[ord.status] || ord.status}
-                            </span>
-                          </div>
-                          <div className="order-card-items">
-                            {ord.items.map((it) => (
-                              <div key={it.id} className="order-item-row">
-                                <span>
-                                  {it.productName} ({it.variantName}) × {it.quantity}
-                                </span>
-                                <strong>{money(it.unitPrice * it.quantity)}</strong>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="order-card-footer">
-                            <span>
-                              Tổng: <strong>{money(ord.totalAmount)}</strong>
-                            </span>
-                            {['PENDING_PAYMENT', 'PENDING_CONFIRMATION', 'CONFIRMED'].includes(
-                              ord.status,
-                            ) && (
-                              <button
-                                className="btn-mini border-[var(--danger)] text-[var(--danger)]"
-                                onClick={() => handleCancelOrder(ord.id)}
-                              >
-                                Hủy đơn
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>Bạn chưa có đơn hàng nào.</p>
-                  )}
-                </>
+                <div className="my-[18px]">
+                  <Link to="/account/orders" className="btn btn-outline full">
+                    XEM LỊCH SỬ VÀ THEO DÕI ĐƠN HÀNG
+                  </Link>
+                </div>
               )}
+
+              <div className="mt-5 flex gap-[10px]">
+                <button className="btn btn-outline full" onClick={logout}>
+                  ĐĂNG XUẤT
+                </button>
+                <Link to="/products" className="btn btn-primary full">
+                  TIẾP TỤC MUA SẮM
+                </Link>
+              </div>
             </>
           ) : (
             <>

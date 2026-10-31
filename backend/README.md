@@ -34,6 +34,8 @@ npx prisma db execute --file prisma/migrations/20261021160000_email_otp_registra
 npx prisma generate
 ```
 
+Migration `20261031200000_product_visibility` thêm cột `isActive` để Admin có thể ẩn sản phẩm mà không xóa dữ liệu đơn hàng. Với database đã được Prisma Migrate quản lý, dùng `npx prisma migrate deploy`. Với database cũ chưa quản lý migration, hãy sao lưu trước, chạy file migration này đúng một lần bằng `npx prisma db execute --file prisma/migrations/20261031200000_product_visibility/migration.sql`, rồi chạy `npx prisma generate`.
+
 Không chạy `prisma migrate reset` trên database có dữ liệu.
 
 Để nạp danh mục, thương hiệu, sản phẩm và biến thể trong `prisma/productsData.json`, cấu hình `DATABASE_URL` trong `backend/.env`, sau đó chạy từ thư mục `backend`:
@@ -66,7 +68,12 @@ Backend mặc định chạy tại `http://localhost:3000`; kiểm tra `http://l
 - `GET /api/products/:slug/reviews`
 - `GET /api/cart`, `POST /api/cart/items`, `PATCH /api/cart/items/:id`, `DELETE /api/cart/items/:id`
 - `POST /api/orders`, `GET /api/orders/my`, `POST /api/orders/:id/cancel`
+- Admin (yêu cầu role `ADMIN`): `GET /api/admin/products`, `POST /api/admin/products`, `PATCH /api/admin/products/:id`, `GET /api/admin/orders`, `PATCH /api/admin/orders/:id/status`
 
 OTP hết hạn sau 10 phút, gửi lại sau 60 giây và tối đa 5 lần nhập sai. Các route sản phẩm hỗ trợ bộ lọc và phân trang theo `API_CONTRACT_HAVIE_v1.md`.
 
-Giỏ hàng và đặt hàng yêu cầu đăng nhập. API đặt hàng hiện chỉ hỗ trợ COD; thanh toán QR chưa được tích hợp.
+Admin có thể thêm/cập nhật sản phẩm, biến thể, giá, tồn kho và ẩn sản phẩm khỏi catalog mà không xóa dữ liệu đơn cũ. Thay đổi tồn kho qua màn hình sản phẩm được ghi vào lịch sử kho.
+
+Vòng đời đơn do Admin xử lý theo thứ tự `PENDING_CONFIRMATION → CONFIRMED → SHIPPING → COMPLETED`. Chỉ được hủy khi đơn còn `PENDING_CONFIRMATION` hoặc `CONFIRMED`; hủy bắt buộc có lý do và hoàn kho trong cùng transaction. Đơn đã giao/hoàn thành không thể hủy. Hoàn tất đơn COD đồng thời ghi nhận đã thu tiền.
+
+Giỏ hàng, đặt hàng và xem/hủy đơn cá nhân yêu cầu tài khoản Customer; Admin không thể tạo đơn hoặc dùng lịch sử đơn hàng của khách qua API khách hàng. Khách xem tiến trình đơn tại tab “Đơn hàng của tôi”; trạng thái tự tải lại mỗi 30 giây khi đang mở tab và có nút cập nhật thủ công. API đặt hàng hiện chỉ hỗ trợ COD; thanh toán QR chưa được tích hợp.

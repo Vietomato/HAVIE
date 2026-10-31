@@ -24,6 +24,7 @@ const cartInclude = {
               id: true,
               name: true,
               slug: true,
+              isActive: true,
               imageUrls: true,
               category: {
                 select: { id: true, name: true, slug: true },
@@ -85,10 +86,11 @@ router.post(
           id: true,
           isAvailable: true,
           stockQuantity: true,
+          product: { select: { isActive: true } },
         },
       });
 
-      if (!variant || !variant.isAvailable) {
+      if (!variant || !variant.isAvailable || !variant.product.isActive) {
         throw new HttpError(
           404,
           'VARIANT_NOT_FOUND',
@@ -162,7 +164,7 @@ router.patch(
 
       const item = await tx.cartItem.findFirst({
         where: { id: req.params.id, cartId: userCart.id },
-        include: { variant: true },
+        include: { variant: { include: { product: { select: { isActive: true } } } } },
       });
 
       if (!item) {
@@ -172,7 +174,7 @@ router.patch(
       if (quantity === 0) {
         await tx.cartItem.delete({ where: { id: item.id } });
       } else {
-        if (!item.variant.isAvailable) {
+        if (!item.variant.isAvailable || !item.variant.product.isActive) {
           throw new HttpError(409, 'VARIANT_UNAVAILABLE', 'Biến thể đã ngừng bán.');
         }
 

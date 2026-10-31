@@ -29,6 +29,7 @@ HAVIE/
 - `src/context/StoreContext.jsx`: state và thao tác dùng chung cho tài khoản, giỏ hàng, yêu thích; export `StoreProvider` và `useStore`.
 - `src/components/`: `Header`, `Footer`, `Shell`, `ProductCard` dùng chung.
 - `src/pages/`: `Home`, `Listing`, `Detail`, `Cart`, `Checkout`, `Auth`; trang quản trị nằm tại `pages/admin/Admin.jsx`.
+- `/account/orders`: trang lịch sử và theo dõi trạng thái đơn riêng của khách đã đăng nhập.
 - `src/api/`: HTTP client và các dịch vụ gọi backend thật; mock đã được bỏ theo cập nhật từ branch `dev`.
 - `src/utils/product.js`: nhãn sản phẩm và hàm hiển thị tên biến thể dùng chung.
 - `src/style.tailwind.css`: điểm import Tailwind và các stylesheet trong `styles/`.

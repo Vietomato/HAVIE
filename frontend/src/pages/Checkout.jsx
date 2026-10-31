@@ -76,19 +76,28 @@ export default function Checkout() {
             Mã đơn hàng của bạn là <strong>{createdOrder.orderCode}</strong>.
           </p>
           <div className="mx-auto my-[15px] max-w-[400px] text-left">
-            <p><strong>Người nhận:</strong> {createdOrder.recipientName} ({createdOrder.recipientPhone})</p>
-            <p><strong>Địa chỉ:</strong> {createdOrder.shippingAddress}</p>
-            <p><strong>Phương thức:</strong> {PAYMENT_METHOD_LABELS[createdOrder.paymentMethod]}</p>
+            <p>
+              <strong>Người nhận:</strong> {createdOrder.recipientName} (
+              {createdOrder.recipientPhone})
+            </p>
+            <p>
+              <strong>Địa chỉ:</strong> {createdOrder.shippingAddress}
+            </p>
+            <p>
+              <strong>Phương thức:</strong> {PAYMENT_METHOD_LABELS[createdOrder.paymentMethod]}
+            </p>
             <p>
               <strong>Trạng thái: </strong>
               <span className={'status-badge ' + createdOrder.status}>
                 {ORDER_STATUS_LABELS[createdOrder.status]}
               </span>
             </p>
-            <p><strong>Tổng thanh toán:</strong> {money(createdOrder.totalAmount)}</p>
+            <p>
+              <strong>Tổng thanh toán:</strong> {money(createdOrder.totalAmount)}
+            </p>
           </div>
           <div className="flex justify-center gap-3">
-            <Link className="btn btn-primary" to="/auth?tab=orders">
+            <Link className="btn btn-primary" to="/account/orders">
               XEM LỊCH SỬ ĐƠN HÀNG
             </Link>
             <Link className="btn btn-outline" to="/">
@@ -134,19 +143,11 @@ export default function Checkout() {
               <div className="grid grid-cols-2 gap-3">
                 <label>
                   TỈNH / THÀNH PHỐ
-                  <input
-                    required
-                    value={province}
-                    onChange={(e) => setProvince(e.target.value)}
-                  />
+                  <input required value={province} onChange={(e) => setProvince(e.target.value)} />
                 </label>
                 <label>
                   QUẬN / HUYỆN
-                  <input
-                    required
-                    value={district}
-                    onChange={(e) => setDistrict(e.target.value)}
-                  />
+                  <input required value={district} onChange={(e) => setDistrict(e.target.value)} />
                 </label>
               </div>
               <div className="grid grid-cols-[1fr_2fr] gap-3">

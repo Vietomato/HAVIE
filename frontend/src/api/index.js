@@ -167,8 +167,24 @@ export const reviewApi = {
 };
 
 export const adminApi = {
+  createProduct: async (payload) => {
+    const res = await apiClient.request('/admin/products', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    return res.data;
+  },
+
   getProducts: async () => {
     const res = await apiClient.request('/admin/products');
+    return res.data;
+  },
+
+  updateProduct: async (productId, payload) => {
+    const res = await apiClient.request(
+      `/admin/products/${encodeURIComponent(productId)}`,
+      { method: 'PATCH', body: JSON.stringify(payload) },
+    );
     return res.data;
   },
 
@@ -177,10 +193,10 @@ export const adminApi = {
     return res.data;
   },
 
-  updateOrderStatus: async (orderId, status, note) => {
+  updateOrderStatus: async (orderId, status, reason) => {
     const res = await apiClient.request(
       `/admin/orders/${encodeURIComponent(orderId)}/status`,
-      { method: 'PATCH', body: JSON.stringify({ status, note }) },
+      { method: 'PATCH', body: JSON.stringify({ status, reason }) },
     );
     return res.data;
   },

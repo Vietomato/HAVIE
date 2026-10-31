@@ -91,3 +91,19 @@ export const authMiddleware = asyncHandler(async (req, res, next) => {
   req.user = user;
   next();
 });
+
+export function requireAdmin(req, res, next) {
+  if (req.user?.role !== 'ADMIN') {
+    return next(new HttpError(403, 'FORBIDDEN', 'Bạn không có quyền quản trị.'));
+  }
+
+  next();
+}
+
+export function requireCustomer(req, res, next) {
+  if (req.user?.role !== 'CUSTOMER') {
+    return next(new HttpError(403, 'FORBIDDEN', 'Chỉ khách hàng mới có thể đặt hàng.'));
+  }
+
+  next();
+}

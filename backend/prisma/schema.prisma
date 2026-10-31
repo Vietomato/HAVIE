@@ -120,6 +120,7 @@ model Product {
   id            String           @id @default(uuid())
   name          String
   slug          String           @unique
+  isActive      Boolean          @default(true)
   description   String?
   categoryId    String
   brandId       String

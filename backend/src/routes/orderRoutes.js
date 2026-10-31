@@ -1,53 +1,53 @@
-import { Router } from 'express';
-import { randomUUID } from 'node:crypto';
-import prisma from '../config/prisma.js';
-import { authMiddleware } from '../middlewares/authMiddleware.js';
-import { asyncHandler, HttpError } from '../utils/http.js';
+import { Router } from "express";
+import { randomUUID } from "node:crypto";
+import prisma from "../config/prisma.js";
+import {
+  authMiddleware,
+  requireCustomer,
+} from "../middlewares/authMiddleware.js";
+import { asyncHandler, HttpError } from "../utils/http.js";
 
 const router = Router();
 const SHIPPING_FEE = 30000;
-const CANCELLABLE_STATUSES = [
-  'PENDING_PAYMENT',
-  'PENDING_CONFIRMATION',
-  'CONFIRMED',
-];
+const CANCELLABLE_STATUSES = ["PENDING_CONFIRMATION", "CONFIRMED"];
 
 router.use(authMiddleware);
 
 function requiredText(value) {
-  return typeof value === 'string' && value.trim().length > 0;
+  return typeof value === "string" && value.trim().length > 0;
 }
 
 function createOrderCode() {
-  const date = new Date().toISOString().slice(0, 10).replaceAll('-', '');
+  const date = new Date().toISOString().slice(0, 10).replaceAll("-", "");
   return `HV-${date}-${randomUUID().slice(0, 8).toUpperCase()}`;
 }
 
 router.post(
-  '/',
+  "/",
+  requireCustomer,
   asyncHandler(async (req, res) => {
     const {
       addressId,
       recipientName,
       recipientPhone,
       shippingAddress,
-      paymentMethod = 'COD',
+      paymentMethod = "COD",
       customerNote,
     } = req.body ?? {};
 
-    if (paymentMethod !== 'COD') {
+    if (paymentMethod !== "COD") {
       throw new HttpError(
         400,
-        'UNSUPPORTED_PAYMENT_METHOD',
-        'Hiện tại chỉ hỗ trợ thanh toán COD.',
+        "UNSUPPORTED_PAYMENT_METHOD",
+        "Hiện tại chỉ hỗ trợ thanh toán COD.",
       );
     }
 
     if (addressId && shippingAddress) {
       throw new HttpError(
         400,
-        'VALIDATION_ERROR',
-        'Chỉ chọn địa chỉ đã lưu hoặc nhập địa chỉ mới.',
+        "VALIDATION_ERROR",
+        "Chỉ chọn địa chỉ đã lưu hoặc nhập địa chỉ mới.",
       );
     }
 
@@ -61,7 +61,11 @@ router.post(
       });
 
       if (!address) {
-        throw new HttpError(404, 'ADDRESS_NOT_FOUND', 'Không tìm thấy địa chỉ.');
+        throw new HttpError(
+          404,
+          "ADDRESS_NOT_FOUND",
+          "Không tìm thấy địa chỉ.",
+        );
       }
 
       recipient = address.recipientName;
@@ -71,7 +75,7 @@ router.post(
         address.ward,
         address.district,
         address.province,
-      ].join(', ');
+      ].join(", ");
     } else {
       const fields = shippingAddress ?? {};
 
@@ -85,8 +89,8 @@ router.post(
       ) {
         throw new HttpError(
           400,
-          'VALIDATION_ERROR',
-          'Vui lòng nhập đầy đủ người nhận, số điện thoại và địa chỉ.',
+          "VALIDATION_ERROR",
+          "Vui lòng nhập đầy đủ người nhận, số điện thoại và địa chỉ.",
         );
       }
 
@@ -97,7 +101,9 @@ router.post(
         fields.ward,
         fields.district,
         fields.province,
-      ].map((part) => part.trim()).join(', ');
+      ]
+        .map((part) => part.trim())
+        .join(", ");
     }
 
     const order = await prisma.$transaction(async (tx) => {
@@ -115,7 +121,7 @@ router.post(
       });
 
       if (!cart?.items.length) {
-        throw new HttpError(400, 'CART_EMPTY', 'Giỏ hàng đang trống.');
+        throw new HttpError(400, "CART_EMPTY", "Giỏ hàng đang trống.");
       }
 
       let subtotal = 0;
@@ -123,10 +129,14 @@ router.post(
       for (const item of cart.items) {
         const variant = item.variant;
 
-        if (!variant.isAvailable || variant.stockQuantity < item.quantity) {
+        if (
+          !variant.isAvailable ||
+          !variant.product.isActive ||
+          variant.stockQuantity < item.quantity
+        ) {
           throw new HttpError(
             409,
-            'INSUFFICIENT_STOCK',
+            "INSUFFICIENT_STOCK",
             `Sản phẩm "${variant.product.name}" không đủ tồn kho.`,
             { variantId: variant.id, available: variant.stockQuantity },
           );
@@ -142,6 +152,7 @@ router.post(
           where: {
             id: item.variantId,
             isAvailable: true,
+            product: { isActive: true },
             stockQuantity: { gte: item.quantity },
           },
           data: { stockQuantity: { decrement: item.quantity } },
@@ -150,8 +161,8 @@ router.post(
         if (result.count !== 1) {
           throw new HttpError(
             409,
-            'INSUFFICIENT_STOCK',
-            'Tồn kho vừa thay đổi. Vui lòng tải lại giỏ hàng.',
+            "INSUFFICIENT_STOCK",
+            "Tồn kho vừa thay đổi. Vui lòng tải lại giỏ hàng.",
             { variantId: item.variantId },
           );
         }
@@ -159,9 +170,9 @@ router.post(
         await tx.stockMovement.create({
           data: {
             variantId: item.variantId,
-            type: 'OUT',
+            type: "OUT",
             quantity: item.quantity,
-            reason: 'ORDER_PLACED',
+            reason: "ORDER_PLACED",
           },
         });
       }
@@ -170,16 +181,16 @@ router.post(
         data: {
           orderCode: createOrderCode(),
           userId: req.user.id,
-          status: 'PENDING_CONFIRMATION',
-          paymentMethod: 'COD',
-          paymentStatus: 'PENDING',
+          status: "PENDING_CONFIRMATION",
+          paymentMethod: "COD",
+          paymentStatus: "PENDING",
           subtotal,
           shippingFee: SHIPPING_FEE,
           totalAmount,
           recipientName: recipient,
           recipientPhone: phone,
           shippingAddress: fullAddress,
-          note: typeof customerNote === 'string' ? customerNote.trim() : null,
+          note: typeof customerNote === "string" ? customerNote.trim() : null,
           items: {
             create: cart.items.map((item) => ({
               variantId: item.variantId,
@@ -201,18 +212,19 @@ router.post(
 
     res.status(201).json({
       data: order,
-      message: 'Đặt hàng thành công.',
+      message: "Đặt hàng thành công.",
     });
   }),
 );
 
 router.get(
-  '/my',
+  "/my",
+  requireCustomer,
   asyncHandler(async (req, res) => {
     const orders = await prisma.order.findMany({
       where: { userId: req.user.id },
       include: { items: true },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     res.json({
@@ -228,12 +240,13 @@ router.get(
 );
 
 router.post(
-  '/:id/cancel',
+  "/:id/cancel",
+  requireCustomer,
   asyncHandler(async (req, res) => {
     const { reason } = req.body ?? {};
 
     if (!requiredText(reason)) {
-      throw new HttpError(400, 'VALIDATION_ERROR', 'Vui lòng nhập lý do hủy.');
+      throw new HttpError(400, "VALIDATION_ERROR", "Vui lòng nhập lý do hủy.");
     }
 
     const order = await prisma.$transaction(async (tx) => {
@@ -243,21 +256,22 @@ router.post(
       });
 
       if (!current) {
-        throw new HttpError(404, 'ORDER_NOT_FOUND', 'Không tìm thấy đơn hàng.');
+        throw new HttpError(404, "ORDER_NOT_FOUND", "Không tìm thấy đơn hàng.");
       }
 
       if (!CANCELLABLE_STATUSES.includes(current.status)) {
         throw new HttpError(
           409,
-          'ORDER_CANNOT_BE_CANCELLED',
-          'Đơn hàng không thể hủy ở trạng thái hiện tại.',
+          "ORDER_CANNOT_BE_CANCELLED",
+          "Đơn hàng không thể hủy ở trạng thái hiện tại.",
         );
       }
 
-      const nextStatus =
-        current.paymentStatus === 'PAID' ? 'REFUND_PENDING' : 'CANCELLED';
+      const nextStatus = "CANCELLED";
       const nextPaymentStatus =
-        current.paymentStatus === 'PAID' ? 'REFUND_PENDING' : current.paymentStatus;
+        current.paymentStatus === "PAID"
+          ? "REFUND_PENDING"
+          : current.paymentStatus;
 
       const claim = await tx.order.updateMany({
         where: {
@@ -276,8 +290,8 @@ router.post(
       if (claim.count !== 1) {
         throw new HttpError(
           409,
-          'ORDER_CANNOT_BE_CANCELLED',
-          'Đơn hàng đã được cập nhật; vui lòng tải lại.',
+          "ORDER_CANNOT_BE_CANCELLED",
+          "Đơn hàng đã được cập nhật; vui lòng tải lại.",
         );
       }
 
@@ -290,9 +304,9 @@ router.post(
         await tx.stockMovement.create({
           data: {
             variantId: item.variantId,
-            type: 'IN',
+            type: "IN",
             quantity: item.quantity,
-            reason: 'ORDER_CANCELLED',
+            reason: "ORDER_CANCELLED",
           },
         });
       }
@@ -303,7 +317,7 @@ router.post(
       });
     });
 
-    res.json({ data: order, message: 'Đã hủy đơn hàng.' });
+    res.json({ data: order, message: "Đã hủy đơn hàng." });
   }),
 );
 

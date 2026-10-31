@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, UserRound, ShoppingBag, Menu, X, ShieldAlert } from 'lucide-react';
+import { Search, UserRound, ShoppingBag, Menu, X, ShieldAlert, ClipboardList } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
 
 export default function Header() {
@@ -10,10 +10,18 @@ export default function Header() {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const { pathname, search, hash } = useLocation();
-  const isCollection = pathname === '/products' && new URLSearchParams(search).get('category') === 'rackets';
-  const activeItem = pathname === '/' ? (hash === '#about' ? 'about' : 'home')
-    : pathname === '/products' || pathname.startsWith('/products/') ? (isCollection ? 'collection' : 'store')
-    : null;
+  const isCollection =
+    pathname === '/products' && new URLSearchParams(search).get('category') === 'rackets';
+  const activeItem =
+    pathname === '/'
+      ? hash === '#about'
+        ? 'about'
+        : 'home'
+      : pathname === '/products' || pathname.startsWith('/products/')
+        ? isCollection
+          ? 'collection'
+          : 'store'
+        : null;
   const navProps = (item) => ({
     className: activeItem === item ? 'active' : undefined,
     'aria-current': activeItem === item ? 'page' : undefined,
@@ -65,6 +73,18 @@ export default function Header() {
           {account?.role === 'ADMIN' && (
             <Link to="/admin" className="admin-shortcut-pill" title="Mở trang Quản trị HAVIE">
               <ShieldAlert size={14} /> Quản trị
+            </Link>
+          )}
+          {account?.role === 'CUSTOMER' && (
+            <Link
+              to="/account/orders"
+              className={'header-orders-link ' + (pathname === '/account/orders' ? 'active' : '')}
+              aria-label="Lịch sử đơn hàng"
+              aria-current={pathname === '/account/orders' ? 'page' : undefined}
+              title="Lịch sử đơn hàng"
+            >
+              <ClipboardList size={20} />
+              <span>Đơn hàng</span>
             </Link>
           )}
           <Link

@@ -7,6 +7,7 @@ import Detail from './pages/Detail.jsx';
 import Cart from './pages/Cart.jsx';
 import Checkout from './pages/Checkout.jsx';
 import Auth from './pages/Auth.jsx';
+import AccountOrders from './pages/AccountOrders.jsx';
 import Admin from './pages/admin/Admin.jsx';
 import { StoreProvider } from './context/StoreContext.jsx';
 
@@ -25,6 +26,7 @@ export default function App() {
                   <Route path="/products" element={<Listing />} />
                   <Route path="/products/:id" element={<Detail />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/account/orders" element={<AccountOrders />} />
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/checkout" element={<Checkout />} />
                   <Route

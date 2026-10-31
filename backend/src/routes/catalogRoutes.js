@@ -53,7 +53,7 @@ router.get(
   '/products',
   asyncHandler(async (req, res) => {
     const filters = parseCatalogQuery(req.query);
-    const where = {};
+    const where = { isActive: true };
 
     if (filters.q) {
       where.OR = [
@@ -148,7 +148,10 @@ router.get(
   '/products/:slug/reviews',
   asyncHandler(async (req, res) => {
     const product = await prisma.product.findFirst({
-      where: { OR: [{ slug: req.params.slug }, { id: req.params.slug }] },
+      where: {
+        isActive: true,
+        OR: [{ slug: req.params.slug }, { id: req.params.slug }],
+      },
       select: { id: true },
     });
     if (!product) throw new HttpError(404, 'PRODUCT_NOT_FOUND', 'Không tìm thấy sản phẩm.');
