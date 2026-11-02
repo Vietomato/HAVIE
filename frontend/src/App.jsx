@@ -10,6 +10,7 @@ import Auth from './pages/Auth.jsx';
 import AccountOrders from './pages/AccountOrders.jsx';
 import Admin from './pages/admin/Admin.jsx';
 import { StoreProvider } from './context/StoreContext.jsx';
+import AdvisorChat from './components/AdvisorChat.jsx';
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
                     }
                   />
                 </Routes>
+                      <AdvisorChat />
               </Shell>
             }
           />

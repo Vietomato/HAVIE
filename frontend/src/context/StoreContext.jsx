@@ -101,6 +101,12 @@ export function StoreProvider({ children }) {
     return res.user;
   };
 
+  const loginMockAdmin = async (email, password) => {
+    const res = await authApi.loginMockAdmin({ email, password });
+    setAccount(res.user);
+    return res.user;
+  };
+
   const register = async (payload) => {
     const res = await authApi.register(payload);
     setAccount(res.user);
@@ -125,6 +131,7 @@ export function StoreProvider({ children }) {
         account,
         setAccount,
         login,
+        loginMockAdmin,
         register,
         logout,
         authLoading,

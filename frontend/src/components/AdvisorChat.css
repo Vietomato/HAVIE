@@ -1,0 +1,428 @@
+.havie-advisor {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  font-family: inherit;
+}
+
+.havie-advisor,
+.havie-advisor * {
+  box-sizing: border-box;
+}
+
+.havie-advisor button,
+.havie-advisor input {
+  font: inherit;
+}
+
+.havie-advisor button {
+  cursor: pointer;
+}
+
+.havie-advisor button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.havie-advisor button:focus-visible,
+.havie-advisor input:focus-visible,
+.havie-advisor a:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
+}
+
+.havie-advisor__launcher {
+  border: 0;
+  border-radius: 999px;
+  padding: 15px 22px;
+  background: #166534;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 8px 28px #0003;
+}
+
+.havie-advisor__panel {
+  display: flex;
+  flex-direction: column;
+  width: min(390px, calc(100vw - 32px));
+  height: min(600px, calc(100dvh - 40px));
+  min-width: min(320px, calc(100vw - 32px));
+  min-height: min(420px, calc(100dvh - 40px));
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 40px);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #dbe3df;
+  border-radius: 18px;
+  background: #fff;
+  color: #17251e;
+  box-shadow: 0 16px 50px #0003;
+  transition: border-radius 180ms ease;
+}
+
+.havie-advisor__resize-handle {
+  position: absolute;
+  z-index: 5;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  touch-action: none;
+}
+
+.havie-advisor__resize-handle:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -3px;
+}
+
+.havie-advisor__resize-handle--horizontal {
+  top: 50%;
+  left: 0;
+  width: 12px;
+  height: 72px;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+}
+
+.havie-advisor__resize-handle--vertical {
+  top: 0;
+  left: 50%;
+  width: 72px;
+  height: 12px;
+  transform: translateX(-50%);
+  cursor: ns-resize;
+}
+
+.havie-advisor__resize-handle--diagonal {
+  top: 0;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  cursor: nwse-resize;
+}
+
+.havie-advisor__resize-handle--diagonal span {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 11px;
+  height: 11px;
+  border-top: 2px solid #64748b;
+  border-left: 2px solid #64748b;
+}
+
+.havie-advisor__resize-handle:hover
+  ~ .havie-advisor__resize-handle--diagonal span {
+  border-color: #166534;
+}
+
+.havie-advisor--fullscreen {
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100vw;
+  height: 100dvh;
+  z-index: 2000;
+}
+
+.havie-advisor--fullscreen .havie-advisor__panel {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.havie-advisor--fullscreen .havie-advisor__history {
+  max-height: 150px;
+}
+
+.havie-advisor--fullscreen .havie-advisor__messages {
+  padding: clamp(20px, 4vw, 48px);
+}
+
+.havie-advisor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  background: #166534;
+  color: #fff;
+}
+
+.havie-advisor__header small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.havie-advisor__header-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.havie-advisor__header-actions button {
+  display: grid;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid #ffffff80;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+}
+
+.havie-advisor__header-actions button:hover {
+  background: #ffffff1a;
+}
+
+.havie-advisor__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.havie-advisor__toolbar strong {
+  font-size: 13px;
+}
+
+.havie-advisor__toolbar button {
+  border: 0;
+  background: transparent;
+  color: #166534;
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.havie-advisor__history {
+  display: flex;
+  gap: 6px;
+  max-height: 112px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 12px;
+}
+
+.havie-advisor__history > span {
+  align-self: center;
+  color: #64748b;
+}
+
+.havie-advisor__history-card {
+  display: flex;
+  flex: 0 0 170px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.havie-advisor__history-item {
+  display: grid;
+  flex: 1;
+  align-content: center;
+  gap: 3px;
+  width: 100%;
+  min-width: 0;
+  padding: 7px 9px;
+  overflow: hidden;
+  border: 1px solid #dbe3df;
+  border-radius: 8px;
+  background: #fff;
+  color: #17251e;
+  text-align: left;
+}
+
+.havie-advisor__history-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.havie-advisor__history-item small {
+  color: #166534;
+}
+
+.havie-advisor__history-item.is-active {
+  border-color: #166534;
+  background: #f0fdf4;
+}
+
+.havie-advisor__history-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.havie-advisor__history-actions button {
+  padding: 1px 3px;
+  border: 0;
+  background: transparent;
+  color: #166534;
+  font-size: 11px;
+  text-decoration: underline;
+}
+
+.havie-advisor__history-actions button:disabled {
+  cursor: not-allowed;
+  color: #94a3b8;
+  text-decoration: none;
+}
+
+.havie-advisor__login {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.havie-advisor__login p {
+  margin: 0;
+}
+
+.havie-advisor__login a {
+  width: fit-content;
+  color: #166534;
+  font-weight: 700;
+}
+
+.havie-advisor__messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px;
+  background: #f7f9f8;
+}
+
+.havie-advisor__message {
+  width: fit-content;
+  max-width: 94%;
+  margin-bottom: 14px;
+  padding: 11px 13px;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+
+.havie-advisor__message--assistant {
+  margin-right: auto;
+  border: 1px solid #e0e7e2;
+  background: #fff;
+}
+
+.havie-advisor__message--user {
+  margin-left: auto;
+  background: #dcfce7;
+}
+
+.havie-advisor__speaker {
+  display: block;
+  margin-bottom: 5px;
+  color: #3f5146;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.havie-advisor__message p {
+  margin: 0;
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.havie-advisor__candidates {
+  display: grid;
+  gap: 9px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.havie-advisor__product {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid #bbd5c3;
+  border-radius: 9px;
+  color: #14532d;
+  text-decoration: none;
+}
+
+.havie-advisor__product:hover {
+  background: #f0fdf4;
+}
+
+.havie-advisor__waiting {
+  color: #475569;
+  font-size: 13px;
+}
+
+.havie-advisor__error {
+  padding: 10px 14px;
+  border-top: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.havie-advisor__form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.havie-advisor__form input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid #94a3b8;
+  border-radius: 9px;
+  background: #fff;
+  color: #17251e;
+  font-size: 14px;
+}
+
+.havie-advisor__form button {
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 13px;
+  background: #166534;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.havie-advisor__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .havie-advisor {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .havie-advisor__panel {
+    transition: none;
+  }
+}

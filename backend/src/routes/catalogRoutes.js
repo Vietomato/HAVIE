@@ -20,10 +20,12 @@ const variantSelect = {
 const productInclude = {
   category: { select: categorySelect },
   brand: { select: brandSelect },
-  variants: {
-    where: { isAvailable: true },
+    variants: {
     select: variantSelect,
-    orderBy: { createdAt: 'asc' },
+    orderBy: [
+      { isAvailable: 'desc' },
+      { createdAt: 'asc' },
+    ],
   },
 };
 
@@ -197,7 +199,13 @@ router.get(
   '/products/:slug',
   asyncHandler(async (req, res) => {
     const product = await prisma.product.findFirst({
-      where: { OR: [{ slug: req.params.slug }, { id: req.params.slug }] },
+         where: {
+        isActive: true,
+        OR: [
+          { slug: req.params.slug },
+          { id: req.params.slug },
+        ],
+      },
       include: productInclude,
     });
     if (!product) throw new HttpError(404, 'PRODUCT_NOT_FOUND', 'Không tìm thấy sản phẩm.');
