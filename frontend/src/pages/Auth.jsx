@@ -50,7 +50,6 @@ export default function Auth() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [loading, setLoading] = useState(false);
-  const { account, login, loginMockAdmin, register, logout } = useStore();
   const { account, login, register, logout } = useStore();
   const { notify } = useToast();
   const navigate = useNavigate();
@@ -108,20 +107,6 @@ export default function Auth() {
       setNotice(result.message || 'Mã xác minh đã được gửi lại tới email của bạn.');
     } catch (err) {
       setError(err.message || 'Không thể gửi lại mã xác minh.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleMockAdminLogin = async () => {
-    setError('');
-    setNotice('');
-    try {
-      setLoading(true);
-      await loginMockAdmin(email, password);
-      navigate('/admin');
-    } catch (err) {
-      setError(err.message || 'Không thể đăng nhập Admin thử nghiệm.');
     } finally {
       setLoading(false);
     }
@@ -336,21 +321,6 @@ export default function Auth() {
                   <ArrowRight size={18} aria-hidden="true" />
                 </button>
               </form>
-              {import.meta.env.DEV && mode === 'signin' && !otpSent && (
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="btn btn-outline full"
-                    disabled={loading}
-                    onClick={handleMockAdminLogin}
-                  >
-                    {loading ? 'ĐANG ĐĂNG NHẬP...' : 'ĐĂNG NHẬP ADMIN THỬ NGHIỆM'}
-                  </button>
-                  <p className="mt-2 text-center text-xs text-[var(--muted)]">
-                    Dùng email và mật khẩu MOCK_ADMIN đã cấu hình ở backend/.env.
-                  </p>
-                </div>
-              )}
             </>
           )}
         </div>
