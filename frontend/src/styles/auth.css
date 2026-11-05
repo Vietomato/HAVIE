@@ -1,124 +1,148 @@
 @layer components {
-.auth-layout {
-  @apply min-h-[calc(100vh_-_78px)];
-  @apply grid;
-}
-.auth-art {
-  @apply bg-[var(--ink)];
-  @apply text-white;
-  background-image: linear-gradient(rgba(16, 24, 39, 0.82), rgba(16, 24, 39, 0.82)), url('/images/kento-momota.jpg');
-  background-position: center;
-  background-size: cover;
-  @apply p-[36px_24px];
-  @apply flex;
-  @apply flex-col;
-  @apply justify-between;
-  @apply min-h-[360px];
-}
-.auth-brand {
-  @apply text-[29px];
-  @apply font-black;
-  @apply tracking-[-1px];
-}
-.auth-art .eyebrow {
-  @apply text-[var(--highlight)];
-}
-.auth-art h1 {
-  @apply text-[clamp(46px,_8vw,_88px)];
-  @apply tracking-[-3px];
-  @apply leading-[0.95];
-  @apply m-[17px_0];
-}
-.auth-art h1 span {
-  @apply text-[var(--highlight)];
-}
-.auth-art p {
-  @apply text-[var(--highlight)];
-  @apply text-[13px];
-}
-.auth-art > span {
-  @apply text-[10px];
-  @apply tracking-[2px];
-  @apply text-[var(--highlight)];
-}
-.auth-panel {
-  @apply grid;
-  @apply place-items-center;
-  @apply p-[60px_20px];
-}
-.auth-box {
-  @apply w-[min(450px,_100%)];
-}
-.auth-box h2 {
-  @apply text-[clamp(34px,_5vw,_50px)];
-  @apply tracking-[-1px];
-  @apply text-[var(--ink)];
-  @apply m-[16px_0];
-}
-.auth-box > p {
-  @apply text-[var(--muted)];
-  @apply text-[13px];
-  @apply leading-[1.6];
-}
-.auth-tabs {
-  @apply grid;
-  @apply grid-cols-[1fr_1fr];
-  @apply m-[33px_0_27px];
-  @apply border-b border-[var(--border)];
-}
-.auth-tabs button {
-  @apply bg-transparent;
-  @apply border-0;
-  @apply p-[14px];
-  @apply text-xs;
-  @apply tracking-[1px];
-  @apply font-extrabold;
-  @apply text-[var(--muted)];
-}
-.auth-tabs button.active {
-  @apply border-b-[3px] border-[var(--secondary)];
-  @apply text-[var(--link)];
-}
-.auth-form {
-  @apply grid;
-  @apply gap-5;
-}
-.auth-form label,
-.checkout-form label {
-  @apply grid;
-  @apply gap-[10px];
-  @apply text-[11px];
-  @apply font-extrabold;
-  @apply tracking-[1px];
-  @apply text-[var(--ink)];
-}
-.auth-form input,
-.checkout-form input,
-.checkout-form textarea {
-  @apply w-full;
-  @apply p-[15px];
-  @apply border border-[var(--border)];
-  @apply bg-white;
-  @apply [outline-color:var(--secondary)];
-  @apply text-sm;
-  @apply tracking-[0];
-  @apply font-normal;
-}
-.full {
-  @apply w-full;
-}
-.auth-disclaimer {
-  font-size: 11px !important;
-  @apply mt-5;
-  @apply text-[var(--muted)];
-}
-.form-error {
-  @apply text-[var(--danger)];
-  @apply text-xs;
-  @apply m-[0];
-}
-
-.auth-panel { background: var(--surface); }
-.auth-form input, .checkout-form input, .checkout-form textarea { border-radius: 6px; }
-.auth-form input:hover, .checkout-form input:hover, .checkout-form textarea:hover { border-color: var(--secondary); }
+  .auth-layout {
+    display: grid;
+    min-height: calc(100vh - var(--header-height));
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .auth-art {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 48px;
+    background-color: var(--ink);
+    background-image:
+      linear-gradient(rgb(16 24 39 / 82%), rgb(16 24 39 / 82%)),
+      url('/images/kento-momota.jpg');
+    background-position: center;
+    background-size: cover;
+    color: #fff;
+  }
+  .auth-brand {
+    font-size: 29px;
+    font-weight: 900;
+    letter-spacing: -1px;
+  }
+  .auth-brand span {
+    color: var(--primary);
+  }
+  .auth-art .eyebrow {
+    color: var(--highlight);
+  }
+  .auth-art p {
+    color: var(--highlight);
+    font-size: 15px;
+  }
+  .auth-art .auth-slogan {
+    margin-block: 16px;
+    color: #fff;
+    font-size: clamp(46px, 6.5vw, 84px);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+  }
+  .auth-slogan span {
+    color: var(--primary);
+  }
+  .auth-panel {
+    display: grid;
+    place-items: start center;
+    padding: 32px 18px 56px;
+    background: var(--surface);
+  }
+  .auth-box {
+    width: min(440px, 100%);
+  }
+  .auth-box h1 {
+    margin-block: 10px 6px;
+    color: var(--ink);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+  .auth-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-block: 20px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .auth-tabs button {
+    min-height: 48px;
+    margin-bottom: -1px;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+  }
+  .auth-tabs button:hover {
+    color: var(--ink);
+  }
+  .auth-tabs button.active {
+    border-bottom-color: var(--secondary);
+    color: var(--link);
+  }
+  .auth-form {
+    display: grid;
+    gap: 16px;
+  }
+  .otp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .form-notice {
+    padding: 10px 12px;
+    background: var(--highlight);
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    font-size: 14px;
+  }
+  .account-details {
+    margin-top: 18px;
+  }
+  .account-details > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .account-details dt {
+    flex-shrink: 0;
+    color: var(--muted);
+  }
+  .account-details dd {
+    min-width: 0;
+    color: var(--ink);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
+  .auth-actions {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .logout-link {
+    display: inline-flex;
+    justify-self: center;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .logout-link:hover {
+    color: var(--danger);
+  }
 }
