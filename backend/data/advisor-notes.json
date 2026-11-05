@@ -1,0 +1,39 @@
+[
+  {
+    "productId": "47df1bb9-a4c0-4e98-997a-5f3f52be8592",
+    "variantId": null,
+    "content": "Theo trải nghiệm cá nhân của Đinh Hoàng Việt sau khoảng 30 buổi chơi, chủ yếu đánh đơn với cước Yonex BG65Ti ở mức căng được ghi nhận là 11,5 kg, Nanoflare 1000Z đáp ứng tốt nhu cầu phông cầu chủ động và bị động. Các pha đập đơn lẻ, đập liên tục, phản tạt và thủ đập đều cho cảm nhận ổn. Người trải nghiệm thích khả năng xử lý nhanh khi phản tạt và đập cầu, đồng thời đánh giá cao phối màu vàng. Sau buổi chơi, người trải nghiệm không cảm thấy mỏi và thấy dễ chịu hơn so với những cây Astrox hoặc vợt nặng đã từng sử dụng; chưa ghi nhận model đối chiếu cụ thể. Mặt vợt tạo cảm giác khác biệt và là điểm cần làm quen. Nhận xét này phản ánh trải nghiệm cá nhân trong cấu hình đã nêu, không khẳng định phù hợp với mọi người chơi hoặc mọi biến thể.",
+    "conditions": {
+      "sourceType": "user_play_experience",
+      "reviewer": "Đinh Hoàng Việt",
+      "productName": "Yonex Nanoflare 1000Z",
+      "weightClass": null,
+      "gripSize": null,
+      "stringModel": "Yonex BG65Ti",
+      "tensionReported": "11.5 kg",
+      "sessionsPlayed": 30,
+      "playFormat": "singles",
+      "comparisonRackets": [],
+      "strengthsReported": [
+        "Phông chủ động và bị động ổn",
+        "Đập đơn lẻ và đập liên tục ổn",
+        "Phản tạt và thủ đập ổn",
+        "Cảm nhận xử lý nhanh khi phản tạt và đập cầu",
+        "Không cảm thấy mỏi sau buổi chơi",
+        "Thích phối màu vàng"
+      ],
+      "adaptationPoints": [
+        "Cần làm quen với mặt vợt"
+      ],
+      "limitations": [
+        "Không nhớ biến thể trọng lượng và kích thước cán",
+        "Chưa có model đối chiếu cụ thể",
+        "Chưa ghi nhận cấu hình quấn cán",
+        "Đánh giá chủ quan, không có số liệu đo hiệu năng",
+        "Không dùng nhận xét này để xác định mức căng phù hợp cho khách khác"
+      ]
+    },
+    "reviewStatus": "DRAFT",
+    "reviewedAt": null
+  }
+]

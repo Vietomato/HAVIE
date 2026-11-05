@@ -26,6 +26,19 @@ Chỉ lưu secret trong `backend/.env`; không gửi qua chat hay commit lên Gi
 - `ADMIN_EMAIL_ALLOWLIST`: email được cấp role Admin sau khi xác minh, phân cách bằng dấu phẩy. Email ngoài danh sách chỉ được tạo tài khoản Customer.
 - `CLOUDINARY_URL`: tùy chọn, dạng `cloudinary://API_KEY:API_SECRET@CLOUD_NAME`. Có giá trị thì ảnh sản phẩm do Admin tải lên được lưu trên Cloudinary; để trống thì lưu trong `backend/uploads` và phục vụ qua `/uploads`. Thư mục này không được đưa lên Git nên ảnh chỉ tồn tại trên máy đó; khi deploy hoặc làm nhóm hãy dùng Cloudinary.
 
+### Tài khoản Admin thử nghiệm (chỉ development)
+
+Để thử giao diện quản trị mà không cần đăng ký OTP, cấu hình các biến sau trong `backend/.env`:
+
+```env
+NODE_ENV=development
+MOCK_ADMIN_ENABLED=true
+MOCK_ADMIN_EMAIL=admin.test@example.com
+MOCK_ADMIN_PASSWORD=your-local-test-password
+```
+
+Khởi động lại backend. Trên trang đăng nhập ở frontend development, nhập email/mật khẩu đã cấu hình và chọn **ĐĂNG NHẬP ADMIN THỬ NGHIỆM**. Backend sẽ tạo tài khoản Admin local lần đầu nếu email chưa tồn tại. Không dùng chung email với tài khoản Customer hoặc tài khoản khác. Tính năng bị từ chối ngoài `NODE_ENV=development` và khi chưa bật rõ ràng bằng `MOCK_ADMIN_ENABLED=true`; không đưa thông tin mock vào Git.
+
 ## Database
 
 Migration `prisma/migrations/20261021160000_email_otp_registration/migration.sql` chỉ thêm cột `emailVerifiedAt` vào users và bảng OTP. Với database cũ chưa được Prisma Migrate quản lý, hãy sao lưu database và chạy migration này đúng một lần từ thư mục `backend`:
@@ -70,8 +83,13 @@ Backend mặc định chạy tại `http://localhost:3000`; kiểm tra `http://l
 - `GET /api/cart`, `POST /api/cart/items`, `PATCH /api/cart/items/:id`, `DELETE /api/cart/items/:id`
 - `POST /api/orders`, `GET /api/orders/my`, `POST /api/orders/:id/cancel`
 - Admin (yêu cầu role `ADMIN`): `GET /api/admin/products`, `POST /api/admin/products`, `PATCH /api/admin/products/:id`, `GET /api/admin/orders`, `PATCH /api/admin/orders/:id/status`
+- Tư vấn (yêu cầu đăng nhập): `GET/POST /api/chat/conversations`, `GET/PATCH/DELETE /api/chat/conversations/:id`, `POST /api/chat/conversations/:id/messages`
 
 OTP hết hạn sau 10 phút, gửi lại sau 60 giây và tối đa 5 lần nhập sai. Các route sản phẩm hỗ trợ bộ lọc và phân trang theo `API_CONTRACT_HAVIE_v1.md`.
+
+Lịch sử tư vấn được lưu theo tài khoản trong PostgreSQL; mỗi tài khoản chỉ xem được hội thoại của mình. Tên ban đầu lấy từ tin nhắn đầu tiên, khách có thể đổi tên tối đa 60 ký tự; hội thoại đang xử lý chưa thể xóa. Chat mới tạo một cuộc trò chuyện riêng, nên lượt tư vấn đang xử lý không khóa các cuộc trò chuyện khác. Trước khi sử dụng, sao lưu database. Với database đã được Prisma Migrate quản lý, chạy `npx prisma migrate deploy` để áp dụng các migration còn thiếu; với database cũ chưa quản lý migration, cần sao lưu và chạy lần lượt các migration chưa áp dụng bằng `npx prisma db execute --file <đường-dẫn-migration.sql>`. Sau đó chạy `npm run prisma:generate`. Không chạy `prisma migrate reset` trên database có dữ liệu.
+
+Chat tư vấn dùng Ollama local; model mặc định là `qwen3:8b` và cần xử lý trên phần cứng máy backend. Có thể đặt `OLLAMA_MODEL` sang model đã cài để thử tốc độ/chất lượng khác, và `OLLAMA_KEEP_ALIVE` (mặc định `15m`) để giữ model đã nạp, tránh nạp lại giữa các lượt chat. Bộ trích xuất dùng context 2048 và giới hạn tối đa 192 token đầu ra. Model nhỏ hơn không đảm bảo nhanh hơn hoặc giữ nguyên chất lượng trên CPU; muốn giảm đáng kể thời gian cần GPU phù hợp hoặc máy chạy model mạnh hơn.
 
 Admin có thể thêm/cập nhật sản phẩm, biến thể, giá, tồn kho và ẩn sản phẩm khỏi catalog mà không xóa dữ liệu đơn cũ. Thay đổi tồn kho qua màn hình sản phẩm được ghi vào lịch sử kho.
 
