@@ -354,6 +354,7 @@ Tất cả endpoint dưới đây yêu cầu `role = ADMIN`; nếu không phải
 |---|---|---|
 | `GET` | `/api/admin/products` | Tìm kiếm/lọc/phân trang sản phẩm kể cả sản phẩm ẩn |
 | `POST` | `/api/admin/products` | Tạo sản phẩm |
+| `POST` | `/api/admin/uploads` | Tải ảnh sản phẩm lên, trả `data.url` để đưa vào `imageUrls` |
 | `GET` | `/api/admin/products/:id` | Xem sản phẩm và biến thể |
 | `PATCH` | `/api/admin/products/:id` | Sửa thông tin hoặc đổi `status` |
 | `POST` | `/api/admin/products/:id/variants` | Tạo biến thể |
@@ -364,6 +365,8 @@ Tất cả endpoint dưới đây yêu cầu `role = ADMIN`; nếu không phải
 | `PATCH` | `/api/admin/brands/:id` | Sửa/ẩn thương hiệu |
 
 Không xóa cứng sản phẩm/biến thể đã được đơn hàng tham chiếu. SKU phải duy nhất; giá và tồn không âm.
+
+`POST /api/admin/uploads` nhận `multipart/form-data` với một file ở field `image`. Chỉ chấp nhận JPG, PNG, WEBP (kiểm tra theo nội dung file), tối đa 5MB. Lỗi: `400 INVALID_IMAGE`, `413 IMAGE_TOO_LARGE`, `502 IMAGE_UPLOAD_FAILED`.
 
 ### 4.2 Đơn hàng và thanh toán
 

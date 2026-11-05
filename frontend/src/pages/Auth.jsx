@@ -1,13 +1,43 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, LogOut } from 'lucide-react';
 import { authApi } from '../api';
 import { useStore } from '../context/StoreContext.jsx';
+import { useToast } from '../context/ToastContext.jsx';
+import TextField from '../components/TextField.jsx';
+import usePageTitle from '../hooks/usePageTitle.js';
+
+// Only same-site paths are accepted, so a crafted link cannot redirect off the store.
+const getSafeReturnPath = (value) =>
+  value && /^\/(?![/\\])/.test(value) && !value.startsWith('/auth') ? value : null;
+
+function PasswordField({ id, label, ...props }) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <TextField
+      id={id}
+      label={label}
+      type={visible ? 'text' : 'password'}
+      action={
+        <button
+          type="button"
+          className="field-action"
+          aria-label={visible ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+          aria-pressed={visible}
+          onClick={() => setVisible(!visible)}
+        >
+          {visible ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
+        </button>
+      }
+      {...props}
+    />
+  );
+}
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
-  const returnTo = searchParams.get('returnTo') === '/account/orders' ? '/account/orders' : null;
+  const returnTo = getSafeReturnPath(searchParams.get('returnTo'));
   const [mode, setMode] = useState('signin');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
@@ -21,13 +51,22 @@ export default function Auth() {
   const [notice, setNotice] = useState('');
   const [loading, setLoading] = useState(false);
   const { account, login, loginMockAdmin, register, logout } = useStore();
+  const { account, login, register, logout } = useStore();
+  const { notify } = useToast();
   const navigate = useNavigate();
+  usePageTitle(account ? 'Tài khoản' : mode === 'signin' ? 'Đăng nhập' : 'Đăng ký');
 
   useEffect(() => {
     if (otpCooldown <= 0) return undefined;
     const timer = window.setTimeout(() => setOtpCooldown((remaining) => remaining - 1), 1000);
     return () => window.clearTimeout(timer);
   }, [otpCooldown]);
+
+  const finishAuth = (user) => {
+    notify({ message: `Xin chào, ${user.fullName}!` });
+    if (user.role === 'ADMIN') navigate('/admin');
+    else navigate(returnTo || '/');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,18 +81,14 @@ export default function Auth() {
     try {
       setLoading(true);
       if (mode === 'signin') {
-        const u = await login(email, password);
-        if (u.role === 'ADMIN') navigate('/admin');
-        else if (returnTo) navigate(returnTo);
+        finishAuth(await login(email, password));
       } else if (!otpSent) {
         const result = await authApi.requestRegistrationOtp({ fullName, email, phone, password });
         setOtpSent(true);
         setOtpCooldown(result.resendAfter || 60);
         setNotice(result.message || 'Mã xác minh đã được gửi tới email của bạn.');
       } else {
-        const user = await register({ email, code: verificationCode });
-        if (user.role === 'ADMIN') navigate('/admin');
-        else if (returnTo) navigate(returnTo);
+        finishAuth(await register({ email, code: verificationCode }));
       }
     } catch (err) {
       setError(err.message || 'Lỗi xác thực.');
@@ -92,214 +127,213 @@ export default function Auth() {
     }
   };
 
+  const switchMode = (nextMode) => {
+    setMode(nextMode);
+    setError('');
+    setNotice('');
+    setOtpSent(false);
+    setOtpCooldown(0);
+    setVerificationCode('');
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    notify({ message: 'Bạn đã đăng xuất.' });
+  };
+
+  const submitLabel =
+    mode === 'signin' ? 'ĐĂNG NHẬP' : otpSent ? 'XÁC MINH & TẠO TÀI KHOẢN' : 'GỬI MÃ XÁC MINH';
+
   return (
     <div className="auth-layout">
       <aside className="auth-art">
-        <Link to="/" className="auth-brand">
-          HAVIE.
-        </Link>
+        <span className="auth-brand" aria-hidden="true">
+          HAVIE<span>.</span>
+        </span>
         <div>
           <span className="eyebrow">CHÀO MỪNG BẠN ĐẾN VỚI HAVIE</span>
-          <h1>
+          <p className="auth-slogan">
             CHƠI
             <br />
             VƯỢT
             <br />
             GIỚI HẠN<span>.</span>
-          </h1>
+          </p>
           <p>Đồng hành cùng bạn trên từng trận đấu và hành trình cầu lông.</p>
         </div>
-        <span>HAVIE / 2026</span>
       </aside>
       <section className="auth-panel">
         <div className="auth-box">
           {account ? (
             <>
-              <span className="eyebrow">ROLE: {account.role}</span>
-              <h2>Xin chào, {account.fullName}.</h2>
-              <p>Email: {account.email}</p>
-              <p>Số điện thoại: {account.phone || 'Chưa cập nhật'}</p>
+              <span className="eyebrow">TÀI KHOẢN CỦA BẠN</span>
+              <h1>Xin chào, {account.fullName}.</h1>
+              <dl className="account-details">
+                <div>
+                  <dt>Email</dt>
+                  <dd>{account.email}</dd>
+                </div>
+                <div>
+                  <dt>Số điện thoại</dt>
+                  <dd>{account.phone || 'Chưa cập nhật'}</dd>
+                </div>
+              </dl>
 
-              {account.role === 'ADMIN' ? (
-                <div className="my-[18px]">
+              <div className="auth-actions">
+                {account.role === 'ADMIN' ? (
                   <Link to="/admin" className="btn btn-primary full">
-                    TRUY CẬP TRANG QUẢN TRỊ →
+                    TRANG QUẢN TRỊ <ArrowRight size={18} aria-hidden="true" />
                   </Link>
-                </div>
-              ) : (
-                <div className="my-[18px]">
-                  <Link to="/account/orders" className="btn btn-outline full">
-                    XEM LỊCH SỬ VÀ THEO DÕI ĐƠN HÀNG
+                ) : (
+                  <Link to="/account/orders" className="btn btn-primary full">
+                    ĐƠN HÀNG CỦA TÔI <ArrowRight size={18} aria-hidden="true" />
                   </Link>
-                </div>
-              )}
-
-              <div className="mt-5 flex gap-[10px]">
-                <button className="btn btn-outline full" onClick={logout}>
-                  ĐĂNG XUẤT
-                </button>
-                <Link to="/products" className="btn btn-primary full">
+                )}
+                <Link to="/products" className="btn btn-outline full">
                   TIẾP TỤC MUA SẮM
                 </Link>
+                <button type="button" className="logout-link" onClick={handleLogout}>
+                  <LogOut size={16} aria-hidden="true" /> Đăng xuất
+                </button>
               </div>
             </>
           ) : (
             <>
-              <span className="eyebrow">YOUR HAVIE ACCOUNT</span>
-              <h2>{mode === 'signin' ? 'Chào mừng trở lại.' : 'Bắt đầu hành trình.'}</h2>
+              <span className="eyebrow">TÀI KHOẢN HAVIE</span>
+              <h1>{mode === 'signin' ? 'Chào mừng trở lại.' : 'Bắt đầu hành trình.'}</h1>
 
-              <div className="auth-tabs">
+              <div className="auth-tabs" role="group" aria-label="Chọn đăng nhập hoặc đăng ký">
                 <button
+                  type="button"
                   className={mode === 'signin' ? 'active' : ''}
-                  onClick={() => {
-                    setMode('signin');
-                    setError('');
-                    setNotice('');
-                    setOtpSent(false);
-                    setOtpCooldown(0);
-                    setVerificationCode('');
-                  }}
+                  aria-pressed={mode === 'signin'}
+                  onClick={() => switchMode('signin')}
                 >
-                  SIGN IN
+                  ĐĂNG NHẬP
                 </button>
                 <button
+                  type="button"
                   className={mode === 'signup' ? 'active' : ''}
-                  onClick={() => {
-                    setMode('signup');
-                    setError('');
-                    setNotice('');
-                    setOtpSent(false);
-                    setOtpCooldown(0);
-                    setVerificationCode('');
-                  }}
+                  aria-pressed={mode === 'signup'}
+                  onClick={() => switchMode('signup')}
                 >
-                  SIGN UP
+                  ĐĂNG KÝ
                 </button>
               </div>
 
               <form onSubmit={handleSubmit} className="auth-form">
                 {mode === 'signup' && (
                   <>
-                    <label>
-                      HỌ VÀ TÊN
-                      <input
-                        required
-                        value={fullName}
-                        disabled={otpSent}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="Nguyễn Hoàng Việt"
-                      />
-                    </label>
-                    <label>
-                      SỐ ĐIỆN THOẠI
-                      <input
-                        type="tel"
-                        value={phone}
-                        disabled={otpSent}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder="0900000000"
-                      />
-                    </label>
+                    <TextField
+                      id="auth-name"
+                      label="Họ và tên"
+                      required
+                      autoComplete="name"
+                      value={fullName}
+                      disabled={otpSent}
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
+                    <TextField
+                      id="auth-phone"
+                      label="Số điện thoại (không bắt buộc)"
+                      type="tel"
+                      autoComplete="tel"
+                      value={phone}
+                      disabled={otpSent}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="0901234567"
+                    />
                   </>
                 )}
-                <label>
-                  ĐỊA CHỈ EMAIL
-                  <input
-                    required
-                    type="email"
-                    value={email}
-                    disabled={mode === 'signup' && otpSent}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="ten@email.com"
-                  />
-                </label>
-                <label>
-                  MẬT KHẨU
-                  <input
-                    required
-                    type="password"
-                    value={password}
-                    disabled={mode === 'signup' && otpSent}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Tối thiểu 6 ký tự"
-                    minLength={6}
-                  />
-                </label>
+                <TextField
+                  id="auth-email"
+                  label="Địa chỉ email"
+                  required
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  disabled={mode === 'signup' && otpSent}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="ten@email.com"
+                />
+                <PasswordField
+                  id="auth-password"
+                  label="Mật khẩu"
+                  required
+                  minLength={6}
+                  autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
+                  hint={mode === 'signup' ? 'Tối thiểu 6 ký tự.' : undefined}
+                  value={password}
+                  disabled={mode === 'signup' && otpSent}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
                 {mode === 'signup' && (
-                  <label>
-                    XÁC NHẬN MẬT KHẨU
-                    <input
-                      required
-                      type="password"
-                      value={confirm}
-                      disabled={otpSent}
-                      onChange={(e) => setConfirm(e.target.value)}
-                    />
-                  </label>
+                  <PasswordField
+                    id="auth-confirm"
+                    label="Xác nhận mật khẩu"
+                    required
+                    autoComplete="new-password"
+                    value={confirm}
+                    disabled={otpSent}
+                    onChange={(e) => setConfirm(e.target.value)}
+                  />
                 )}
                 {mode === 'signup' && otpSent && (
                   <>
-                    <p role="status">
-                      Mã xác minh đã gửi tới {email}. Mã có hiệu lực trong 10 phút.
-                    </p>
-                    <label>
-                      MÃ XÁC MINH EMAIL
-                      <input
-                        required
-                        inputMode="numeric"
-                        autoComplete="one-time-code"
-                        pattern="[0-9]{6}"
-                        maxLength={6}
-                        value={verificationCode}
-                        onChange={(e) =>
-                          setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))
-                        }
-                        placeholder="Nhập mã 6 chữ số"
-                      />
-                    </label>
-                    <button
-                      type="button"
-                      className="btn-mini"
-                      disabled={loading || otpCooldown > 0}
-                      onClick={handleResendOtp}
-                    >
-                      {otpCooldown > 0 ? `GỬI LẠI MÃ SAU ${otpCooldown} GIÂY` : 'GỬI LẠI MÃ'}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-mini"
-                      disabled={loading}
-                      onClick={() => {
-                        setOtpSent(false);
-                        setOtpCooldown(0);
-                        setVerificationCode('');
-                        setError('');
-                        setNotice('');
-                      }}
-                    >
-                      ĐỔI EMAIL HOẶC THÔNG TIN ĐĂNG KÝ
-                    </button>
+                    <TextField
+                      id="auth-otp"
+                      label="Mã xác minh email"
+                      required
+                      autoFocus
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      pattern="[0-9]{6}"
+                      maxLength={6}
+                      hint={`Mã gồm 6 chữ số, đã gửi tới ${email}, có hiệu lực 10 phút.`}
+                      value={verificationCode}
+                      onChange={(e) =>
+                        setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))
+                      }
+                    />
+                    <div className="otp-actions">
+                      <button
+                        type="button"
+                        className="btn-mini"
+                        disabled={loading || otpCooldown > 0}
+                        onClick={handleResendOtp}
+                      >
+                        {otpCooldown > 0 ? `Gửi lại mã sau ${otpCooldown}s` : 'Gửi lại mã'}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-mini"
+                        disabled={loading}
+                        onClick={() => {
+                          setOtpSent(false);
+                          setOtpCooldown(0);
+                          setVerificationCode('');
+                          setError('');
+                          setNotice('');
+                        }}
+                      >
+                        Đổi thông tin đăng ký
+                      </button>
+                    </div>
                   </>
                 )}
                 {notice && (
-                  <p role="status" className="text-[13px] text-[var(--ink)]">
+                  <p className="form-notice" role="status">
                     {notice}
                   </p>
                 )}
                 {error && (
-                  <p className="form-error" role="alert">
+                  <p className="inline-alert" role="alert">
                     {error}
                   </p>
                 )}
                 <button className="btn btn-primary full" type="submit" disabled={loading}>
-                  {loading
-                    ? 'ĐANG XỬ LÝ...'
-                    : mode === 'signin'
-                      ? 'ĐĂNG NHẬP'
-                      : otpSent
-                        ? 'XÁC MINH & TẠO TÀI KHOẢN'
-                        : 'GỬI MÃ XÁC MINH'}{' '}
-                  <ArrowRight size={18} />
+                  {loading ? 'ĐANG XỬ LÝ...' : submitLabel}
+                  <ArrowRight size={18} aria-hidden="true" />
                 </button>
               </form>
               {import.meta.env.DEV && mode === 'signin' && !otpSent && (

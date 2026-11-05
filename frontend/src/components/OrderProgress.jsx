@@ -1,4 +1,5 @@
 import React from 'react';
+import { Check, CircleX } from 'lucide-react';
 import { ORDER_STATUS_LABELS } from '../api';
 
 const ORDER_PROGRESS_STEPS = [
@@ -11,9 +12,12 @@ const ORDER_PROGRESS_STEPS = [
 export default function OrderProgress({ order }) {
   if (order.status === 'CANCELLED' || order.status === 'REFUND_PENDING') {
     return (
-      <div className="order-cancelled" role="status">
-        <strong>{ORDER_STATUS_LABELS[order.status] || 'Đơn hàng đã hủy'}</strong>
-        {order.cancelReason && <span>Lý do: {order.cancelReason}</span>}
+      <div className="order-cancelled">
+        <CircleX size={18} aria-hidden="true" />
+        <div>
+          <strong>{ORDER_STATUS_LABELS[order.status] || 'Đơn hàng đã hủy'}</strong>
+          {order.cancelReason && <span>Lý do: {order.cancelReason}</span>}
+        </div>
       </div>
     );
   }
@@ -22,7 +26,7 @@ export default function OrderProgress({ order }) {
   const activeStep = currentStep < 0 ? 0 : currentStep;
 
   return (
-    <div
+    <ol
       className="order-progress"
       aria-label={`Tiến trình đơn hàng: ${ORDER_STATUS_LABELS[order.status] || order.status}`}
     >
@@ -30,18 +34,20 @@ export default function OrderProgress({ order }) {
         const complete = index < activeStep || order.status === 'COMPLETED';
         const current = index === activeStep && order.status !== 'COMPLETED';
         return (
-          <div
+          <li
             key={step.status}
             className={['order-progress-step', complete ? 'complete' : '', current ? 'current' : '']
               .filter(Boolean)
               .join(' ')}
             aria-current={current ? 'step' : undefined}
           >
-            <span className="order-progress-marker">{complete ? '✓' : index + 1}</span>
+            <span className="order-progress-marker">
+              {complete ? <Check size={15} aria-hidden="true" /> : index + 1}
+            </span>
             <span className="order-progress-label">{step.label}</span>
-          </div>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 }

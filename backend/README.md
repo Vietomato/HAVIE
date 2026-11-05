@@ -24,6 +24,7 @@ Chỉ lưu secret trong `backend/.env`; không gửi qua chat hay commit lên Gi
 - `SMTP_PASS`: Google App Password (không phải mật khẩu Gmail thông thường).
 - `SMTP_FROM`: tùy chọn; mặc định dùng `SMTP_USER`.
 - `ADMIN_EMAIL_ALLOWLIST`: email được cấp role Admin sau khi xác minh, phân cách bằng dấu phẩy. Email ngoài danh sách chỉ được tạo tài khoản Customer.
+- `CLOUDINARY_URL`: tùy chọn, dạng `cloudinary://API_KEY:API_SECRET@CLOUD_NAME`. Có giá trị thì ảnh sản phẩm do Admin tải lên được lưu trên Cloudinary; để trống thì lưu trong `backend/uploads` và phục vụ qua `/uploads`. Thư mục này không được đưa lên Git nên ảnh chỉ tồn tại trên máy đó; khi deploy hoặc làm nhóm hãy dùng Cloudinary.
 
 ### Tài khoản Admin thử nghiệm (chỉ development)
 
