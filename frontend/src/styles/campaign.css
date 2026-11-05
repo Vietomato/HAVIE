@@ -1,75 +1,72 @@
 @layer components {
-.campaign {
-  @apply bg-[var(--ink)];
-  @apply text-[#fff];
-  @apply mt-[65px];
-  @apply mb-[65px];
-  @apply p-[40px_25px];
-  @apply flex;
-  @apply items-center;
-  @apply justify-between;
-  @apply overflow-hidden;
-}
-.campaign .eyebrow {
-  @apply text-[var(--highlight)];
-}
-.campaign h2 {
-  @apply text-[clamp(42px,_7vw,_86px)];
-  @apply leading-none;
-  @apply tracking-[-2px];
-  @apply m-[20px_0];
-}
-.campaign p {
-  @apply max-w-[410px];
-  @apply text-[var(--highlight)];
-  @apply text-sm;
-  @apply leading-[1.8];
-}
-.campaign-mark {
-  @apply hidden;
-  @apply text-[250px];
-  @apply font-black;
-  @apply tracking-[-30px];
-  @apply leading-none;
-  @apply text-[var(--watermark)];
-}
-.campaign-mark span {
-  @apply text-[var(--secondary)];
-}
-.perks {
-  @apply grid;
-  @apply grid-cols-1;
-  @apply gap-4;
-  @apply pb-[70px];
-}
-.perks > div {
-  @apply grid;
-  @apply grid-cols-[34px_1fr];
-  @apply gap-[4px_14px];
-  @apply items-center;
-  @apply p-4;
-  @apply rounded-xl;
-  @apply border border-[var(--border)];
-  @apply bg-white;
-  @apply shadow-[0_2px_8px_rgba(0,0,0,0.02)];
-}
-.perks svg {
-  @apply row-span-2;
-  @apply text-[var(--ink)];
-}
-.perks strong {
-  @apply text-xs;
-  @apply font-bold;
-  @apply tracking-[0.3px];
-  @apply text-[var(--ink)];
-}
-.perks span {
-  @apply text-xs;
-  @apply text-[var(--muted)];
-}
+  .campaign {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block: 24px 48px;
+    padding: 36px 24px;
+    overflow: hidden;
+    background: var(--ink);
+    border-top: 4px solid var(--primary);
+    border-radius: var(--radius-lg);
+    color: #fff;
+  }
+  .campaign .eyebrow {
+    color: var(--highlight);
+  }
+  .campaign h2 {
+    margin-block: 16px;
+    font-size: clamp(34px, 6.4vw, 76px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.04;
+  }
+  .campaign p {
+    max-width: 430px;
+    margin-bottom: 22px;
+    color: var(--highlight);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .campaign-mark {
+    display: none;
+    font-size: 230px;
+    font-weight: 900;
+    letter-spacing: -10px;
+    line-height: 1;
+    color: var(--watermark);
+  }
+  .campaign-mark span {
+    color: var(--primary);
+  }
 
-.campaign { border-top: 4px solid var(--primary); border-radius: 8px; }
-.campaign .btn-light { background: var(--primary); color: var(--surface); }
-.campaign .btn-light:hover { background: var(--primary-hover); }
-.perks svg { color: var(--secondary); }
+  .perks {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding-bottom: 56px;
+  }
+  .perks > div {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 2px 12px;
+    align-items: center;
+    padding: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+  .perks svg {
+    grid-row: span 2;
+    color: var(--link);
+  }
+  .perks strong {
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .perks span {
+    color: var(--muted);
+    font-size: 13px;
+  }
 }
