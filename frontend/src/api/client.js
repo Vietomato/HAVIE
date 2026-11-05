@@ -36,7 +36,8 @@ class ApiClient {
       ...options.headers,
     };
 
-    if (options.body && !headers['Content-Type']) {
+    // The browser must set multipart headers itself so they include the boundary.
+    if (options.body && !(options.body instanceof FormData) && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json';
     }
     if (token) {

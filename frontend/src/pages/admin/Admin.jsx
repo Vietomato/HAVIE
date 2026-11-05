@@ -1,10 +1,11 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, ClipboardList, LogOut, ShieldAlert } from 'lucide-react';
+import { Package, ClipboardList, LogOut, ShieldAlert, Upload, X } from 'lucide-react';
 import { money } from '../../data';
 import { adminApi, catalogApi, ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from '../../api';
 import { useStore } from '../../context/StoreContext.jsx';
+import { slugify } from '../../utils/product';
 
 const EMPTY_PRODUCT_FORM = {
   name: '',
@@ -12,7 +13,7 @@ const EMPTY_PRODUCT_FORM = {
   description: '',
   categoryId: '',
   brandId: '',
-  imageUrls: '',
+  imageUrls: [],
   specs: '',
   badge: '',
   isActive: true,
@@ -48,7 +49,7 @@ function createProductForm(product) {
     description: product.description || '',
     categoryId: product.categoryId,
     brandId: product.brandId,
-    imageUrls: (product.imageUrls || []).join('\n'),
+    imageUrls: product.imageUrls || [],
     specs: (product.specs || []).join('\n'),
     badge: product.badge || '',
     isActive: product.isActive,
@@ -79,6 +80,9 @@ export default function Admin() {
   const [pageError, setPageError] = useState('');
   const [productError, setProductError] = useState('');
   const [savingProduct, setSavingProduct] = useState(false);
+  const [slugEdited, setSlugEdited] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const [imageError, setImageError] = useState('');
 
   const reloadData = async () => {
     try {
@@ -145,7 +149,9 @@ export default function Admin() {
   const openProductForm = (product = null) => {
     setEditingProduct(product);
     setProductForm(createProductForm(product));
+    setSlugEdited(Boolean(product));
     setProductError('');
+    setImageError('');
     setProductModalOpen(true);
   };
 
@@ -175,10 +181,7 @@ export default function Admin() {
       description: productForm.description.trim() || null,
       categoryId: productForm.categoryId,
       brandId: productForm.brandId,
-      imageUrls: productForm.imageUrls
-        .split(/\r?\n/)
-        .map((value) => value.trim())
-        .filter(Boolean),
+      imageUrls: productForm.imageUrls,
       specs: productForm.specs
         .split(/\r?\n/)
         .map((value) => value.trim())
@@ -206,6 +209,43 @@ export default function Admin() {
 
   const updateProductField = (field, value) =>
     setProductForm((current) => ({ ...current, [field]: value }));
+
+  const handleProductNameChange = (name) =>
+    setProductForm((current) => ({
+      ...current,
+      name,
+      slug: slugEdited ? current.slug : slugify(name),
+    }));
+
+  const handleSlugChange = (slug) => {
+    setSlugEdited(Boolean(slug));
+    updateProductField('slug', slug);
+  };
+
+  const handleImageFiles = async (event) => {
+    const files = [...event.target.files];
+    event.target.value = '';
+    if (!files.length) return;
+
+    setImageError('');
+    setUploadingImages(true);
+    try {
+      for (const file of files) {
+        const url = await adminApi.uploadProductImage(file);
+        setProductForm((current) => ({ ...current, imageUrls: [...current.imageUrls, url] }));
+      }
+    } catch (err) {
+      setImageError(err.message || 'Không thể tải ảnh lên.');
+    } finally {
+      setUploadingImages(false);
+    }
+  };
+
+  const removeProductImage = (index) =>
+    setProductForm((current) => ({
+      ...current,
+      imageUrls: current.imageUrls.filter((_, imageIndex) => imageIndex !== index),
+    }));
 
   const updateVariantField = (index, field, value) =>
     setProductForm((current) => ({
@@ -284,7 +324,7 @@ export default function Admin() {
                         required
                         maxLength={200}
                         value={productForm.name}
-                        onChange={(event) => updateProductField('name', event.target.value)}
+                        onChange={(event) => handleProductNameChange(event.target.value)}
                       />
                     </label>
                     <label className="block">
@@ -293,7 +333,7 @@ export default function Admin() {
                         required
                         maxLength={200}
                         value={productForm.slug}
-                        onChange={(event) => updateProductField('slug', event.target.value)}
+                        onChange={(event) => handleSlugChange(event.target.value)}
                       />
                     </label>
                     <label className="block">
@@ -353,14 +393,50 @@ export default function Admin() {
                       onChange={(event) => updateProductField('description', event.target.value)}
                     />
                   </label>
-                  <label className="mt-3 block">
-                    ẢNH (MỖI URL MỘT DÒNG)
-                    <textarea
-                      rows={2}
-                      value={productForm.imageUrls}
-                      onChange={(event) => updateProductField('imageUrls', event.target.value)}
-                    />
-                  </label>
+                  <div className="mt-3">
+                    <p>ẢNH SẢN PHẨM (ẢNH ĐẦU TIÊN LÀ ẢNH CHÍNH)</p>
+                    {productForm.imageUrls.length > 0 && (
+                      <ul className="mt-2 flex flex-wrap gap-2">
+                        {productForm.imageUrls.map((url, index) => (
+                          <li key={`${url}-${index}`} className="relative">
+                            <img
+                              src={url}
+                              alt={`Ảnh sản phẩm ${index + 1}`}
+                              className="h-[88px] w-[88px] rounded-md border border-[var(--border)] object-cover"
+                            />
+                            <button
+                              type="button"
+                              className="absolute top-1 right-1 flex rounded-full bg-black/70 p-1 text-white"
+                              aria-label={`Xóa ảnh ${index + 1}`}
+                              onClick={() => removeProductImage(index)}
+                            >
+                              <X size={14} aria-hidden="true" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <label className="btn-mini mt-2 inline-flex cursor-pointer items-center gap-1 focus-within:outline-2">
+                      <Upload size={14} aria-hidden="true" />
+                      {uploadingImages ? 'Đang tải ảnh...' : 'Chọn ảnh từ máy'}
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        multiple
+                        className="sr-only"
+                        disabled={uploadingImages}
+                        onChange={handleImageFiles}
+                      />
+                    </label>
+                    <small className="mt-1 block text-[var(--muted)]">
+                      JPG, PNG hoặc WEBP, tối đa 5MB mỗi ảnh.
+                    </small>
+                    {imageError && (
+                      <p className="mt-1 text-[var(--danger)]" role="alert">
+                        {imageError}
+                      </p>
+                    )}
+                  </div>
                   <label className="mt-3 block">
                     THÔNG SỐ (MỖI DÒNG MỘT THÔNG SỐ)
                     <textarea
@@ -504,14 +580,18 @@ export default function Admin() {
                     </p>
                   )}
                   <div className="mt-5 flex gap-3">
-                    <button type="submit" className="btn btn-primary" disabled={savingProduct}>
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      disabled={savingProduct || uploadingImages}
+                    >
                       {savingProduct ? 'ĐANG LƯU...' : 'LƯU SẢN PHẨM'}
                     </button>
                     <button
                       type="button"
                       className="btn btn-outline"
                       onClick={() => setProductModalOpen(false)}
-                      disabled={savingProduct}
+                      disabled={savingProduct || uploadingImages}
                     >
                       HỦY
                     </button>

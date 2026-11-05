@@ -6,6 +6,7 @@ import catalogRoutes from './routes/catalogRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import { authMiddleware } from './middlewares/authMiddleware.js';
+import { UPLOADS_DIR } from './services/imageStorage.js';
 
 const app = express();
 
@@ -22,6 +23,11 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+app.use('/uploads', express.static(UPLOADS_DIR, {
+  index: false,
+  setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff'),
+}));
 
 app.use('/api/auth', authRoutes);
 app.get('/api/me', authMiddleware, getCurrentUser);
