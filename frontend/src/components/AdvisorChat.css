@@ -421,6 +421,13 @@
   }
 }
 
+/* Stay above the sticky buy bar on the product page. */
+@media (max-width: 599px) {
+  body:has(.detail-actions) .havie-advisor:has(> .havie-advisor__launcher) {
+    bottom: 84px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .havie-advisor__panel {
     transition: none;

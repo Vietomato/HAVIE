@@ -223,6 +223,13 @@ export const chatApi = {
 };
 
 export const adminApi = {
+  uploadProductImage: async (file) => {
+    const body = new FormData();
+    body.append('image', file);
+    const res = await apiClient.request('/admin/uploads', { method: 'POST', body });
+    return res.data.url;
+  },
+
   createProduct: async (payload) => {
     const res = await apiClient.request('/admin/products', {
       method: 'POST',

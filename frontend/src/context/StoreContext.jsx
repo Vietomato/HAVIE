@@ -1,11 +1,15 @@
 import React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { apiClient, authApi, cartApi } from '../api';
+import { useToast } from './ToastContext.jsx';
 
 const Store = createContext(null);
 
+const loginPath = () =>
+  '/auth?returnTo=' + encodeURIComponent(window.location.pathname + window.location.search);
 
 export function StoreProvider({ children }) {
+  const { notify } = useToast();
   const [account, setAccount] = useState(null);
   const [cart, setCart] = useState({ items: [] });
   const [favorites, setFavorites] = useState(() => {
@@ -61,13 +65,31 @@ export function StoreProvider({ children }) {
     localStorage.setItem('havie-favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  const add = async (variantId, quantity = 1) => {
+  const promptLogin = (error = {}) => {
+    notify({
+      type: 'error',
+      message: 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.',
+      action: { label: 'Đăng nhập', to: loginPath() },
+    });
+    return { success: false, error };
+  };
+
+  const add = async (variantId, quantity = 1, { silent = false } = {}) => {
+    if (!apiClient.getToken()) return promptLogin();
+
     try {
       const updated = await cartApi.addItem(variantId, quantity);
       setCart(updated);
+      if (!silent) {
+        notify({
+          message: 'Đã thêm vào giỏ hàng.',
+          action: { label: 'Xem giỏ hàng', to: '/cart' },
+        });
+      }
       return { success: true };
     } catch (err) {
-      alert(err.message || 'Không thể thêm vào giỏ hàng.');
+      if (err.status === 401) return promptLogin(err);
+      notify({ type: 'error', message: err.message || 'Không thể thêm vào giỏ hàng.' });
       return { success: false, error: err };
     }
   };
@@ -77,7 +99,7 @@ export function StoreProvider({ children }) {
       const updated = await cartApi.updateItem(itemId, quantity);
       setCart(updated);
     } catch (err) {
-      alert(err.message || 'Lỗi cập nhật giỏ hàng.');
+      notify({ type: 'error', message: err.message || 'Không thể cập nhật giỏ hàng.' });
     }
   };
 
@@ -85,8 +107,10 @@ export function StoreProvider({ children }) {
     try {
       const updated = await cartApi.removeItem(itemId);
       setCart(updated);
+      return true;
     } catch (err) {
-      alert(err.message || 'Lỗi xóa khỏi giỏ hàng.');
+      notify({ type: 'error', message: err.message || 'Không thể xóa khỏi giỏ hàng.' });
+      return false;
     }
   };
 
@@ -136,6 +160,7 @@ export function StoreProvider({ children }) {
         logout,
         authLoading,
         cart,
+        cartLoading,
         refreshCart,
         add,
         update,

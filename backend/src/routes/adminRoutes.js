@@ -1,4 +1,5 @@
 import { Router } from "express";
+import multer from "multer";
 import prisma from "../config/prisma.js";
 import { authMiddleware, requireAdmin } from "../middlewares/authMiddleware.js";
 import { asyncHandler, HttpError } from "../utils/http.js";
@@ -6,6 +7,7 @@ import {
   validateAdminOrderTransition,
   validateProductPayload,
 } from "../utils/adminValidation.js";
+import { MAX_IMAGE_BYTES, saveImage } from "../services/imageStorage.js";
 
 const router = Router();
 
@@ -15,7 +17,24 @@ const productInclude = {
   variants: { orderBy: { createdAt: "asc" } },
 };
 
+const parseImageField = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: MAX_IMAGE_BYTES, files: 1 },
+}).single("image");
+
 router.use(authMiddleware, requireAdmin);
+
+function receiveImage(req, res, next) {
+  parseImageField(req, res, (error) => {
+    if (!error) return next();
+    if (error.code === "LIMIT_FILE_SIZE") {
+      return next(
+        new HttpError(413, "IMAGE_TOO_LARGE", "Ảnh không được vượt quá 5MB."),
+      );
+    }
+    next(new HttpError(400, "INVALID_IMAGE", "Dữ liệu ảnh tải lên không hợp lệ."));
+  });
+}
 
 function handleUniqueConflict(error) {
   if (error?.code === "P2002") {
@@ -42,6 +61,18 @@ async function validateRelations(tx, product) {
   if (!brand)
     throw new HttpError(404, "BRAND_NOT_FOUND", "Không tìm thấy thương hiệu.");
 }
+
+router.post(
+  "/uploads",
+  receiveImage,
+  asyncHandler(async (req, res) => {
+    if (!req.file) {
+      throw new HttpError(400, "INVALID_IMAGE", "Vui lòng chọn một ảnh.");
+    }
+    const url = await saveImage(req.file.buffer);
+    res.status(201).json({ data: { url }, message: "Đã tải ảnh lên." });
+  }),
+);
 
 router.get(
   "/products",
