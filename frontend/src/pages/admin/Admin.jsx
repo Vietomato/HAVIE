@@ -1,24 +1,22 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, ClipboardList, LogOut, ShieldAlert, Upload, X } from 'lucide-react';
-import { money } from '../../data';
-import { adminApi, catalogApi, ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from '../../api';
+import { Package, ClipboardList, LogOut, Plus, RotateCw, Search, ShieldAlert } from 'lucide-react';
+import { formatDate, money } from '../../data';
+import {
+  adminApi,
+  catalogApi,
+  ORDER_STATUS_LABELS,
+  PAYMENT_METHOD_LABELS,
+  PAYMENT_STATUS_LABELS,
+} from '../../api';
+import ReasonDialog from '../../components/ReasonDialog.jsx';
+import { BlockSkeleton } from '../../components/Skeleton.jsx';
 import { useStore } from '../../context/StoreContext.jsx';
-import { slugify } from '../../utils/product';
-
-const EMPTY_PRODUCT_FORM = {
-  name: '',
-  slug: '',
-  description: '',
-  categoryId: '',
-  brandId: '',
-  imageUrls: [],
-  specs: '',
-  badge: '',
-  isActive: true,
-  variants: [],
-};
+import { useToast } from '../../context/ToastContext.jsx';
+import usePageTitle from '../../hooks/usePageTitle.js';
+import { localizeVariantName } from '../../utils/product';
+import ProductFormModal from './ProductFormModal.jsx';
 
 const ORDER_NEXT_STATUSES = {
   PENDING_CONFIRMATION: ['CONFIRMED', 'CANCELLED'],
@@ -26,49 +24,19 @@ const ORDER_NEXT_STATUSES = {
   SHIPPING: ['COMPLETED'],
 };
 
-function createProductForm(product) {
-  if (!product) {
-    return {
-      ...EMPTY_PRODUCT_FORM,
-      variants: [
-        {
-          sku: '',
-          name: '',
-          attributes: '{}',
-          price: '',
-          oldPrice: '',
-          stockQuantity: '0',
-          isAvailable: true,
-        },
-      ],
-    };
-  }
-  return {
-    name: product.name,
-    slug: product.slug,
-    description: product.description || '',
-    categoryId: product.categoryId,
-    brandId: product.brandId,
-    imageUrls: product.imageUrls || [],
-    specs: (product.specs || []).join('\n'),
-    badge: product.badge || '',
-    isActive: product.isActive,
-    variants: product.variants.map((variant) => ({
-      id: variant.id,
-      sku: variant.sku,
-      name: variant.name,
-      attributes: JSON.stringify(variant.attributes || {}, null, 2),
-      price: String(variant.price),
-      oldPrice: variant.oldPrice === null ? '' : String(variant.oldPrice),
-      stockQuantity: String(variant.stockQuantity),
-      isAvailable: variant.isAvailable,
-    })),
-  };
-}
+const LOW_STOCK_LIMIT = 5;
+
+const TABS = [
+  { key: 'orders', label: 'Đơn hàng', icon: ClipboardList },
+  { key: 'products', label: 'Sản phẩm', icon: Package },
+];
+
+const includesText = (value, term) => (value || '').toLowerCase().includes(term);
 
 export default function Admin() {
-  const { account } = useStore();
-  const [tab, setTab] = useState('Orders');
+  const { account, authLoading } = useStore();
+  const { notify } = useToast();
+  const [tab, setTab] = useState('orders');
   const [adminOrders, setAdminOrders] = useState([]);
   const [adminProducts, setAdminProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -76,17 +44,17 @@ export default function Admin() {
   const [brands, setBrands] = useState([]);
   const [productModalOpen, setProductModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [productForm, setProductForm] = useState(EMPTY_PRODUCT_FORM);
   const [pageError, setPageError] = useState('');
-  const [productError, setProductError] = useState('');
-  const [savingProduct, setSavingProduct] = useState(false);
-  const [slugEdited, setSlugEdited] = useState(false);
-  const [uploadingImages, setUploadingImages] = useState(false);
-  const [imageError, setImageError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('ALL');
+  const [cancelTarget, setCancelTarget] = useState(null);
+  const [updatingOrder, setUpdatingOrder] = useState(null);
+  const activeTab = TABS.find(({ key }) => key === tab);
+  usePageTitle('Quản trị: ' + activeTab.label);
 
-  const reloadData = async () => {
+  const reloadData = async ({ background = false } = {}) => {
     try {
-      setLoading(true);
+      if (!background) setLoading(true);
       setPageError('');
       const [ords, prods, categoryList, brandList] = await Promise.all([
         adminApi.getOrders(),
@@ -111,619 +79,417 @@ export default function Admin() {
     }
   }, [account]);
 
+  if (authLoading) {
+    return (
+      <div className="container page-pad">
+        <BlockSkeleton label="Đang kiểm tra quyền truy cập..." rows={4} />
+      </div>
+    );
+  }
+
   if (!account || account.role !== 'ADMIN') {
     return (
       <div className="container page-pad empty-state">
-        <ShieldAlert size={56} color="var(--danger)" />
-        <h1>Yêu cầu quyền Quản trị viên (ADMIN)</h1>
-        <p>Tài khoản Admin chỉ được tạo cho email nằm trong danh sách được cho phép.</p>
-        <div className="mt-5">
-          <Link to="/auth" className="btn btn-primary">
-            ĐẾN TRANG ĐĂNG NHẬP
+        <ShieldAlert size={56} aria-hidden="true" />
+        <h1>Trang dành cho quản trị viên</h1>
+        <p>Vui lòng đăng nhập bằng tài khoản quản trị để tiếp tục.</p>
+        <div className="empty-actions">
+          <Link to="/auth?returnTo=%2Fadmin" className="btn btn-primary">
+            ĐĂNG NHẬP
+          </Link>
+          <Link to="/" className="btn btn-outline">
+            VỀ TRANG CHỦ
           </Link>
         </div>
       </div>
     );
   }
 
-  const handleUpdateStatus = async (orderId, newStatus) => {
-    const reason = newStatus === 'CANCELLED' ? prompt('Vui lòng nhập lý do hủy đơn:') : undefined;
-    if (newStatus === 'CANCELLED' && !reason?.trim()) {
-      await reloadData();
+  const changeTab = (nextTab) => {
+    setTab(nextTab);
+    setSearchTerm('');
+    setStatusFilter('ALL');
+  };
+
+  const applyStatus = async (order, newStatus, reason) => {
+    await adminApi.updateOrderStatus(order.id, newStatus, reason);
+    await reloadData({ background: true });
+    notify({
+      message: `Đơn ${order.orderCode}: ${ORDER_STATUS_LABELS[newStatus] || newStatus}.`,
+    });
+  };
+
+  const handleUpdateStatus = async (order, newStatus) => {
+    if (newStatus === 'CANCELLED') {
+      setCancelTarget(order);
       return;
     }
     try {
-      await adminApi.updateOrderStatus(orderId, newStatus, reason?.trim());
-      await reloadData();
+      setUpdatingOrder(order.id);
+      await applyStatus(order, newStatus);
     } catch (err) {
-      alert(err.message || 'Lỗi cập nhật trạng thái đơn.');
-      await reloadData();
+      notify({ type: 'error', message: err.message || 'Lỗi cập nhật trạng thái đơn.' });
+    } finally {
+      setUpdatingOrder(null);
     }
   };
-
-  const nav = [
-    ['Orders', ClipboardList],
-    ['Products', Package],
-  ];
 
   const openProductForm = (product = null) => {
     setEditingProduct(product);
-    setProductForm(createProductForm(product));
-    setSlugEdited(Boolean(product));
-    setProductError('');
-    setImageError('');
     setProductModalOpen(true);
   };
 
-  const handleSaveProduct = async (event) => {
-    event.preventDefault();
-    setProductError('');
-    let variants;
-    try {
-      variants = productForm.variants.map((variant) => ({
-        ...(variant.id ? { id: variant.id } : {}),
-        sku: variant.sku.trim(),
-        name: variant.name.trim(),
-        attributes: JSON.parse(variant.attributes || '{}'),
-        price: Number(variant.price),
-        oldPrice: variant.oldPrice === '' ? null : Number(variant.oldPrice),
-        stockQuantity: Number(variant.stockQuantity),
-        isAvailable: variant.isAvailable,
-      }));
-    } catch {
-      setProductError('Thuộc tính mỗi biến thể phải là JSON hợp lệ.');
-      return;
-    }
+  const term = searchTerm.trim().toLowerCase();
+  const visibleOrders = adminOrders.filter(
+    (order) =>
+      (statusFilter === 'ALL' || order.status === statusFilter) &&
+      (!term ||
+        includesText(order.orderCode, term) ||
+        includesText(order.recipientName, term) ||
+        includesText(order.recipientPhone, term)),
+  );
+  const visibleProducts = adminProducts.filter(
+    (product) =>
+      !term ||
+      includesText(product.name, term) ||
+      includesText(product.slug, term) ||
+      product.variants.some((variant) => includesText(variant.sku, term)),
+  );
 
-    const payload = {
-      name: productForm.name.trim(),
-      slug: productForm.slug.trim(),
-      description: productForm.description.trim() || null,
-      categoryId: productForm.categoryId,
-      brandId: productForm.brandId,
-      imageUrls: productForm.imageUrls,
-      specs: productForm.specs
-        .split(/\r?\n/)
-        .map((value) => value.trim())
-        .filter(Boolean),
-      badge: productForm.badge.trim() || null,
-      isActive: productForm.isActive,
-      variants,
-    };
-
-    try {
-      setSavingProduct(true);
-      if (editingProduct) {
-        await adminApi.updateProduct(editingProduct.id, payload);
-      } else {
-        await adminApi.createProduct(payload);
-      }
-      setProductModalOpen(false);
-      await reloadData();
-    } catch (err) {
-      setProductError(err.message || 'Không thể lưu sản phẩm.');
-    } finally {
-      setSavingProduct(false);
-    }
-  };
-
-  const updateProductField = (field, value) =>
-    setProductForm((current) => ({ ...current, [field]: value }));
-
-  const handleProductNameChange = (name) =>
-    setProductForm((current) => ({
-      ...current,
-      name,
-      slug: slugEdited ? current.slug : slugify(name),
-    }));
-
-  const handleSlugChange = (slug) => {
-    setSlugEdited(Boolean(slug));
-    updateProductField('slug', slug);
-  };
-
-  const handleImageFiles = async (event) => {
-    const files = [...event.target.files];
-    event.target.value = '';
-    if (!files.length) return;
-
-    setImageError('');
-    setUploadingImages(true);
-    try {
-      for (const file of files) {
-        const url = await adminApi.uploadProductImage(file);
-        setProductForm((current) => ({ ...current, imageUrls: [...current.imageUrls, url] }));
-      }
-    } catch (err) {
-      setImageError(err.message || 'Không thể tải ảnh lên.');
-    } finally {
-      setUploadingImages(false);
-    }
-  };
-
-  const removeProductImage = (index) =>
-    setProductForm((current) => ({
-      ...current,
-      imageUrls: current.imageUrls.filter((_, imageIndex) => imageIndex !== index),
-    }));
-
-  const updateVariantField = (index, field, value) =>
-    setProductForm((current) => ({
-      ...current,
-      variants: current.variants.map((variant, variantIndex) =>
-        variantIndex === index ? { ...variant, [field]: value } : variant,
-      ),
-    }));
+  const countByStatus = (status) => adminOrders.filter((order) => order.status === status).length;
+  const lowStockCount = adminProducts.filter((product) =>
+    product.variants.some((variant) => variant.stockQuantity <= LOW_STOCK_LIMIT),
+  ).length;
+  const stats =
+    tab === 'orders'
+      ? [
+          ['Tổng đơn hàng', adminOrders.length],
+          ['Chờ xác nhận', countByStatus('PENDING_CONFIRMATION')],
+          ['Đang giao', countByStatus('SHIPPING')],
+          ['Hoàn thành', countByStatus('COMPLETED')],
+        ]
+      : [
+          ['Tổng sản phẩm', adminProducts.length],
+          ['Đang kinh doanh', adminProducts.filter((product) => product.isActive).length],
+          ['Đã ẩn', adminProducts.filter((product) => !product.isActive).length],
+          ['Sắp hết hàng', lowStockCount],
+        ];
 
   return (
     <div className="admin-app">
       <aside className="admin-sidebar">
         <Link to="/" className="admin-brand">
-          HAVIE.<small>ADMIN STUDIO v1</small>
+          HAVIE<span className="dot">.</span>
+          <small>QUẢN TRỊ CỬA HÀNG</small>
         </Link>
         <nav aria-label="Điều hướng quản trị">
-          {nav.map(([label, Icon]) => (
+          {TABS.map(({ key, label, icon: Icon }) => (
             <button
-              key={label}
-              className={tab === label ? 'active' : ''}
-              onClick={() => setTab(label)}
+              key={key}
+              type="button"
+              className={tab === key ? 'active' : ''}
+              aria-current={tab === key ? 'page' : undefined}
+              onClick={() => changeTab(key)}
             >
-              <Icon size={20} />
+              <Icon size={20} aria-hidden="true" />
               {label}
             </button>
           ))}
         </nav>
         <Link to="/" className="admin-exit">
-          <LogOut size={19} /> Về trang bán hàng
+          <LogOut size={19} aria-hidden="true" /> Về trang bán hàng
         </Link>
       </aside>
 
       <main className="admin-main">
         <header className="admin-top">
-          <span>STORE MANAGEMENT / {tab.toUpperCase()}</span>
+          <span className="admin-crumb">Quản trị / {activeTab.label}</span>
+          <Link to="/" className="admin-brand-mobile">
+            HAVIE<span className="dot">.</span>
+          </Link>
           <strong>
-            {account.fullName} <span className="admin-avatar">A</span>
+            <span className="admin-name">{account.fullName}</span>
+            <span className="admin-avatar" aria-hidden="true">
+              {account.fullName?.charAt(0).toUpperCase() || 'A'}
+            </span>
           </strong>
         </header>
+        <nav className="admin-mobile-nav" aria-label="Điều hướng quản trị trên di động">
+          {TABS.map(({ key, label, icon: Icon }) => (
+            <button
+              key={key}
+              type="button"
+              className={tab === key ? 'active' : ''}
+              aria-current={tab === key ? 'page' : undefined}
+              onClick={() => changeTab(key)}
+            >
+              <Icon size={18} aria-hidden="true" />
+              {label}
+            </button>
+          ))}
+        </nav>
 
         <div className="admin-content">
           <div className="admin-title">
-            <div>
-              <span className="eyebrow">API CONTRACT V1 BACKOFFICE</span>
-              <h1>
-                {tab}
-                <span className="dot">.</span>
-              </h1>
-            </div>
-            {tab === 'Products' && (
-              <button className="btn btn-primary" onClick={() => openProductForm()}>
-                THÊM SẢN PHẨM
+            <h1>
+              {activeTab.label}
+              <span className="dot">.</span>
+            </h1>
+            <div className="admin-title-actions">
+              <button
+                type="button"
+                className="btn btn-outline"
+                aria-label="Tải lại dữ liệu"
+                disabled={loading}
+                onClick={() => reloadData()}
+              >
+                <RotateCw size={16} className={loading ? 'spin' : ''} aria-hidden="true" />
               </button>
-            )}
+              {tab === 'products' && (
+                <button type="button" className="btn btn-primary" onClick={() => openProductForm()}>
+                  <Plus size={18} aria-hidden="true" /> THÊM SẢN PHẨM
+                </button>
+              )}
+            </div>
           </div>
 
           {pageError && (
-            <p className="my-4 text-[var(--danger)]" role="alert">
-              {pageError}{' '}
-              <button className="btn-mini" onClick={reloadData}>
+            <div className="inline-alert" role="alert">
+              <span>{pageError}</span>
+              <button type="button" className="btn-mini" onClick={() => reloadData()}>
                 Thử tải lại
               </button>
-            </p>
-          )}
-          {loading && <p role="status">Đang tải dữ liệu quản trị...</p>}
-
-          {productModalOpen && (
-            <div className="qr-overlay">
-              <div className="qr-modal max-h-[90vh] max-w-[760px] overflow-y-auto text-left">
-                <h2>{editingProduct ? 'CẬP NHẬT SẢN PHẨM' : 'THÊM SẢN PHẨM'}</h2>
-                <form onSubmit={handleSaveProduct}>
-                  <div className="grid gap-3 md:grid-cols-2">
-                    <label className="block">
-                      TÊN SẢN PHẨM
-                      <input
-                        required
-                        maxLength={200}
-                        value={productForm.name}
-                        onChange={(event) => handleProductNameChange(event.target.value)}
-                      />
-                    </label>
-                    <label className="block">
-                      SLUG
-                      <input
-                        required
-                        maxLength={200}
-                        value={productForm.slug}
-                        onChange={(event) => handleSlugChange(event.target.value)}
-                      />
-                    </label>
-                    <label className="block">
-                      DANH MỤC
-                      <select
-                        required
-                        value={productForm.categoryId}
-                        onChange={(event) => updateProductField('categoryId', event.target.value)}
-                      >
-                        <option value="">Chọn danh mục</option>
-                        {categories.map((category) => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <label className="block">
-                      THƯƠNG HIỆU
-                      <select
-                        required
-                        value={productForm.brandId}
-                        onChange={(event) => updateProductField('brandId', event.target.value)}
-                      >
-                        <option value="">Chọn thương hiệu</option>
-                        {brands.map((brand) => (
-                          <option key={brand.id} value={brand.id}>
-                            {brand.name}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <label className="block">
-                      NHÃN
-                      <input
-                        maxLength={100}
-                        value={productForm.badge}
-                        onChange={(event) => updateProductField('badge', event.target.value)}
-                        placeholder="Ví dụ: BEST SELLER"
-                      />
-                    </label>
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={productForm.isActive}
-                        onChange={(event) => updateProductField('isActive', event.target.checked)}
-                      />
-                      Đang kinh doanh
-                    </label>
-                  </div>
-
-                  <label className="mt-3 block">
-                    MÔ TẢ
-                    <textarea
-                      rows={3}
-                      value={productForm.description}
-                      onChange={(event) => updateProductField('description', event.target.value)}
-                    />
-                  </label>
-                  <div className="mt-3">
-                    <p>ẢNH SẢN PHẨM (ẢNH ĐẦU TIÊN LÀ ẢNH CHÍNH)</p>
-                    {productForm.imageUrls.length > 0 && (
-                      <ul className="mt-2 flex flex-wrap gap-2">
-                        {productForm.imageUrls.map((url, index) => (
-                          <li key={`${url}-${index}`} className="relative">
-                            <img
-                              src={url}
-                              alt={`Ảnh sản phẩm ${index + 1}`}
-                              className="h-[88px] w-[88px] rounded-md border border-[var(--border)] object-cover"
-                            />
-                            <button
-                              type="button"
-                              className="absolute top-1 right-1 flex rounded-full bg-black/70 p-1 text-white"
-                              aria-label={`Xóa ảnh ${index + 1}`}
-                              onClick={() => removeProductImage(index)}
-                            >
-                              <X size={14} aria-hidden="true" />
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    <label className="btn-mini mt-2 inline-flex cursor-pointer items-center gap-1 focus-within:outline-2">
-                      <Upload size={14} aria-hidden="true" />
-                      {uploadingImages ? 'Đang tải ảnh...' : 'Chọn ảnh từ máy'}
-                      <input
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp"
-                        multiple
-                        className="sr-only"
-                        disabled={uploadingImages}
-                        onChange={handleImageFiles}
-                      />
-                    </label>
-                    <small className="mt-1 block text-[var(--muted)]">
-                      JPG, PNG hoặc WEBP, tối đa 5MB mỗi ảnh.
-                    </small>
-                    {imageError && (
-                      <p className="mt-1 text-[var(--danger)]" role="alert">
-                        {imageError}
-                      </p>
-                    )}
-                  </div>
-                  <label className="mt-3 block">
-                    THÔNG SỐ (MỖI DÒNG MỘT THÔNG SỐ)
-                    <textarea
-                      rows={3}
-                      value={productForm.specs}
-                      onChange={(event) => updateProductField('specs', event.target.value)}
-                    />
-                  </label>
-
-                  <div className="mt-5 flex items-center justify-between">
-                    <h3>BIẾN THỂ VÀ GIÁ</h3>
-                    <button
-                      type="button"
-                      className="btn-mini"
-                      onClick={() =>
-                        setProductForm((current) => ({
-                          ...current,
-                          variants: [
-                            ...current.variants,
-                            {
-                              sku: '',
-                              name: '',
-                              attributes: '{}',
-                              price: '',
-                              oldPrice: '',
-                              stockQuantity: '0',
-                              isAvailable: true,
-                            },
-                          ],
-                        }))
-                      }
-                    >
-                      THÊM BIẾN THỂ
-                    </button>
-                  </div>
-                  {productForm.variants.map((variant, index) => (
-                    <fieldset key={variant.id || index} className="mt-3 rounded border p-3">
-                      <legend>Biến thể {index + 1}</legend>
-                      <div className="grid gap-3 md:grid-cols-2">
-                        <label className="block">
-                          SKU
-                          <input
-                            required
-                            value={variant.sku}
-                            onChange={(event) =>
-                              updateVariantField(index, 'sku', event.target.value)
-                            }
-                          />
-                        </label>
-                        <label className="block">
-                          TÊN BIẾN THỂ
-                          <input
-                            required
-                            value={variant.name}
-                            onChange={(event) =>
-                              updateVariantField(index, 'name', event.target.value)
-                            }
-                          />
-                        </label>
-                        <label className="block">
-                          GIÁ BÁN (VND)
-                          <input
-                            required
-                            min="1"
-                            step="1"
-                            type="number"
-                            value={variant.price}
-                            onChange={(event) =>
-                              updateVariantField(index, 'price', event.target.value)
-                            }
-                          />
-                        </label>
-                        <label className="block">
-                          GIÁ CŨ (VND)
-                          <input
-                            min="1"
-                            step="1"
-                            type="number"
-                            value={variant.oldPrice}
-                            onChange={(event) =>
-                              updateVariantField(index, 'oldPrice', event.target.value)
-                            }
-                          />
-                        </label>
-                        <label className="block">
-                          TỒN KHO BAN ĐẦU / HIỆN TẠI
-                          <input
-                            required
-                            min="0"
-                            step="1"
-                            type="number"
-                            value={variant.stockQuantity}
-                            onChange={(event) =>
-                              updateVariantField(index, 'stockQuantity', event.target.value)
-                            }
-                          />
-                        </label>
-                        <label className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            checked={variant.isAvailable}
-                            onChange={(event) =>
-                              updateVariantField(index, 'isAvailable', event.target.checked)
-                            }
-                          />
-                          Cho phép bán biến thể
-                        </label>
-                      </div>
-                      <label className="mt-3 block">
-                        THUỘC TÍNH DẠNG JSON
-                        <textarea
-                          rows={2}
-                          value={variant.attributes}
-                          onChange={(event) =>
-                            updateVariantField(index, 'attributes', event.target.value)
-                          }
-                        />
-                      </label>
-                      {productForm.variants.length > 1 && (
-                        <button
-                          type="button"
-                          className="btn-mini mt-2"
-                          onClick={() =>
-                            setProductForm((current) => ({
-                              ...current,
-                              variants: current.variants.filter(
-                                (_, variantIndex) => variantIndex !== index,
-                              ),
-                            }))
-                          }
-                        >
-                          GỠ BIẾN THỂ
-                        </button>
-                      )}
-                    </fieldset>
-                  ))}
-
-                  {productError && (
-                    <p className="mt-3 text-[var(--danger)]" role="alert">
-                      {productError}
-                    </p>
-                  )}
-                  <div className="mt-5 flex gap-3">
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      disabled={savingProduct || uploadingImages}
-                    >
-                      {savingProduct ? 'ĐANG LƯU...' : 'LƯU SẢN PHẨM'}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline"
-                      onClick={() => setProductModalOpen(false)}
-                      disabled={savingProduct || uploadingImages}
-                    >
-                      HỦY
-                    </button>
-                  </div>
-                </form>
-              </div>
             </div>
           )}
 
-          {tab === 'Orders' && (
-            <section className="admin-panel orders-panel">
-              <div className="panel-title">
-                <h2>Quản lý toàn bộ đơn hàng</h2>
-                <span>{adminOrders.length} ĐƠN HÀNG</span>
+          <div className="stat-grid">
+            {stats.map(([label, value]) => (
+              <div className="stat-card" key={label}>
+                <span>{label}</span>
+                <strong>{loading ? '–' : value}</strong>
               </div>
-              <div className="table-scroll">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>MÃ ĐƠN</th>
-                      <th>NGÀY</th>
-                      <th>KHÁCH HÀNG</th>
-                      <th>ĐỊA CHỈ</th>
-                      <th>TỔNG TIỀN</th>
-                      <th>THANH TOÁN</th>
-                      <th>CHUYỂN TRẠNG THÁI</th>
-                      <th>THAO TÁC</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {adminOrders.map((o) => (
-                      <tr key={o.id}>
-                        <td>
-                          <strong>{o.orderCode}</strong>
-                        </td>
-                        <td>{new Date(o.createdAt).toLocaleDateString('vi-VN')}</td>
-                        <td>
-                          {o.recipientName}
-                          <br />
-                          <small>{o.recipientPhone}</small>
-                        </td>
-                        <td className="max-w-[200px] text-xs">{o.shippingAddress}</td>
-                        <td>
-                          <strong>{money(o.totalAmount)}</strong>
-                        </td>
-                        <td>
-                          {PAYMENT_METHOD_LABELS[o.paymentMethod] || o.paymentMethod} •{' '}
-                          <span className={'status-badge ' + o.paymentStatus}>
-                            {o.paymentStatus}
-                          </span>
-                        </td>
-                        <td>
-                          <select
-                            value={o.status}
-                            aria-label={`Trạng thái đơn ${o.orderCode}`}
-                            onChange={(e) => handleUpdateStatus(o.id, e.target.value)}
-                          >
-                            <option value={o.status}>
-                              {ORDER_STATUS_LABELS[o.status] || o.status}
-                            </option>
-                            {(ORDER_NEXT_STATUSES[o.status] || []).map((status) => (
-                              <option key={status} value={status}>
-                                {ORDER_STATUS_LABELS[status] || status}
-                              </option>
-                            ))}
-                          </select>
-                        </td>
-                        <td>{o.cancelReason && <small>Lý do hủy: {o.cancelReason}</small>}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )}
+            ))}
+          </div>
 
-          {tab === 'Products' && (
-            <section className="admin-panel">
-              <div className="panel-title">
-                <h2>Quản lý sản phẩm & biến thể</h2>
-                <span>{adminProducts.length} SẢN PHẨM</span>
-              </div>
-              <div className="table-scroll">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>SẢN PHẨM</th>
-                      <th>DANH MỤC</th>
-                      <th>THƯƠNG HIỆU</th>
-                      <th>BIẾN THỂ (VARIANTS)</th>
-                      <th>TRẠNG THÁI</th>
-                      <th>THAO TÁC</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {adminProducts.map((p) => (
-                      <tr key={p.id}>
-                        <td>
-                          <strong>{p.name}</strong>
-                          <small className="block text-[var(--muted)]">{p.slug}</small>
-                        </td>
-                        <td>{p.category?.name}</td>
-                        <td>{p.brand?.name}</td>
-                        <td>
-                          {p.variants.map((v) => (
-                            <div key={v.id} className="my-0.5 text-xs">
-                              • {v.name} ({v.sku}): <strong>{money(v.price)}</strong> (Kho:{' '}
-                              {v.stockQuantity}) {v.isAvailable ? '' : '— Ngừng bán'}
-                            </div>
-                          ))}
-                        </td>
-                        <td>
-                          <span
-                            className={'status-badge ' + (p.isActive ? 'COMPLETED' : 'CANCELLED')}
-                          >
-                            {p.isActive ? 'Đang kinh doanh' : 'Đã ẩn'}
-                          </span>
-                        </td>
-                        <td>
-                          <button className="btn-mini" onClick={() => openProductForm(p)}>
-                            Sửa
-                          </button>
-                        </td>
+          <div className="admin-filters">
+            <div className="admin-search">
+              <Search size={17} aria-hidden="true" />
+              <label className="sr-only" htmlFor="admin-search">
+                {tab === 'orders' ? 'Tìm đơn hàng' : 'Tìm sản phẩm'}
+              </label>
+              <input
+                id="admin-search"
+                type="search"
+                value={searchTerm}
+                placeholder={
+                  tab === 'orders' ? 'Mã đơn, tên khách, số điện thoại' : 'Tên sản phẩm, slug, SKU'
+                }
+                onChange={(event) => setSearchTerm(event.target.value)}
+              />
+            </div>
+            {tab === 'orders' && (
+              <>
+                <label className="sr-only" htmlFor="admin-status-filter">
+                  Lọc theo trạng thái
+                </label>
+                <select
+                  id="admin-status-filter"
+                  value={statusFilter}
+                  onChange={(event) => setStatusFilter(event.target.value)}
+                >
+                  <option value="ALL">Mọi trạng thái</option>
+                  {Object.entries(ORDER_STATUS_LABELS).map(([status, label]) => (
+                    <option key={status} value={status}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </>
+            )}
+          </div>
+
+          {loading ? (
+            <BlockSkeleton label="Đang tải dữ liệu quản trị..." rows={5} />
+          ) : tab === 'orders' ? (
+            <section className="admin-panel" aria-label="Danh sách đơn hàng">
+              {visibleOrders.length ? (
+                <div className="table-scroll" tabIndex={0} aria-label="Bảng đơn hàng, có thể cuộn ngang">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">Mã đơn</th>
+                        <th scope="col">Khách hàng</th>
+                        <th scope="col">Địa chỉ</th>
+                        <th scope="col">Tổng tiền</th>
+                        <th scope="col">Thanh toán</th>
+                        <th scope="col">Trạng thái</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {visibleOrders.map((o) => {
+                        const nextStatuses = ORDER_NEXT_STATUSES[o.status] || [];
+                        return (
+                          <tr key={o.id}>
+                            <td>
+                              <strong>{o.orderCode}</strong>
+                              <small>{formatDate(o.createdAt)}</small>
+                            </td>
+                            <td>
+                              {o.recipientName}
+                              <small>{o.recipientPhone}</small>
+                            </td>
+                            <td className="table-address">{o.shippingAddress}</td>
+                            <td>
+                              <strong>{money(o.totalAmount)}</strong>
+                            </td>
+                            <td>
+                              <span className={'status-badge ' + o.paymentStatus}>
+                                {PAYMENT_STATUS_LABELS[o.paymentStatus] || o.paymentStatus}
+                              </span>
+                              <small>
+                                {o.paymentMethod === 'COD'
+                                  ? 'COD'
+                                  : PAYMENT_METHOD_LABELS[o.paymentMethod] || o.paymentMethod}
+                              </small>
+                            </td>
+                            <td>
+                              {nextStatuses.length ? (
+                                <select
+                                  className="table-select"
+                                  value={o.status}
+                                  disabled={updatingOrder === o.id}
+                                  aria-label={`Trạng thái đơn ${o.orderCode}`}
+                                  onChange={(e) => handleUpdateStatus(o, e.target.value)}
+                                >
+                                  <option value={o.status}>
+                                    {ORDER_STATUS_LABELS[o.status] || o.status}
+                                  </option>
+                                  {nextStatuses.map((status) => (
+                                    <option key={status} value={status}>
+                                      Chuyển sang: {ORDER_STATUS_LABELS[status] || status}
+                                    </option>
+                                  ))}
+                                </select>
+                              ) : (
+                                <span className={'status-badge ' + o.status}>
+                                  {ORDER_STATUS_LABELS[o.status] || o.status}
+                                </span>
+                              )}
+                              {o.cancelReason && <small>Lý do: {o.cancelReason}</small>}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="admin-empty">
+                  {adminOrders.length ? 'Không có đơn hàng phù hợp.' : 'Chưa có đơn hàng nào.'}
+                </p>
+              )}
+            </section>
+          ) : (
+            <section className="admin-panel" aria-label="Danh sách sản phẩm">
+              {visibleProducts.length ? (
+                <div className="table-scroll" tabIndex={0} aria-label="Bảng sản phẩm, có thể cuộn ngang">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">Sản phẩm</th>
+                        <th scope="col">Danh mục</th>
+                        <th scope="col">Biến thể</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">
+                          <span className="sr-only">Thao tác</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {visibleProducts.map((p) => (
+                        <tr key={p.id}>
+                          <td>
+                            <div className="table-product">
+                              {p.imageUrls?.[0] && (
+                                <img src={p.imageUrls[0]} alt="" width="44" height="44" loading="lazy" />
+                              )}
+                              <div>
+                                <strong>{p.name}</strong>
+                                <small>{p.slug}</small>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            {p.category?.name}
+                            <small>{p.brand?.name}</small>
+                          </td>
+                          <td>
+                            <ul className="table-variants">
+                              {p.variants.map((v) => (
+                                <li key={v.id}>
+                                  <span>
+                                    {localizeVariantName(v.name)} · <strong>{money(v.price)}</strong>
+                                  </span>
+                                  <span
+                                    className={
+                                      v.stockQuantity <= LOW_STOCK_LIMIT ? 'stock-low' : 'stock-ok'
+                                    }
+                                  >
+                                    Kho: {v.stockQuantity}
+                                    {v.isAvailable ? '' : ' · Ngừng bán'}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          </td>
+                          <td>
+                            <span
+                              className={'status-badge ' + (p.isActive ? 'COMPLETED' : 'CANCELLED')}
+                            >
+                              {p.isActive ? 'Đang bán' : 'Đã ẩn'}
+                            </span>
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn-mini"
+                              aria-label={'Sửa ' + p.name}
+                              onClick={() => openProductForm(p)}
+                            >
+                              Sửa
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="admin-empty">
+                  {adminProducts.length ? 'Không có sản phẩm phù hợp.' : 'Chưa có sản phẩm nào.'}
+                </p>
+              )}
             </section>
           )}
         </div>
       </main>
+
+      <ProductFormModal
+        open={productModalOpen}
+        product={editingProduct}
+        categories={categories}
+        brands={brands}
+        onClose={() => setProductModalOpen(false)}
+        onSaved={() => reloadData({ background: true })}
+      />
+      <ReasonDialog
+        open={Boolean(cancelTarget)}
+        title="Hủy đơn hàng"
+        description={cancelTarget ? `Khách hàng sẽ thấy lý do hủy đơn ${cancelTarget.orderCode}.` : ''}
+        confirmLabel="XÁC NHẬN HỦY"
+        onClose={() => setCancelTarget(null)}
+        onConfirm={(reason) => applyStatus(cancelTarget, 'CANCELLED', reason)}
+      />
     </div>
   );
 }
