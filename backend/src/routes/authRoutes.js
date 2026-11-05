@@ -10,7 +10,6 @@ import {
 import { asyncHandler, HttpError } from '../utils/http.js';
 import { validateLoginBody } from '../utils/authValidation.js';
 import { requestRegistrationOtp, verifyRegistrationOtp } from '../services/registrationService.js';
-import { mockService } from '../services/mockService.js';
 
 const router = Router();
 
@@ -39,15 +38,6 @@ router.post(
     getJwtConfiguration();
     const result = await verifyRegistrationOtp(req.body || {});
     res.status(201).json(result);
-  }),
-);
-
-router.post(
-  '/mock-admin',
-  asyncHandler(async (req, res) => {
-    getJwtConfiguration();
-    const result = await mockService.loginMockAdmin(req.body);
-    res.json(result);
   }),
 );
 

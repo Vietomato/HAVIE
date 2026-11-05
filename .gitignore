@@ -20,19 +20,3 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
-
-# Local environment
-.env
-.env.*
-!.env.example
-
-# Dependencies and build
-node_modules/
-dist/
-
-# Database backups and repair reports
-*.dump
-backend/migration-repair/
-
-# Editor backups
-*.bak

@@ -13,45 +13,6 @@ import AccountOrders from './pages/AccountOrders.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Admin from './pages/admin/Admin.jsx';
 import { StoreProvider } from './context/StoreContext.jsx';
-import AdvisorChat from './components/AdvisorChat.jsx';
-
-export default function App() {
-  return (
-    <StoreProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/admin" element={<Admin />} />
-          <Route
-            path="/*"
-            element={
-              <Shell>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/products" element={<Listing />} />
-                  <Route path="/products/:id" element={<Detail />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/account/orders" element={<AccountOrders />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/checkout" element={<Checkout />} />
-                  <Route
-                    path="*"
-                    element={
-                      <div className="container empty-state">
-                        <h1>Không tìm thấy trang.</h1>
-                        <Link to="/" className="btn btn-primary">
-                          VỀ TRANG CHỦ
-                        </Link>
-                      </div>
-                    }
-                  />
-                </Routes>
-                      <AdvisorChat />
-              </Shell>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </StoreProvider>
 import { ToastProvider } from './context/ToastContext.jsx';
 import usePageTitle from './hooks/usePageTitle.js';
 

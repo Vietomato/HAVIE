@@ -7,10 +7,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// ============================================================
-// ENUMS
-// ============================================================
-
 enum Role {
   CUSTOMER
   ADMIN
@@ -40,35 +36,24 @@ enum PaymentStatus {
   REFUNDED
 }
 
-enum AdvisorNoteStatus {
-  DRAFT
-  APPROVED
-  REJECTED
-}
-
-// ============================================================
-// USERS & AUTHENTICATION
-// ============================================================
-
 model User {
-  id                String    @id @default(uuid())
-  email             String    @unique
+  id                String      @id @default(uuid())
+  email             String      @unique
   passwordHash      String
   fullName          String
   phone             String?
-  role              Role      @default(CUSTOMER)
-  isActive          Boolean   @default(true)
+  role              Role        @default(CUSTOMER)
+  isActive          Boolean     @default(true)
   emailVerifiedAt   DateTime?
   deactivatedReason String?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
 
-  addresses Address[]
-  orders    Order[]
-  reviews   Review[]
-  cart      Cart?
-  auditLogs AuditLog[]
-  advisorConversations AdvisorConversation[]
+  addresses         Address[]
+  orders            Order[]
+  reviews           Review[]
+  cart              Cart?
+  auditLogs         AuditLog[]
 
   @@map("users")
 }
@@ -102,176 +87,119 @@ model Address {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("addresses")
 }
 
-// ============================================================
-// PRODUCT CATALOG
-// ============================================================
-
 model Category {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-  products Product[]
+  products  Product[]
 
   @@map("categories")
 }
 
 model Brand {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-  products Product[]
+  products  Product[]
 
   @@map("brands")
 }
 
 model Product {
-  id             String   @id @default(uuid())
-  name           String
-  slug           String   @unique
-  isActive       Boolean  @default(true)
-  description    String?
-  categoryId     String
-  brandId        String
-  imageUrls      String[] @default([])
-  ratingAverage  Float    @default(0)
-  reviewCount    Int      @default(0)
-  badge          String?
-  specs          String[] @default([])
+  id            String           @id @default(uuid())
+  name          String
+  slug          String           @unique
+  isActive      Boolean          @default(true)
+  description   String?
+  categoryId    String
+  brandId       String
+  imageUrls     String[]         @default([])
+  ratingAverage Float            @default(0)
+  reviewCount   Int              @default(0)
+  badge         String?
+  specs         String[]         @default([])
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
 
-  // Cho phép chatbot chủ động đề xuất sau khi shop duyệt dữ liệu.
-  advisorEnabled Boolean  @default(false)
-
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  category     Category             @relation(fields: [categoryId], references: [id])
-  brand        Brand                @relation(fields: [brandId], references: [id])
-  variants     ProductVariant[]
-  reviews      Review[]
-  advisorNotes ProductAdvisorNote[]
+  category      Category         @relation(fields: [categoryId], references: [id])
+  brand         Brand            @relation(fields: [brandId], references: [id])
+  variants      ProductVariant[]
+  reviews       Review[]
 
   @@map("products")
 }
 
 model ProductVariant {
-  id            String   @id @default(uuid())
+  id            String          @id @default(uuid())
   productId     String
-  sku           String   @unique
+  sku           String          @unique
   name          String
-  attributes    Json     @default("{}")
+  attributes    Json            @default("{}")
   price         Int
   oldPrice      Int?
-  stockQuantity Int      @default(0)
-  isAvailable   Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  stockQuantity Int             @default(0)
+  isAvailable   Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
-  product      Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
-  cartItems    CartItem[]
-  orderItems   OrderItem[]
-  movements    StockMovement[]
-  advisorNotes ProductAdvisorNote[]
+  product       Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  movements     StockMovement[]
 
   @@map("product_variants")
 }
 
-// ============================================================
-// SHOP ADVISOR NOTES
-// ============================================================
-
-model ProductAdvisorNote {
-  id           String            @id @default(uuid())
-
-  // Sản phẩm được nhận xét.
-  productId    String
-
-  // Null: nhận xét chung cho sản phẩm.
-  // Có giá trị: nhận xét dành riêng cho một biến thể.
-  variantId    String?
-
-  // Cảm nhận hoặc hướng tư vấn của shop.
-  content      String
-
-  // Cấu hình, bối cảnh thử và giới hạn áp dụng.
-  conditions   Json              @default("{}")
-
-  // Chỉ nhận xét APPROVED mới được chatbot sử dụng.
-  reviewStatus AdvisorNoteStatus @default(DRAFT)
-  reviewedAt   DateTime?
-
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
-
-  product Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
-  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
-
-  @@index([productId, reviewStatus])
-  @@index([variantId])
-  @@map("product_advisor_notes")
-}
-
-// ============================================================
-// INVENTORY
-// ============================================================
-
 model StockMovement {
-  id        String   @id @default(uuid())
-  variantId String
-  type      String // IN, OUT, ADJUSTMENT
-  quantity  Int
-  reason    String?
-  createdAt DateTime @default(now())
+  id          String         @id @default(uuid())
+  variantId   String
+  type        String         // IN, OUT, ADJUSTMENT
+  quantity    Int
+  reason      String?
+  createdAt   DateTime       @default(now())
 
-  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
   @@map("stock_movements")
 }
 
-// ============================================================
-// CART
-// ============================================================
-
 model Cart {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 
-  user  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items CartItem[]
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
 
   @@map("carts")
 }
 
 model CartItem {
-  id        String   @id @default(uuid())
+  id        String         @id @default(uuid())
   cartId    String
   variantId String
-  quantity  Int      @default(1)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  quantity  Int            @default(1)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 
-  cart    Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  cart      Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
   @@unique([cartId, variantId])
   @@map("cart_items")
 }
-
-// ============================================================
-// ORDERS
-// ============================================================
 
 model Order {
   id              String        @id @default(uuid())
@@ -292,14 +220,14 @@ model Order {
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
-  user  User        @relation(fields: [userId], references: [id])
-  items OrderItem[]
+  user            User          @relation(fields: [userId], references: [id])
+  items           OrderItem[]
 
   @@map("orders")
 }
 
 model OrderItem {
-  id          String @id @default(uuid())
+  id          String         @id @default(uuid())
   orderId     String
   variantId   String
   productName String
@@ -308,15 +236,11 @@ model OrderItem {
   quantity    Int
   subtotal    Int
 
-  order   Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  variant ProductVariant @relation(fields: [variantId], references: [id])
+  order       Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variant     ProductVariant @relation(fields: [variantId], references: [id])
 
   @@map("order_items")
 }
-
-// ============================================================
-// CUSTOMER REVIEWS
-// ============================================================
 
 model Review {
   id        String   @id @default(uuid())
@@ -329,15 +253,11 @@ model Review {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user    User    @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@map("reviews")
 }
-
-// ============================================================
-// AUDIT LOGS
-// ============================================================
 
 model AuditLog {
   id         String   @id @default(uuid())
@@ -349,42 +269,7 @@ model AuditLog {
   metadata   Json?
   createdAt  DateTime @default(now())
 
-  user User? @relation(fields: [userId], references: [id])
+  user       User?    @relation(fields: [userId], references: [id])
 
   @@map("audit_logs")
-}
-
-model AdvisorConversation {
-  id                  String   @id @default(uuid())
-  userId              String
-  title               String   @default("Cuộc trò chuyện mới")
-  titleCustomized     Boolean  @default(false)
-  needs               Json     @default("{}")
-  lastQuestion        String?
-  isProcessing        Boolean  @default(false)
-  processingStartedAt DateTime?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-
-  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages AdvisorMessage[]
-
-  @@index([userId, updatedAt])
-  @@map("advisor_conversations")
-}
-
-model AdvisorMessage {
-  id             String   @id @default(uuid())
-  conversationId String
-  role           String
-  content        String   @db.Text
-  candidates     Json?
-  pricingNotice  String?
-  action         String?
-  createdAt      DateTime @default(now())
-
-  conversation AdvisorConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-
-  @@index([conversationId, createdAt])
-  @@map("advisor_messages")
 }
