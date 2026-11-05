@@ -1,7 +1,10 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
-/* Import order preserves the existing cascade, including responsive overrides. */
+/* .container is defined in base.css; Tailwind's utility would cap it at its own breakpoints. */
+@source not inline("container");
+
+/* Import order preserves the cascade: responsive overrides load last. */
 @import "./styles/theme.css";
 @import "./styles/base.css";
 @import "./styles/header.css";
@@ -14,5 +17,6 @@
 @import "./styles/auth.css";
 @import "./styles/cart-checkout.css";
 @import "./styles/admin.css";
-@import "./styles/responsive.css";
 @import "./styles/account-product-extras.css";
+@import "./styles/feedback.css";
+@import "./styles/responsive.css";
