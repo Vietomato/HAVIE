@@ -1,15 +1,29 @@
 import React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, UserRound, ShoppingBag, Menu, X, ShieldAlert, ClipboardList } from 'lucide-react';
+import { Search, UserRound, ShoppingBag, Menu, X, ShieldCheck, ClipboardList, Heart } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
 
 export default function Header() {
-  const { count, account } = useStore();
+  const { count, account, favorites } = useStore();
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const { pathname, search, hash } = useLocation();
+  const urlQuery = pathname === '/products' ? new URLSearchParams(search).get('q') || '' : '';
+  const [query, setQuery] = useState(urlQuery);
+
+  useEffect(() => setQuery(urlQuery), [urlQuery]);
+  useEffect(() => setOpen(false), [pathname, search, hash]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [open]);
+
   const isCollection =
     pathname === '/products' && new URLSearchParams(search).get('category') === 'rackets';
   const activeItem =
@@ -25,14 +39,32 @@ export default function Header() {
   const navProps = (item) => ({
     className: activeItem === item ? 'active' : undefined,
     'aria-current': activeItem === item ? 'page' : undefined,
-    onClick: () => setOpen(false),
   });
 
   const submit = (e) => {
     e.preventDefault();
-    navigate('/products?q=' + encodeURIComponent(query));
-    setOpen(false);
+    const term = query.trim();
+    navigate(term ? '/products?q=' + encodeURIComponent(term) : '/products');
   };
+
+  const searchFields = (id) => (
+    <>
+      <label className="sr-only" htmlFor={id}>
+        Tìm kiếm sản phẩm
+      </label>
+      <input
+        id={id}
+        type="search"
+        enterKeyHint="search"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Tìm vợt, giày, phụ kiện..."
+      />
+      <button aria-label="Tìm kiếm" type="submit">
+        <Search size={20} aria-hidden="true" />
+      </button>
+    </>
+  );
 
   return (
     <header className="site-header">
@@ -41,70 +73,90 @@ export default function Header() {
           HAVIE<span>.</span>
           <small>CỬA HÀNG CẦU LÔNG</small>
         </Link>
-        <nav className={'main-nav ' + (open ? 'open' : '')} aria-label="Điều hướng chính">
+        <nav
+          id="main-nav"
+          className={'main-nav ' + (open ? 'open' : '')}
+          aria-label="Điều hướng chính"
+        >
+          <form className="header-search nav-search" role="search" onSubmit={submit}>
+            {searchFields('mobile-site-search')}
+          </form>
           <Link to="/" {...navProps('home')}>
-            TRANG CHỦ
+            Trang chủ
           </Link>
           <Link to="/products" {...navProps('store')}>
-            CỬA HÀNG
+            Cửa hàng
           </Link>
           <Link to="/products?category=rackets" {...navProps('collection')}>
-            BỘ SƯU TẬP
+            Bộ sưu tập
           </Link>
-          <a href="/#about" {...navProps('about')}>
-            VỀ CHÚNG TÔI
-          </a>
+          <Link to="/#about" {...navProps('about')}>
+            Về chúng tôi
+          </Link>
+          {account?.role === 'CUSTOMER' && (
+            <Link to="/account/orders" className="nav-mobile-only">
+              Đơn hàng của tôi
+            </Link>
+          )}
         </nav>
-        <form className="header-search" role="search" onSubmit={submit}>
-          <label className="sr-only" htmlFor="site-search">
-            Tìm kiếm sản phẩm
-          </label>
-          <input
-            id="site-search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Tìm sản phẩm..."
-          />
-          <button aria-label="Tìm kiếm" type="submit">
-            <Search size={20} />
-          </button>
+        <form className="header-search desktop-search" role="search" onSubmit={submit}>
+          {searchFields('site-search')}
         </form>
         <div className="header-actions">
           {account?.role === 'ADMIN' && (
-            <Link to="/admin" className="admin-shortcut-pill" title="Mở trang Quản trị HAVIE">
-              <ShieldAlert size={14} /> Quản trị
+            <Link to="/admin" className="admin-shortcut-pill">
+              <ShieldCheck size={15} aria-hidden="true" /> <span>Quản trị</span>
             </Link>
           )}
           {account?.role === 'CUSTOMER' && (
             <Link
               to="/account/orders"
-              className={'header-orders-link ' + (pathname === '/account/orders' ? 'active' : '')}
+              className={
+                'header-icon header-orders-link ' +
+                (pathname === '/account/orders' ? 'active' : '')
+              }
               aria-label="Lịch sử đơn hàng"
               aria-current={pathname === '/account/orders' ? 'page' : undefined}
               title="Lịch sử đơn hàng"
             >
-              <ClipboardList size={20} />
-              <span>Đơn hàng</span>
+              <ClipboardList size={22} aria-hidden="true" />
             </Link>
           )}
           <Link
-            to="/auth"
-            aria-label={account ? 'Tài khoản của bạn' : 'Đăng nhập'}
-            title={account?.fullName || 'Tài khoản'}
+            to="/favorites"
+            className={'header-icon cart-icon ' + (pathname === '/favorites' ? 'active' : '')}
+            aria-label={'Sản phẩm yêu thích: ' + favorites.length}
+            title="Sản phẩm yêu thích"
           >
-            <UserRound size={22} />
+            <Heart size={22} aria-hidden="true" />
+            {favorites.length > 0 && <span aria-hidden="true">{favorites.length}</span>}
           </Link>
-          <Link to="/cart" className="cart-icon" aria-label={'Giỏ hàng có ' + count + ' sản phẩm'}>
-            <ShoppingBag size={22} />
-            {count > 0 && <span>{count}</span>}
+          <Link
+            to="/auth"
+            className={'header-icon ' + (pathname === '/auth' ? 'active' : '')}
+            aria-label={account ? 'Tài khoản của bạn' : 'Đăng nhập'}
+            title={account?.fullName || 'Đăng nhập'}
+          >
+            <UserRound size={22} aria-hidden="true" />
+          </Link>
+          <Link
+            to="/cart"
+            className={'header-icon cart-icon ' + (pathname === '/cart' ? 'active' : '')}
+            aria-label={'Giỏ hàng có ' + count + ' sản phẩm'}
+            title="Giỏ hàng"
+          >
+            <ShoppingBag size={22} aria-hidden="true" />
+            {count > 0 && <span aria-hidden="true">{count}</span>}
           </Link>
           <button
-            className="mobile-toggle"
+            type="button"
+            className="header-icon mobile-toggle"
             aria-label={open ? 'Đóng menu' : 'Mở menu'}
             aria-expanded={open}
+            aria-controls="main-nav"
             onClick={() => setOpen(!open)}
           >
-            {open ? <X size={24} /> : <Menu size={24} />}
+            {open ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
           </button>
         </div>
       </div>

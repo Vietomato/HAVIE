@@ -28,14 +28,14 @@ HAVIE/
 - `src/App.jsx`: khai báo routing và bọc ứng dụng trong `StoreProvider`.
 - `src/context/StoreContext.jsx`: state và thao tác dùng chung cho tài khoản, giỏ hàng, yêu thích; export `StoreProvider` và `useStore`.
 - `src/components/`: `Header`, `Footer`, `Shell`, `ProductCard` dùng chung.
-- `src/pages/`: `Home`, `Listing`, `Detail`, `Cart`, `Checkout`, `Auth`; trang quản trị nằm tại `pages/admin/Admin.jsx`.
+- `src/pages/`: `Home`, `Listing`, `Detail`, `Favorites`, `Cart`, `Checkout`, `Auth`, `AccountOrders`; trang quản trị nằm tại `pages/admin/` (`Admin.jsx`, `ProductFormModal.jsx`).
 - `/account/orders`: trang lịch sử và theo dõi trạng thái đơn riêng của khách đã đăng nhập.
 - `src/api/`: HTTP client và các dịch vụ gọi backend thật; mock đã được bỏ theo cập nhật từ branch `dev`.
 - `src/utils/product.js`: nhãn sản phẩm và hàm hiển thị tên biến thể dùng chung.
 - `src/style.tailwind.css`: điểm import Tailwind và các stylesheet trong `styles/`.
 - `src/styles/`: chia theo base, header, home, products, campaign, footer, catalog, detail, auth, cart-checkout, admin, responsive và account-product-extras.
 
-Các stylesheet giữ nguyên selector và nằm trong `@layer components`. Thứ tự import giữ nguyên cascade cũ; `responsive.css` giữ các breakpoint 600/900/1200px và reduced-motion, còn `account-product-extras.css` chứa các phần bổ sung ở cuối stylesheet cũ. Một số selector dùng chung vẫn ở nhóm gốc (ví dụ `.btn` trong `home.css`, input của checkout trong `auth.css`), vì vậy các file này được nạp toàn cục, không import riêng theo route. Khi sửa giao diện, ưu tiên utility trực tiếp trong JSX theo `Rule.md`.
+Các stylesheet giữ nguyên selector và nằm trong `@layer components`. Thứ tự import giữ nguyên cascade cũ; `responsive.css` giữ các breakpoint 600/900/1200px và reduced-motion, còn `account-product-extras.css` chứa các phần bổ sung ở cuối stylesheet cũ. `feedback.css` chứa style dùng chung cho field, skeleton, toast và dialog (`Modal` dùng thẻ `<dialog>` gốc). `@source not inline("container")` tắt utility `.container` của Tailwind để `.container` trong `base.css` có hiệu lực. Một số selector dùng chung vẫn ở nhóm gốc (ví dụ `.btn` trong `home.css`, input của checkout trong `auth.css`), vì vậy các file này được nạp toàn cục, không import riêng theo route. Khi sửa giao diện, ưu tiên utility trực tiếp trong JSX theo `Rule.md`.
 
 Kiểm tra biên dịch bằng `cd frontend && npm run build`. Build không thay thế việc kiểm tra giao diện ở mobile/desktop và các trạng thái tương tác.
 
@@ -61,8 +61,8 @@ Frontend xử lý CSS bằng Tailwind CSS v4 thông qua plugin Vite. Các style 
 
 ## Clean Racing (Option B)
 
-The frontend theme is centralized in `frontend/src/styles/theme.css`: racing red CTAs, electric blue accents, navy text, and light surfaces. Small blue text uses a darker accessible variant. Header navigation uses separate neutral outlined boxes; the current section has a heavier border and matches both pathname and category query. Typography uses Segoe UI with system fallbacks supporting Vietnamese.
+The frontend theme is centralized in `frontend/src/styles/theme.css`: racing red CTAs, electric blue accents, navy text, and light surfaces. Small blue text uses a darker accessible variant. Header navigation uses text links; the current section has a red underline and matches both pathname and category query. White text sits on `--primary-solid` because the brand `--primary` only reaches 4.23:1. Typography uses Segoe UI with system fallbacks supporting Vietnamese.
 
-Component styles remain in `frontend/src/styles/`, in Tailwind's components layer. Existing 600/900/1200px breakpoints are retained; the header wraps its navigation between 900px and 1199px. Images retain their original artwork colors, and order status badges retain semantic status colors.
+Component styles remain in `frontend/src/styles/`, in Tailwind's components layer. Existing 600/900/1200px breakpoints are retained; the header stays on one row from 900px up and uses a menu with search below that. Images retain their original artwork colors, and order status badges retain semantic status colors.
 
 Validation: production build passed; React render checks covered eight navigation URLs; source UTF-8 validation passed. Full desktop/mobile visual regression and authenticated admin/checkout interaction checks remain pending.

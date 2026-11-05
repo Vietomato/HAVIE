@@ -1,65 +1,123 @@
 @layer components {
-:root {
-  font-family: var(--font-ui);
-  @apply text-[var(--ink)];
-  @apply bg-[var(--background)];
-  @apply [font-synthesis:none];
-  @apply [text-rendering:optimizeLegibility];
-  @apply [-webkit-font-smoothing:antialiased];
-  --max: 1320px;
-}
-* {
-  @apply box-border;
-}
-html {
-  @apply scroll-smooth;
-}
-body {
-  font-family: inherit;
-  line-height: 1.5;
-  @apply m-[0];
-  @apply min-w-[320px];
-}
-button,
-input,
-select,
-textarea {
-  @apply [font:inherit];
-}
-button {
-  @apply cursor-pointer;
-}
-a {
-  @apply text-inherit;
-  @apply no-underline;
-}
-img {
-  @apply max-w-full;
-  @apply block;
-}
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  @apply [outline:3px_solid_var(--secondary)];
-  @apply outline-offset-[3px];
-}
-.sr-only {
-  @apply absolute;
-  @apply w-[1px];
-  @apply h-[1px];
-  @apply overflow-hidden;
-  @apply [clip:rect(0,_0,_0,_0)];
-  @apply whitespace-nowrap;
-}
-.container {
-  @apply w-[min(var(--max),_calc(100%_-_36px))];
-  @apply mx-auto;
-}
+  :root {
+    font-family: var(--font-ui);
+    color: var(--ink);
+    background: var(--background);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    --max: 1320px;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-height) + 16px);
+    -webkit-text-size-adjust: 100%;
+  }
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+  body {
+    font-family: inherit;
+    line-height: 1.5;
+    margin: 0;
+    min-width: 320px;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+  button,
+  select,
+  label:has(input[type='radio']),
+  label:has(input[type='checkbox']) {
+    cursor: pointer;
+  }
+  button,
+  a,
+  label {
+    touch-action: manipulation;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  h1,
+  h2,
+  h3,
+  p,
+  dl,
+  dd,
+  fieldset {
+    margin: 0;
+  }
+  fieldset {
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  main:focus {
+    outline: none;
+  }
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex='0']:focus-visible {
+    outline: 3px solid var(--secondary);
+    outline-offset: 2px;
+  }
+  label:has(.sr-only:focus-visible) {
+    outline: 3px solid var(--secondary);
+    outline-offset: 2px;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .container {
+    width: min(var(--max), calc(100% - 36px));
+    margin-inline: auto;
+  }
+  .full {
+    width: 100%;
+  }
+  .muted-text {
+    color: var(--muted);
+    font-size: 14px;
+  }
 
-::selection { background: var(--highlight); color: var(--ink); }
-input, select, textarea { accent-color: var(--secondary); }
-input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
-button:disabled { cursor: not-allowed; opacity: 0.55; }
+  ::selection {
+    background: var(--highlight);
+    color: var(--ink);
+  }
+  input,
+  select,
+  textarea {
+    accent-color: var(--link);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--muted);
+    opacity: 1;
+  }
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
 }

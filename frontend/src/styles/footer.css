@@ -1,54 +1,59 @@
 @layer components {
-.footer {
-  @apply bg-[var(--ink)];
-  @apply text-white;
-  @apply pt-15;
-}
-.footer-grid {
-  @apply grid;
-  @apply grid-cols-[repeat(2,_1fr)];
-  @apply gap-[40px_20px];
-}
-.footer-logo {
-  @apply text-[34px];
-  @apply font-black;
-  @apply tracking-[-2px];
-}
-.footer p {
-  @apply text-xs;
-  @apply text-[var(--border)];
-  @apply leading-[1.8];
-  @apply m-[12px_0_0];
-}
-.footer h3 {
-  @apply text-[11px];
-  @apply tracking-[1.5px];
-  @apply mb-5;
-}
-.footer section > a:not(.footer-logo) {
-  @apply block;
-  @apply text-[var(--highlight)];
-  @apply text-xs;
-  @apply m-[0_0_14px];
-}
-.footer-note {
-  @apply block;
-  @apply text-[var(--border)];
-  @apply text-[11px];
-  @apply mt-5;
-}
-.footer-bottom {
-  @apply flex;
-  @apply flex-wrap;
-  @apply justify-between;
-  @apply gap-[10px];
-  @apply border-t border-[#ffffff33];
-  @apply mt-15;
-  @apply p-[20px_0];
-  @apply text-[var(--border)];
-  @apply text-[11px];
-}
-
-.footer { border-top: 3px solid var(--primary); }
-.footer a:hover { color: var(--surface); text-decoration: underline; text-underline-offset: 4px; }
+  .footer {
+    padding-top: 48px;
+    background: var(--ink);
+    border-top: 3px solid var(--primary);
+    color: #fff;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 20px;
+  }
+  .footer-logo {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -2px;
+  }
+  .footer-logo span {
+    color: var(--primary);
+  }
+  .footer p {
+    margin-top: 10px;
+    color: var(--border);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .footer h2 {
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+  }
+  .footer section > a:not(.footer-logo) {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    color: var(--highlight);
+    font-size: 14px;
+  }
+  .footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .footer a:focus-visible {
+    outline-color: #fff;
+  }
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 6px 20px;
+    margin-top: 40px;
+    padding-block: 18px;
+    border-top: 1px solid rgb(255 255 255 / 20%);
+    color: var(--border);
+    font-size: 13px;
+  }
 }
