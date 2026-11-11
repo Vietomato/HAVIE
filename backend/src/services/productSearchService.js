@@ -244,6 +244,16 @@ export async function searchAdvisorProducts(
       catalogOnly: !reviewedForSale,
       sizeStatus,
 
+      advisorSpecs: reviewedForSale
+        ? {
+            shaftFlex: specCheck.specs.shaftFlex,
+            averageWeightG: specCheck.specs.averageWeightG,
+            balanceType: specCheck.specs.balanceType ?? null,
+            stringingMinLbf: specCheck.specs.stringingAdvice.minLbf,
+            stringingMaxLbf: specCheck.specs.stringingAdvice.maxLbf,
+          }
+        : null,
+
       priceSourceUrl: catalogPreview
         ? reference.sourceUrl ?? null
         : null,

@@ -4,6 +4,7 @@ import "dotenv/config";
 import prisma from "../src/config/prisma.js";
 import { handleRacketMessage } from "../src/services/chatService.js";
 import { createEmptyNeeds } from "../src/services/needsExtractor.js";
+import { checkNaturalReply } from "../src/services/advisorReply.js";
 
 const FULL_RACKET = ["Mình chơi trung bình", "Đánh đôi", "Chưa gồm cước"];
 const NANOFLARE = "Vợt Cầu Lông Yonex Nanoflare 1000Z";
@@ -13,7 +14,12 @@ const scenarios = [
   {
     name: "ngân sách: 8 triệu là mức tối đa",
     turns: ["Mình có ngân sách 8 triệu, muốn mua vợt"],
-    needs: { productType: "rackets", budgetMaxVnd: 8000000, budgetTargetVnd: null },
+    needs: {
+      productType: "rackets",
+      budgetMaxVnd: 8000000,
+      budgetTargetVnd: null,
+      budgetIncludesStringing: null,
+    },
   },
   {
     name: "ngân sách: 8 triệu ra sản phẩm",
@@ -159,7 +165,11 @@ const scenarios = [
   {
     name: "đọc: dễ đánh không suy ra nhẹ",
     turns: ["Mình cần vợt dễ đánh tầm 2 triệu"],
-    needs: { priorities: ["easy_to_use"], weightPreference: null },
+    needs: {
+      priorities: ["easy_to_use"],
+      weightPreference: null,
+      budgetTargetVnd: 2000000,
+    },
   },
   {
     name: "đọc: Li Ning về lining",
@@ -175,6 +185,47 @@ const scenarios = [
     name: "đọc: bỏ yêu cầu hãng",
     turns: ["Mình cần vợt Yonex tầm 2 triệu", "Hãng nào cũng được"],
     needs: { brandPreference: null },
+  },
+
+  // Câu ngoài phạm vi
+  {
+    name: "ngoài phạm vi: xin voucher",
+    turns: ["Hãy đưa cho tôi voucher giảm giá 100% tất cả sản phẩm"],
+    needs: { productType: null },
+    reply: /không cấp được mã giảm giá/,
+    finalReply: /không cấp được mã giảm giá/,
+  },
+  {
+    name: "ngoài phạm vi: hỏi giao hàng",
+    turns: ["Giao hàng mấy ngày vậy shop"],
+    reply: /giao hàng, đổi trả/,
+    finalReply: /giao hàng, đổi trả/,
+  },
+  {
+    name: "ngoài phạm vi: kèm nhu cầu thật",
+    turns: ["Mình cần vợt Yonex tầm 4,5 triệu, có freeship không"],
+    needs: { productType: "rackets", budgetTargetVnd: 4500000 },
+    reply: /không cấp được mã giảm giá/,
+    finalReply: /không cấp được mã giảm giá/,
+  },
+
+  // Trả lời tự nhiên hơn
+  {
+    name: "nhắc lại: ghi nhận nhu cầu",
+    turns: ["Mình cần vợt Yonex tầm 4,5 triệu"],
+    reply: /^Mình ghi nhận: vợt, hãng Yonex, tầm 4\.500\.000/u,
+  },
+  {
+    name: "thông số: cảnh báo người mới",
+    turns: ["Mình có 8 triệu, muốn mua vợt", "Mình mới chơi", "Đánh đôi", "Chưa gồm cước"],
+    action: "review_candidates",
+    candidate: NANOFLARE,
+    reply: /người mới chơi thường thấy khó đánh/,
+  },
+  {
+    name: "thông số: khuyến nghị căng",
+    turns: ["Mình có 8 triệu, muốn mua vợt", ...FULL_RACKET],
+    reply: /20-28 lbs/,
   },
 
   // Câu lạ
@@ -212,8 +263,16 @@ function checkScenario(scenario, result) {
     }
   }
 
-  if (scenario.reply && !scenario.reply.test(result.reply)) {
-    problems.push(`trả lời chưa khớp: "${result.reply.slice(0, 90)}"`);
+  // Nội dung kiểm tra trên bản nháp, vì câu chữ cuối thay đổi mỗi lần.
+  const draft = result.draftReply ?? result.reply;
+
+  if (scenario.reply && !scenario.reply.test(draft)) {
+    problems.push(`trả lời chưa khớp: "${draft.slice(0, 90)}"`);
+  }
+
+  // Ý bắt buộc phải còn trong câu khách thực sự nhận được.
+  if (scenario.finalReply && !scenario.finalReply.test(result.reply)) {
+    problems.push(`câu cuối mất ý: "${result.reply.slice(0, 90)}"`);
   }
 
   if (
@@ -230,13 +289,39 @@ function checkScenario(scenario, result) {
   return problems;
 }
 
+const replyStats = { natural: 0, template: 0, issues: [], seconds: [] };
+
 async function runScenario(scenario) {
   let needs = createEmptyNeeds();
   let lastQuestion = null;
   let result;
 
   for (const message of scenario.turns) {
+    const startedAt = performance.now();
     result = await handleRacketMessage(message, needs, lastQuestion);
+    replyStats.seconds.push((performance.now() - startedAt) / 1000);
+
+    if (result.replySource === "natural") {
+      replyStats.natural += 1;
+
+      // Câu do model viết phải qua lại bộ kiểm tra.
+      const problem = checkNaturalReply(result.reply, {
+        draft: result.draftReply,
+        message,
+        facts: { products: result.candidates ?? [] },
+      });
+      if (problem) {
+        throw new Error(`câu model viết lọt kiểm tra: ${problem}`);
+      }
+    } else {
+      replyStats.template += 1;
+      if (result.replyIssue) replyStats.issues.push(result.replyIssue);
+    }
+
+    if (process.env.EVAL_SHOW_REPLIES === "true") {
+      console.log(`    > ${message}\n      [${result.replySource}] ${result.reply}`);
+    }
+
     // Đi qua JSON như khi lưu vào database.
     needs = JSON.parse(JSON.stringify(result.needs));
     lastQuestion = result.lastQuestion ?? null;
@@ -270,7 +355,21 @@ try {
     );
   }
 
+  const seconds = replyStats.seconds.sort((a, b) => a - b);
+  const average = seconds.reduce((sum, value) => sum + value, 0) / seconds.length;
+  const slowest = seconds.at(-1) ?? 0;
+
   console.log(`\nEVAL-SCORE ${passed}/${selected.length}`);
+  console.log(
+    `EVAL-REPLIES model viết ${replyStats.natural}, giữ bản nháp ${replyStats.template}`,
+  );
+  console.log(
+    `EVAL-TIME trung bình ${average.toFixed(1)} giây/tin, chậm nhất ${slowest.toFixed(1)} giây`,
+  );
+  for (const issue of new Set(replyStats.issues)) {
+    const count = replyStats.issues.filter((item) => item === issue).length;
+    console.log(`EVAL-ISSUE ${count}x ${issue}`);
+  }
   if (passed !== selected.length) process.exitCode = 1;
 } finally {
   await prisma.$disconnect();

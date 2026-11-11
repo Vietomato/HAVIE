@@ -258,3 +258,88 @@ test("earlier priorities stay when the model repeats them", async () => {
 
   assert.deepEqual(needs.priorities, ["easy_to_use", "attack_support"]);
 });
+
+test("stringing is ignored when nobody mentioned it", async () => {
+  mockModelPatch({
+    updates: { budgetMaxVnd: 8000000, budgetIncludesStringing: false },
+    clearFields: [],
+  });
+
+  const needs = await extractRacketNeeds(
+    "Mình có ngân sách 8 triệu, muốn mua vợt",
+    createEmptyNeeds(),
+  );
+
+  assert.equal(needs.budgetIncludesStringing, null);
+});
+
+test("a short answer to the stringing question is kept", async () => {
+  mockModelPatch({
+    updates: { budgetIncludesStringing: false },
+    clearFields: [],
+  });
+
+  const needs = await extractRacketNeeds(
+    "Chưa",
+    { ...racketNeeds, budgetIncludesStringing: null },
+    "Ngân sách này đã bao gồm tiền cước chưa?",
+  );
+
+  assert.equal(needs.budgetIncludesStringing, false);
+});
+
+test("a budget the model missed is read from the message", async () => {
+  mockModelPatch({
+    updates: { productType: "rackets", priorities: ["easy_to_use"] },
+    clearFields: [],
+  });
+
+  const needs = await extractRacketNeeds(
+    "Mình cần vợt dễ đánh tầm 2 triệu",
+    createEmptyNeeds(),
+  );
+
+  assert.equal(needs.budgetTargetVnd, 2000000);
+});
+
+for (const [message, field, amount] of [
+  ["Vợt dưới 500k", "budgetMaxVnd", 500000],
+  ["Tầm 2 triệu rưỡi", "budgetTargetVnd", 2500000],
+  ["Có 4tr5 thôi", "budgetMaxVnd", 4500000],
+  ["Khoảng 3,5 triệu", "budgetTargetVnd", 3500000],
+]) {
+  test(`reads "${message}" as ${field}`, async () => {
+    mockModelPatch({ updates: {}, clearFields: [] });
+
+    const needs = await extractRacketNeeds(message, {
+      ...createEmptyNeeds(),
+      productType: "rackets",
+    });
+
+    assert.equal(needs[field], amount);
+  });
+}
+
+test("sizes and weights are not read as money", async () => {
+  mockModelPatch({ updates: {}, clearFields: [] });
+
+  const needs = await extractRacketNeeds("Size 42, vợt 4U", {
+    ...createEmptyNeeds(),
+    productType: "rackets",
+  });
+
+  assert.equal(needs.budgetTargetVnd, null);
+  assert.equal(needs.budgetMaxVnd, null);
+});
+
+test("two different amounts are left to the model", async () => {
+  mockModelPatch({ updates: {}, clearFields: [] });
+
+  const needs = await extractRacketNeeds("Từ 2 triệu đến 3 triệu", {
+    ...createEmptyNeeds(),
+    productType: "rackets",
+  });
+
+  assert.equal(needs.budgetTargetVnd, null);
+  assert.equal(needs.budgetMaxVnd, null);
+});

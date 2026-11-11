@@ -363,8 +363,46 @@
 }
 
 .havie-advisor__waiting {
+  display: block;
+  margin-top: 6px;
   color: #475569;
-  font-size: 13px;
+  font-size: 12px;
+}
+
+.havie-advisor__dots {
+  display: inline-flex;
+  gap: 5px;
+  padding: 4px 0;
+}
+
+.havie-advisor__dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #166534;
+  animation: havie-advisor-typing 1.2s ease-in-out infinite;
+}
+
+.havie-advisor__dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.havie-advisor__dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes havie-advisor-typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
 }
 
 .havie-advisor__error {
@@ -429,6 +467,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .havie-advisor__dots span {
+    animation: none;
+    opacity: 0.6;
+  }
+
   .havie-advisor__panel {
     transition: none;
   }

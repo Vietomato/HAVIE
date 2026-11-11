@@ -93,6 +93,8 @@ Chat tư vấn dùng Ollama local; model mặc định là `qwen3:8b` và cần 
 
 Số tiền khách nêu không kèm "tầm" hoặc "khoảng" được xem là mức tối đa. Khi không có mẫu đúng điều kiện, bot nới hãng rồi đến giá và nói rõ phần đã nới, không vượt mức tối đa khách nêu. Để chấm bot bằng Ollama và database đã nhập `data/shared-catalog.json`, chạy `node scripts/eval-advisor.mjs`.
 
+Nội dung câu trả lời do code quyết định (sản phẩm, giá, câu hỏi tiếp theo); model chỉ viết lại cho tự nhiên. Câu model viết phải qua bước kiểm tra: không thêm số, hãng, thông số, lời hứa hay khẳng định có hàng mà bản nháp không có, không đổi nghĩa ngân sách và không nhầm vai khách. Câu không đạt được viết lại một lần, nếu vẫn không đạt thì dùng bản nháp. Câu hỏi về voucher, khuyến mãi, giao hàng, đổi trả hay bảo hành được trả lời bằng câu soạn sẵn, không để model tự nói. Đặt `ADVISOR_NATURAL_REPLIES=false` để luôn dùng bản nháp; `ADVISOR_REPLY_TIMEOUT_MS` (mặc định 30000) giới hạn thời gian chờ model viết. Chạy `EVAL_SHOW_REPLIES=true node scripts/eval-advisor.mjs` để xem từng câu trả lời khi chấm.
+
 Admin có thể thêm/cập nhật sản phẩm, biến thể, giá, tồn kho và ẩn sản phẩm khỏi catalog mà không xóa dữ liệu đơn cũ. Thay đổi tồn kho qua màn hình sản phẩm được ghi vào lịch sử kho.
 
 Vòng đời đơn do Admin xử lý theo thứ tự `PENDING_CONFIRMATION → CONFIRMED → SHIPPING → COMPLETED`. Chỉ được hủy khi đơn còn `PENDING_CONFIRMATION` hoặc `CONFIRMED`; hủy bắt buộc có lý do và hoàn kho trong cùng transaction. Đơn đã giao/hoàn thành không thể hủy. Hoàn tất đơn COD đồng thời ghi nhận đã thu tiền.

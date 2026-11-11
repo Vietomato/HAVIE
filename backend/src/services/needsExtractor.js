@@ -316,14 +316,68 @@ function readProductType(message) {
   return rackets ? "rackets" : "shoes";
 }
 
+const STRINGING_WORDS = "cước|căng|công căng";
+const CEILING_WORDS = "tối đa|dưới|không quá|không vượt|trở xuống|đổ lại";
+
+// Đọc số tiền có đơn vị rõ ràng: 2 triệu, 2 triệu rưỡi, 4tr5, 500k.
+function readBudgetAmounts(message) {
+  const text = message.normalize("NFC").toLowerCase();
+  const pattern =
+    /(^|[^\d.,])(\d+(?:[.,]\d+)?)\s*(triệu|tr|củ|nghìn|ngàn|k)(?:\s*(rưỡi)|\s?(\d{1,3})(?![\d.,]))?(?![\p{L}])/gu;
+  const amounts = new Set();
+
+  for (const match of text.matchAll(pattern)) {
+    const unit = ["nghìn", "ngàn", "k"].includes(match[3]) ? 1_000 : 1_000_000;
+    let value = Number(match[2].replace(",", "."));
+
+    if (match[4]) value += 0.5;
+    if (match[5] && unit === 1_000_000) value += Number(`0.${match[5]}`);
+
+    const amount = Math.round(value * unit);
+    if (Number.isSafeInteger(amount) && amount > 0) amounts.add(amount);
+  }
+
+  return [...amounts];
+}
+
 const priorityWords = {
   easy_to_use: "dễ đánh|dễ chơi|dễ dùng|dễ làm quen",
   attack_support: "tấn công|đập|smash|đánh mạnh|lực",
   fast_handling: "xoay|phản tạt|linh hoạt|nhanh tay|phòng thủ",
 };
 
-// Model hay bỏ sót loại đồ và tự thêm ưu tiên, nên đối chiếu với câu của khách.
-function alignPatchWithMessage(patch, message, previous) {
+// Model hay bỏ sót loại đồ, số tiền và tự thêm ưu tiên, cước;
+// nên đối chiếu với câu của khách.
+function alignPatchWithMessage(patch, message, previous, lastQuestion) {
+  if (
+    Object.hasOwn(patch.updates, "budgetIncludesStringing") &&
+    !mentionsWord(message, STRINGING_WORDS) &&
+    !mentionsWord(lastQuestion ?? "", STRINGING_WORDS)
+  ) {
+    delete patch.updates.budgetIncludesStringing;
+  }
+
+  const budgetTouched = budgetFields.some(
+    (field) =>
+      Object.hasOwn(patch.updates, field) || patch.clearFields.includes(field),
+  );
+  const amounts = budgetTouched ? [] : readBudgetAmounts(message);
+
+  if (amounts.length === 1) {
+    const isTarget =
+      hasApproximateBudgetWord(message) && !mentionsWord(message, CEILING_WORDS);
+
+    if (isTarget) {
+      patch.updates.budgetTargetVnd = amounts[0];
+    } else {
+      patch.updates.budgetMaxVnd = amounts[0];
+      // Số tiền mới thay cho mục tiêu cũ.
+      if (previous.budgetTargetVnd !== null) {
+        patch.clearFields.push("budgetTargetVnd");
+      }
+    }
+  }
+
   if (
     previous.productType === null &&
     !Object.hasOwn(patch.updates, "productType")
@@ -660,6 +714,7 @@ export async function extractRacketNeeds(
     ),
     message,
     previous,
+    lastQuestion,
   );
 
   const switchingType =

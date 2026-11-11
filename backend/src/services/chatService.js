@@ -8,20 +8,15 @@ import {
   findAdvisorAlternatives,
   searchAdvisorProducts,
 } from "./productSearchService.js";
-
-const formatVnd = (value) =>
-  new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-    maximumFractionDigits: 0,
-  }).format(value);
-
-const BRAND_LABELS = {
-  yonex: "Yonex",
-  lining: "Li-Ning",
-  mizuno: "Mizuno",
-  victor: "Victor",
-};
+import {
+  BRAND_LABELS,
+  describeFit,
+  describeNeedsChange,
+  describeOutOfScope,
+  fitPenalty,
+  formatVnd,
+  polishReply,
+} from "./advisorReply.js";
 
 function buildFallback(error, previousNeeds, lastQuestion) {
   const unavailable = error instanceof AdvisorModelUnavailableError;
@@ -53,36 +48,79 @@ function describeAlternatives(needs, { reason, candidates }) {
       : "");
 
   if (reason === "brand") {
-    return `Mình chưa có mẫu ${brand} trong tầm giá này, nhưng có mẫu hãng khác phù hợp ngân sách. `;
+    return `Mình chưa có mẫu ${brand} trong tầm giá này, nhưng có mẫu hãng khác phù hợp ngân sách.`;
   }
 
   if (reason === "brand_and_price") {
-    return `Mình chưa có mẫu ${brand} gần mức ${formatVnd(budget)}. Mẫu hãng khác gần nhất ${nearest}. `;
+    return `Mình chưa có mẫu ${brand} gần mức ${formatVnd(budget)}. Mẫu hãng khác gần nhất ${nearest}.`;
   }
 
-  return `Mình chưa có mẫu đúng mức ${formatVnd(budget)}. Mẫu gần nhất ${nearest}. `;
+  return `Mình chưa có mẫu đúng mức ${formatVnd(budget)}. Mẫu gần nhất ${nearest}.`;
 }
 
-export async function handleRacketMessage(
-  message,
-  previousNeeds = null,
-  lastQuestion = null,
-  {
-    extract = extractRacketNeeds,
-    search = searchAdvisorProducts,
-    findAlternatives = findAdvisorAlternatives,
-  } = {},
-) {
-  let needs;
+// Gần ngân sách trước; mẫu khó với người mới xuống sau.
+function sortCandidates(candidates, needs) {
+  const anchor = needs.budgetTargetVnd ?? needs.budgetMaxVnd;
+  const distance = (item) =>
+    Number.isFinite(item.priceVnd) ? Math.abs(item.priceVnd - anchor) : Infinity;
 
-  try {
-    needs = await extract(message, previousNeeds, lastQuestion);
-  } catch (error) {
-    // Lỗi từ model không được làm hỏng cuộc trò chuyện của khách.
-    console.error("[chatService] Không đọc được nhu cầu:", error);
-    return buildFallback(error, previousNeeds, lastQuestion);
+  return [...candidates].sort(
+    (left, right) =>
+      fitPenalty(left, needs) - fitPenalty(right, needs) ||
+      distance(left) - distance(right) ||
+      (left.priceVnd ?? 0) - (right.priceVnd ?? 0),
+  );
+}
+
+function describeCandidates(needs, candidates) {
+  const anchor = needs.budgetTargetVnd ?? needs.budgetMaxVnd;
+  const nearest = candidates[0].priceVnd;
+  const sentences = [
+    candidates.length === 1
+      ? "Mình tìm được 1 mẫu theo điều kiện của bạn."
+      : `Mình tìm được ${candidates.length} mẫu theo điều kiện của bạn.`,
+  ];
+
+  if (needs.budgetTargetVnd == null && Number.isSafeInteger(nearest)) {
+    sentences.push(
+      `Mẫu gần ngân sách ${formatVnd(anchor)} nhất hiện có giá ${formatVnd(nearest)}.`,
+    );
+  } else if (Number.isSafeInteger(anchor)) {
+    sentences.push(`Các mẫu được xếp theo mức giá gần ${formatVnd(anchor)} nhất.`);
   }
 
+  if (needs.productType === "rackets") {
+    const fit = describeFit(candidates[0], needs);
+
+    sentences.push(
+      ...(fit.length
+        ? fit
+        : ["Mình chưa có đủ thông số để đánh giá độ hợp với lối chơi của bạn."]),
+    );
+
+    if (needs.budgetIncludesStringing === true) {
+      sentences.push(
+        "Ngân sách của bạn gồm cước, nên nhớ cộng thêm tiền cước và công căng.",
+      );
+    }
+  } else {
+    const sizeUnverified = candidates.some(
+      (candidate) => candidate.sizeStatus !== "listed_size_match",
+    );
+
+    sentences.push(
+      sizeUnverified
+        ? "Một số mẫu chưa xác nhận được size bạn yêu cầu."
+        : "Các mẫu có size trùng với size bạn cung cấp.",
+      "Bạn nên đối chiếu bảng size đúng model và phom chân trước khi chọn.",
+    );
+  }
+
+  return sentences.join(" ");
+}
+
+// Quyết định nội dung trả lời; câu chữ cuối cùng do polishReply xử lý.
+async function decideReply(needs, { search, findAlternatives }) {
   const decision = decideNextAction(needs);
 
   if (decision.action === "ask_followup") {
@@ -98,168 +136,123 @@ export async function handleRacketMessage(
   }
 
   if (decision.action !== "search_products") {
-    throw new Error(
-      `Hành động chưa được hỗ trợ: ${decision.action}`,
-    );
+    throw new Error(`Hành động chưa được hỗ trợ: ${decision.action}`);
   }
 
   const found = await search(needs);
 
-  if (
-    !["CANDIDATES_FOUND", "NO_REVIEWED_MATCH"].includes(
-      found.status,
-    )
-  ) {
-    throw new Error(
-      `Trạng thái tìm kiếm chưa được hỗ trợ: ${found.status}`,
-    );
+  if (!["CANDIDATES_FOUND", "NO_REVIEWED_MATCH"].includes(found.status)) {
+    throw new Error(`Trạng thái tìm kiếm chưa được hỗ trợ: ${found.status}`);
   }
 
   if (!Array.isArray(found.candidates)) {
     throw new Error("Danh sách sản phẩm trả về không hợp lệ.");
   }
 
-  const isRacket = needs.productType === "rackets";
-
-  const pricingNotice = isRacket
-    ? "Giá niêm yết riêng cây vợt; chưa cộng tiền cước và công căng."
-    : "Giá niêm yết theo từng biến thể sản phẩm.";
-
   const common = {
     needs,
     lastQuestion: null,
     requestedField: null,
-    pricingNotice,
+    pricingNotice:
+      needs.productType === "rackets"
+        ? "Giá niêm yết riêng cây vợt; chưa cộng tiền cước và công căng."
+        : "Giá niêm yết theo từng biến thể sản phẩm.",
     initialBudgetVnd: found.initialBudgetVnd,
     suitabilityAssessed: false,
   };
 
-  if (
-    found.status === "NO_REVIEWED_MATCH" ||
-    found.candidates.length === 0
-  ) {
+  if (found.status === "NO_REVIEWED_MATCH" || found.candidates.length === 0) {
     const alternatives = await findAlternatives(needs);
 
     if (alternatives) {
-      const followUp =
-        "Bạn muốn xem mẫu này hay đổi hãng, khoảng giá tìm kiếm?";
+      const followUp = "Bạn muốn xem mẫu này hay đổi hãng, khoảng giá tìm kiếm?";
 
       return {
         ...common,
         action: "suggest_alternatives",
-        reply: describeAlternatives(needs, alternatives) + followUp,
+        reply: `${describeAlternatives(needs, alternatives)} ${followUp}`,
         lastQuestion: followUp,
         candidates: alternatives.candidates,
       };
     }
 
-    const question =
-      "Bạn muốn đổi hãng hay mở rộng khoảng giá tìm kiếm không?";
+    const question = "Bạn muốn đổi hãng hay mở rộng khoảng giá tìm kiếm không?";
 
     return {
       ...common,
       action: "no_reviewed_match",
       reply:
-        "Mình chưa tìm thấy sản phẩm đáp ứng các điều kiện " +
-        "tìm kiếm hiện tại trong dữ liệu cửa hàng. " +
-        question,
+        "Mình chưa tìm thấy sản phẩm đáp ứng các điều kiện tìm kiếm " +
+        `hiện tại trong dữ liệu cửa hàng. ${question}`,
       lastQuestion: question,
       candidates: [],
     };
   }
 
-  // Chỉ sắp xếp các ứng viên mà dịch vụ tìm kiếm đã trả về.
-  // Không tự thêm sản phẩm hoặc mở rộng ngân sách tại đây.
-  const budgetAnchor =
-    needs.budgetTargetVnd ?? needs.budgetMaxVnd;
-
-  const candidates = [...found.candidates];
-
-  if (
-    Number.isSafeInteger(budgetAnchor) &&
-    budgetAnchor >= 0
-  ) {
-    candidates.sort((left, right) => {
-      const leftPrice =
-        left.priceVnd ?? left.racketPriceVnd;
-
-      const rightPrice =
-        right.priceVnd ?? right.racketPriceVnd;
-
-      const leftDistance = Number.isFinite(leftPrice)
-        ? Math.abs(leftPrice - budgetAnchor)
-        : Infinity;
-
-      const rightDistance = Number.isFinite(rightPrice)
-        ? Math.abs(rightPrice - budgetAnchor)
-        : Infinity;
-
-      if (leftDistance !== rightDistance) {
-        return leftDistance < rightDistance ? -1 : 1;
-      }
-
-      // Cùng độ lệch: ưu tiên giá thấp hơn.
-      if (
-        Number.isFinite(leftPrice) &&
-        Number.isFinite(rightPrice)
-      ) {
-        return leftPrice - rightPrice;
-      }
-
-      return 0;
-    });
-  }
-
-  let reply =
-    "Mình tìm được các sản phẩm theo điều kiện tìm kiếm của bạn. ";
-
-  const nearestPrice = candidates[0]?.priceVnd;
-
-  if (
-    needs.budgetTargetVnd == null &&
-    Number.isSafeInteger(nearestPrice)
-  ) {
-    reply +=
-      `Mẫu gần ngân sách ${formatVnd(budgetAnchor)} nhất ` +
-      `hiện có giá ${formatVnd(nearestPrice)}. `;
-  } else if (
-    Number.isSafeInteger(budgetAnchor) &&
-    budgetAnchor >= 0
-  ) {
-    reply +=
-      `Các mẫu trong danh sách được xếp theo mức giá gần ` +
-      `${formatVnd(budgetAnchor)} nhất. `;
-  }
-
-  if (isRacket) {
-    reply +=
-      "Cần đối chiếu thêm thông số để đánh giá mức độ phù hợp " +
-      "với trình độ, trọng lượng mong muốn và lối chơi.";
-
-    if (needs.budgetIncludesStringing === true) {
-      reply +=
-        " Ngân sách của bạn gồm cước, nên cần cộng tiền cước " +
-        "và công căng trước khi xác nhận tổng chi phí.";
-    }
-  } else {
-    const sizeUnverified = candidates.some(
-      (candidate) =>
-        candidate.sizeStatus !== "listed_size_match",
-    );
-
-    reply += sizeUnverified
-      ? "Một số mẫu chưa xác nhận được size bạn yêu cầu. "
-      : "Các biến thể có size ghi nhận trùng với size bạn cung cấp. ";
-
-    reply +=
-      "Bạn nên đối chiếu bảng size đúng model và phom chân " +
-      "trước khi chọn.";
-  }
+  const candidates = sortCandidates(found.candidates, needs);
 
   return {
     ...common,
     action: "review_candidates",
-    reply,
+    reply: describeCandidates(needs, candidates),
     candidates,
+  };
+}
+
+function buildFacts(result) {
+  return {
+    products: result.candidates.map((candidate) => ({
+      name: candidate.name,
+      price: formatVnd(candidate.priceVnd),
+      notes: describeFit(candidate, result.needs),
+    })),
+    pricingNotice: result.pricingNotice ?? null,
+  };
+}
+
+export async function handleRacketMessage(
+  message,
+  previousNeeds = null,
+  lastQuestion = null,
+  {
+    extract = extractRacketNeeds,
+    search = searchAdvisorProducts,
+    findAlternatives = findAdvisorAlternatives,
+    polish = polishReply,
+  } = {},
+) {
+  const outOfScope = describeOutOfScope(message);
+  let needs;
+
+  try {
+    needs = await extract(message, previousNeeds, lastQuestion);
+  } catch (error) {
+    // Lỗi từ model không được làm hỏng cuộc trò chuyện của khách.
+    console.error("[chatService] Không đọc được nhu cầu:", error);
+    const fallback = buildFallback(error, previousNeeds, lastQuestion);
+    const reply = [...outOfScope, fallback.reply].join(" ");
+
+    return { ...fallback, reply, draftReply: reply, replySource: "template" };
+  }
+
+  const result = await decideReply(needs, { search, findAlternatives });
+  const draft = [
+    describeNeedsChange(previousNeeds ?? createEmptyNeeds(), needs),
+    result.reply,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const polished = await polish({ message, draft, facts: buildFacts(result) });
+
+  // Câu trả lời ngoài phạm vi giữ nguyên văn, không để model viết lại hay bỏ sót.
+  const join = (text) => [...outOfScope, text].join(" ");
+
+  return {
+    ...result,
+    reply: join(polished.reply),
+    draftReply: join(draft),
+    replySource: polished.source,
+    replyIssue: polished.reason,
   };
 }

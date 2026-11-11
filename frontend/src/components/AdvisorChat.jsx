@@ -566,9 +566,21 @@ export default function AdvisorChat() {
                 )}
 
                 {currentIsPending && (
-                  <p className="havie-advisor__waiting" role="status">
-                    HAVIE đang xử lý. Bạn có thể mở cuộc trò chuyện mới trong lúc chờ.
-                  </p>
+                  <div
+                    className="havie-advisor__message havie-advisor__message--assistant havie-advisor__typing"
+                    role="status"
+                  >
+                    <span className="havie-advisor__speaker">HAVIE</span>
+                    <span className="havie-advisor__dots" aria-hidden="true">
+                      <span />
+                      <span />
+                      <span />
+                    </span>
+                    <span className="havie-advisor__sr-only">HAVIE đang soạn tin nhắn</span>
+                    <small className="havie-advisor__waiting">
+                      Bạn có thể mở cuộc trò chuyện mới trong lúc chờ.
+                    </small>
+                  </div>
                 )}
 
                 <div ref={bottomRef} />
