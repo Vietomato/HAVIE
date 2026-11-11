@@ -39,6 +39,13 @@ export function createEmptyNeeds() {
   };
 }
 
+export class AdvisorModelUnavailableError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "AdvisorModelUnavailableError";
+  }
+}
+
 const fields = Object.keys(createEmptyNeeds());
 
 const racketFields = [
@@ -227,6 +234,118 @@ function hasExplicitWeightMention(message) {
     .test(text);
 }
 
+// Model đôi khi vừa cập nhật vừa xóa cùng một trường khi khách đổi loại.
+// Giá trị trong updates là điều khách vừa nói nên được ưu tiên.
+function dropClearsForUpdatedFields(patch) {
+  if (
+    !isObject(patch) ||
+    !isObject(patch.updates) ||
+    !Array.isArray(patch.clearFields)
+  ) {
+    return patch;
+  }
+
+  return {
+    ...patch,
+    clearFields: patch.clearFields.filter(
+      (field) => !Object.hasOwn(patch.updates, field),
+    ),
+  };
+}
+
+function hasApproximateBudgetWord(message) {
+  return /(^|[^\p{L}\p{N}])(tầm|khoảng|cỡ|dự kiến|dự định|xấp xỉ|quanh|ước chừng)(?=$|[^\p{L}\p{N}])/iu
+    .test(message.normalize("NFC"));
+}
+
+// "Ngân sách 8 triệu" là số tiền khách có, không phải giá muốn nhắm tới.
+function normalizeBudgetPatch(patch, message) {
+  if (
+    !isObject(patch) ||
+    !isObject(patch.updates) ||
+    !Array.isArray(patch.clearFields)
+  ) {
+    return patch;
+  }
+
+  const updates = { ...patch.updates };
+  const clearFields = [...patch.clearFields];
+  const hasTarget = Object.hasOwn(updates, "budgetTargetVnd");
+  const hasMaximum = Object.hasOwn(updates, "budgetMaxVnd");
+
+  const approximate = hasApproximateBudgetWord(message);
+  const sameAmount =
+    hasTarget &&
+    hasMaximum &&
+    updates.budgetTargetVnd === updates.budgetMaxVnd;
+
+  if (sameAmount && approximate) {
+    // Model đôi khi ghi một số tiền vào cả hai trường.
+    delete updates.budgetMaxVnd;
+  } else if (hasTarget && (sameAmount || (!hasMaximum && !approximate))) {
+    updates.budgetMaxVnd = updates.budgetTargetVnd;
+    delete updates.budgetTargetVnd;
+
+    // Số tiền mới thay cho mục tiêu cũ.
+    if (!clearFields.includes("budgetTargetVnd")) {
+      clearFields.push("budgetTargetVnd");
+    }
+  } else if (
+    hasTarget &&
+    hasMaximum &&
+    updates.budgetTargetVnd > updates.budgetMaxVnd
+  ) {
+    delete updates.budgetTargetVnd;
+  }
+
+  return { ...patch, updates, clearFields };
+}
+
+function mentionsWord(message, pattern) {
+  return new RegExp(
+    `(^|[^\\p{L}\\p{N}])(${pattern})(?=$|[^\\p{L}\\p{N}])`,
+    "iu",
+  ).test(message.normalize("NFC"));
+}
+
+function readProductType(message) {
+  const rackets = mentionsWord(message, "vợt");
+  const shoes = mentionsWord(message, "giày");
+
+  if (rackets === shoes) return null;
+  return rackets ? "rackets" : "shoes";
+}
+
+const priorityWords = {
+  easy_to_use: "dễ đánh|dễ chơi|dễ dùng|dễ làm quen",
+  attack_support: "tấn công|đập|smash|đánh mạnh|lực",
+  fast_handling: "xoay|phản tạt|linh hoạt|nhanh tay|phòng thủ",
+};
+
+// Model hay bỏ sót loại đồ và tự thêm ưu tiên, nên đối chiếu với câu của khách.
+function alignPatchWithMessage(patch, message, previous) {
+  if (
+    previous.productType === null &&
+    !Object.hasOwn(patch.updates, "productType")
+  ) {
+    const productType = readProductType(message);
+    if (productType) patch.updates.productType = productType;
+  }
+
+  if (Object.hasOwn(patch.updates, "priorities")) {
+    const priorities = patch.updates.priorities.filter(
+      (item) =>
+        previous.priorities.includes(item) ||
+        mentionsWord(message, priorityWords[item]),
+    );
+
+    if (priorities.length) patch.updates.priorities = priorities;
+    else delete patch.updates.priorities;
+  }
+
+  return patch;
+}
+
 function validatePatch(patch) {
   if (
     !isObject(patch) ||
@@ -335,6 +454,7 @@ GIÀY:
 NGÂN SÁCH:
 - Tầm/khoảng/dự kiến: budgetTargetVnd.
 - Tối đa/không vượt/không quá số tiền: budgetMaxVnd.
+- Chỉ nêu số tiền, "ngân sách X" hoặc "có X": budgetMaxVnd.
 - Không tự biến mục tiêu thành mức tối đa.
 - Tiền là số nguyên VND: 2tr=2000000; 2 triệu rưỡi=2500000;
   500k=500000.
@@ -489,7 +609,8 @@ export async function extractRacketNeeds(
         {
           role: "user",
           content: JSON.stringify({
-            previousNeeds: previous,
+            // jsonb đổi thứ tự khóa; giữ cố định để model đọc ổn định.
+            previousNeeds: { ...createEmptyNeeds(), ...previous },
             lastAssistantQuestion: lastQuestion,
             customerMessage: message.trim(),
           }),
@@ -501,10 +622,16 @@ export async function extractRacketNeeds(
         num_predict: 192,
       },
     }),
+  }).catch((error) => {
+    throw new AdvisorModelUnavailableError(
+      `Không gọi được Ollama: ${error.message}`,
+    );
   });
 
   if (!response.ok) {
-    throw new Error(`Ollama trả lỗi HTTP ${response.status}.`);
+    throw new AdvisorModelUnavailableError(
+      `Ollama trả lỗi HTTP ${response.status}.`,
+    );
   }
 
   const result = await response.json();
@@ -527,7 +654,13 @@ export async function extractRacketNeeds(
     throw new Error("Ollama không trả JSON hợp lệ.");
   }
 
-  const patch = validatePatch(parsed);
+  const patch = alignPatchWithMessage(
+    validatePatch(
+      dropClearsForUpdatedFields(normalizeBudgetPatch(parsed, message)),
+    ),
+    message,
+    previous,
+  );
 
   const switchingType =
     previous.productType !== null &&
@@ -562,6 +695,19 @@ export async function extractRacketNeeds(
 
   Object.assign(next, patch.updates);
   resetFields(next, patch.clearFields);
+
+  // Khách vừa đổi một mức thì bỏ mức cũ đang mâu thuẫn với nó.
+  if (
+    next.budgetTargetVnd !== null &&
+    next.budgetMaxVnd !== null &&
+    next.budgetTargetVnd > next.budgetMaxVnd
+  ) {
+    if (Object.hasOwn(patch.updates, "budgetMaxVnd")) {
+      next.budgetTargetVnd = null;
+    } else {
+      next.budgetMaxVnd = null;
+    }
+  }
 
   // Không để trường riêng của loại cũ lọt sang loại mới.
   if (next.productType === "shoes") {

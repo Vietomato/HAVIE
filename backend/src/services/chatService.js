@@ -1,6 +1,13 @@
-﻿import { extractRacketNeeds } from "./needsExtractor.js";
+﻿import {
+  AdvisorModelUnavailableError,
+  createEmptyNeeds,
+  extractRacketNeeds,
+} from "./needsExtractor.js";
 import { decideNextAction } from "./conversationPolicy.js";
-import { searchAdvisorProducts } from "./productSearchService.js";
+import {
+  findAdvisorAlternatives,
+  searchAdvisorProducts,
+} from "./productSearchService.js";
 
 const formatVnd = (value) =>
   new Intl.NumberFormat("vi-VN", {
@@ -9,16 +16,72 @@ const formatVnd = (value) =>
     maximumFractionDigits: 0,
   }).format(value);
 
+const BRAND_LABELS = {
+  yonex: "Yonex",
+  lining: "Li-Ning",
+  mizuno: "Mizuno",
+  victor: "Victor",
+};
+
+function buildFallback(error, previousNeeds, lastQuestion) {
+  const unavailable = error instanceof AdvisorModelUnavailableError;
+  const reply = unavailable
+    ? "Trợ lý tư vấn đang tạm gián đoạn. Bạn thử lại sau ít phút nhé."
+    : "Mình chưa hiểu rõ ý bạn." +
+      (lastQuestion ? ` ${lastQuestion}` : " Bạn nói rõ hơn giúp mình nhé.");
+
+  return {
+    action: unavailable ? "advisor_unavailable" : "clarify",
+    needs: previousNeeds ?? createEmptyNeeds(),
+    reply,
+    lastQuestion,
+    requestedField: null,
+    suitabilityAssessed: false,
+    candidates: [],
+  };
+}
+
+function describeAlternatives(needs, { reason, candidates }) {
+  const brand =
+    BRAND_LABELS[needs.brandPreference] ?? needs.brandPreference;
+  const budget = needs.budgetTargetVnd ?? needs.budgetMaxVnd;
+  const price = candidates[0].priceVnd;
+  const nearest =
+    `có giá ${formatVnd(price)}` +
+    (price > budget
+      ? `, cao hơn ngân sách ${formatVnd(price - budget)}`
+      : "");
+
+  if (reason === "brand") {
+    return `Mình chưa có mẫu ${brand} trong tầm giá này, nhưng có mẫu hãng khác phù hợp ngân sách. `;
+  }
+
+  if (reason === "brand_and_price") {
+    return `Mình chưa có mẫu ${brand} gần mức ${formatVnd(budget)}. Mẫu hãng khác gần nhất ${nearest}. `;
+  }
+
+  return `Mình chưa có mẫu đúng mức ${formatVnd(budget)}. Mẫu gần nhất ${nearest}. `;
+}
+
 export async function handleRacketMessage(
   message,
   previousNeeds = null,
   lastQuestion = null,
+  {
+    extract = extractRacketNeeds,
+    search = searchAdvisorProducts,
+    findAlternatives = findAdvisorAlternatives,
+  } = {},
 ) {
-  const needs = await extractRacketNeeds(
-    message,
-    previousNeeds,
-    lastQuestion,
-  );
+  let needs;
+
+  try {
+    needs = await extract(message, previousNeeds, lastQuestion);
+  } catch (error) {
+    // Lỗi từ model không được làm hỏng cuộc trò chuyện của khách.
+    console.error("[chatService] Không đọc được nhu cầu:", error);
+    return buildFallback(error, previousNeeds, lastQuestion);
+  }
 
   const decision = decideNextAction(needs);
 
@@ -40,19 +103,19 @@ export async function handleRacketMessage(
     );
   }
 
-  const search = await searchAdvisorProducts(needs);
+  const found = await search(needs);
 
   if (
     !["CANDIDATES_FOUND", "NO_REVIEWED_MATCH"].includes(
-      search.status,
+      found.status,
     )
   ) {
     throw new Error(
-      `Trạng thái tìm kiếm chưa được hỗ trợ: ${search.status}`,
+      `Trạng thái tìm kiếm chưa được hỗ trợ: ${found.status}`,
     );
   }
 
-  if (!Array.isArray(search.candidates)) {
+  if (!Array.isArray(found.candidates)) {
     throw new Error("Danh sách sản phẩm trả về không hợp lệ.");
   }
 
@@ -67,14 +130,29 @@ export async function handleRacketMessage(
     lastQuestion: null,
     requestedField: null,
     pricingNotice,
-    initialBudgetVnd: search.initialBudgetVnd,
+    initialBudgetVnd: found.initialBudgetVnd,
     suitabilityAssessed: false,
   };
 
   if (
-    search.status === "NO_REVIEWED_MATCH" ||
-    search.candidates.length === 0
+    found.status === "NO_REVIEWED_MATCH" ||
+    found.candidates.length === 0
   ) {
+    const alternatives = await findAlternatives(needs);
+
+    if (alternatives) {
+      const followUp =
+        "Bạn muốn xem mẫu này hay đổi hãng, khoảng giá tìm kiếm?";
+
+      return {
+        ...common,
+        action: "suggest_alternatives",
+        reply: describeAlternatives(needs, alternatives) + followUp,
+        lastQuestion: followUp,
+        candidates: alternatives.candidates,
+      };
+    }
+
     const question =
       "Bạn muốn đổi hãng hay mở rộng khoảng giá tìm kiếm không?";
 
@@ -95,7 +173,7 @@ export async function handleRacketMessage(
   const budgetAnchor =
     needs.budgetTargetVnd ?? needs.budgetMaxVnd;
 
-  const candidates = [...search.candidates];
+  const candidates = [...found.candidates];
 
   if (
     Number.isSafeInteger(budgetAnchor) &&
@@ -135,7 +213,16 @@ export async function handleRacketMessage(
   let reply =
     "Mình tìm được các sản phẩm theo điều kiện tìm kiếm của bạn. ";
 
+  const nearestPrice = candidates[0]?.priceVnd;
+
   if (
+    needs.budgetTargetVnd == null &&
+    Number.isSafeInteger(nearestPrice)
+  ) {
+    reply +=
+      `Mẫu gần ngân sách ${formatVnd(budgetAnchor)} nhất ` +
+      `hiện có giá ${formatVnd(nearestPrice)}. `;
+  } else if (
     Number.isSafeInteger(budgetAnchor) &&
     budgetAnchor >= 0
   ) {

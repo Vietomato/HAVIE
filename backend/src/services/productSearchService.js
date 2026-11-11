@@ -3,6 +3,9 @@ import { validateAdvisorSpecs } from "./productAdvisorService.js";
 
 const BUDGET_TOLERANCE_VND = 300_000;
 const MAX_CANDIDATES = 5;
+const MAX_ALTERNATIVES = 3;
+// Gợi ý thay thế không vượt quá 30% ngân sách mục tiêu.
+const ALTERNATIVE_OVER_BUDGET_RATIO = 1.3;
 
 function isObject(value) {
   return (
@@ -35,7 +38,7 @@ function readSize(attributes) {
   return { size, system };
 }
 
-function getBudgetRange(needs) {
+export function getBudgetRange(needs, { anyPrice = false } = {}) {
   const target = needs.budgetTargetVnd ?? null;
   const maximum = needs.budgetMaxVnd ?? null;
 
@@ -61,6 +64,20 @@ function getBudgetRange(needs) {
   }
 
   const anchor = target ?? maximum;
+
+  if (anyPrice) {
+    return {
+      anchor,
+      lower: 1,
+      upper: maximum ?? Math.ceil(anchor * ALTERNATIVE_OVER_BUDGET_RATIO),
+    };
+  }
+
+  // Chỉ có trần: mọi mức giá không vượt trần đều phù hợp.
+  if (target === null) {
+    return { anchor, lower: 1, upper: maximum };
+  }
+
   const lower = Math.max(1, anchor - BUDGET_TOLERANCE_VND);
 
   // Có trần thì không bao giờ vượt trần.
@@ -74,12 +91,15 @@ function getBudgetRange(needs) {
   return { anchor, lower, upper };
 }
 
-export async function searchAdvisorProducts(needs) {
+export async function searchAdvisorProducts(
+  needs,
+  { database = prisma, ignoreBrand = false, anyPrice = false } = {},
+) {
   if (!["rackets", "shoes"].includes(needs.productType)) {
     throw new Error("Cần xác định vợt hoặc giày trước khi tìm.");
   }
 
-  const budget = getBudgetRange(needs);
+  const budget = getBudgetRange(needs, { anyPrice });
 
   const previewEnabled =
     process.env.NODE_ENV !== "production" &&
@@ -90,7 +110,7 @@ export async function searchAdvisorProducts(needs) {
     category: { slug: needs.productType },
   };
 
-  if (needs.brandPreference) {
+  if (needs.brandPreference && !ignoreBrand) {
     productFilter.brand = {
       slug: needs.brandPreference,
     };
@@ -104,7 +124,7 @@ export async function searchAdvisorProducts(needs) {
     },
   };
 
-  const variants = await prisma.productVariant.findMany({
+  const variants = await database.productVariant.findMany({
     where: {
       price: {
         gte: budget.lower,
@@ -291,6 +311,36 @@ export async function searchAdvisorProducts(needs) {
 
     candidates,
   };
+}
+
+// Không có mẫu đúng điều kiện: nới lần lượt hãng rồi giá, không vượt trần.
+export async function findAdvisorAlternatives(
+  needs,
+  { database = prisma } = {},
+) {
+  const attempts = needs.brandPreference
+    ? [
+        { reason: "brand", ignoreBrand: true },
+        { reason: "price", anyPrice: true },
+        { reason: "brand_and_price", ignoreBrand: true, anyPrice: true },
+      ]
+    : [{ reason: "price", anyPrice: true }];
+
+  for (const { reason, ...options } of attempts) {
+    const { candidates } = await searchAdvisorProducts(needs, {
+      ...options,
+      database,
+    });
+
+    if (candidates.length) {
+      return {
+        reason,
+        candidates: candidates.slice(0, MAX_ALTERNATIVES),
+      };
+    }
+  }
+
+  return null;
 }
 
 // Tương thích các script kiểm tra vợt cũ.

@@ -91,6 +91,8 @@ Lịch sử tư vấn được lưu theo tài khoản trong PostgreSQL; mỗi t�
 
 Chat tư vấn dùng Ollama local; model mặc định là `qwen3:8b` và cần xử lý trên phần cứng máy backend. Có thể đặt `OLLAMA_MODEL` sang model đã cài để thử tốc độ/chất lượng khác, và `OLLAMA_KEEP_ALIVE` (mặc định `15m`) để giữ model đã nạp, tránh nạp lại giữa các lượt chat. Bộ trích xuất dùng context 2048 và giới hạn tối đa 192 token đầu ra. Model nhỏ hơn không đảm bảo nhanh hơn hoặc giữ nguyên chất lượng trên CPU; muốn giảm đáng kể thời gian cần GPU phù hợp hoặc máy chạy model mạnh hơn.
 
+Số tiền khách nêu không kèm "tầm" hoặc "khoảng" được xem là mức tối đa. Khi không có mẫu đúng điều kiện, bot nới hãng rồi đến giá và nói rõ phần đã nới, không vượt mức tối đa khách nêu. Để chấm bot bằng Ollama và database đã nhập `data/shared-catalog.json`, chạy `node scripts/eval-advisor.mjs`.
+
 Admin có thể thêm/cập nhật sản phẩm, biến thể, giá, tồn kho và ẩn sản phẩm khỏi catalog mà không xóa dữ liệu đơn cũ. Thay đổi tồn kho qua màn hình sản phẩm được ghi vào lịch sử kho.
 
 Vòng đời đơn do Admin xử lý theo thứ tự `PENDING_CONFIRMATION → CONFIRMED → SHIPPING → COMPLETED`. Chỉ được hủy khi đơn còn `PENDING_CONFIRMATION` hoặc `CONFIRMED`; hủy bắt buộc có lý do và hoàn kho trong cùng transaction. Đơn đã giao/hoàn thành không thể hủy. Hoàn tất đơn COD đồng thời ghi nhận đã thu tiền.
