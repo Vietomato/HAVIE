@@ -122,7 +122,6 @@ export default function Listing() {
           <span className="eyebrow">BỘ SƯU TẬP HAVIE</span>
           <h1>
             {(activeCategory?.name || 'Tất cả sản phẩm').toUpperCase()}
-            <span className="dot">.</span>
           </h1>
           <p>Trang bị chỉn chu cho mọi trình độ và phong cách chơi.</p>
         </div>

@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container footer-grid">
         <section aria-label="Giới thiệu HAVIE">
           <Link className="footer-logo" to="/">
-            HAVIE<span>.</span>
+            HAVIE
           </Link>
           <p>Vượt mọi giới hạn.</p>
           <p>Dành trọn đam mê cho cầu lông.</p>

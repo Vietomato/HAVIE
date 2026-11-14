@@ -71,7 +71,7 @@ export default function Header() {
     <header className="site-header">
       <div className="container header-inner">
         <Link to="/" className="brand" aria-label="Trang chủ HAVIE">
-          HAVIE<span>.</span>
+          HAVIE
           <small>CỬA HÀNG CẦU LÔNG</small>
         </Link>
         <nav

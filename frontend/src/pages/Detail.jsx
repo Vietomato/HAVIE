@@ -251,7 +251,6 @@ export default function Detail() {
           <div className="detail-title">
             <h1>
               {product.name}
-              <span className="dot">.</span>
             </h1>
             <button
               type="button"
@@ -398,7 +397,7 @@ export default function Detail() {
 
       <section className="reviews-section" id="reviews">
         <h2>
-          ĐÁNH GIÁ KHÁCH HÀNG ({reviewCount})<span className="dot">.</span>
+          ĐÁNH GIÁ KHÁCH HÀNG ({reviewCount})
         </h2>
         {reviewsError ? (
           <p className="muted-text" role="alert">
@@ -425,7 +424,7 @@ export default function Detail() {
       {related.length > 0 && (
         <section className="related">
           <h2>
-            CÓ THỂ BẠN CŨNG THÍCH<span className="dot">.</span>
+            CÓ THỂ BẠN CŨNG THÍCH
           </h2>
           <div className="products-grid">
             {related.map((p, index) => (

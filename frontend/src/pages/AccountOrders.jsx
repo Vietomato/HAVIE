@@ -76,7 +76,7 @@ export default function AccountOrders() {
         <div>
           <span className="eyebrow">THEO DÕI ĐƠN HÀNG</span>
           <h1>
-            ĐƠN HÀNG CỦA TÔI<span className="dot">.</span>
+            ĐƠN HÀNG CỦA TÔI
           </h1>
           <p>Trạng thái đơn tự cập nhật mỗi 30 giây.</p>
         </div>

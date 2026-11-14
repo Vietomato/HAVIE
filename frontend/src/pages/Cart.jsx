@@ -52,7 +52,7 @@ export default function Cart() {
         <div>
           <span className="eyebrow">LỰA CHỌN CỦA BẠN</span>
           <h1>
-            GIỎ HÀNG CỦA BẠN<span className="dot">.</span>
+            GIỎ HÀNG CỦA BẠN
           </h1>
         </div>
         {items.length > 0 && <span>{count} sản phẩm</span>}

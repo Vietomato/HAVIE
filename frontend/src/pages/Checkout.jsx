@@ -233,7 +233,7 @@ export default function Checkout() {
         <div>
           <span className="eyebrow">BƯỚC CUỐI CÙNG</span>
           <h1>
-            ĐẶT HÀNG<span className="dot">.</span>
+            ĐẶT HÀNG
           </h1>
         </div>
       </div>

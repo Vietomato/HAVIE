@@ -41,7 +41,7 @@ export default function Favorites() {
         <div>
           <span className="eyebrow">DANH SÁCH CỦA BẠN</span>
           <h1>
-            SẢN PHẨM YÊU THÍCH<span className="dot">.</span>
+            SẢN PHẨM YÊU THÍCH
           </h1>
           <p>Danh sách được lưu trên trình duyệt này.</p>
         </div>

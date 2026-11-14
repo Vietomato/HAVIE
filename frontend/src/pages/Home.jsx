@@ -142,7 +142,7 @@ export default function Home() {
           <div>
             <span className="eyebrow">HAVIE — CỬA HÀNG CẦU LÔNG</span>
             <h1>
-              Dành trọn đam mê cho cầu lông<span className="dot">.</span>
+              Dành trọn đam mê cho cầu lông
             </h1>
           </div>
           <Link to="/products" className="btn btn-primary">
@@ -156,7 +156,7 @@ export default function Home() {
           <div>
             <span className="eyebrow">DANH MỤC</span>
             <h2>
-              SẢN PHẨM<span className="dot">.</span>
+              SẢN PHẨM
             </h2>
           </div>
           <Link className="text-link" to="/products">
@@ -186,7 +186,7 @@ export default function Home() {
             <div>
               <span className="eyebrow">ĐƯỢC YÊU THÍCH</span>
               <h2>
-                SẢN PHẨM NỔI BẬT<span className="dot">.</span>
+                SẢN PHẨM NỔI BẬT
               </h2>
             </div>
             <Link className="text-link" to="/products?sort=rating_desc">
@@ -230,7 +230,7 @@ export default function Home() {
           </Link>
         </div>
         <div className="campaign-mark" aria-hidden="true">
-          H<span>.</span>
+          H
         </div>
       </Reveal>
 

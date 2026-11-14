@@ -147,7 +147,7 @@ export default function Auth() {
     <div className="auth-layout">
       <aside className="auth-art">
         <span className="auth-brand" aria-hidden="true">
-          HAVIE<span>.</span>
+          HAVIE
         </span>
         <div>
           <span className="eyebrow">CHÀO MỪNG BẠN ĐẾN VỚI HAVIE</span>
@@ -156,7 +156,7 @@ export default function Auth() {
             <br />
             VƯỢT
             <br />
-            GIỚI HẠN<span>.</span>
+            GIỚI HẠN
           </p>
           <p>Đồng hành cùng bạn trên từng trận đấu và hành trình cầu lông.</p>
         </div>
