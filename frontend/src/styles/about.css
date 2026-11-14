@@ -53,31 +53,20 @@
   .about-brands {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    align-items: center;
+    gap: 16px 24px;
     margin-top: 20px;
     padding: 0;
     list-style: none;
   }
-  .about-brands a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 48px;
-    padding: 0 24px;
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    border-radius: 999px;
-    color: var(--ink);
-    font-size: 16px;
-    font-weight: 800;
-    transition:
-      background 200ms var(--ease),
-      color 200ms var(--ease),
-      border-color 200ms var(--ease);
+  .about-brands .brand-logo {
+    height: 52px;
   }
-  .about-brands a:hover {
-    background: var(--ink);
-    border-color: var(--ink);
-    color: #fff;
+  .about-brands .brand-logo-lining {
+    height: 68px;
+  }
+  .about-brands .brand-logo-mizuno {
+    height: 62px;
   }
   .about-contact {
     display: grid;

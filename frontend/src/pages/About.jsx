@@ -11,6 +11,7 @@ import {
   Truck,
 } from 'lucide-react';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
+import { BRANDS, BrandLogoLink } from '../components/BrandStrip.jsx';
 import { Reveal, RevealItem } from '../components/motion.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
 
@@ -43,8 +44,6 @@ const REASONS = [
     text: 'Giao hàng toàn quốc, nhận hàng rồi mới thanh toán (COD). Sản phẩm bị lỗi được đổi sang sản phẩm mới.',
   },
 ];
-
-const BRANDS = ['Yonex', 'Li-Ning', 'Victor', 'Mizuno'];
 
 export default function About() {
   usePageTitle('Về chúng tôi');
@@ -88,8 +87,8 @@ export default function About() {
         </Reveal>
         <Reveal as="ul" className="about-brands" delay={0.05}>
           {BRANDS.map((brand) => (
-            <li key={brand}>
-              <Link to={'/products?brand=' + brand.toLowerCase().replace('-', '')}>{brand}</Link>
+            <li key={brand.slug}>
+              <BrandLogoLink brand={brand} />
             </li>
           ))}
         </Reveal>
