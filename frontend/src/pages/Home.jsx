@@ -16,6 +16,7 @@ import ProductCard from '../components/ProductCard.jsx';
 import { ProductGridSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
 import { Reveal, RevealItem } from '../components/motion.jsx';
+import BrandStrip from '../components/BrandStrip.jsx';
 
 // Each banner ships a 1280w and a full 2172w WebP so phones download the smaller one.
 const bannerSource = (name) => ({
@@ -264,6 +265,8 @@ export default function Home() {
           </div>
         ))}
       </Reveal>
+
+      <BrandStrip />
     </>
   );
 }

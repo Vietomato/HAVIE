@@ -1,0 +1,71 @@
+@layer components {
+  .brand-strip {
+    margin-block: 8px 56px;
+    text-align: center;
+  }
+  .brand-strip .eyebrow {
+    display: block;
+    margin-bottom: 24px;
+  }
+  .brand-strip-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 20px;
+    align-items: center;
+    justify-items: center;
+    margin: 0;
+    padding: 28px 16px;
+    list-style: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  .brand-strip-list li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+  }
+  .brand-strip-own .logo {
+    height: 44px;
+  }
+  .brand-strip-list a {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 4px;
+  }
+  .brand-logo {
+    width: auto;
+    /* White source artwork becomes dark ink, softened until hovered. */
+    filter: brightness(0);
+    opacity: 0.55;
+    transition: opacity 200ms var(--ease), transform 200ms var(--ease);
+  }
+  .brand-strip-list a:hover .brand-logo,
+  .brand-strip-list a:focus-visible .brand-logo {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  .brand-logo-yonex {
+    height: 30px;
+  }
+  .brand-logo-victor {
+    height: 28px;
+  }
+  .brand-logo-lining {
+    height: 44px;
+  }
+  .brand-logo-mizuno {
+    height: 46px;
+  }
+
+  @media (min-width: 900px) {
+    .brand-strip-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px 40px;
+      padding: 28px 48px;
+    }
+  }
+}
