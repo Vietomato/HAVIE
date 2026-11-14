@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { ArrowRight, SearchX } from 'lucide-react';
 import Shell from './components/Shell.jsx';
 import ScrollManager from './components/ScrollManager.jsx';
 import Home from './pages/Home.jsx';
-import Listing from './pages/Listing.jsx';
-import Detail from './pages/Detail.jsx';
-import Cart from './pages/Cart.jsx';
-import Checkout from './pages/Checkout.jsx';
-import Auth from './pages/Auth.jsx';
-import AccountOrders from './pages/AccountOrders.jsx';
-import Favorites from './pages/Favorites.jsx';
-import Admin from './pages/admin/Admin.jsx';
 import { StoreProvider } from './context/StoreContext.jsx';
-import AdvisorChat from './components/AdvisorChat.jsx';
 import { ToastProvider } from './context/ToastContext.jsx';
 import usePageTitle from './hooks/usePageTitle.js';
+import { BlockSkeleton } from './components/Skeleton.jsx';
+
+const Listing = lazy(() => import('./pages/Listing.jsx'));
+const Detail = lazy(() => import('./pages/Detail.jsx'));
+const Cart = lazy(() => import('./pages/Cart.jsx'));
+const Checkout = lazy(() => import('./pages/Checkout.jsx'));
+const Auth = lazy(() => import('./pages/Auth.jsx'));
+const AccountOrders = lazy(() => import('./pages/AccountOrders.jsx'));
+const Favorites = lazy(() => import('./pages/Favorites.jsx'));
+const Admin = lazy(() => import('./pages/admin/Admin.jsx'));
+const AdvisorChat = lazy(() => import('./components/AdvisorChat.jsx'));
+
+function PageFallback() {
+  return (
+    <div className="container">
+      <BlockSkeleton label="Đang tải trang..." rows={4} />
+    </div>
+  );
+}
 
 function NotFound() {
   usePageTitle('Không tìm thấy trang');
@@ -42,28 +52,32 @@ export default function App() {
       <ToastProvider>
         <StoreProvider>
           <ScrollManager />
-          <Routes>
-            <Route path="/admin" element={<Admin />} />
-            <Route
-              path="/*"
-              element={
-                <Shell>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/products" element={<Listing />} />
-                    <Route path="/products/:id" element={<Detail />} />
-                    <Route path="/favorites" element={<Favorites />} />
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="/account/orders" element={<AccountOrders />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                  <AdvisorChat />
-                </Shell>
-              }
-            />
-          </Routes>
+          <Suspense fallback={<PageFallback />}>
+            <Routes>
+              <Route path="/admin" element={<Admin />} />
+              <Route
+                path="/*"
+                element={
+                  <Shell>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/products" element={<Listing />} />
+                      <Route path="/products/:id" element={<Detail />} />
+                      <Route path="/favorites" element={<Favorites />} />
+                      <Route path="/auth" element={<Auth />} />
+                      <Route path="/account/orders" element={<AccountOrders />} />
+                      <Route path="/cart" element={<Cart />} />
+                      <Route path="/checkout" element={<Checkout />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                    <Suspense fallback={null}>
+                      <AdvisorChat />
+                    </Suspense>
+                  </Shell>
+                }
+              />
+            </Routes>
+          </Suspense>
         </StoreProvider>
       </ToastProvider>
     </BrowserRouter>
