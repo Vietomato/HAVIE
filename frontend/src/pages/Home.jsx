@@ -17,10 +17,25 @@ import { ProductGridSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
 import { Reveal, RevealItem } from '../components/motion.jsx';
 
+// Each banner ships a 1280w and a full 2172w WebP so phones download the smaller one.
+const bannerSource = (name) => ({
+  src: `/images/${name}-2172.webp`,
+  srcSet: `/images/${name}-1280.webp 1280w, /images/${name}-2172.webp 2172w`,
+});
+
 const HOME_BANNERS = [
-  { src: '/images/banner1.png', alt: 'Vợt, giày và phụ kiện cầu lông: xem bộ sưu tập' },
-  { src: '/images/banner2.png', alt: 'Trang bị cầu lông nổi bật: xem bộ sưu tập' },
-  { src: '/images/banner3.png', alt: 'Sản phẩm cầu lông mới: xem bộ sưu tập' },
+  {
+    ...bannerSource('banner-vietnam-open'),
+    alt: 'Giải cầu lông quốc tế Yonex Sunrise Vietnam Open 2026, từ 8 đến 13 tháng 9: xem sản phẩm',
+  },
+  {
+    ...bannerSource('banner-momota'),
+    alt: 'Kento Momota, cảm hứng trên sân đấu: xem sản phẩm',
+  },
+  {
+    ...bannerSource('banner-collection'),
+    alt: 'Bộ sưu tập cầu lông HAVIE từ Yonex, Li-Ning, Victor và Mizuno: xem sản phẩm',
+  },
 ];
 
 const CATEGORIES = [
@@ -98,9 +113,11 @@ export default function Home() {
             <img
               className="home-banner-image"
               src={banner.src}
+              srcSet={banner.srcSet}
+              sizes="100vw"
               alt={banner.alt}
-              width="2182"
-              height="721"
+              width="2172"
+              height="724"
               fetchPriority={index === 0 ? 'high' : undefined}
             />
           </Link>
