@@ -56,3 +56,16 @@ export function validateLoginBody(body) {
 
   return { email, password };
 }
+
+export function validateNewPassword(value) {
+  const password = typeof value === 'string' ? value : '';
+  if (password.length < 6 || Buffer.byteLength(password, 'utf8') > MAX_BCRYPT_PASSWORD_BYTES) {
+    throw new HttpError(
+      400,
+      'VALIDATION_ERROR',
+      'Mật khẩu phải có ít nhất 6 ký tự và không quá 72 byte.',
+      { password: 'Mật khẩu phải có ít nhất 6 ký tự và không quá 72 byte.' },
+    );
+  }
+  return password;
+}

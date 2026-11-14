@@ -36,6 +36,22 @@ export const authApi = {
     return res.data;
   },
 
+  requestPasswordReset: async (email) => {
+    const res = await apiClient.request('/auth/password/forgot', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+    return res.data;
+  },
+
+  resetPassword: async ({ email, code, newPassword }) => {
+    const res = await apiClient.request('/auth/password/reset', {
+      method: 'POST',
+      body: JSON.stringify({ email, code, newPassword }),
+    });
+    return res.data;
+  },
+
   loginMockAdmin: async (payload) => {
     const res = await apiClient.request('/auth/mock-admin', {
       method: 'POST',

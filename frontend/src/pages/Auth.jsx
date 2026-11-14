@@ -53,7 +53,10 @@ export default function Auth() {
   const { account, login, loginMockAdmin, register, logout } = useStore();
   const { notify } = useToast();
   const navigate = useNavigate();
-  usePageTitle(account ? 'Tài khoản' : mode === 'signin' ? 'Đăng nhập' : 'Đăng ký');
+  const isForgot = mode === 'forgot';
+  usePageTitle(
+    account ? 'Tài khoản' : isForgot ? 'Quên mật khẩu' : mode === 'signin' ? 'Đăng nhập' : 'Đăng ký',
+  );
 
   useEffect(() => {
     if (otpCooldown <= 0) return undefined;
@@ -77,9 +80,33 @@ export default function Auth() {
       if (password !== confirm) return setError('Mật khẩu xác nhận không khớp.');
     }
 
+    if (isForgot && otpSent && password !== confirm) {
+      return setError('Mật khẩu xác nhận không khớp.');
+    }
+
     try {
       setLoading(true);
-      if (mode === 'signin') {
+      if (isForgot) {
+        if (!otpSent) {
+          const result = await authApi.requestPasswordReset(email);
+          setOtpSent(true);
+          setOtpCooldown(result.resendAfter || 60);
+          setNotice(result.message);
+        } else {
+          const result = await authApi.resetPassword({
+            email,
+            code: verificationCode,
+            newPassword: password,
+          });
+          setMode('signin');
+          setOtpSent(false);
+          setOtpCooldown(0);
+          setVerificationCode('');
+          setPassword('');
+          setConfirm('');
+          setNotice(result.message);
+        }
+      } else if (mode === 'signin') {
         finishAuth(await login(email, password));
       } else if (!otpSent) {
         const result = await authApi.requestRegistrationOtp({ fullName, email, phone, password });
@@ -101,7 +128,9 @@ export default function Auth() {
     setNotice('');
     try {
       setLoading(true);
-      const result = await authApi.requestRegistrationOtp({ fullName, email, phone, password });
+      const result = isForgot
+        ? await authApi.requestPasswordReset(email)
+        : await authApi.requestRegistrationOtp({ fullName, email, phone, password });
       setOtpCooldown(result.resendAfter || 60);
       setVerificationCode('');
       setNotice(result.message || 'Mã xác minh đã được gửi lại tới email của bạn.');
@@ -133,6 +162,8 @@ export default function Auth() {
     setOtpSent(false);
     setOtpCooldown(0);
     setVerificationCode('');
+    setPassword('');
+    setConfirm('');
   };
 
   const handleLogout = async () => {
@@ -140,8 +171,15 @@ export default function Auth() {
     notify({ message: 'Bạn đã đăng xuất.' });
   };
 
-  const submitLabel =
-    mode === 'signin' ? 'ĐĂNG NHẬP' : otpSent ? 'XÁC MINH & TẠO TÀI KHOẢN' : 'GỬI MÃ XÁC MINH';
+  const submitLabel = isForgot
+    ? otpSent
+      ? 'ĐẶT LẠI MẬT KHẨU'
+      : 'GỬI MÃ ĐẶT LẠI'
+    : mode === 'signin'
+      ? 'ĐĂNG NHẬP'
+      : otpSent
+        ? 'XÁC MINH & TẠO TÀI KHOẢN'
+        : 'GỬI MÃ XÁC MINH';
 
   return (
     <div className="auth-layout">
@@ -179,17 +217,16 @@ export default function Auth() {
               </dl>
 
               <div className="auth-actions">
-                {account.role === 'ADMIN' ? (
+                {account.role === 'ADMIN' && (
                   <Link to="/admin" className="btn btn-primary full">
                     TRANG QUẢN TRỊ <ArrowRight size={18} aria-hidden="true" />
                   </Link>
-                ) : (
-                  <Link to="/account/orders" className="btn btn-primary full">
-                    ĐƠN HÀNG CỦA TÔI <ArrowRight size={18} aria-hidden="true" />
-                  </Link>
                 )}
-                <Link to="/products" className="btn btn-outline full">
-                  TIẾP TỤC MUA SẮM
+                <Link
+                  to={returnTo || '/products'}
+                  className={'btn full ' + (account.role === 'ADMIN' ? 'btn-outline' : 'btn-primary')}
+                >
+                  TIẾP TỤC MUA SẮM <ArrowRight size={18} aria-hidden="true" />
                 </Link>
                 <button type="button" className="logout-link" onClick={handleLogout}>
                   <LogOut size={16} aria-hidden="true" /> Đăng xuất
@@ -199,8 +236,22 @@ export default function Auth() {
           ) : (
             <>
               <span className="eyebrow">TÀI KHOẢN HAVIE</span>
-              <h1>{mode === 'signin' ? 'Chào mừng trở lại.' : 'Bắt đầu hành trình.'}</h1>
+              <h1>
+                {isForgot
+                  ? 'Quên mật khẩu?'
+                  : mode === 'signin'
+                    ? 'Chào mừng trở lại.'
+                    : 'Bắt đầu hành trình.'}
+              </h1>
+              {isForgot && (
+                <p className="auth-lead">
+                  {otpSent
+                    ? 'Nhập mã gồm 6 chữ số trong email và đặt mật khẩu mới.'
+                    : 'Nhập email đã đăng ký, chúng tôi sẽ gửi mã để bạn đặt lại mật khẩu.'}
+                </p>
+              )}
 
+              {!isForgot && (
               <div className="auth-tabs" role="group" aria-label="Chọn đăng nhập hoặc đăng ký">
                 <button
                   type="button"
@@ -219,6 +270,7 @@ export default function Auth() {
                   ĐĂNG KÝ
                 </button>
               </div>
+              )}
 
               <form onSubmit={handleSubmit} className="auth-form">
                 {mode === 'signup' && (
@@ -251,21 +303,89 @@ export default function Auth() {
                   type="email"
                   autoComplete="email"
                   value={email}
-                  disabled={mode === 'signup' && otpSent}
+                  disabled={(mode === 'signup' || isForgot) && otpSent}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ten@email.com"
                 />
-                <PasswordField
-                  id="auth-password"
-                  label="Mật khẩu"
-                  required
-                  minLength={6}
-                  autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
-                  hint={mode === 'signup' ? 'Tối thiểu 6 ký tự.' : undefined}
-                  value={password}
-                  disabled={mode === 'signup' && otpSent}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                {isForgot && otpSent && (
+                  <>
+                    <TextField
+                      id="auth-reset-otp"
+                      label="Mã đặt lại mật khẩu"
+                      required
+                      autoFocus
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      pattern="[0-9]{6}"
+                      maxLength={6}
+                      hint={`Mã gồm 6 chữ số, đã gửi tới ${email}, có hiệu lực 10 phút.`}
+                      value={verificationCode}
+                      onChange={(e) =>
+                        setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))
+                      }
+                    />
+                    <PasswordField
+                      id="auth-new-password"
+                      label="Mật khẩu mới"
+                      required
+                      minLength={6}
+                      autoComplete="new-password"
+                      hint="Tối thiểu 6 ký tự."
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <PasswordField
+                      id="auth-new-confirm"
+                      label="Xác nhận mật khẩu mới"
+                      required
+                      autoComplete="new-password"
+                      value={confirm}
+                      onChange={(e) => setConfirm(e.target.value)}
+                    />
+                    <div className="otp-actions">
+                      <button
+                        type="button"
+                        className="btn-mini"
+                        disabled={loading || otpCooldown > 0}
+                        onClick={handleResendOtp}
+                      >
+                        {otpCooldown > 0 ? `Gửi lại mã sau ${otpCooldown}s` : 'Gửi lại mã'}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-mini"
+                        disabled={loading}
+                        onClick={() => {
+                          setOtpSent(false);
+                          setOtpCooldown(0);
+                          setVerificationCode('');
+                          setError('');
+                          setNotice('');
+                        }}
+                      >
+                        Đổi email
+                      </button>
+                    </div>
+                  </>
+                )}
+                {!isForgot && (
+                  <PasswordField
+                    id="auth-password"
+                    label="Mật khẩu"
+                    required
+                    minLength={6}
+                    autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
+                    hint={mode === 'signup' ? 'Tối thiểu 6 ký tự.' : undefined}
+                    value={password}
+                    disabled={mode === 'signup' && otpSent}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                )}
+                {mode === 'signin' && (
+                  <button type="button" className="auth-forgot" onClick={() => switchMode('forgot')}>
+                    Quên mật khẩu?
+                  </button>
+                )}
                 {mode === 'signup' && (
                   <PasswordField
                     id="auth-confirm"
@@ -335,6 +455,11 @@ export default function Auth() {
                   <ArrowRight size={18} aria-hidden="true" />
                 </button>
               </form>
+              {isForgot && (
+                <button type="button" className="auth-back" onClick={() => switchMode('signin')}>
+                  ← Quay lại đăng nhập
+                </button>
+              )}
               {import.meta.env.DEV && mode === 'signin' && !otpSent && (
                 <div className="mt-4">
                   <button

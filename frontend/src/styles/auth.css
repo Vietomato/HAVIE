@@ -145,4 +145,31 @@
   .logout-link:hover {
     color: var(--danger);
   }
+  .auth-lead {
+    margin: 10px 0 20px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .auth-forgot,
+  .auth-back {
+    justify-self: end;
+    min-height: 40px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--link);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+  }
+  .auth-forgot:hover,
+  .auth-back:hover {
+    text-decoration: underline;
+  }
+  .auth-back {
+    display: block;
+    margin: 16px auto 0;
+    text-align: center;
+  }
 }

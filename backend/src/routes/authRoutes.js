@@ -11,6 +11,7 @@ import { asyncHandler, HttpError } from '../utils/http.js';
 import { validateLoginBody } from '../utils/authValidation.js';
 import { requestRegistrationOtp, verifyRegistrationOtp } from '../services/registrationService.js';
 import { mockService } from '../services/mockService.js';
+import { requestPasswordReset, resetPassword } from '../services/passwordResetService.js';
 
 const router = Router();
 
@@ -39,6 +40,22 @@ router.post(
     getJwtConfiguration();
     const result = await verifyRegistrationOtp(req.body || {});
     res.status(201).json(result);
+  }),
+);
+
+router.post(
+  '/password/forgot',
+  asyncHandler(async (req, res) => {
+    const result = await requestPasswordReset(req.body || {});
+    res.status(200).json({ data: result, message: result.message });
+  }),
+);
+
+router.post(
+  '/password/reset',
+  asyncHandler(async (req, res) => {
+    const result = await resetPassword(req.body || {});
+    res.status(200).json({ data: result, message: result.message });
   }),
 );
 

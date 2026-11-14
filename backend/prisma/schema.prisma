@@ -89,6 +89,19 @@ model EmailVerificationChallenge {
   @@map("email_verification_challenges")
 }
 
+model PasswordResetChallenge {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  otpHash    String
+  expiresAt  DateTime
+  attempts   Int      @default(0)
+  lastSentAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("password_reset_challenges")
+}
+
 model Address {
   id            String   @id @default(uuid())
   userId        String

@@ -53,3 +53,25 @@ export async function sendRegistrationOtp({ email, code, expiresInMinutes }) {
     );
   }
 }
+
+export async function sendPasswordResetOtp({ email, code, expiresInMinutes }) {
+  const mailer = getTransporter();
+  const from = process.env.SMTP_FROM || process.env.SMTP_USER;
+
+  try {
+    await mailer.sendMail({
+      from,
+      to: email,
+      subject: 'Mã đặt lại mật khẩu HAVIE',
+      text: `Mã đặt lại mật khẩu HAVIE của bạn là ${code}. Mã có hiệu lực trong ${expiresInMinutes} phút. Nếu bạn không yêu cầu đặt lại mật khẩu, hãy bỏ qua email này và mật khẩu của bạn sẽ không thay đổi.`,
+      html: `<p>Mã đặt lại mật khẩu HAVIE của bạn:</p><p style="font-size:28px;font-weight:bold;letter-spacing:6px">${code}</p><p>Mã có hiệu lực trong ${expiresInMinutes} phút.</p><p>Nếu bạn không yêu cầu đặt lại mật khẩu, hãy bỏ qua email này. Mật khẩu của bạn sẽ không thay đổi.</p>`,
+    });
+  } catch (error) {
+    console.error('Gmail password reset delivery failed:', error.message);
+    throw new HttpError(
+      503,
+      'EMAIL_DELIVERY_FAILED',
+      'Không gửi được email đặt lại mật khẩu. Vui lòng thử lại sau.',
+    );
+  }
+}
