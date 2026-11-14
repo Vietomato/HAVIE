@@ -28,6 +28,12 @@ const CATEGORIES = [
   { name: 'Giày cầu lông', slug: 'shoes', img: 2 },
   { name: 'Trang phục', slug: 'apparel', img: 4 },
   { name: 'Phụ kiện', slug: 'accessories', img: 6 },
+  {
+    name: 'Cước',
+    slug: 'strings',
+    img: 6,
+    image: '/uploads/yonex-strings/yonex-exbolt-68-5bc20385b7d4.png',
+  },
 ];
 
 const PERKS = [
@@ -154,10 +160,8 @@ export default function Home() {
       <section className="section container">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">DANH MỤC</span>
-            <h2>
-              SẢN PHẨM
-            </h2>
+            <span className="eyebrow">KHÁM PHÁ</span>
+            <h2>DANH MỤC SẢN PHẨM</h2>
           </div>
           <Link className="text-link" to="/products">
             TẤT CẢ <ArrowRight size={17} aria-hidden="true" />
@@ -168,7 +172,7 @@ export default function Home() {
             <RevealItem key={c.slug} index={index}>
             <Link className="category-card" to={'/products?category=' + c.slug}>
               <div className="category-image">
-                <img src={'/images/product-' + c.img + '.svg'} alt="" loading="lazy" />
+                <img src={c.image || '/images/product-' + c.img + '.svg'} alt="" loading="lazy" />
               </div>
               <div className="category-label">
                 <span>{c.name}</span>

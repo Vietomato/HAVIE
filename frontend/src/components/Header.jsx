@@ -89,7 +89,7 @@ export default function Header() {
             Cửa hàng
           </Link>
           <Link to="/products?category=rackets" {...navProps('collection')}>
-            Bộ sưu tập
+            Vợt cầu lông
           </Link>
           <Link to="/#about" {...navProps('about')}>
             Về chúng tôi

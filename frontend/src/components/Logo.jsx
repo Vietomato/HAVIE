@@ -1,37 +1,20 @@
-import React, { useId } from 'react';
+import React from 'react';
 
-// HAVIE Badminton logo: red badge + slanted wordmark. Inline SVG so it needs no font and
-// can switch to light lettering on dark backgrounds (footer, login art).
+// HAVIE Badminton logo: slanted wordmark whose "I" is a shuttlecock. Inline SVG so it needs
+// no font and can switch to light lettering on dark backgrounds (footer, login art).
 export default function Logo({ onDark = false, className = '' }) {
-  const gradientId = 'logo-grad-' + useId().replace(/:/g, '');
   const ink = onDark ? '#FFFFFF' : '#101827';
   const tag = onDark ? '#7DB8FF' : '#087CFF';
 
   return (
     <svg
       className={('logo ' + className).trim()}
-      viewBox="6 8 424 134"
+      viewBox="14 12 446 142"
       role="img"
       aria-label="HAVIE Badminton"
     >
-      <defs>
-        <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#F5092E" />
-          <stop offset="1" stopColor="#B90825" />
-        </linearGradient>
-      </defs>
-      <g transform="translate(34 15) skewX(-12)">
-        <rect width="120" height="120" rx="20" fill={`url(#${gradientId})`} />
-        <path
-          transform="translate(31 20) scale(0.72)"
-          fill="#fff"
-          d="M0 0H22V39H56V0H78V100H56V61H22V100H0Z"
-        />
-        <path d="M30 98H90V106H30Z" fill="#fff" />
-        <path d="M30 110H70V114H30Z" fill="#fff" opacity="0.6" />
-      </g>
-      <g transform="translate(190 30) scale(0.62)">
-        <g transform="skewX(-12)" fill={ink}>
+      <g transform="translate(42 18) skewX(-12)">
+        <g fill={ink}>
           <path d="M0 0H22V39H56V0H78V100H56V61H22V100H0Z" />
           <path
             transform="translate(88 0)"
@@ -39,15 +22,21 @@ export default function Logo({ onDark = false, className = '' }) {
             d="M31 0H59L90 100H66L60 78H30L24 100H0Z M37 58H53L45 32.3Z"
           />
           <path transform="translate(170 0)" d="M0 0H24L45 68L66 0H90L58 100H32Z" />
-          <path transform="translate(270 0)" d="M0 0H22V100H0Z" />
-          <path transform="translate(302 0)" d="M0 0H70V20H22V40H62V60H22V80H70V100H0Z" />
+          <path transform="translate(338 0)" d="M0 0H70V20H22V40H62V60H22V80H70V100H0Z" />
+        </g>
+        <g transform="translate(270 0)">
+          <path fill="#DC0A2D" d="M14 80L-6 14Q22 2 50 14L30 80Z" />
+          <circle cx="22" cy="89" r="11" fill="#DC0A2D" />
+          <path d="M18 80L4 12M22 80V6M26 80L40 12" stroke="#fff" strokeWidth="3" fill="none" />
+          <path d="M-3 24Q22 12 47 24" stroke="#fff" strokeWidth="3.5" fill="none" />
         </g>
       </g>
+      <path d="M46 150H72L66 141H40Z" fill="#DC0A2D" />
       <text
-        x="196"
-        y="116"
+        x="86"
+        y="150"
         fontFamily="'Segoe UI', Arial, sans-serif"
-        fontSize="17"
+        fontSize="15"
         fontWeight="800"
         letterSpacing="9"
         fill={tag}

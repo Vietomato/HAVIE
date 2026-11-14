@@ -85,6 +85,10 @@
   a.rating:hover span:last-child {
     text-decoration: underline;
   }
+  .rating + small {
+    display: block;
+    margin-top: 6px;
+  }
   .rating > span:last-child {
     color: var(--muted);
     font-weight: 400;

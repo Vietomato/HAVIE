@@ -33,9 +33,13 @@
 }
 
 .havie-advisor__launcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   border: 0;
   border-radius: 999px;
-  padding: 15px 22px;
+  padding: 14px 20px;
   background: #166534;
   color: #fff;
   font-weight: 700;
@@ -456,6 +460,21 @@
   .havie-advisor {
     right: 16px;
     bottom: 16px;
+  }
+}
+
+/* Icon-only launcher on small screens so it covers less of the page. */
+@media (max-width: 599px) {
+  .havie-advisor__launcher {
+    padding: 15px;
+  }
+  .havie-advisor__launcher-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 

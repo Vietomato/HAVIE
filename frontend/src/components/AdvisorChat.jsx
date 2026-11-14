@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Maximize2, Minimize2 } from 'lucide-react';
+import { MessageCircle, Maximize2, Minimize2 } from 'lucide-react';
 import { chatApi } from '../api';
 import { useStore } from '../context/StoreContext.jsx';
 import './AdvisorChat.css';
@@ -666,8 +666,10 @@ export default function AdvisorChat() {
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="havie-advisor-panel"
+          aria-label="Tư vấn sản phẩm cầu lông"
         >
-          Tư vấn sản phẩm
+          <MessageCircle size={20} aria-hidden="true" />
+          <span className="havie-advisor__launcher-label">Tư vấn sản phẩm</span>
         </button>
       )}
     </div>
