@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Maximize2, Minimize2 } from 'lucide-react';
 import { chatApi } from '../api';
 import { useStore } from '../context/StoreContext.jsx';
+import Modal from './Modal.jsx';
+import TextField from './TextField.jsx';
 import { BotMessage } from './chatText.jsx';
 import { BotMark, BotWordmark } from './BotLogo.jsx';
 import './AdvisorChat.css';
@@ -51,6 +53,10 @@ export default function AdvisorChat() {
   const [creatingConversation, setCreatingConversation] = useState(false);
   const [error, setError] = useState('');
   const [resizeGeometry, setResizeGeometry] = useState(null);
+  const [dialog, setDialog] = useState(null);
+  const [dialogValue, setDialogValue] = useState('');
+  const [dialogError, setDialogError] = useState('');
+  const [dialogBusy, setDialogBusy] = useState(false);
 
   const controllersRef = useRef(new Map());
   const activeRequestsRef = useRef(new Set());
@@ -196,30 +202,56 @@ export default function AdvisorChat() {
     }
   }
 
-  async function renameConversation(conversation) {
-    const title = window.prompt(
-      'Nhập tên cuộc trò chuyện (tối đa 60 ký tự):',
-      conversation.title,
-    );
-    if (title === null || !title.trim() || title.trim() === conversation.title) return;
+  function renameConversation(conversation) {
+    setDialogValue(conversation.title || '');
+    setDialogError('');
+    setDialog({ type: 'rename', conversation });
+  }
 
+  function deleteConversation(conversation) {
+    setDialogError('');
+    setDialog({ type: 'delete', conversation });
+  }
+
+  function closeDialog() {
+    if (!dialogBusy) setDialog(null);
+  }
+
+  async function confirmRename(event) {
+    event.preventDefault();
+    const { conversation } = dialog;
+    const title = dialogValue.trim();
+    if (!title) {
+      setDialogError('Vui lòng nhập tên cuộc trò chuyện.');
+      return;
+    }
+    if (title === conversation.title) {
+      setDialog(null);
+      return;
+    }
+
+    setDialogBusy(true);
     try {
-      const updated = await chatApi.renameConversation(conversation.id, title.trim());
+      const updated = await chatApi.renameConversation(conversation.id, title);
       setConversations((current) =>
         current.map((item) => (item.id === updated.id ? { ...item, ...updated } : item)),
       );
+      setDialog(null);
     } catch (renameError) {
-      setError(renameError.message || 'Không thể đổi tên cuộc trò chuyện.');
+      setDialogError(renameError.message || 'Không thể đổi tên cuộc trò chuyện.');
+    } finally {
+      setDialogBusy(false);
     }
   }
 
-  async function deleteConversation(conversation) {
-    if (!window.confirm(`Xóa cuộc trò chuyện "${conversation.title}"?`)) return;
-
+  async function confirmDelete() {
+    const { conversation } = dialog;
+    setDialogBusy(true);
     try {
       await chatApi.deleteConversation(conversation.id);
       const remaining = conversations.filter((item) => item.id !== conversation.id);
       setConversations(remaining);
+      setDialog(null);
 
       if (activeConversationIdRef.current !== conversation.id) return;
       if (remaining.length) {
@@ -232,7 +264,9 @@ export default function AdvisorChat() {
         setInput('');
       }
     } catch (deleteError) {
-      setError(deleteError.message || 'Không thể xóa cuộc trò chuyện.');
+      setDialogError(deleteError.message || 'Không thể xóa cuộc trò chuyện.');
+    } finally {
+      setDialogBusy(false);
     }
   }
 
@@ -690,6 +724,54 @@ export default function AdvisorChat() {
           )}
         </section>
       )}
+
+      <Modal
+        open={Boolean(dialog)}
+        onClose={closeDialog}
+        busy={dialogBusy}
+        title={dialog?.type === 'delete' ? 'Xóa cuộc trò chuyện' : 'Đổi tên cuộc trò chuyện'}
+      >
+        {dialog?.type === 'rename' && (
+          <form className="form-stack" onSubmit={confirmRename} noValidate>
+            <TextField
+              id="advisor-rename"
+              label="Tên cuộc trò chuyện"
+              hint="Tối đa 60 ký tự"
+              maxLength={60}
+              data-autofocus
+              autoComplete="off"
+              value={dialogValue}
+              error={dialogError}
+              onChange={(event) => setDialogValue(event.target.value)}
+            />
+            <div className="modal-actions">
+              <button type="button" className="btn btn-outline" disabled={dialogBusy} onClick={closeDialog}>
+                HỦY
+              </button>
+              <button type="submit" className="btn btn-primary" disabled={dialogBusy}>
+                {dialogBusy ? 'ĐANG LƯU...' : 'LƯU TÊN'}
+              </button>
+            </div>
+          </form>
+        )}
+        {dialog?.type === 'delete' && (
+          <div className="form-stack">
+            <p className="modal-text">
+              Cuộc trò chuyện <strong>“{dialog.conversation.title}”</strong> sẽ bị xóa vĩnh viễn và
+              không thể khôi phục.
+            </p>
+            {dialogError && <small className="field-error" role="alert">{dialogError}</small>}
+            <div className="modal-actions">
+              <button type="button" className="btn btn-outline" data-autofocus disabled={dialogBusy} onClick={closeDialog}>
+                GIỮ LẠI
+              </button>
+              <button type="button" className="btn btn-danger" disabled={dialogBusy} onClick={confirmDelete}>
+                {dialogBusy ? 'ĐANG XÓA...' : 'XÓA CUỘC TRÒ CHUYỆN'}
+              </button>
+            </div>
+          </div>
+        )}
+      </Modal>
 
       {!open && (
         <button

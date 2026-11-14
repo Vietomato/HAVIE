@@ -15,6 +15,9 @@ import {
   FALLBACK_PRODUCT_IMAGE,
   getDefaultVariant,
   getProductSpecifications,
+  getShoeColor,
+  getShoeSize,
+  usesShoePicker,
   getDiscountPercent,
   hasValidPrice,
   isVariantActive,
@@ -89,6 +92,7 @@ export default function Detail() {
   const loading = productQuery.isPending || (productQuery.isError && productQuery.isFetching);
   const loadError = productQuery.error;
   const [selectedVariant, setSelectedVariant] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
   const [qty, setQty] = useState(1);
   const [pendingAction, setPendingAction] = useState(null);
@@ -110,7 +114,8 @@ export default function Detail() {
   // Reset the per-product selection whenever a different product is shown.
   if (product && product.id !== syncedProductId) {
     setSyncedProductId(product.id);
-    setSelectedVariant(getDefaultVariant(product));
+    setSelectedVariant(usesShoePicker(product) ? null : getDefaultVariant(product));
+    setSelectedColor(null);
     setActiveImage(0);
     setQty(1);
   }
@@ -161,7 +166,23 @@ export default function Detail() {
 
   const allVariants = product.variants || [];
   const variants = allVariants.filter(isVariantActive);
-  const variantImages = getImages(getAttributes(selectedVariant).imageUrls);
+  const shoePicker = usesShoePicker(product);
+  const shoeColors = shoePicker
+    ? [...new Set(variants.map(getShoeColor).filter(Boolean))]
+    : [];
+  const needsColorChoice = shoeColors.length > 1;
+  const activeColor = needsColorChoice ? selectedColor : shoeColors[0] || null;
+  const shoeSizeVariants = shoePicker
+    ? variants.filter((v) => !shoeColors.length || getShoeColor(v) === activeColor)
+    : [];
+  const shoeSizes = [...new Set(shoeSizeVariants.map(getShoeSize).filter(Boolean))].sort((a, b) =>
+    a.localeCompare(b, undefined, { numeric: true }),
+  );
+  const selectedSize = selectedVariant ? getShoeSize(selectedVariant) : null;
+  const previewVariant =
+    selectedVariant ||
+    (shoePicker && activeColor ? variants.find((v) => getShoeColor(v) === activeColor) : null);
+  const variantImages = getImages(getAttributes(previewVariant).imageUrls);
   const specifications = getProductSpecifications(product, selectedVariant);
   const productImages = getImages(product.imageUrls);
   // Shared images may show another color, so never mix them into a variant's gallery.
@@ -180,6 +201,23 @@ export default function Detail() {
   const maxStock = canBuy ? selectedVariant.stockQuantity : 0;
   const isFavorite = favorites.includes(product.id);
   const reviewCount = product.reviewCount ?? reviews.length;
+
+  const chooseShoeColor = (color) => {
+    setSelectedColor(color);
+    const sameSize = selectedSize
+      ? variants.find((v) => getShoeColor(v) === color && getShoeSize(v) === selectedSize)
+      : null;
+    setSelectedVariant(sameSize && isVariantPurchasable(sameSize) ? sameSize : null);
+    setActiveImage(0);
+    setQty(1);
+  };
+
+  const missingShoeChoice =
+    shoePicker && !selectedVariant
+      ? needsColorChoice && !activeColor
+        ? 'Vui lòng chọn mẫu và size trước khi đặt hàng'
+        : 'Vui lòng chọn size trước khi đặt hàng'
+      : '';
 
   const handleAddToCart = async () => {
     setPendingAction('add');
@@ -287,7 +325,79 @@ export default function Detail() {
           </div>
           {product.description && <p className="detail-description">{product.description}</p>}
 
-          {variants.length > 0 ? (
+          {shoePicker ? (
+            <>
+              {needsColorChoice && (
+                <fieldset className="variant-picker">
+                  <legend>Chọn mẫu / màu sắc</legend>
+                  <div className="variant-chips">
+                    {shoeColors.map((color) => (
+                      <label
+                        key={color}
+                        className={'variant-chip' + (activeColor === color ? ' active' : '')}
+                      >
+                        <input
+                          type="radio"
+                          className="sr-only"
+                          name="shoe-color"
+                          checked={activeColor === color}
+                          onChange={() => chooseShoeColor(color)}
+                        />
+                        {color}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              )}
+              <fieldset className="variant-picker" disabled={needsColorChoice && !activeColor}>
+                <legend>Chọn size</legend>
+                <div className="variant-chips">
+                  {shoeSizes.map((size) => {
+                    const sizeVariant = shoeSizeVariants.find((v) => getShoeSize(v) === size);
+                    const available = Boolean(activeColor || !needsColorChoice) &&
+                      isVariantPurchasable(sizeVariant);
+                    return (
+                      <label
+                        key={size}
+                        className={
+                          'variant-chip' +
+                          (selectedSize === size ? ' active' : '') +
+                          (available ? '' : ' is-disabled')
+                        }
+                      >
+                        <input
+                          type="radio"
+                          className="sr-only"
+                          name="shoe-size"
+                          checked={selectedSize === size}
+                          disabled={!available}
+                          onChange={() => {
+                            setSelectedVariant(sizeVariant);
+                            setQty(1);
+                          }}
+                        />
+                        {size}
+                        {!available && activeColor && <span className="sr-only"> (hết hàng)</span>}
+                      </label>
+                    );
+                  })}
+                </div>
+                <p
+                  className={
+                    'variant-stock-info ' + (canBuy && maxStock <= 5 ? 'low' : '')
+                  }
+                  role={missingShoeChoice ? 'status' : undefined}
+                >
+                  {missingShoeChoice ||
+                    (!canBuy
+                      ? 'Sản phẩm tạm hết hàng'
+                      : maxStock <= 5
+                        ? `Chỉ còn ${maxStock} sản phẩm`
+                        : 'Còn hàng')}
+                </p>
+              </fieldset>
+            </>
+          ) : variants.length > 0 ? (
             <fieldset className="variant-picker">
               <legend>{categorySlug === 'shoes' ? 'Chọn size / màu sắc' : 'Chọn phiên bản'}</legend>
               <div className="variant-chips">
@@ -362,7 +472,13 @@ export default function Detail() {
               onClick={handleAddToCart}
             >
               <ShoppingBag size={18} aria-hidden="true" />
-              {pendingAction === 'add' ? 'ĐANG THÊM...' : canBuy ? 'THÊM VÀO GIỎ' : 'TẠM HẾT HÀNG'}
+              {pendingAction === 'add'
+                ? 'ĐANG THÊM...'
+                : canBuy
+                  ? 'THÊM VÀO GIỎ'
+                  : missingShoeChoice
+                    ? needsColorChoice && !activeColor ? 'CHỌN MẪU VÀ SIZE' : 'CHỌN SIZE'
+                    : 'TẠM HẾT HÀNG'}
             </button>
             {canBuy && (
               <button

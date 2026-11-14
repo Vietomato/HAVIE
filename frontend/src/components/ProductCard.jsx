@@ -10,6 +10,7 @@ import {
   PRODUCT_BADGE_LABELS,
   getDiscountPercent,
   getProductPath,
+  usesShoePicker,
   hasValidPrice,
   isVariantPurchasable,
   showFallbackImage,
@@ -28,7 +29,7 @@ export default function ProductCard({ product }) {
     (lowest, item) => (!lowest || item.price < lowest.price ? item : lowest),
     null,
   );
-  const hasOptions = variants.length > 1;
+  const hasOptions = variants.length > 1 || usesShoePicker(product);
   const hasPriceRange = new Set(displayVariants.map(({ price }) => price)).size > 1;
   const priceLabel = !variant ? '' : !inStock ? 'Giá niêm yết ' : hasPriceRange ? 'Từ ' : '';
   const discount = getDiscountPercent(variant?.price, variant?.oldPrice);

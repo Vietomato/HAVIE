@@ -47,6 +47,23 @@ export const getDefaultVariant = (product) => {
   return variants.find(isVariantPurchasable) || variants[0] || null;
 };
 
+// Shoes are sold per model (colour) and size, so both are read from the variant attributes.
+export const getShoeColor = (variant) => String(variant?.attributes?.color ?? '').trim();
+
+export const getShoeSize = (variant) => {
+  const attributes = variant?.attributes || {};
+  const label = String(attributes.sizeLabel ?? '').trim();
+  if (label) return label;
+  const size = String(attributes.size ?? '').trim();
+  const system = String(attributes.sizeSystem ?? '').trim().toUpperCase();
+  return size ? (system ? `${system} ${size}` : size) : '';
+};
+
+// Shoes need an explicit size (and colour when several exist) before they can be ordered.
+export const usesShoePicker = (product) =>
+  product?.category?.slug === 'shoes' &&
+  (product.variants || []).filter(isVariantActive).some((variant) => getShoeSize(variant));
+
 export const getDiscountPercent = (price, oldPrice) =>
   oldPrice > price ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
