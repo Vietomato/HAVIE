@@ -33,7 +33,6 @@ async function main() {
     { name: 'Yonex', slug: 'yonex' },
     { name: 'Li-Ning', slug: 'lining' },
     { name: 'Victor', slug: 'victor' },
-    { name: 'HAVIE', slug: 'havie' },
   ];
 
   const brandMap = {};
