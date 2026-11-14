@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { useQueries } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Heart } from 'lucide-react';
 import { catalogApi } from '../api';
@@ -12,30 +13,23 @@ import usePageTitle from '../hooks/usePageTitle.js';
 export default function Favorites() {
   usePageTitle('Sản phẩm yêu thích');
   const { favorites, toggleFavorite } = useStore();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(favorites.length > 0);
+  // Snapshot of the saved ids: un-favoriting filters the list below without refetching.
+  const [savedIds] = useState(favorites);
+  const results = useQueries({
+    queries: savedIds.map((id) => ({
+      queryKey: ['product', id],
+      queryFn: () => catalogApi.getProduct(id),
+    })),
+  });
+  const loading = results.some((r) => r.isPending);
+  const products = results.filter((r) => r.data).map((r) => r.data);
 
-  // Loaded once: un-favoriting filters the list below without refetching.
+  // Products that no longer exist cannot be shown, so drop them from the saved list.
   useEffect(() => {
-    let active = true;
-
-    Promise.allSettled(favorites.map((id) => catalogApi.getProduct(id))).then((results) => {
-      if (!active) return;
-      setProducts(results.filter((r) => r.status === 'fulfilled').map((r) => r.value));
-      setLoading(false);
-
-      // Products that no longer exist cannot be shown, so drop them from the saved list.
-      results.forEach((result, index) => {
-        if (result.status === 'rejected' && result.reason?.status === 404) {
-          toggleFavorite(favorites[index]);
-        }
-      });
+    results.forEach((result, index) => {
+      if (result.error?.status === 404 && favorites.includes(savedIds[index])) toggleFavorite(savedIds[index]);
     });
-
-    return () => {
-      active = false;
-    };
-  }, []);
+  }, [results.map((r) => r.status).join()]);
 
   const visible = products.filter((product) => favorites.includes(product.id));
 

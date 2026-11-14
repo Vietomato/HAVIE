@@ -1,5 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './api/queries.js';
 import { ArrowRight, SearchX } from 'lucide-react';
 import Shell from './components/Shell.jsx';
 import ScrollManager from './components/ScrollManager.jsx';
@@ -48,6 +50,7 @@ function NotFound() {
 
 export default function App() {
   return (
+    <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <ToastProvider>
         <StoreProvider>
@@ -81,5 +84,6 @@ export default function App() {
         </StoreProvider>
       </ToastProvider>
     </BrowserRouter>
+    </QueryClientProvider>
   );
 }

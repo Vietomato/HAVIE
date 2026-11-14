@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, ChevronDown, ChevronLeft, ChevronRight, X, RotateCw, SearchX } from 'lucide-react';
-import { catalogApi } from '../api';
+import { useBrands, useCategories, useProducts } from '../api/queries.js';
 import ProductCard from '../components/ProductCard.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import { ProductGridSkeleton } from '../components/Skeleton.jsx';
@@ -56,14 +56,25 @@ export default function Listing() {
   const sort = params.get('sort') || 'featured';
   const page = Math.max(1, Number(params.get('page')) || 1);
   const [draft, setDraft] = useState(q);
-  const [productsList, setProductsList] = useState([]);
-  const [meta, setMeta] = useState({ total: 0, totalPages: 1 });
-  const [categoriesList, setCategoriesList] = useState([]);
-  const [brandsList, setBrandsList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [productsError, setProductsError] = useState('');
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
+
+  const categoriesList = useCategories().data || [];
+  const brandsList = useBrands().data || [];
+  const productsQuery = useProducts({
+    category,
+    brand,
+    q,
+    sort,
+    page,
+    pageSize: PAGE_SIZE,
+    minPrice: activePriceValue(price, 'minPrice'),
+    maxPrice: activePriceValue(price, 'maxPrice'),
+    inStock: inStock ? 'true' : undefined,
+  });
+  const loading = productsQuery.isPending || (productsQuery.isError && productsQuery.isFetching);
+  const productsError = productsQuery.error?.message || '';
+  const productsList = productsQuery.data?.data || [];
+  const meta = productsQuery.data?.meta || { total: productsList.length, totalPages: 1 };
 
   const activeCategory = categoriesList.find((c) => c.slug === category || c.name === category);
   const activeBrand = brandsList.find((b) => b.slug === brand);
@@ -71,46 +82,6 @@ export default function Listing() {
   usePageTitle(activeCategory?.name || 'Cửa hàng');
 
   useEffect(() => setDraft(q), [q]);
-
-  useEffect(() => {
-    catalogApi.getCategories().then(setCategoriesList).catch(() => setCategoriesList([]));
-    catalogApi.getBrands().then(setBrandsList).catch(() => setBrandsList([]));
-  }, []);
-
-  useEffect(() => {
-    let active = true;
-    setLoading(true);
-    setProductsError('');
-    catalogApi
-      .getProducts({
-        category,
-        brand,
-        q,
-        sort,
-        page,
-        pageSize: PAGE_SIZE,
-        minPrice: activePriceValue(price, 'minPrice'),
-        maxPrice: activePriceValue(price, 'maxPrice'),
-        inStock: inStock ? 'true' : undefined,
-      })
-      .then((res) => {
-        if (!active) return;
-        setProductsList(res.data || []);
-        setMeta(res.meta || { total: res.data?.length || 0, totalPages: 1 });
-      })
-      .catch((error) => {
-        if (!active) return;
-        setProductsList([]);
-        setMeta({ total: 0, totalPages: 1 });
-        setProductsError(error.message);
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-    return () => {
-      active = false;
-    };
-  }, [category, brand, price, inStock, q, sort, page, retryCount]);
 
   const change = (key, value) => {
     const next = new URLSearchParams(params);
@@ -282,7 +253,7 @@ export default function Listing() {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => setRetryCount(retryCount + 1)}
+                onClick={() => productsQuery.refetch()}
               >
                 <RotateCw size={17} aria-hidden="true" /> THỬ LẠI
               </button>

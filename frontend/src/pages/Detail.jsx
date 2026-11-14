@@ -1,9 +1,9 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ShoppingBag, ArrowRight, Plus, Minus, Star, Truck, ShieldCheck, Heart, RotateCw, PackageSearch } from 'lucide-react';
 import { formatDate, money } from '../data';
-import { catalogApi } from '../api';
+import { useProduct, useProductReviews, useProducts } from '../api/queries.js';
 import { useStore } from '../context/StoreContext.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import ProductCard from '../components/ProductCard.jsx';
@@ -81,67 +81,40 @@ function Stars({ value }) {
 
 export default function Detail() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const productQuery = useProduct(id);
+  const product = productQuery.data || null;
+  const loading = productQuery.isPending || (productQuery.isError && productQuery.isFetching);
+  const loadError = productQuery.error;
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
-  const [reviews, setReviews] = useState([]);
-  const [reviewsError, setReviewsError] = useState('');
-  const [related, setRelated] = useState([]);
   const [qty, setQty] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState(null);
-  const [retryCount, setRetryCount] = useState(0);
   const [pendingAction, setPendingAction] = useState(null);
+  const [syncedProductId, setSyncedProductId] = useState(null);
+
+  // Secondary sections must not take the product page down when they fail.
+  const reviewsQuery = useProductReviews(product?.id);
+  const reviews = reviewsQuery.data?.data || [];
+  const reviewsError = reviewsQuery.error
+    ? reviewsQuery.error.message || 'Chưa tải được đánh giá.'
+    : '';
+  const categorySlugForRelated = product?.category?.slug;
+  const relatedQuery = useProducts(
+    { category: categorySlugForRelated, pageSize: 5 },
+    { enabled: Boolean(categorySlugForRelated) },
+  );
+  const related = (relatedQuery.data?.data || []).filter((x) => x.id !== product?.id).slice(0, 4);
+
+  // Reset the per-product selection whenever a different product is shown.
+  if (product && product.id !== syncedProductId) {
+    setSyncedProductId(product.id);
+    setSelectedVariant(getDefaultVariant(product));
+    setActiveImage(0);
+    setQty(1);
+  }
+
   const { add, favorites, toggleFavorite } = useStore();
   const navigate = useNavigate();
   usePageTitle(product?.name || 'Chi tiết sản phẩm');
-
-  useEffect(() => {
-    let active = true;
-    setLoading(true);
-    setLoadError(null);
-    setReviews([]);
-    setReviewsError('');
-    setRelated([]);
-    setActiveImage(0);
-    setQty(1);
-
-    catalogApi
-      .getProduct(id)
-      .then((p) => {
-        if (!active) return;
-        setProduct(p);
-        setSelectedVariant(getDefaultVariant(p));
-
-        // Secondary sections must not take the product page down when they fail.
-        catalogApi
-          .getProductReviews(p.id)
-          .then((res) => active && setReviews(res.data || []))
-          .catch((err) => {
-            if (active) setReviewsError(err.message || 'Chưa tải được đánh giá.');
-          });
-        if (p.category?.slug) {
-          catalogApi
-            .getProducts({ category: p.category.slug, pageSize: 5 })
-            .then((res) => {
-              if (active) setRelated((res.data || []).filter((x) => x.id !== p.id).slice(0, 4));
-            })
-            .catch(() => {});
-        }
-      })
-      .catch((err) => {
-        if (!active) return;
-        setProduct(null);
-        setLoadError(err);
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [id, retryCount]);
 
   if (loading) {
     return (
@@ -170,7 +143,7 @@ export default function Detail() {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={() => setRetryCount(retryCount + 1)}
+              onClick={() => productQuery.refetch()}
             >
               <RotateCw size={17} aria-hidden="true" /> THỬ LẠI
             </button>

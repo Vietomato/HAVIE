@@ -11,7 +11,7 @@ import {
   Pause,
   Play,
 } from 'lucide-react';
-import { catalogApi } from '../api';
+import { useProducts } from '../api/queries.js';
 import ProductCard from '../components/ProductCard.jsx';
 import { ProductGridSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
@@ -41,32 +41,15 @@ const prefersReducedMotion = () =>
 
 export default function Home() {
   usePageTitle();
-  const [featured, setFeatured] = useState([]);
-  const [featuredLoading, setFeaturedLoading] = useState(true);
-  const [featuredError, setFeaturedError] = useState('');
+  const featuredQuery = useProducts({ pageSize: 4, sort: 'rating_desc' });
+  const featured = featuredQuery.data?.data || [];
+  const featuredLoading = featuredQuery.isPending;
+  const featuredError = featuredQuery.error
+    ? featuredQuery.error.message || 'Không thể tải sản phẩm nổi bật.'
+    : '';
   const [activeBanner, setActiveBanner] = useState(0);
   const [paused, setPaused] = useState(prefersReducedMotion);
   const [interacting, setInteracting] = useState(false);
-
-  useEffect(() => {
-    let active = true;
-
-    catalogApi
-      .getProducts({ pageSize: 4, sort: 'rating_desc' })
-      .then((res) => {
-        if (active) setFeatured(res.data || []);
-      })
-      .catch((error) => {
-        if (active) setFeaturedError(error.message || 'Không thể tải sản phẩm nổi bật.');
-      })
-      .finally(() => {
-        if (active) setFeaturedLoading(false);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, []);
 
   useEffect(() => {
     if (paused || interacting) return undefined;
