@@ -323,7 +323,6 @@ export default function Detail() {
                   : maxStock <= 5
                     ? `Chỉ còn ${maxStock} sản phẩm`
                     : 'Còn hàng'}
-                {selectedVariant?.sku && <span> · Mã: {selectedVariant.sku}</span>}
               </p>
             </fieldset>
           ) : (
