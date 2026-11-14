@@ -191,11 +191,11 @@ export default function Auth() {
         <div>
           <span className="eyebrow">CHÀO MỪNG BẠN ĐẾN VỚI HAVIE</span>
           <p className="auth-slogan">
-            CHƠI
+            MỖI PHA CẦU,
             <br />
-            VƯỢT
+            MỘT LẦN
             <br />
-            GIỚI HẠN
+            BỨT PHÁ.
           </p>
           <p>Đồng hành cùng bạn trên từng trận đấu và hành trình cầu lông.</p>
         </div>

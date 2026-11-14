@@ -1,0 +1,1095 @@
+[
+  {
+    "slug": "lining-axforce-100",
+    "name": "Vợt Cầu Lông Li-Ning Axforce 100 Golden Max",
+    "code": "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION",
+    "field": "identity",
+    "note": "Danh sách không có mã model hãng trong DB. Codex đối chiếu thông số/model/đời/màu của bản ghi thật trước khi áp dụng."
+  },
+  {
+    "slug": "lining-axforce-100",
+    "name": "Vợt Cầu Lông Li-Ning Axforce 100 Golden Max",
+    "code": "GOLDEN_MAX_EDITION_NAME_NEEDS_CONFIRMATION",
+    "field": "identity"
+  },
+  {
+    "slug": "lining-axforce-70",
+    "name": "Vợt Cầu Lông Li-Ning Axforce 70",
+    "code": "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION",
+    "field": "identity",
+    "note": "Danh sách không có mã model hãng trong DB. Codex đối chiếu thông số/model/đời/màu của bản ghi thật trước khi áp dụng."
+  },
+  {
+    "slug": "lining-axforce-80",
+    "name": "Vợt Cầu Lông Li-Ning Axforce 80 Chen Long",
+    "code": "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION",
+    "field": "identity",
+    "note": "Danh sách không có mã model hãng trong DB. Codex đối chiếu thông số/model/đời/màu của bản ghi thật trước khi áp dụng."
+  },
+  {
+    "slug": "lining-sg-bladex-200-3u",
+    "name": "Vợt cầu lông Li-Ning BladeX 200 - 3U",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-LINING-42929071554662"
+  },
+  {
+    "slug": "lining-sg-bladex-200-4u",
+    "name": "Vợt cầu lông Li-Ning BladeX 200 - 4U",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-LINING-42929071620198"
+  },
+  {
+    "slug": "lining-sg-bladex-500-4u",
+    "name": "Vợt cầu lông Li-Ning BladeX 500 - 4U",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-LINING-42929071784038"
+  },
+  {
+    "slug": "lining-halbertec-8000",
+    "name": "Vợt Cầu Lông Li-Ning Halbertec 8000",
+    "code": "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION",
+    "field": "identity",
+    "note": "Danh sách không có mã model hãng trong DB. Codex đối chiếu thông số/model/đời/màu của bản ghi thật trước khi áp dụng."
+  },
+  {
+    "slug": "lining-sg-tectonic-3-5u",
+    "name": "Vợt cầu lông Li-Ning Tectonic 3 - 5U",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-LINING-42929071390822"
+  },
+  {
+    "slug": "lining-tectonic-7",
+    "name": "Vợt Cầu Lông Li-Ning Tectonic 7",
+    "code": "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION",
+    "field": "identity",
+    "note": "Danh sách không có mã model hãng trong DB. Codex đối chiếu thông số/model/đời/màu của bản ghi thật trước khi áp dụng."
+  },
+  {
+    "slug": "mizuno-vn-bdss-altius-sonic-73jtb309-2025ss",
+    "name": "Vợt cầu lông Mizuno [BDSS]ALTIUS SONIC",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-bdss-altius-sonic-73jtb309-2025ss",
+    "name": "Vợt cầu lông Mizuno [BDSS]ALTIUS SONIC",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-bdss-altius-sonic-73jtb309-2025ss",
+    "name": "Vợt cầu lông Mizuno [BDSS]ALTIUS SONIC",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912935166"
+  },
+  {
+    "slug": "mizuno-vn-bdss-fortius-10-73jtb500-2025ss",
+    "name": "Vợt cầu lông Mizuno [BDSS]FORTIUS 10 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-bdss-fortius-10-73jtb500-2025ss",
+    "name": "Vợt cầu lông Mizuno [BDSS]FORTIUS 10 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212913000702"
+  },
+  {
+    "slug": "mizuno-vn-sea-acrospeed-0-73jtb400-2024ss",
+    "name": "Vợt cầu lông Mizuno [SEA]ACROSPEED 0 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-sea-acrospeed-0-73jtb400-2024ss",
+    "name": "Vợt cầu lông Mizuno [SEA]ACROSPEED 0 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-sea-acrospeed-0-73jtb400-2024ss",
+    "name": "Vợt cầu lông Mizuno [SEA]ACROSPEED 0 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912771326"
+  },
+  {
+    "slug": "mizuno-vn-sea-acrospeed-001-73jtb491-2024ss",
+    "name": "Vợt cầu lông Mizuno [SEA]ACROSPEED 001 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-sea-acrospeed-001-73jtb491-2024ss",
+    "name": "Vợt cầu lông Mizuno [SEA]ACROSPEED 001 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912738558"
+  },
+  {
+    "slug": "mizuno-vn-acroforce-100-73jtb510-2025aw",
+    "name": "Vợt cầu lông Mizuno ACROFORCE 100",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47503443198206"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-0-73jtb400-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 0 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-0-73jtb400-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 0 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-0-73jtb400-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 0 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912673022"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-1-accel-73jtb402-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 1 ACCEL (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-1-accel-73jtb402-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 1 ACCEL (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912836862"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-1-drive-73jtb451-2024aw",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 1 DRIVE (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "670"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-1-drive-73jtb451-2024aw",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 1 DRIVE (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-1-drive-73jtb451-2024aw",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 1 DRIVE (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912804094"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-1-drive-j-edition-73jtb451-2025aw",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 1 DRIVE J-EDITION",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-1-focus-73jtb401-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 1 FOCUS (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-1-focus-73jtb401-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 1 FOCUS (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912869630"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-2-73jtb422-2025ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 2 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-2-73jtb422-2025ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 2 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912967934"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-3-73jtb403-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 3 (Chưa đan dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-3-73jtb403-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 3 (Chưa đan dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912607486"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-6-73jtb406-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 6 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-6-73jtb406-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 6 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912640254"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-6-73jtb406-2024ss",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 6 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212915917054"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-7-73jtb407-2024aw",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 7 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-7-73jtb407-2024aw",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 7 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912541950"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-7-73jtb407-2024aw",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 7 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212915884286"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-8-73jtb408-2024aw",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 8 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-8-73jtb408-2024aw",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 8 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912574718"
+  },
+  {
+    "slug": "mizuno-vn-acrospeed-8-73jtb408-2024aw",
+    "name": "Vợt cầu lông Mizuno ACROSPEED 8 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212915851518"
+  },
+  {
+    "slug": "mizuno-vn-altius-sonic-73jtb309-2025ss",
+    "name": "Vợt cầu lông Mizuno ALTIUS SONIC",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-altius-sonic-73jtb309-2025ss",
+    "name": "Vợt cầu lông Mizuno ALTIUS SONIC",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-altius-sonic-73jtb309-2025ss",
+    "name": "Vợt cầu lông Mizuno ALTIUS SONIC",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912902398"
+  },
+  {
+    "slug": "mizuno-vn-altius-sonic-73jtb309-2025ss",
+    "name": "Vợt cầu lông Mizuno ALTIUS SONIC",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212915949822"
+  },
+  {
+    "slug": "mizuno-vn-altius-vx5-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno ALTIUS VX5 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-altius-vx5-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno ALTIUS VX5 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-altius-vx5-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno ALTIUS VX5 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436654334"
+  },
+  {
+    "slug": "mizuno-vn-altrax-870-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno ALTRAX 870 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-altrax-870-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno ALTRAX 870 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-altrax-870-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno ALTRAX 870 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288437080318"
+  },
+  {
+    "slug": "mizuno-vn-altrax-870-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno ALTRAX 870 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288437276926"
+  },
+  {
+    "slug": "mizuno-vn-caliber-s-boost-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno CALIBER S-BOOST  (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-caliber-s-boost-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno CALIBER S-BOOST  (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-caliber-s-boost-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno CALIBER S-BOOST  (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212911886590"
+  },
+  {
+    "slug": "mizuno-vn-caliber-s-boost-2-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno CALIBER S-BOOST 2 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-caliber-s-boost-2-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno CALIBER S-BOOST 2 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-caliber-s-boost-2-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno CALIBER S-BOOST 2 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436916478"
+  },
+  {
+    "slug": "mizuno-vn-caliber-v-pro-73mtb254-2025aw",
+    "name": "Vợt cầu lông Mizuno CALIBER V-PRO (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-caliber-v-pro-73mtb254-2025aw",
+    "name": "Vợt cầu lông Mizuno CALIBER V-PRO (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436850942"
+  },
+  {
+    "slug": "mizuno-vn-carbo-pro-835-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno CARBO PRO 835 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-carbo-pro-835-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno CARBO PRO 835 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-carbo-pro-835-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno CARBO PRO 835 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912115966"
+  },
+  {
+    "slug": "mizuno-vn-fioria-lite-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno FIORIA LITE (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-fioria-lite-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno FIORIA LITE (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-fioria-lite-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno FIORIA LITE (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436982014"
+  },
+  {
+    "slug": "mizuno-vn-fioria-lite-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno FIORIA LITE (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288437244158"
+  },
+  {
+    "slug": "mizuno-vn-fortius-50-spirit-73mtb450-2024ss",
+    "name": "Vợt cầu lông Mizuno FORTIUS 50 SPIRIT (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-fortius-50-spirit-73mtb450-2024ss",
+    "name": "Vợt cầu lông Mizuno FORTIUS 50 SPIRIT (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-fortius-50-spirit-73mtb450-2024ss",
+    "name": "Vợt cầu lông Mizuno FORTIUS 50 SPIRIT (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212911493374"
+  },
+  {
+    "slug": "mizuno-vn-fortius-50-swift-73mtb450-2024ss",
+    "name": "Vợt cầu lông Mizuno FORTIUS 50 SWIFT (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-fortius-52-ks-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno FORTIUS 52 KS (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-fortius-52-ks-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno FORTIUS 52 KS (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-fortius-52-ks-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno FORTIUS 52 KS (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436621566"
+  },
+  {
+    "slug": "mizuno-vn-fortius-71-vt-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno FORTIUS 71 VT (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-fortius-71-vt-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno FORTIUS 71 VT (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-fortius-71-vt-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno FORTIUS 71 VT (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436687102"
+  },
+  {
+    "slug": "mizuno-vn-jpx-10-5-ct-control-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno JPX 10.5 CT [KIỂM SOÁT] (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-jpx-10-5-ct-control-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno JPX 10.5 CT [KIỂM SOÁT] (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-jpx-10-5-ct-control-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno JPX 10.5 CT [KIỂM SOÁT] (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436719870"
+  },
+  {
+    "slug": "mizuno-vn-jpx-3-3-rage-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno JPX 3.3 RAGE",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-jpx-3-3-rage-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno JPX 3.3 RAGE",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-jpx-3-3-rage-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno JPX 3.3 RAGE",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47988403044606"
+  },
+  {
+    "slug": "mizuno-vn-jpx-3-3-rage-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno JPX 3.3 RAGE",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47988410253566"
+  },
+  {
+    "slug": "mizuno-vn-jpx-7-0-sp-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno JPX 7.0 SP (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-jpx-7-0-sp-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno JPX 7.0 SP (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-jpx-7-0-sp-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno JPX 7.0 SP (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436752638"
+  },
+  {
+    "slug": "mizuno-vn-jpx-8-force-73mtb423-2024aw",
+    "name": "Vợt cầu lông Mizuno JPX 8 FORCE (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-jpx-8-2-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno JPX 8.2 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-jpx-reserve-edition-mb-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno JPX RESERVE EDITION MB (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-powerblade-597-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno POWERBLADE 597 (Chưa đan dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-powerblade-597-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno POWERBLADE 597 (Chưa đan dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-powerblade-597-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno POWERBLADE 597 (Chưa đan dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47552210927870"
+  },
+  {
+    "slug": "mizuno-vn-promax-ht1-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno PROMAX HT1 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-promax-ht1-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno PROMAX HT1 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-promax-ht1-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno PROMAX HT1 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288437014782"
+  },
+  {
+    "slug": "mizuno-vn-prototype-x-1i-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X-1i (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-prototype-x-1i-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X-1i (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-prototype-x-1i-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X-1i (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212911788286"
+  },
+  {
+    "slug": "mizuno-vn-prototype-x-3d-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X-3D (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-prototype-x-3d-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X-3D (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-prototype-x-3d-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X-3D (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212911821054"
+  },
+  {
+    "slug": "mizuno-vn-prototype-x1-2-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X1.2 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-prototype-x1-2-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X1.2 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-prototype-x1-2-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X1.2 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436785406"
+  },
+  {
+    "slug": "mizuno-vn-prototype-x5-ct-control-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X5 CT [KIỂM SOÁT] (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-prototype-x5-ct-control-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X5 CT [KIỂM SOÁT] (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-prototype-x5-ct-control-73mtb523-2025aw",
+    "name": "Vợt cầu lông Mizuno PROTOTYPE X5 CT [KIỂM SOÁT] (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436818174"
+  },
+  {
+    "slug": "mizuno-vn-speedflex-9-0-feel-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno SPEEDFLEX 9.0 FEEL (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-speedflex-9-0-feel-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno SPEEDFLEX 9.0 FEEL (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-speedflex-9-0-feel-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno SPEEDFLEX 9.0 FEEL (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288436949246"
+  },
+  {
+    "slug": "mizuno-vn-turboblade-587-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno TURBOBLADE 587 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-turboblade-587-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno TURBOBLADE 587 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-turboblade-587-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno TURBOBLADE 587 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288437113086"
+  },
+  {
+    "slug": "mizuno-vn-turboblade-587-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno TURBOBLADE 587 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288437309694"
+  },
+  {
+    "slug": "mizuno-vn-turboblade-587-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno TURBOBLADE 587 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288437342462"
+  },
+  {
+    "slug": "mizuno-vn-carbo-pro-837-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno Vợt cầu lông CARBO PRO 837 (Chưa đan dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-carbo-pro-837-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno Vợt cầu lông CARBO PRO 837 (Chưa đan dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-carbo-pro-837-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno Vợt cầu lông CARBO PRO 837 (Chưa đan dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47212912443646"
+  },
+  {
+    "slug": "mizuno-vn-jpx-8-flash-73mtb423-2024ss",
+    "name": "Vợt cầu lông Mizuno Vợt cầu lông JPX 8 FLASH (Chưa đan dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-zephyr-zr8-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno ZEPHYR ZR8 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_LENGTH_UNIT",
+    "field": "length",
+    "raw": "675"
+  },
+  {
+    "slug": "mizuno-vn-zephyr-zr8-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno ZEPHYR ZR8 (Chưa căng dây)",
+    "code": "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+    "field": "modelCode",
+    "note": "Nhiều tên mẫu có thể dùng cùng Style code trong nguồn; chỉ ghép bằng slug và SKU."
+  },
+  {
+    "slug": "mizuno-vn-zephyr-zr8-73mtb524-2025aw",
+    "name": "Vợt cầu lông Mizuno ZEPHYR ZR8 (Chưa căng dây)",
+    "code": "SOURCE_OMITS_TENSION_UNIT",
+    "field": "tension",
+    "sku": "CAT-MIZUNO-47288437047550"
+  },
+  {
+    "slug": "victor-au-ars-90f-m",
+    "name": "Vợt cầu lông Victor AuraSpeed 90F",
+    "code": "GRIP_SOURCE_CONFLICT",
+    "field": "grip",
+    "sku": "CAT-VICTOR-41372462186653"
+  },
+  {
+    "slug": "victor-au-ars-90f-m",
+    "name": "Vợt cầu lông Victor AuraSpeed 90F",
+    "code": "GRIP_SOURCE_CONFLICT",
+    "field": "grip",
+    "sku": "CAT-VICTOR-42579608699037"
+  },
+  {
+    "slug": "victor-au-ars-90f-m",
+    "name": "Vợt cầu lông Victor AuraSpeed 90F",
+    "code": "VARIANT_GRIP_CONFLICT_G5_VS_SOURCE_TABLE_G6",
+    "field": "tension",
+    "sku": "CAT-VICTOR-41372462186653"
+  },
+  {
+    "slug": "victor-au-ars-90f-m",
+    "name": "Vợt cầu lông Victor AuraSpeed 90F",
+    "code": "VARIANT_GRIP_CONFLICT_G5_VS_SOURCE_TABLE_G6",
+    "field": "tension",
+    "sku": "CAT-VICTOR-42579608699037"
+  },
+  {
+    "slug": "victor-au-brave-sword-12-blue",
+    "name": "Vợt cầu lông Victor BRAVE SWORD 12 [Blue]",
+    "code": "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+    "field": "tension",
+    "sku": "CAT-VICTOR-41372764111005"
+  },
+  {
+    "slug": "victor-au-brave-sword-12-blue",
+    "name": "Vợt cầu lông Victor BRAVE SWORD 12 [Blue]",
+    "code": "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+    "field": "tension",
+    "sku": "CAT-VICTOR-42579660734621"
+  },
+  {
+    "slug": "victor-au-bravesword-12l",
+    "name": "Vợt cầu lông Victor BRAVE SWORD 12L",
+    "code": "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+    "field": "tension",
+    "sku": "CAT-VICTOR-42579666469021"
+  },
+  {
+    "slug": "victor-au-bravesword-12l",
+    "name": "Vợt cầu lông Victor BRAVE SWORD 12L",
+    "code": "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+    "field": "tension",
+    "sku": "CAT-VICTOR-41372537356445"
+  },
+  {
+    "slug": "yonex-arcsaber-11-pro",
+    "name": "Vợt Cầu Lông Yonex Arcsaber 11 Pro",
+    "code": "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION",
+    "field": "identity",
+    "note": "Danh sách không có mã model hãng trong DB. Codex đối chiếu thông số/model/đời/màu của bản ghi thật trước khi áp dụng."
+  },
+  {
+    "slug": "yonex-astrox-100zz",
+    "name": "Vợt Cầu Lông Yonex Astrox 100ZZ Kurenai",
+    "code": "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION",
+    "field": "identity",
+    "note": "Danh sách không có mã model hãng trong DB. Codex đối chiếu thông số/model/đời/màu của bản ghi thật trước khi áp dụng."
+  },
+  {
+    "slug": "yonex-us-astrox-77-pro",
+    "name": "Vợt cầu lông Yonex ASTROX 77 PRO",
+    "code": "TENSION_SOURCE_CONFLICT",
+    "field": "tension",
+    "sku": "CAT-YONEX-46064961716445",
+    "regional": "20-28lbs",
+    "global": "4U: 19 - 27 lbs | 3U: 20 - 28 lbs"
+  },
+  {
+    "slug": "yonex-us-astrox-77-pro",
+    "name": "Vợt cầu lông Yonex ASTROX 77 PRO",
+    "code": "TENSION_SOURCE_CONFLICT",
+    "field": "tension",
+    "sku": "CAT-YONEX-46064961716445"
+  },
+  {
+    "slug": "yonex-astrox-77-pro",
+    "name": "Vợt Cầu Lông Yonex Astrox 77 Pro",
+    "code": "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION",
+    "field": "identity",
+    "note": "Danh sách không có mã model hãng trong DB. Codex đối chiếu thông số/model/đời/màu của bản ghi thật trước khi áp dụng."
+  },
+  {
+    "slug": "yonex-astrox-77-pro",
+    "name": "Vợt Cầu Lông Yonex Astrox 77 Pro",
+    "code": "TENSION_SOURCE_CONFLICT",
+    "field": "tension",
+    "sku": "AX77P-4U-G5",
+    "regional": "20-28lbs",
+    "global": "4U: 19 - 27 lbs | 3U: 20 - 28 lbs"
+  },
+  {
+    "slug": "yonex-astrox-77-pro",
+    "name": "Vợt Cầu Lông Yonex Astrox 77 Pro",
+    "code": "TENSION_SOURCE_CONFLICT",
+    "field": "tension",
+    "sku": "AX77P-4U-G5"
+  },
+  {
+    "slug": "yonex-astrox-88d-pro",
+    "name": "Vợt Cầu Lông Yonex Astrox 88D Pro 3rd Gen",
+    "code": "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION",
+    "field": "identity",
+    "note": "Danh sách không có mã model hãng trong DB. Codex đối chiếu thông số/model/đời/màu của bản ghi thật trước khi áp dụng."
+  },
+  {
+    "slug": "yonex-astrox-88d-pro",
+    "name": "Vợt Cầu Lông Yonex Astrox 88D Pro 3rd Gen",
+    "code": "TENSION_SOURCE_CONFLICT",
+    "field": "tension",
+    "sku": "AX88DP-3U-G5",
+    "regional": "20-28lbs",
+    "global": "4U: 20 - 28 lbs | 3U: 21 - 29 lbs"
+  },
+  {
+    "slug": "yonex-astrox-88d-pro",
+    "name": "Vợt Cầu Lông Yonex Astrox 88D Pro 3rd Gen",
+    "code": "TENSION_SOURCE_CONFLICT",
+    "field": "tension",
+    "sku": "AX88DP-3U-G5"
+  },
+  {
+    "slug": "yonex-us-astrox-99-pro",
+    "name": "Vợt cầu lông Yonex ASTROX 99 PRO",
+    "code": "FLEX_SOURCE_CONFLICT",
+    "field": "flex",
+    "regional": "Extra Stiff",
+    "global": "STIFF",
+    "sourceIds": [
+      "SRC-871afafc0e6c",
+      "SRC-fa2d9bffad03"
+    ]
+  },
+  {
+    "slug": "yonex-us-isometric-tr1-strung",
+    "name": "Vợt cầu lông Yonex ISOMETRIC TR1 (Đã căng dây)",
+    "code": "FLEX_SOURCE_CONFLICT",
+    "field": "flex",
+    "regional": "Hi-Flex",
+    "global": "Medium",
+    "sourceIds": [
+      "SRC-761578f90525",
+      "SRC-802113f9c348"
+    ]
+  },
+  {
+    "slug": "yonex-us-nanoflare-1000-tour",
+    "name": "Vợt cầu lông Yonex NANOFLARE 1000 TOUR",
+    "code": "FLEX_SOURCE_CONFLICT",
+    "field": "flex",
+    "regional": "Medium",
+    "global": "Extra Stiff",
+    "sourceIds": [
+      "SRC-b967d8a92e83",
+      "SRC-925de3b7025c"
+    ]
+  },
+  {
+    "slug": "yonex-nanoflare-1000z",
+    "name": "Vợt Cầu Lông Yonex Nanoflare 1000Z",
+    "code": "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION",
+    "field": "identity",
+    "note": "Danh sách không có mã model hãng trong DB. Codex đối chiếu thông số/model/đời/màu của bản ghi thật trước khi áp dụng."
+  },
+  {
+    "slug": "yonex-us-nanoflare-800-game",
+    "name": "Vợt cầu lông Yonex NANOFLARE 800 GAME",
+    "code": "GLOBAL_COLOR_OR_EDITION_MISMATCH",
+    "field": "identity",
+    "regionalColors": [
+      "DARK OLIVE"
+    ],
+    "globalColors": "Deep Green",
+    "candidateSourceId": "SRC-8c966c6925f1"
+  },
+  {
+    "slug": "yonex-us-nanoflare-800-tour",
+    "name": "Vợt cầu lông Yonex NANOFLARE 800 TOUR",
+    "code": "FLEX_SOURCE_CONFLICT",
+    "field": "flex",
+    "regional": "Medium",
+    "global": "STIFF",
+    "sourceIds": [
+      "SRC-3af40026044c",
+      "SRC-2ea43eba32fd"
+    ]
+  },
+  {
+    "slug": "yonex-us-astrox-77-play",
+    "name": "Astrox 77 Play Light Beige",
+    "code": "REFERENCE_IMAGE_CONFLICT",
+    "field": "flex/joint/unit_conversion",
+    "note": "Ảnh ví dụ ghi Trung bình và T-ANCHOR; trang Yonex ghi Hi-Flex, không công bố Joint ở bảng. 20–28 lb quy đổi ≈9.07–12.70 kgf, không sao chép 9–12.5 kg từ ảnh."
+  }
+]

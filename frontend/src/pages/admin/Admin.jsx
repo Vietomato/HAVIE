@@ -19,6 +19,7 @@ import { localizeVariantName } from '../../utils/product';
 import ProductFormModal from './ProductFormModal.jsx';
 
 const ORDER_NEXT_STATUSES = {
+  PENDING_PAYMENT: ['CANCELLED'],
   PENDING_CONFIRMATION: ['CONFIRMED', 'CANCELLED'],
   CONFIRMED: ['SHIPPING', 'CANCELLED'],
   SHIPPING: ['COMPLETED'],

@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, Maximize2, Minimize2 } from 'lucide-react';
+import { Maximize2, Minimize2 } from 'lucide-react';
 import { chatApi } from '../api';
 import { useStore } from '../context/StoreContext.jsx';
+import { BotMessage } from './chatText.jsx';
+import { BotMark, BotWordmark } from './BotLogo.jsx';
 import './AdvisorChat.css';
 
 const greeting = {
   role: 'assistant',
   content:
-    'Chào bạn! Bạn đang tìm vợt hay giày cầu lông? Hãy chia sẻ hãng mong muốn, ngân sách và nhu cầu sử dụng nhé.',
+    'Dạ, em là BOTMINTON, trợ lý tư vấn cầu lông của HAVIE ạ!\n\nAnh/chị đang tìm vợt hay giày cầu lông? Anh/chị cho em biết hãng mong muốn, ngân sách và nhu cầu sử dụng nhé.',
 };
 
 const money = new Intl.NumberFormat('vi-VN', {
@@ -385,9 +387,12 @@ export default function AdvisorChat() {
           }
         >
           <header className="havie-advisor__header">
-            <div>
-              <strong>HAVIE · Tư vấn sản phẩm</strong>
-              <small>Tìm vợt và giày trong danh mục cửa hàng</small>
+            <div className="havie-advisor__identity">
+              <BotMark size={42} className="havie-advisor__logo" />
+              <div className="havie-advisor__brand">
+                <BotWordmark />
+                <small>Trợ lý tư vấn cầu lông của HAVIE</small>
+              </div>
             </div>
 
             <div className="havie-advisor__header-actions">
@@ -515,10 +520,10 @@ export default function AdvisorChat() {
                       className={`havie-advisor__message havie-advisor__message--${message.role}`}
                     >
                       <span className="havie-advisor__speaker">
-                        {message.role === 'user' ? 'Bạn' : 'HAVIE'}
+                        {message.role === 'user' ? 'Anh/chị' : <><BotMark size={16} tone="dark" />BOTMINTON</>}
                       </span>
 
-                      <p>{message.content}</p>
+                      {message.role === 'user' ? <p>{message.content}</p> : <BotMessage text={message.content} />}
 
                       {message.candidates?.length > 0 && (
                         <div className="havie-advisor__candidates">
@@ -540,6 +545,9 @@ export default function AdvisorChat() {
                                     ? money.format(price)
                                     : 'Liên hệ'}
                                 </span>
+                                {candidate.productType === 'rackets' && (
+                                  <span>Chưa gồm tiền căng cước</span>
+                                )}
                               </>
                             );
 
@@ -570,15 +578,15 @@ export default function AdvisorChat() {
                     className="havie-advisor__message havie-advisor__message--assistant havie-advisor__typing"
                     role="status"
                   >
-                    <span className="havie-advisor__speaker">HAVIE</span>
+                    <span className="havie-advisor__speaker"><BotMark size={16} tone="dark" />BOTMINTON</span>
                     <span className="havie-advisor__dots" aria-hidden="true">
                       <span />
                       <span />
                       <span />
                     </span>
-                    <span className="havie-advisor__sr-only">HAVIE đang soạn tin nhắn</span>
+                    <span className="havie-advisor__sr-only">BOTMINTON đang soạn tin nhắn</span>
                     <small className="havie-advisor__waiting">
-                      Bạn có thể mở cuộc trò chuyện mới trong lúc chờ.
+                      Anh/chị có thể mở cuộc trò chuyện mới trong lúc chờ.
                     </small>
                   </div>
                 )}
@@ -601,7 +609,7 @@ export default function AdvisorChat() {
                   placeholder={
                     currentIsPending
                       ? 'Tạo cuộc trò chuyện mới để gửi prompt khác'
-                      : 'Nhập nhu cầu của bạn…'
+                      : 'Nhập nhu cầu của anh/chị…'
                   }
                   maxLength={2000}
                   disabled={currentIsPending || loadingHistory}
@@ -666,10 +674,10 @@ export default function AdvisorChat() {
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="havie-advisor-panel"
-          aria-label="Tư vấn sản phẩm cầu lông"
+          aria-label="Mở BOTMINTON, trợ lý tư vấn cầu lông"
         >
-          <MessageCircle size={20} aria-hidden="true" />
-          <span className="havie-advisor__launcher-label">Tư vấn sản phẩm</span>
+          <BotMark size={30} className="havie-advisor__launcher-mark" />
+          <span className="havie-advisor__launcher-label">BOTMINTON</span>
         </button>
       )}
     </div>

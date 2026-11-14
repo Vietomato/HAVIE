@@ -172,6 +172,11 @@ export const orderApi = {
     return res.data;
   },
 
+  getOrderPayment: async (orderId) => {
+    const res = await apiClient.request(`/orders/${encodeURIComponent(orderId)}/payment`);
+    return res.data;
+  },
+
   cancelOrder: async (orderId, reason) => {
     const res = await apiClient.request(`/orders/${encodeURIComponent(orderId)}/cancel`, {
       method: 'POST',

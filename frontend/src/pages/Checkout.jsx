@@ -1,11 +1,23 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Check, CheckCircle2, LogIn, ShieldCheck, ShoppingBag, Truck } from 'lucide-react';
+import {
+  ArrowRight,
+  Check,
+  CheckCircle2,
+  CircleX,
+  LogIn,
+  QrCode,
+  ShieldCheck,
+  ShoppingBag,
+  Truck,
+  Wallet,
+} from 'lucide-react';
 import { money, SHIPPING_FEE } from '../data';
 import { orderApi, ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from '../api';
 import { useStore } from '../context/StoreContext.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
+import QrPayment from '../components/QrPayment.jsx';
 import { BlockSkeleton } from '../components/Skeleton.jsx';
 import TextField from '../components/TextField.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
@@ -62,6 +74,8 @@ export default function Checkout() {
   const [submitError, setSubmitError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [createdOrder, setCreatedOrder] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('PAYOS');
+  const [qrPayment, setQrPayment] = useState(null);
 
   const items = cart?.items || [];
 
@@ -108,12 +122,14 @@ export default function Checkout() {
           ward: form.ward.trim(),
           streetAddress: form.street.trim(),
         },
-        paymentMethod: 'COD',
+        paymentMethod,
         customerNote: note.trim(),
       });
 
       await refreshCart();
-      setCreatedOrder(res);
+      const { payment, ...order } = res;
+      setQrPayment(payment || null);
+      setCreatedOrder(order);
       window.scrollTo({ top: 0, behavior: 'instant' });
     } catch (err) {
       setSubmitError(err.message || 'Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại.');
@@ -122,13 +138,49 @@ export default function Checkout() {
     }
   };
 
+  // Chuyển khoản QR: đơn đã tạo nhưng đang chờ khách thanh toán.
+  if (createdOrder && qrPayment && createdOrder.status === 'PENDING_PAYMENT') {
+    return (
+      <div className="container page-pad checkout-page">
+        <CheckoutSteps current={2} />
+        <QrPayment
+          order={createdOrder}
+          payment={qrPayment}
+          onPaid={(order) => {
+            setCreatedOrder(order);
+            window.scrollTo({ top: 0, behavior: 'instant' });
+          }}
+          onClosed={setCreatedOrder}
+        />
+      </div>
+    );
+  }
+
+  // Đơn chuyển khoản đã hết hạn hoặc bị hủy trước khi thanh toán.
+  if (createdOrder && createdOrder.status === 'CANCELLED') {
+    return (
+      <div className="container page-pad checkout-page">
+        <section className="order-success">
+          <CircleX size={56} aria-hidden="true" />
+          <h1>Đơn hàng chưa được thanh toán</h1>
+          <p>Mã đơn {createdOrder.orderCode} đã hết hạn hoặc đã bị hủy. Bạn có thể đặt lại đơn mới.</p>
+          <div className="empty-actions">
+            <Link className="btn btn-primary" to="/cart">
+              VỀ GIỎ HÀNG
+            </Link>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   if (createdOrder) {
     return (
       <div className="container page-pad checkout-page">
         <CheckoutSteps current={3} />
         <section className="order-success">
           <CheckCircle2 size={56} aria-hidden="true" />
-          <h1>Đặt hàng thành công!</h1>
+          <h1>{createdOrder.paymentStatus === 'PAID' ? 'Thanh toán thành công!' : 'Đặt hàng thành công!'}</h1>
           <p>
             Mã đơn hàng của bạn là <strong>{createdOrder.orderCode}</strong>
           </p>
@@ -288,13 +340,42 @@ export default function Checkout() {
             <h2>
               <ShieldCheck size={20} aria-hidden="true" /> Phương thức thanh toán
             </h2>
-            <label className="payment-option">
-              <input type="radio" name="payment" value="COD" checked readOnly />
-              <span>
-                <strong>Thanh toán khi nhận hàng (COD)</strong>
-                <small>Bạn thanh toán bằng tiền mặt cho nhân viên giao hàng.</small>
-              </span>
-            </label>
+            <div className="payment-options" role="radiogroup" aria-label="Phương thức thanh toán">
+              <label className={'payment-option' + (paymentMethod === 'PAYOS' ? ' selected' : '')}>
+                <input
+                  type="radio"
+                  name="payment"
+                  value="PAYOS"
+                  checked={paymentMethod === 'PAYOS'}
+                  onChange={() => setPaymentMethod('PAYOS')}
+                />
+                <span>
+                  <strong>
+                    <QrCode size={16} aria-hidden="true" /> Chuyển khoản qua mã QR
+                    <span className="payment-tag">Thanh toán trước</span>
+                  </strong>
+                  <small>
+                    Quét mã QR bằng app ngân hàng. Đơn được giữ hàng trong 15 phút và ghi nhận tự động khi
+                    thanh toán xong.
+                  </small>
+                </span>
+              </label>
+              <label className={'payment-option' + (paymentMethod === 'COD' ? ' selected' : '')}>
+                <input
+                  type="radio"
+                  name="payment"
+                  value="COD"
+                  checked={paymentMethod === 'COD'}
+                  onChange={() => setPaymentMethod('COD')}
+                />
+                <span>
+                  <strong>
+                    <Wallet size={16} aria-hidden="true" /> Thanh toán khi nhận hàng (COD)
+                  </strong>
+                  <small>Bạn thanh toán bằng tiền mặt cho nhân viên giao hàng.</small>
+                </span>
+              </label>
+            </div>
           </section>
         </form>
 
@@ -345,7 +426,7 @@ export default function Checkout() {
             disabled={submitting}
             className="btn btn-primary full"
           >
-            {submitting ? 'ĐANG XỬ LÝ...' : 'ĐẶT HÀNG NGAY'}
+            {submitting ? 'ĐANG XỬ LÝ...' : paymentMethod === 'PAYOS' ? 'ĐẶT HÀNG & THANH TOÁN' : 'ĐẶT HÀNG NGAY'}
             <ArrowRight size={18} aria-hidden="true" />
           </button>
         </aside>

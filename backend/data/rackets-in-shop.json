@@ -1,0 +1,4848 @@
+{
+  "source": "Live database; 2026-11-15",
+  "products": [
+    {
+      "id": "6498762f-b416-4add-a24e-2ad4d549ae8c",
+      "slug": "lining-sg-3d-calibar-900",
+      "name": "Vợt cầu lông Li-Ning 3D Calibar 900",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "461dc932-47e6-4a13-981d-b8588c2fb4b5",
+          "sku": "CAT-LINING-42929103863910",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 32,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "17e42f05-69db-4065-a603-36882f75f1f1",
+      "slug": "lining-sg-axforce-10-4u",
+      "name": "Vợt cầu lông Li-Ning AxForce 10 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "01a34f49-0fdb-4349-80ae-fa7db4c9d7e3",
+          "sku": "CAT-LINING-42929292902502",
+          "name": "Navy",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "d3aac416-c1c6-4a52-995c-38baea2a8720",
+          "sku": "CAT-LINING-42929292869734",
+          "name": "Pearl White",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "6d2a5135-a8d5-434d-9832-9cb1aa8f04aa",
+      "slug": "lining-sg-axforce-10-5u",
+      "name": "Vợt cầu lông Li-Ning AxForce 10 - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "89ee0251-cb98-4b26-9de6-70e4fb59b0ad",
+          "sku": "CAT-LINING-42929293459558",
+          "name": "Pearl White",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "d5288270-b3a0-4758-b6fd-e67387b822fa",
+          "sku": "CAT-LINING-42929293492326",
+          "name": "Navy",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "2def896b-17df-4ea5-b213-eefa4b1a6b95",
+      "slug": "lining-sg-axforce-100-3u",
+      "name": "Vợt cầu lông Li-Ning Axforce 100 - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "cb396b57-6ae2-458c-84c1-f8eb5ed36c6b",
+          "sku": "CAT-LINING-42929165172838",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 31,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "e581fea3-7848-42d1-8c9b-45d521a20080",
+      "slug": "lining-sg-axforce-100-4u",
+      "name": "Vợt cầu lông Li-Ning Axforce 100 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "b7930667-ce33-4db0-9e1d-16f271d802e5",
+          "sku": "CAT-LINING-42929165664358",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "ab2b445e-288c-4bce-b018-fb86707b3e2f",
+      "slug": "lining-axforce-100",
+      "name": "Vợt Cầu Lông Li-Ning Axforce 100 Golden Max",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "01b48a70-859a-4ccb-b938-f91d9b2fade7",
+          "sku": "AXF100-4U-G5",
+          "name": "4U / G5",
+          "specs": null,
+          "imported": false
+        },
+        {
+          "id": "d6141b11-bb47-4cf1-96b5-6939b4cd94ae",
+          "sku": "AXF100-3U-G5",
+          "name": "3U / G5",
+          "specs": null,
+          "imported": false
+        }
+      ]
+    },
+    {
+      "id": "bcefa705-b9d8-42c1-b787-cfb3fa6aa18d",
+      "slug": "lining-sg-axforce-20-3u",
+      "name": "Vợt cầu lông Li-Ning Axforce 20 - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "7ea04fb0-db5f-4d13-b137-12ec844b809a",
+          "sku": "CAT-LINING-42929150296166",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "cc2bbbcc-e712-4a82-a482-6bca1e5124d8",
+      "slug": "lining-sg-axforce-20-4u",
+      "name": "Vợt cầu lông Li-Ning Axforce 20 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "ba431c79-d635-44ee-803d-2ea74b01253e",
+          "sku": "CAT-LINING-42929095508070",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 26,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "3667088e-cee7-4fde-b091-c8f5a86e01e1",
+      "slug": "lining-sg-axforce-30-4u",
+      "name": "Vợt cầu lông Li-Ning AxForce 30 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "353cd7f3-dbf5-43e3-9564-325ed6d53b73",
+          "sku": "CAT-LINING-42929279795302",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 35,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "a1b72d2a-b668-4349-a51e-13ecc1501f17",
+      "slug": "lining-sg-axforce-30-5u",
+      "name": "Vợt cầu lông Li-Ning AxForce 30 - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "2a2e3fc8-d98f-42d1-8615-9f7d810888b2",
+          "sku": "CAT-LINING-42929280155750",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "cc152166-2830-4c70-9f7b-777bdf21e0bb",
+      "slug": "lining-sg-axforce-40-3u",
+      "name": "Vợt cầu lông Li-Ning AxForce 40 - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "e0bc6a57-35ef-4ee6-b4f9-9506f07fa924",
+          "sku": "CAT-LINING-43022928937062",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_heavy",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "62d43d79-d3c7-4a08-b5cd-3fc3e46d296a",
+      "slug": "lining-sg-axforce-40-4u",
+      "name": "Vợt cầu lông Li-Ning AxForce 40 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "c083b09a-cf5d-4594-81c0-7bc3e02c58bb",
+          "sku": "CAT-LINING-43022929854566",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "04b5e29c-d2d0-415f-92c3-a17f48bcbe52",
+      "slug": "lining-axforce-70",
+      "name": "Vợt Cầu Lông Li-Ning Axforce 70",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "44ad341e-ed11-41e6-9698-efd15b41d80b",
+          "sku": "AXF70-4U-G5",
+          "name": "4U / G5",
+          "specs": null,
+          "imported": false
+        }
+      ]
+    },
+    {
+      "id": "db35e4e8-6ef5-44a8-a58a-1502f25619a9",
+      "slug": "lining-sg-axforce-80-4u-84-grams",
+      "name": "Vợt cầu lông Li-Ning Axforce 80 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "19a033f3-5eaa-40e8-9a82-a59cd691e77c",
+          "sku": "CAT-LINING-43143699071078",
+          "name": "Black/Gold",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "1829b8d9-ed41-4762-94bf-4203d8780a44",
+          "sku": "CAT-LINING-43143737376870",
+          "name": "White/Light Purple",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "b8d8c3f6-cc19-405c-9953-261d017b99be",
+      "slug": "lining-sg-axforce-80-5u-80-grams",
+      "name": "Vợt cầu lông Li-Ning AXFORCE 80 - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "84ebd163-e345-4b3e-9f6b-ec4eca180066",
+          "sku": "CAT-LINING-43143825784934",
+          "name": "Black/Gold",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "5320eee8-8f98-4b4e-8cb9-5fa66248899c",
+          "sku": "CAT-LINING-43143825817702",
+          "name": "White/Light Purple",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "0734dcb2-d43f-4202-8aba-5153a97513ff",
+      "slug": "lining-axforce-80",
+      "name": "Vợt Cầu Lông Li-Ning Axforce 80 Chen Long",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "78df74bc-7689-447f-a965-b3419df3ace6",
+          "sku": "AXF80-5U-G6",
+          "name": "5U / G6",
+          "specs": null,
+          "imported": false
+        },
+        {
+          "id": "8301c6c4-a994-4605-a558-171440dd58cf",
+          "sku": "AXF80-4U-G5",
+          "name": "4U / G5",
+          "specs": null,
+          "imported": false
+        }
+      ]
+    },
+    {
+      "id": "ec7371c1-e6e2-483a-8a58-a952f45d7168",
+      "slug": "lining-sg-axforce-big-bang-5u-1",
+      "name": "Vợt cầu lông Li-Ning AxForce Big Bang - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "d42e9b5f-1d30-4e3c-bc57-12c152db7102",
+          "sku": "CAT-LINING-43022945747046",
+          "name": "Black/Neon Iridescent Pink",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "5c49be46-bc43-412f-91be-6b89239205ed",
+          "sku": "CAT-LINING-43022945779814",
+          "name": "Pearl White/Neon Iridescent Pink",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "412781b4-5673-4ec6-9126-512b0ff74762",
+      "slug": "lining-sg-axforce-cannon-5u",
+      "name": "Vợt cầu lông Li-Ning Axforce Cannon - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "ec647fe7-cc0d-494a-987c-e23084cb2e0f",
+          "sku": "CAT-LINING-42929269801062",
+          "name": "White",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "185cb189-4439-48e5-a10c-543d6a2890aa",
+          "sku": "CAT-LINING-42929269768294",
+          "name": "Black",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "c1790dde-f1b3-4d78-80da-222f1522efc5",
+      "slug": "lining-sg-axforce-cannon-6u",
+      "name": "Vợt cầu lông Li-Ning Axforce Cannon - 6U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "5a36db19-06eb-4faa-b6f3-a2b557ea472b",
+          "sku": "CAT-LINING-42929248501862",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "6U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "487898fc-ad09-446d-83d5-418952cbb0cf",
+      "slug": "lining-sg-axforce-cannon-pro-4u",
+      "name": "Vợt cầu lông Li-Ning Axforce Cannon Pro - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "d57a4f28-9471-4e99-925c-a2b7b58f4d8e",
+          "sku": "CAT-LINING-42929267867750",
+          "name": "Dark Purple Blue",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "93419dd0-ab2f-4adc-90de-76d5186cf491",
+          "sku": "CAT-LINING-42929267900518",
+          "name": "Molten Lava",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "546f268b-614b-4bc3-9b17-3e42c90ee240",
+      "slug": "lining-sg-axforce-cannon-pro-5u",
+      "name": "Vợt cầu lông Li-Ning Axforce Cannon Pro - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "9b0b35d5-b615-4b3a-a314-12b5e77f282d",
+          "sku": "CAT-LINING-42929243881574",
+          "name": "Dark Purple Blue",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "161fd388-765b-42d2-b605-745c82fa45f9",
+          "sku": "CAT-LINING-42929243914342",
+          "name": "Molten Lava",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "cf8b9a61-4717-410b-ba64-d9a36b4349dd",
+      "slug": "lining-sg-bladex-200-3u",
+      "name": "Vợt cầu lông Li-Ning BladeX 200 - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "003f0637-61f4-4693-9a79-9882741eb56f",
+          "sku": "CAT-LINING-42929071554662",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_light",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "02590da7-3cb0-42cc-b734-61f4878d33cb",
+      "slug": "lining-sg-bladex-200-4u",
+      "name": "Vợt cầu lông Li-Ning BladeX 200 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "d76f3057-7360-4926-a6ba-a9d060305f7f",
+          "sku": "CAT-LINING-42929071620198",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "4ecf6d0e-03d0-4a5e-86bb-1910cc97e446",
+      "slug": "lining-sg-bladex-500-3u",
+      "name": "Vợt cầu lông Li-Ning BladeX 500 - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "5152e92d-2fed-43d1-80d0-ae4c484ec135",
+          "sku": "CAT-LINING-42929071685734",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "8b331039-82dd-4528-934a-7ab7ef0077df",
+      "slug": "lining-sg-bladex-500-4u",
+      "name": "Vợt cầu lông Li-Ning BladeX 500 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "ab72a86b-150b-450b-9bcf-35d292b915ad",
+          "sku": "CAT-LINING-42929071784038",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "fe742142-9f28-4d21-aacd-2455383282ad",
+      "slug": "lining-sg-bladex-800-3u",
+      "name": "Vợt cầu lông Li-Ning BladeX 800 - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "6077ace3-d582-44b5-8ef0-4515d634e705",
+          "sku": "CAT-LINING-42929077026918",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": null,
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "2b3898dd-7e63-41ce-b5f5-94d18ad650f3",
+      "slug": "lining-sg-halbertec-1000-4u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 1000 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "9630eb90-410f-413d-964d-c005b354f98e",
+          "sku": "CAT-LINING-43072987660390",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 26,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "76914941-d2ed-4f49-ab52-cd3d4e116e47",
+      "slug": "lining-sg-halbertec-1000-5u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 1000 - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "3d00fd6a-e100-49b8-a04e-017be158dd56",
+          "sku": "CAT-LINING-43105028309094",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "even",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 25,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "8f28933c-3d4f-4814-9414-fd0123b89a99",
+      "slug": "lining-sg-halbertec-2000-4u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 2000 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "ac0d13aa-bfad-4c04-b4da-a39e700b573b",
+          "sku": "CAT-LINING-42929278910566",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 26,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "cd5bf676-118a-44c6-bbee-908b728c56f7",
+      "slug": "lining-sg-halbertec-3000-5u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 3000 - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "6c239389-1185-4ec1-9500-c924028a7e49",
+          "sku": "CAT-LINING-42929295622246",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "even",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "378f3434-1923-4010-86d7-21824e7e9677",
+      "slug": "lining-sg-halbertec-4000-3u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 4000 - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "ac234f23-bfae-4a80-bc87-ace0262c6fde",
+          "sku": "CAT-LINING-42929277501542",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "even",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "ffa4e27f-2f9a-4e8e-860d-8dd6d8b8a56d",
+      "slug": "lining-sg-halbertec-4000-4u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 4000 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "0e7c77f5-f46d-43a2-9dc9-139b0e22091e",
+          "sku": "CAT-LINING-42929278058598",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "652d7385-4e30-48e6-841b-225ef3e5d1d5",
+      "slug": "lining-sg-halbertec-7000-3u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 7000 - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "072899a5-ac59-4fae-9d12-9f747d126542",
+          "sku": "CAT-LINING-43022911537254",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "even",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 31,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "e7ff11b0-8a6b-4cce-938e-bfb6785834b8",
+      "slug": "lining-sg-halbertec-7000-4u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 7000 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "77a27b73-15a8-44a3-907e-13049cb26e96",
+          "sku": "CAT-LINING-43022916780134",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 31,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "d481adf3-cebf-4b66-b859-52465c41cef3",
+      "slug": "lining-halbertec-8000",
+      "name": "Vợt Cầu Lông Li-Ning Halbertec 8000",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "fe8e9b95-1115-4e42-80f9-fde4e65627c8",
+          "sku": "HBT8000-4U-G5",
+          "name": "4U / G5",
+          "specs": null,
+          "imported": false
+        },
+        {
+          "id": "4304f8c5-0ef3-4bb3-9d16-f61d4f4bc26e",
+          "sku": "HBT8000-3U-G5",
+          "name": "3U / G5",
+          "specs": null,
+          "imported": false
+        }
+      ]
+    },
+    {
+      "id": "b11683a8-30ba-4211-83c5-9b4e265f06d3",
+      "slug": "lining-sg-halbertec-8000-3u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 8000 - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "48043451-d551-41a1-953a-7e641324fa5f",
+          "sku": "CAT-LINING-42929142857830",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "even",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 31,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "5189edb6-815b-4751-ba1a-1b34299acc0d",
+      "slug": "lining-sg-halbertec-8000-4u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 8000 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "a4a97c75-5211-4a03-8189-9171b54c9ecf",
+          "sku": "CAT-LINING-42929146986598",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "5341b849-27c7-4b9f-a628-1d67abe3c4a7",
+      "slug": "lining-sg-halbertec-9000-4u",
+      "name": "Vợt cầu lông Li-Ning Halbertec 9000 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "a4fbd585-0c45-41ef-a5db-b6b9c44094ef",
+          "sku": "CAT-LINING-42929284120678",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 31,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "38d7f35c-a17f-48ac-b26b-e02b06a41a9c",
+      "slug": "lining-sg-halbertec-motor-3u",
+      "name": "Vợt cầu lông Li-Ning Halbertec Motor - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "da1df00e-643b-4f38-b02b-0772270773da",
+          "sku": "CAT-LINING-42929266229350",
+          "name": "Pearl White",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "even",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 32,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "bcd793d9-b516-4511-92e9-ce06e4d51b25",
+          "sku": "CAT-LINING-42929266262118",
+          "name": "Neon Pink",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "even",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 32,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "b7d85236-f7e9-40b3-9df1-71231bc5e1d9",
+      "slug": "lining-sg-halbertec-motor-4u",
+      "name": "Vợt cầu lông Li-Ning Halbertec Motor - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "4a7f23f2-ace1-474b-8dba-aaaca66061c5",
+          "sku": "CAT-LINING-42929266786406",
+          "name": "Pearl White",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 31,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "2b573743-35a1-4b17-bc76-ed6ecd13d65a",
+          "sku": "CAT-LINING-42929266819174",
+          "name": "Neon Pink",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 31,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "83c58f78-5943-4a86-9ffc-c08013161a76",
+      "slug": "lining-sg-halbertec-motor-pro-4u",
+      "name": "Vợt cầu lông Li-Ning Halbertec Motor Pro - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "5973ec28-88ce-473c-9dc7-5608d30da03b",
+          "sku": "CAT-LINING-43022926250086",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "d8dbc7dc-cd69-4432-b41a-95690a00e67b",
+      "slug": "lining-sg-halbertec-motor-pro-5u",
+      "name": "Vợt cầu lông Li-Ning Halbertec Motor Pro - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "277dc435-0dff-4948-81ff-8a71fa43e409",
+          "sku": "CAT-LINING-43022926741606",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "even",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "feeb0c7f-f767-4f3c-bd3e-7f681cc2b78c",
+      "slug": "lining-sg-tectonic-3-5u",
+      "name": "Vợt cầu lông Li-Ning Tectonic 3 - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "ef0a0d95-6f81-4c9e-9a37-d8ad66a0682a",
+          "sku": "CAT-LINING-42929071390822",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "19c8bd21-4bcf-4f3d-a5d4-da594ae439a8",
+      "slug": "lining-sg-tecctonic-6-4u",
+      "name": "Vợt cầu lông Li-Ning Tectonic 6 - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "74c29477-bebe-4930-9f3e-f28149893fb8",
+          "sku": "CAT-LINING-42929071456358",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "4dd39516-7558-4f9d-8390-f9ce7cce56d4",
+      "slug": "lining-sg-tectonic-6-5u",
+      "name": "Vợt cầu lông Li-Ning Tectonic 6 - 5U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "aa4993af-753d-43e1-a941-b80b5ac17f6e",
+          "sku": "CAT-LINING-42929071489126",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "4dff58a3-48c6-4e8f-9ad2-fcf8d5a6538e",
+      "slug": "lining-tectonic-7",
+      "name": "Vợt Cầu Lông Li-Ning Tectonic 7",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "1d3a4a07-512b-4bbb-a18b-1c45dab822eb",
+          "sku": "TEC7-4U-G5",
+          "name": "4U / G5",
+          "specs": null,
+          "imported": false
+        }
+      ]
+    },
+    {
+      "id": "9027f5f7-a484-48de-84b8-8cf4661cd2fb",
+      "slug": "lining-sg-tectonic-7i",
+      "name": "Vợt cầu lông Li-Ning Tectonic 7I",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "c2b18eb9-d5c2-4680-b634-a98360999fa5",
+          "sku": "CAT-LINING-42928871637094",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 32,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "6ae7d687-4264-4894-a3dc-7af85d095e28",
+      "slug": "lining-sg-tectonic-9-3u",
+      "name": "Vợt cầu lông Li-Ning Tectonic 9 - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "f0705615-cb78-4944-b03f-f77d7210f312",
+          "sku": "CAT-LINING-42929072636006",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 32,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "9f32750b-06d5-4cc4-bf1d-76e8313f77e7",
+      "slug": "lining-sg-turbo-charging-marshal-3u",
+      "name": "Vợt cầu lông Li-Ning Turbo Charging Marshal - 3U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "bb6fe281-2ba0-4b7e-8858-c989eb12ee3e",
+          "sku": "CAT-LINING-42929268490342",
+          "name": "Black",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_light",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "09f6a478-98f8-4677-a740-427a93dedb3b",
+          "sku": "CAT-LINING-42929268523110",
+          "name": "Pearl White",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_light",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "f14b6065-9c13-4b3d-a722-25e874d09df4",
+      "slug": "lining-sg-turbo-charging-marshal-4u",
+      "name": "Vợt cầu lông Li-Ning Turbo Charging Marshal - 4U",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "5fee96f3-8fe9-42bf-9784-5b744ba38744",
+          "sku": "CAT-LINING-42929268981862",
+          "name": "Black",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "6444dc76-d886-4b37-b482-2dba49e786a1",
+          "sku": "CAT-LINING-42929269014630",
+          "name": "Pearl White",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "d4bdcc00-68b9-4234-b25f-d49f86b1e370",
+      "slug": "lining-sg-windstorm-72",
+      "name": "Vợt cầu lông Li-Ning Windstorm 72",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "92b60007-50e0-4c95-a450-48353f9d5943",
+          "sku": "CAT-LINING-42928859054182",
+          "name": "Black/Blue/Green",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "825566d1-a234-4fb4-99a7-573102d1c155",
+          "sku": "CAT-LINING-42928859086950",
+          "name": "Black",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "d6d893cd-3949-462d-b929-29af8d48df7c",
+          "sku": "CAT-LINING-42928859119718",
+          "name": "Black/Red",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "939a6a68-6088-4b4f-ae95-dcc9ae518e9d",
+          "sku": "CAT-LINING-42928859152486",
+          "name": "Navy/Orange",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "46e04859-0e50-4fc7-9722-1d5b63947353",
+          "sku": "CAT-LINING-42928859185254",
+          "name": "Purple/Pink",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "08340411-dca0-4f8d-b0fb-42e6ced0c0eb",
+          "sku": "CAT-LINING-42928859218022",
+          "name": "Navy/Black/Silver",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "fef78e07-1e00-4988-a960-36c851016306",
+          "sku": "CAT-LINING-42928859250790",
+          "name": "Blue/Purple",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "6423b313-5e6b-4927-98de-af845b0b16df",
+          "sku": "CAT-LINING-42928859283558",
+          "name": "Navy/Red/Silver",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "2408be3b-2681-4e1d-98ca-5d2b926fe448",
+          "sku": "CAT-LINING-42928859316326",
+          "name": "Black/Gold",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "080006f9-bcb9-4e45-9695-76507b0cc49e",
+          "sku": "CAT-LINING-42928859349094",
+          "name": "Black/Blue/Orange",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "9bcdbd4f-9f4e-4c83-822d-c9763d115704",
+          "sku": "CAT-LINING-42928859381862",
+          "name": "Black/Charcoal/Peach",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "3bd593ed-bc8b-4c54-8a91-a40fc24cf796",
+          "sku": "CAT-LINING-42928859414630",
+          "name": "Black/Orange/White",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "02d610fb-b8d7-427e-b14d-5257027a795e",
+          "sku": "CAT-LINING-42928859447398",
+          "name": "Navy/Black/Pink",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "94ee2b44-b71d-4bd1-b52b-afb37b55cef8",
+          "sku": "CAT-LINING-42928859480166",
+          "name": "Navy",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "ae67a72f-58a1-44e4-865a-d8dcdc3e6ebc",
+      "slug": "lining-sg-windstorm-72-power",
+      "name": "Vợt cầu lông Li-Ning Windstorm 72 Power",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "3c75899c-bc7d-463b-a3ad-a0e274b91c72",
+          "sku": "CAT-LINING-43116259639398",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "58de6bdf-0002-4622-a6be-c267edac1643",
+      "slug": "lining-sg-windstorm-72-s",
+      "name": "Vợt cầu lông Li-Ning Windstorm 72S",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "6a2dae03-00a6-4dda-9624-07bacdd3b31d",
+          "sku": "CAT-LINING-42929124638822",
+          "name": "White/Gold/Lime",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "ce78aa7c-f426-48df-9111-e227e489fdd3",
+          "sku": "CAT-LINING-42929124671590",
+          "name": "Black/Red/White",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "b11bffce-08b8-4c32-8c74-9775e9ac380f",
+          "sku": "CAT-LINING-42929124474982",
+          "name": "Pink/Blue",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "e1a88521-15b6-4771-9387-3b4fc6dd989e",
+          "sku": "CAT-LINING-42929124606054",
+          "name": "Black/White/Orange",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "2be30c95-271d-4654-b600-752a6652c892",
+          "sku": "CAT-LINING-42929124507750",
+          "name": "DK Grey/Gold/Blue",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "f358853d-c314-4e0e-9eb4-dcb9e22e67a1",
+          "sku": "CAT-LINING-42929124540518",
+          "name": "Navy/Orange/Yellow",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "7d78f3df-9e34-4759-b365-5234f5f61679",
+          "sku": "CAT-LINING-42929124573286",
+          "name": "White/Gold/Blue",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "8a334fa0-6b7a-460e-8eae-9781115ffb1a",
+      "slug": "lining-sg-windstorm-78-s",
+      "name": "Vợt cầu lông Li-Ning Windstorm 78 S",
+      "brand": "Li-Ning",
+      "variants": [
+        {
+          "id": "4728c3c6-84c1-4680-9692-dc4b8a6e68cc",
+          "sku": "CAT-LINING-42929093574758",
+          "name": "Black/Gold",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "aa84a38c-173f-4a22-9338-477b5f0c92d6",
+          "sku": "CAT-LINING-42929093607526",
+          "name": "Black/Bronze",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "f2c98e87-6690-4ee8-99dc-b4dfa3bf99e6",
+          "sku": "CAT-LINING-42929093640294",
+          "name": "Navy/Lime",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "23db99a1-13ac-469a-94c0-7af4dd350054",
+          "sku": "CAT-LINING-42929093673062",
+          "name": "White/Red",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "194038f9-55f7-4f88-b3dd-32c324bdb595",
+          "sku": "CAT-LINING-42929093705830",
+          "name": "White/Blue",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "9aeb01e9-5b4c-471d-9c1d-c9d1dc816a22",
+      "slug": "mizuno-vn-bdss-altius-sonic-73jtb309-2025ss",
+      "name": "Vợt cầu lông Mizuno [BDSS]ALTIUS SONIC",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "ca0e66cc-90b6-43c8-a2eb-d5e79f5f6070",
+          "sku": "CAT-MIZUNO-47212912935166",
+          "name": "03 - Black√ó Blue / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "b8271d1d-0ba9-4261-b40c-0a867d4d16e8",
+      "slug": "mizuno-vn-bdss-fortius-10-73jtb500-2025ss",
+      "name": "Vợt cầu lông Mizuno [BDSS]FORTIUS 10",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "e6b68e79-e498-4e8c-9a47-f1b3cb026965",
+          "sku": "CAT-MIZUNO-47212913000702",
+          "name": "09 - Đen√Vàng / 4U6",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "6e53bc0c-7660-4893-ade8-716a124a3989",
+      "slug": "mizuno-vn-sea-acrospeed-0-73jtb400-2024ss",
+      "name": "Vợt cầu lông Mizuno [SEA]ACROSPEED 0",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "3b4adf3f-eaec-4c58-84b2-321d16a04426",
+          "sku": "CAT-MIZUNO-47212912771326",
+          "name": "95 - Vàng hồng / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "2ac89012-cdac-4e93-b416-d2fab9284493",
+      "slug": "mizuno-vn-sea-acrospeed-001-73jtb491-2024ss",
+      "name": "Vợt cầu lông Mizuno [SEA]ACROSPEED 001",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "96f3637b-234d-48ea-a36d-0451555561c3",
+          "sku": "CAT-MIZUNO-47212912738558",
+          "name": "26 - navy / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "9f2e2b26-da47-4402-b512-5f3b22a98445",
+      "slug": "mizuno-vn-acroforce-100-73jtb510-2025aw",
+      "name": "Vợt cầu lông Mizuno ACROFORCE 100",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "1067ebac-64e5-4749-a2cd-17cc8dfc037f",
+          "sku": "CAT-MIZUNO-47503443198206",
+          "name": "08 / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "98cdeb39-37dc-46a0-9bd2-9a6495a2acfd",
+      "slug": "mizuno-vn-acroforce-300-73jtb503-2025aw",
+      "name": "Vợt cầu lông Mizuno ACROFORCE 300",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "8f325a2b-dc12-45b7-a923-512867df1a67",
+          "sku": "CAT-MIZUNO-48122101727486",
+          "name": "51 -  Sand Khaki / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "4db4cc42-e57f-4e4c-b65b-f75b9dd0bf4a",
+      "slug": "mizuno-vn-acroforce-600-blackxgreen-73jtb506-2025aw",
+      "name": "Vợt cầu lông Mizuno ACROFORCE 600 (BLACK×GREEN)",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "f79fc149-94af-477c-9f92-39e4d8db8289",
+          "sku": "CAT-MIZUNO-48122101694718",
+          "name": "30 - Black/Green / 5U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_heavy",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "e1504b01-da65-4d5d-ab0c-f0d7cd2ba63b",
+      "slug": "mizuno-vn-acrospeed-0-73jtb400-2024ss",
+      "name": "Vợt cầu lông Mizuno ACROSPEED 0",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "5a4630c5-a977-4bf6-93d6-829825378739",
+          "sku": "CAT-MIZUNO-47212912673022",
+          "name": "09 - Đen√ó Vàng Hồng / 4U6",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "6da06ebf-5feb-4e40-9c5e-feece506969a",
+      "slug": "mizuno-vn-acrospeed-1-accel-73jtb402-2024ss",
+      "name": "Vợt cầu lông Mizuno ACROSPEED 1 ACCEL",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "be4c3164-d65a-4af7-b6e4-502613ee6cc1",
+          "sku": "CAT-MIZUNO-47212912836862",
+          "name": "09 - Xanh Navy √ó Vôi / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "4f8feb7c-ca5d-4130-a6e0-04bf4f470736",
+      "slug": "mizuno-vn-acrospeed-1-drive-73jtb451-2024aw",
+      "name": "Vợt cầu lông Mizuno ACROSPEED 1 DRIVE",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "7ae0ab5e-e1d9-40b7-ac6c-2df2c50709eb",
+          "sku": "CAT-MIZUNO-47212912804094",
+          "name": "26 - blue / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "553d916f-e75c-4076-a90a-9b6949f4e488",
+      "slug": "mizuno-vn-acrospeed-1-drive-j-edition-73jtb451-2025aw",
+      "name": "Vợt cầu lông Mizuno ACROSPEED 1 DRIVE J-EDITION",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "dd95b8e9-9c35-44cd-ab42-31ccb516d7bf",
+          "sku": "CAT-MIZUNO-48122101661950",
+          "name": "01 / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "c14ef11b-ac53-448b-ba2e-22e28f1fabbe",
+      "slug": "mizuno-vn-acrospeed-1-focus-73jtb401-2024ss",
+      "name": "Vợt cầu lông Mizuno ACROSPEED 1 FOCUS",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "3cb611f9-c44c-4688-99b4-456522d8d7c1",
+          "sku": "CAT-MIZUNO-47212912869630",
+          "name": "09 - Đen√ó Đỏ / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "bdc26b9f-ab63-41a9-acbc-28580eedfea9",
+      "slug": "mizuno-vn-acrospeed-2-73jtb422-2025ss",
+      "name": "Vợt cầu lông Mizuno ACROSPEED 2",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "30b15831-0a1e-4c19-bb5e-bd6ad2c42b44",
+          "sku": "CAT-MIZUNO-47212912967934",
+          "name": "64 - Đen√ó Đỏ tươi / 4U6",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "83f67a4a-06a4-487c-acb5-1851688cce94",
+      "slug": "mizuno-vn-acrospeed-3-73jtb403-2024ss",
+      "name": "Vợt cầu lông Mizuno ACROSPEED 3 (Chưa đan dây)",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "2f16c251-0835-4b91-b998-21ac174ee73a",
+          "sku": "CAT-MIZUNO-47212912607486",
+          "name": "09 - Đen√ó Cam / 5U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "28d94693-d497-4a92-a0ed-c29502c5b2e0",
+      "slug": "mizuno-vn-acrospeed-6-73jtb406-2024ss",
+      "name": "Vợt cầu lông Mizuno ACROSPEED 6",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "f3506817-293e-4d58-8db2-a2e12fd0393f",
+          "sku": "CAT-MIZUNO-47212912640254",
+          "name": "01 - White√ópurple / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "1076d96b-5fdb-49c1-8b54-7938b434e427",
+          "sku": "CAT-MIZUNO-47212915917054",
+          "name": "26 - Navy√ó Purple / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "20ff3a78-2c70-4e2b-adaa-7d58303a994d",
+      "slug": "mizuno-vn-acrospeed-7-73jtb407-2024aw",
+      "name": "Vợt cầu lông Mizuno ACROSPEED 7",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "7e569bc9-00f0-4200-a75a-501f7bc990de",
+          "sku": "CAT-MIZUNO-47212912541950",
+          "name": "14 - navy / 5U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "7a3851be-405f-490a-8e4d-46a5538acd7d",
+          "sku": "CAT-MIZUNO-47212915884286",
+          "name": "24 - purple / 5U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "ed48dcf4-f522-4d14-9542-feff92dea281",
+      "slug": "mizuno-vn-acrospeed-8-73jtb408-2024aw",
+      "name": "Vợt cầu lông Mizuno ACROSPEED 8",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "4514a1bb-2657-4215-9d6c-93bb2db396db",
+          "sku": "CAT-MIZUNO-47212912574718",
+          "name": "01 - white / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "2acd24e1-e2a7-4a0e-9880-917ea6f3adf2",
+          "sku": "CAT-MIZUNO-47212915851518",
+          "name": "22 - Grayish Blue / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "a075111c-7408-452e-9dbd-e7ab4049e77f",
+      "slug": "mizuno-vn-altius-n-feel-73jtb521-2025aw",
+      "name": "Vợt cầu lông Mizuno ALTIUS N-FEEL",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "f921014e-f5fe-4032-9863-694eb29c126c",
+          "sku": "CAT-MIZUNO-48122101629182",
+          "name": "49 / 3.5U6",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "3.5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "e771d46d-4b43-4eef-97ef-53928504dfe6",
+      "slug": "mizuno-vn-altius-sonic-73jtb309-2025ss",
+      "name": "Vợt cầu lông Mizuno ALTIUS SONIC",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "1c650511-5ea0-4c49-9298-5b9571b8fe3c",
+          "sku": "CAT-MIZUNO-47212912902398",
+          "name": "14 - Xanh hải quân √ó Đồng / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "06dd9d2d-8c29-4cf6-a7b8-9d257ad41a0c",
+          "sku": "CAT-MIZUNO-47212915949822",
+          "name": "35 - Trắng√Xanh lá / 4U6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "1aae09cc-6548-4e00-a3ac-8ac40e2bf37a",
+      "slug": "mizuno-vn-altius-vx5-73mtb523-2025aw",
+      "name": "Vợt cầu lông Mizuno ALTIUS VX5",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "833fd6d0-99c8-4d38-a67e-1c3781e2c7f2",
+          "sku": "CAT-MIZUNO-47288436654334",
+          "name": "91 / 4U5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "e6a9a952-4944-4d25-a416-a0d91d4a111b",
+      "slug": "mizuno-vn-altrax-870-73mtb524-2025aw",
+      "name": "Vợt cầu lông Mizuno ALTRAX 870",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "da31e346-8144-4492-a74f-efefda8f6b8c",
+          "sku": "CAT-MIZUNO-47288437080318",
+          "name": "04 / 4U5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "64116dd2-12ff-431e-81a5-26e38ed4a896",
+          "sku": "CAT-MIZUNO-47288437276926",
+          "name": "05 - Chalk/Silver/Red / 4U5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "97d63deb-7b35-4369-b59b-8a275b6b9638",
+      "slug": "mizuno-vn-caliber-s-boost-73mtb423-2024ss",
+      "name": "Vợt cầu lông Mizuno CALIBER S-BOOST",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "738e3d42-c88b-4e2b-9f2a-dc9f455c72f4",
+          "sku": "CAT-MIZUNO-47212911886590",
+          "name": "47 / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "0bcb27f1-0606-4cba-932a-edac4fa9b0df",
+      "slug": "mizuno-vn-caliber-s-boost-2-73mtb524-2025aw",
+      "name": "Vợt cầu lông Mizuno CALIBER S-BOOST 2",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "772b8c1e-ef0c-4edb-b7e7-9e3b5fdb370c",
+          "sku": "CAT-MIZUNO-47288436916478",
+          "name": "01 / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "3fd9a121-e12f-44b8-a8bd-52c2fbd35194",
+      "slug": "mizuno-vn-caliber-v-pro-73mtb254-2025aw",
+      "name": "Vợt cầu lông Mizuno CALIBER V-PRO",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "18e1e2b3-b7b7-4a71-9864-4496172e20d5",
+          "sku": "CAT-MIZUNO-47288436850942",
+          "name": "00 / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "70018468-0df1-4ed6-bef8-f523012698ca",
+      "slug": "mizuno-vn-carbo-pro-835-73mtb423-2024ss",
+      "name": "Vợt cầu lông Mizuno CARBO PRO 835",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "b9886573-1e29-446b-be0d-213926d49f2e",
+          "sku": "CAT-MIZUNO-47212912115966",
+          "name": "70 - Đen/Xanh neon / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "0ced75b3-5ce9-4490-ae0c-fe3374877525",
+      "slug": "mizuno-vn-carbo-pro-839-73mtb424-2024ss",
+      "name": "Vợt cầu lông Mizuno CARBO PRO 839",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "fcdaa97d-6b83-4bd9-b734-16c6b68e5264",
+          "sku": "CAT-MIZUNO-47212912148734",
+          "name": "72 - Đỏ Thẫm/Vàng Neon / 4U5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "6a263dd5-e12c-4ffb-9c0c-ac29d7096ede",
+      "slug": "mizuno-vn-fioria-lite-73mtb524-2025aw",
+      "name": "Vợt cầu lông Mizuno FIORIA LITE",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "7fe294ee-1394-4604-838a-0fec2a13451b",
+          "sku": "CAT-MIZUNO-47288436982014",
+          "name": "07 / 5U5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "c3a604ed-92bf-4017-8d5a-4202e2db6255",
+          "sku": "CAT-MIZUNO-47288437244158",
+          "name": "08 / 5U5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "ab96c9f2-684c-4e48-9153-7ba93df2cd86",
+      "slug": "mizuno-vn-fortius-50-spirit-73mtb450-2024ss",
+      "name": "Vợt cầu lông Mizuno FORTIUS 50 SPIRIT",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "9b0db49b-7b7e-46e7-b5af-af8e2369e06e",
+          "sku": "CAT-MIZUNO-47212911493374",
+          "name": "01 - Blk/Stone Blue/Vibrant Red / 4U5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "81f6062b-c1be-4d53-9c45-17ce77de18d6",
+      "slug": "mizuno-vn-fortius-50-swift-73mtb450-2024ss",
+      "name": "Vợt cầu lông Mizuno FORTIUS 50 SWIFT",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "baa0dda8-e63e-41c8-85b3-c961cc2194bc",
+          "sku": "CAT-MIZUNO-47212911526142",
+          "name": "02 - Pewter Gray/ Blk/Green Oasis / 5U5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "a831b4b4-d00a-42b1-9af8-d17124bd95d5",
+      "slug": "mizuno-vn-fortius-52-ks-73mtb523-2025aw",
+      "name": "Vợt cầu lông Mizuno FORTIUS 52 KS",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "f7ef18c1-84bf-420d-8f6a-04757f0d1b3f",
+          "sku": "CAT-MIZUNO-47288436621566",
+          "name": "92 / 5U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "180a84d5-c2e6-47e3-a3d4-618ffad3c070",
+      "slug": "mizuno-vn-fortius-71-vt-73mtb523-2025aw",
+      "name": "Vợt cầu lông Mizuno FORTIUS 71 VT",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "87f7f6f8-0a17-41f1-a8cc-8c36053fd93e",
+          "sku": "CAT-MIZUNO-47288436687102",
+          "name": "93 / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "84842cb6-e42b-4514-84e6-f41d5d1f46c3",
+      "slug": "mizuno-vn-jpx-10-5-ct-control-73mtb523-2025aw",
+      "name": "Vợt cầu lông Mizuno JPX 10.5 CT [KIỂM SOÁT]",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "626f8bee-40f4-47a9-9137-cb4e70baf6d9",
+          "sku": "CAT-MIZUNO-47288436719870",
+          "name": "95 / 4U5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "08a87738-8cee-40df-86f2-f7020f8d8cc8",
+      "slug": "mizuno-vn-jpx-3-3-rage-73mtb423-2024ss",
+      "name": "Vợt cầu lông Mizuno JPX 3.3 RAGE",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "fd4c52dd-f53c-44f6-b148-7329ccd23b59",
+          "sku": "CAT-MIZUNO-47988403044606",
+          "name": "44 / 4U5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "76ecb4f5-173b-4547-8bbd-b7a3f0df7772",
+          "sku": "CAT-MIZUNO-47988410253566",
+          "name": "45 / 4U5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "52504cd8-26ab-4512-8e98-589851a8c1d8",
+      "slug": "mizuno-vn-jpx-7-0-sp-73mtb523-2025aw",
+      "name": "Vợt cầu lông Mizuno JPX 7.0 SP",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "5b07da31-e4ae-43f9-a259-30effd12d5c3",
+          "sku": "CAT-MIZUNO-47288436752638",
+          "name": "96 / 4U5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "40fd59d6-4db9-44fd-8228-aa605ac11914",
+      "slug": "mizuno-vn-jpx-8-force-73mtb423-2024aw",
+      "name": "Vợt cầu lông Mizuno JPX 8 FORCE",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "b0a6c652-0cbf-4ed4-b4dd-cff61752018a",
+          "sku": "CAT-MIZUNO-47212911591678",
+          "name": "38 - Lá bạc/đen/đỏ Gerbera / 4U5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "ce97d3e2-4fda-47c4-ad7d-5ea4475ea63d",
+      "slug": "mizuno-vn-jpx-8-2-73mtb423-2024ss",
+      "name": "Vợt cầu lông Mizuno JPX 8.2",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "32219ddc-af8b-4d0e-8bd1-13a7e4de2f03",
+          "sku": "CAT-MIZUNO-47212911722750",
+          "name": "37 - Xám nòng súng/Đỏ cam chuyển sắc / 3U5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "f8389b30-9927-489e-a5a4-a50b217dfaa6",
+          "sku": "CAT-MIZUNO-47212915654910",
+          "name": "37 - Xám nòng súng/Đỏ cam chuyển sắc / 4U5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "15429657-24e5-4470-a6cf-8295420385ad",
+      "slug": "mizuno-vn-jpx-reserve-edition-mb-73mtb423-2024ss",
+      "name": "Vợt cầu lông Mizuno JPX RESERVE EDITION MB",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "3af5254b-ef69-43e4-96ea-573c478a050a",
+          "sku": "CAT-MIZUNO-47212911558910",
+          "name": "66 - Imperial Blue/ Graphite/Gold Silv Foil / 4U5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "a1fd4a57-026e-41c8-abc2-dae53a91acce",
+      "slug": "mizuno-vn-powerblade-597-73mtb423-2024ss",
+      "name": "Vợt cầu lông Mizuno POWERBLADE 597 (Chưa đan dây)",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "70138f10-4d75-45cc-ba90-cf37109fbd38",
+          "sku": "CAT-MIZUNO-47552210927870",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "65f233e4-0b02-4fc7-9263-88b85357deed",
+      "slug": "mizuno-vn-promax-ht1-73mtb524-2025aw",
+      "name": "Vợt cầu lông Mizuno PROMAX HT1",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "0ef1353c-3222-4f90-9e64-b85c9ae10f5f",
+          "sku": "CAT-MIZUNO-47288437014782",
+          "name": "06 / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "bdeafb4e-7033-460e-9273-ce0a46ac9393",
+      "slug": "mizuno-vn-prototype-x-1i-73mtb423-2024ss",
+      "name": "Vợt cầu lông Mizuno PROTOTYPE X-1i",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "8dd4d9bb-90e9-4a3e-bcaa-7dcd3606392c",
+          "sku": "CAT-MIZUNO-47212911788286",
+          "name": "41 - Clear Lacq./Cardinal Red/Gold-Silv Foil / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "d57f75fe-1450-4bc2-99ae-59d21752eb37",
+      "slug": "mizuno-vn-prototype-x-3d-73mtb423-2024ss",
+      "name": "Vợt cầu lông Mizuno PROTOTYPE X-3D",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "ed57f0f5-e573-4a31-b8cc-8ed1b01627e5",
+          "sku": "CAT-MIZUNO-47212911821054",
+          "name": "42 - Blk/Royal Blue/Bud Green Silv Foil / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "66fc2c5d-d00d-4e2d-9af2-a272d3df075a",
+      "slug": "mizuno-vn-prototype-x1-2-73mtb523-2025aw",
+      "name": "Vợt cầu lông Mizuno PROTOTYPE X1.2",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "072baf5c-b581-42c3-82bb-032a723f802e",
+          "sku": "CAT-MIZUNO-47288436785406",
+          "name": "99 / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "dbae8088-eac6-44ef-bd43-a36f2acf077e",
+      "slug": "mizuno-vn-prototype-x5-ct-control-73mtb523-2025aw",
+      "name": "Vợt cầu lông Mizuno PROTOTYPE X5 CT [KIỂM SOÁT]",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "9f2cdf6c-8c89-4e65-8d67-f9e61499cbb2",
+          "sku": "CAT-MIZUNO-47288436818174",
+          "name": "98 / 4U5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "cba59d2d-9293-4587-a257-9d154c088973",
+      "slug": "mizuno-vn-speedflex-9-0-feel-73mtb524-2025aw",
+      "name": "Vợt cầu lông Mizuno SPEEDFLEX 9.0 FEEL",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "484a8f37-dc20-445b-b9f3-c0e9064bdaaa",
+          "sku": "CAT-MIZUNO-47288436949246",
+          "name": "02 / 5U5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "8e23895c-ea17-4aaa-9606-963bee14ccea",
+      "slug": "mizuno-vn-turboblade-587-73mtb524-2025aw",
+      "name": "Vợt cầu lông Mizuno TURBOBLADE 587",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "bf89a2e3-a592-4527-98c5-09eef44de0f6",
+          "sku": "CAT-MIZUNO-47288437113086",
+          "name": "09 / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "b29246ac-8387-41ba-bc4b-cc3b996e4775",
+          "sku": "CAT-MIZUNO-47288437309694",
+          "name": "10 / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "ab4322c0-d62a-4f7d-8fb7-97417cba62ad",
+          "sku": "CAT-MIZUNO-47288437342462",
+          "name": "11 / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "9181252b-d76e-4eaf-9fb2-84148d1bc9f3",
+      "slug": "mizuno-vn-carbo-pro-837-73mtb423-2024ss",
+      "name": "Vợt cầu lông Mizuno Vợt cầu lông CARBO PRO 837 (Chưa đan dây)",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "b9abaa32-bf81-41a5-9279-fad2b74b7c86",
+          "sku": "CAT-MIZUNO-47212912443646",
+          "name": "71 - Hải quân Hàng hải/ Cam neon / 4U5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "57d63b21-1d3d-4b22-a80e-5a0a183121f9",
+      "slug": "mizuno-vn-jpx-8-flash-73mtb423-2024ss",
+      "name": "Vợt cầu lông Mizuno Vợt cầu lông JPX 8 FLASH (Chưa đan dây)",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "3532f5f3-3da7-4423-b14a-74494640c949",
+          "sku": "CAT-MIZUNO-47212911624446",
+          "name": "39 - Đen/Cam Rực Rỡ/Lá Màu Xanh Lơ / 5U5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "c4c097e0-b7bd-4d02-bf57-cf8d9a72e24b",
+      "slug": "mizuno-vn-xyst-07-73mtb623-2024ss",
+      "name": "Vợt cầu lông Mizuno XYST 07",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "03336d28-4b6e-4394-9778-78c0a3927b5f",
+          "sku": "CAT-MIZUNO-47212911755518",
+          "name": "68 - Xanh mòng két/Xanh navy/Xanh nõn chuối / 4U5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "77a13960-8103-490a-9622-7b93fc06fc1e",
+      "slug": "mizuno-vn-zephyr-zr8-73mtb524-2025aw",
+      "name": "Vợt cầu lông Mizuno ZEPHYR ZR8",
+      "brand": "Mizuno",
+      "variants": [
+        {
+          "id": "78060509-5565-4ff4-a574-a8f957743b13",
+          "sku": "CAT-MIZUNO-47288437047550",
+          "name": "03 / 6U5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "6U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "2cfdde32-a9b3-4358-a346-f6725dc46848",
+      "slug": "victor-au-ars-100x-ultra-g",
+      "name": "Vợt cầu lông Victor ARS-100X ULTRA G",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "35bf1842-0306-4bf7-a292-8b5be3ff89e7",
+          "sku": "CAT-VICTOR-46434091729053",
+          "name": "Default Title",
+          "specs": null,
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "f0084fb5-f994-45d1-bd79-8433abe14f53",
+      "slug": "victor-au-ars-90k-metallic-r",
+      "name": "Vợt cầu lông Victor ARS-90K METALLIC R",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "20cc2f2f-faf3-4ef5-af04-10798e2ef1ae",
+          "sku": "CAT-VICTOR-45287936426141",
+          "name": "Default Title",
+          "specs": null,
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "0ab85012-521e-4368-970a-8d75032d9bc4",
+      "slug": "victor-au-ars-fantome-f-hyq-m",
+      "name": "Vợt cầu lông Victor ARS-FANTÔME F HYQ M",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "9c02c136-875f-4cab-8138-321c6aae0924",
+          "sku": "CAT-VICTOR-47161028509853",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "01cfdbe7-eb2a-41cc-929e-17bd01231858",
+      "slug": "victor-au-ars-fantome-j",
+      "name": "Vợt cầu lông Victor ARS-FANTÔME J",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "b6b87ad3-0c8e-4395-a18d-da3398dfb9d7",
+          "sku": "CAT-VICTOR-46571346985117",
+          "name": "Default Title",
+          "specs": null,
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "46eeb890-3533-433b-99aa-b9f45700e745",
+      "slug": "victor-au-ars-fantome-sc25-ac",
+      "name": "Vợt cầu lông Victor ARS-FANTÔME SC25 AC",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "398273bc-1903-4051-a4ba-f511308b7569",
+          "sku": "CAT-VICTOR-46780301738141",
+          "name": "Default Title",
+          "specs": null,
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "36686ef3-f1ef-4eb5-9fe6-3c3006666af4",
+      "slug": "victor-au-ars-90f-m",
+      "name": "Vợt cầu lông Victor AuraSpeed 90F",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "89ea12c3-e6be-4e0b-a78a-224704bb3a20",
+          "sku": "CAT-VICTOR-41372462186653",
+          "name": "4U / G5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "4c984205-14b3-404f-9adc-704c83fb6e1b",
+          "sku": "CAT-VICTOR-42579608699037",
+          "name": "5U / G5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "5U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "d8799476-3c56-4f09-8fe6-dd110236e864",
+      "slug": "victor-au-auraspeed-90k-ii",
+      "name": "Vợt cầu lông Victor AuraSpeed 90K II",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "e8c5cc4f-e55e-4372-a81d-d3877fc40f38",
+          "sku": "CAT-VICTOR-43667139526813",
+          "name": "Default Title",
+          "specs": null,
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "94ace60e-8c5d-4e9d-8a51-5141059c4ee9",
+      "slug": "victor-au-brave-sword-12-blue",
+      "name": "Vợt cầu lông Victor BRAVE SWORD 12 [Blue]",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "a41d907b-05ce-4100-a42d-76dbc2ffb934",
+          "sku": "CAT-VICTOR-41372764111005",
+          "name": "3U / G5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "c83ebb6c-f4df-42f1-a394-4b7bfa6f0d72",
+          "sku": "CAT-VICTOR-42579660734621",
+          "name": "4U / G5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "89a3cbdd-8f42-45fe-91a5-0a26e6c234d5",
+      "slug": "victor-au-bravesword-12l",
+      "name": "Vợt cầu lông Victor BRAVE SWORD 12L",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "97d11298-00bd-482d-8f3b-1ada829a8050",
+          "sku": "CAT-VICTOR-42579666469021",
+          "name": "3U / G6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "685e6e30-53d3-48cf-9e08-e9e8c2004a40",
+          "sku": "CAT-VICTOR-41372537356445",
+          "name": "4U / G6",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "5fee16e3-f242-42eb-bd17-289b01921dd7",
+      "slug": "victor-au-dx-12-zsw-j",
+      "name": "Vợt cầu lông Victor DX-12 ZSW J",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "d437feae-8ad8-45de-afb4-7473e027b02e",
+          "sku": "CAT-VICTOR-47161033359517",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 32,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "5da71259-66d4-4e1e-9b53-be65c7b8524b",
+      "slug": "victor-au-tk-ryuga-ii-pro-b",
+      "name": "Vợt cầu lông Victor TK-RYUGA II PRO B",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "89d2689e-a55b-4587-bfad-94713dcc1783",
+          "sku": "CAT-VICTOR-44621053558941",
+          "name": "Default Title",
+          "specs": null,
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "f222ad0b-bbb3-4cfd-b27b-73357e042cc5",
+      "slug": "victor-au-tk-ryuga-ii-pro-cps-j",
+      "name": "Vợt cầu lông Victor TK-RYUGA II PRO CPS J",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "84ee358d-417c-4888-b677-b952a7cfccb2",
+          "sku": "CAT-VICTOR-46676042907805",
+          "name": "Default Title",
+          "specs": null,
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "a55427bb-3190-4045-a85c-8c685c3111b4",
+      "slug": "victor-au-tk-ryuga-metallic-c",
+      "name": "Vợt cầu lông Victor TK-RYUGA METALLIC C",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "085adc9e-8f98-4b72-aeec-48e2bf2b65c2",
+          "sku": "CAT-VICTOR-44179313295517",
+          "name": "Default Title",
+          "specs": null,
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "0e888a4d-64da-42c5-98cd-1fbd3402488e",
+      "slug": "victor-au-tk-ryuga-metallic-co24",
+      "name": "Vợt cầu lông Victor TK-RYUGA METALLIC CO24",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "6ec2e359-8861-42ab-b098-6acfd9d79876",
+          "sku": "CAT-VICTOR-46213593825437",
+          "name": "Default Title",
+          "specs": null,
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "ed2e4fae-7bec-425c-af70-a2e953946595",
+      "slug": "victor-au-tk-ryuga-metallic-cps-i",
+      "name": "Vợt cầu lông Victor TK-RYUGA METALLIC CPS I",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "a626bd15-01e8-4f70-a845-fd9188b6e883",
+          "sku": "CAT-VICTOR-46676040253597",
+          "name": "Default Title",
+          "specs": null,
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "7c14e7e5-7a44-46c9-b0b2-ab92f8710630",
+      "slug": "victor-au-tk-ryuga-muse-i",
+      "name": "Vợt cầu lông Victor TK-RYUGA MUSE I",
+      "brand": "Victor",
+      "variants": [
+        {
+          "id": "567bf735-ad1f-4b63-aac7-a9ed9b8c7a5d",
+          "sku": "CAT-VICTOR-45846889496733",
+          "name": "Default Title",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "eb469b9f-d062-4d0a-b808-b791f73936ee",
+      "slug": "yonex-us-arcsaber-11-play-strung",
+      "name": "Vợt cầu lông Yonex ARCSABER 11 PLAY",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "a6733c35-c732-48c5-9d56-67f112304bdd",
+          "sku": "CAT-YONEX-47060995604701",
+          "name": "GRAYISH PEARL / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 19,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "50a68ad7-e0fc-4dbc-bfd1-de67a7b4dfe5",
+      "slug": "yonex-us-arcsaber-11-pro",
+      "name": "Vợt cầu lông Yonex ARCSABER 11 PRO",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "56b0d464-65a2-4950-a58d-423cd82b8d91",
+          "sku": "CAT-YONEX-46064960962781",
+          "name": "GRAYISH PEARL / 3UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "even",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "3f3e4bad-8782-458d-87ea-378572a700d1",
+          "sku": "CAT-YONEX-46064960995549",
+          "name": "GRAYISH PEARL / 4UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 19,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "b6202573-1532-4c2b-876c-c66c5c5af917",
+      "slug": "yonex-arcsaber-11-pro",
+      "name": "Vợt Cầu Lông Yonex Arcsaber 11 Pro",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "b02c73dc-1e78-49df-9a84-fa3b171202a2",
+          "sku": "ARC11P-4U-G5",
+          "name": "4U / G5",
+          "specs": null,
+          "imported": false
+        },
+        {
+          "id": "d7f77e8e-0398-4c39-8251-78ced0e0202f",
+          "sku": "ARC11P-3U-G5",
+          "name": "3U / G5",
+          "specs": null,
+          "imported": false
+        }
+      ]
+    },
+    {
+      "id": "48ce127a-f75e-4674-a09d-a351e3a142b8",
+      "slug": "yonex-us-arcsaber-11-tour",
+      "name": "Vợt cầu lông Yonex ARCSABER 11 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "030a3f49-eed0-4f1b-b777-a522448b0fc1",
+          "sku": "CAT-YONEX-46064961028317",
+          "name": "GRAYISH PEARL / 3UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "even",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "e1c871a3-41c8-4bec-b612-1b04c03d9677",
+      "slug": "yonex-us-arcsaber-2-clear",
+      "name": "Vợt cầu lông Yonex ARCSABER 2 CLEAR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "bd992469-c670-4f8c-a987-3dc3a14f7868",
+          "sku": "CAT-YONEX-46064961061085",
+          "name": "BLACK/BLUE / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "2ce02741-aee2-49d9-a88a-5041c61b3c7c",
+      "slug": "yonex-us-arcsaber-7-play",
+      "name": "Vợt cầu lông Yonex ARCSABER 7 PLAY",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "c845cf36-f072-46f6-bca8-d49216394362",
+          "sku": "CAT-YONEX-47060995571933",
+          "name": "GRAY YELLOW / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 19,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "ee5f83bd-0102-4a88-bfab-7657eea39cfc",
+      "slug": "yonex-us-arcsaber-7-pro",
+      "name": "Vợt cầu lông Yonex ARCSABER 7 PRO",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "e73deb12-ef04-4353-a5c7-2e3196cfe5e4",
+          "sku": "CAT-YONEX-46064961126621",
+          "name": "GRAY YELLOW / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 19,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "28dfa74e-f1ec-465f-af6e-53eb51d7f4aa",
+      "slug": "yonex-us-arcsaber-7-tour",
+      "name": "Vợt cầu lông Yonex ARCSABER 7 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "a40253f7-2658-4a40-88ed-979c4d717657",
+          "sku": "CAT-YONEX-46064961159389",
+          "name": "GRAY YELLOW / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "even",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 19,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "67ab02f1-aeca-4f84-8271-258f5f97899b",
+      "slug": "yonex-us-arcsaber7-play",
+      "name": "Vợt cầu lông Yonex ARCSABER7 PLAY",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "c53317ec-2512-4521-9b58-a809bc40b530",
+          "sku": "CAT-YONEX-47575661510877",
+          "name": "LIGHT BEIGE / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 19,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "65bf3c54-bf82-46cd-a5eb-5f8317d6cb12",
+      "slug": "yonex-us-arcsaber7-tour",
+      "name": "Vợt cầu lông Yonex ARCSABER7 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "1cb140cd-46cc-4ad6-a929-428157135c68",
+          "sku": "CAT-YONEX-47575661543645",
+          "name": "LIGHT BEIGE / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 19,
+            "stringingMaxLbf": 27,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "c9a4fdba-a29b-4035-9690-4653550274ec",
+      "slug": "yonex-us-astrox-01-feel-strung",
+      "name": "Vợt cầu lông Yonex ASTROX 01 FEEL",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "2a13527f-e560-41ff-a5e9-55069490d3f2",
+          "sku": "CAT-YONEX-46064961487069",
+          "name": "LIME / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "93215073-0136-442c-b7df-cb578a6d19cd",
+      "slug": "yonex-us-astrox-10-strung",
+      "name": "Vợt cầu lông Yonex ASTROX 10",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "68ad9d0e-2fec-4147-94a1-f18ec479f770",
+          "sku": "CAT-YONEX-50217519481053",
+          "name": "NAVY BLUE / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "5f65409c-fa89-4b79-b8cb-b96cecf466c9",
+          "sku": "CAT-YONEX-50217543041245",
+          "name": "DARK WINE / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "f099be89-63d3-478d-9ce0-df00822d78ae",
+          "sku": "CAT-YONEX-50217543008477",
+          "name": "OLIVE GREEN / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "86101e64-28f4-4ed1-b89c-ec802fa2f2ce",
+          "sku": "CAT-YONEX-50217542942941",
+          "name": "WHITE/PINK / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "1eb0c4b1-b361-4b41-85d8-749081ca7eaf",
+          "sku": "CAT-YONEX-50217542975709",
+          "name": "WHITE/BLACK / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "75c38183-eede-414c-9d71-ca86936fc125",
+      "slug": "yonex-us-astrox-100-game",
+      "name": "Vợt cầu lông Yonex ASTROX 100 GAME",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "b73e3a61-90db-4186-a002-9234d9f2bf39",
+          "sku": "CAT-YONEX-46841443287261",
+          "name": "KURENAI / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "587d6072-d33b-4a87-9e66-88c979a13c14",
+      "slug": "yonex-us-astrox-100-tour",
+      "name": "Vợt cầu lông Yonex ASTROX 100 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "c5fa6bd4-4f09-4d2a-9185-bc8a9607da31",
+          "sku": "CAT-YONEX-46829667418333",
+          "name": "KURENAI / 4UG5",
+          "specs": {
+            "shaftFlex": "extra_stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "47e7d1b1-88f4-4721-af5d-fb10c2c184e6",
+      "slug": "yonex-us-astrox-100zz",
+      "name": "Vợt cầu lông Yonex ASTROX 100ZZ",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "3eb14b74-863e-4986-a9ac-f9bcad184914",
+          "sku": "CAT-YONEX-46064961585373",
+          "name": "KURENAI / 3UG5",
+          "specs": {
+            "shaftFlex": "extra_stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": 21,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "e9b20b48-ec68-4bd8-849a-641462bba5db",
+          "sku": "CAT-YONEX-46064961618141",
+          "name": "KURENAI / 4UG5",
+          "specs": {
+            "shaftFlex": "extra_stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "66479da1-0715-48e4-87c0-d156128f8cbd",
+          "sku": "CAT-YONEX-46064961519837",
+          "name": "DARK NAVY / 3UG5",
+          "specs": {
+            "shaftFlex": "extra_stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "e523184a-c610-41ea-914c-1c745dceaa0a",
+          "sku": "CAT-YONEX-46064961552605",
+          "name": "DARK NAVY / 4UG5",
+          "specs": {
+            "shaftFlex": "extra_stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "6f5b32eb-de67-4102-ac67-1f161ea34f22",
+      "slug": "yonex-astrox-100zz",
+      "name": "Vợt Cầu Lông Yonex Astrox 100ZZ Kurenai",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "6906f14f-0f13-480a-b3cd-e89d11bb9963",
+          "sku": "AX100ZZ-4U-G5",
+          "name": "4U / G5 (83g)",
+          "specs": null,
+          "imported": false
+        },
+        {
+          "id": "38cd72b7-cc21-4406-9d92-679c7a733aa9",
+          "sku": "AX100ZZ-3U-G5",
+          "name": "3U / G5 (88g)",
+          "specs": null,
+          "imported": false
+        }
+      ]
+    },
+    {
+      "id": "6c255801-c9a1-4c47-b803-4684198bfb57",
+      "slug": "yonex-us-astrox-77-play-strung",
+      "name": "Vợt cầu lông Yonex ASTROX 77 PLAY",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "fedc9928-02af-4e2b-82e8-2fa135e3d1a0",
+          "sku": "CAT-YONEX-47060995506397",
+          "name": "HIGH ORANGE / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "fa6c6e21-31fc-4eb7-a473-e692202ba1ee",
+      "slug": "yonex-us-astrox-77-play",
+      "name": "Vợt cầu lông Yonex ASTROX 77 PLAY",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "42f570f5-5c3b-4ec1-9bd3-3386f98e06eb",
+          "sku": "CAT-YONEX-47575661609181",
+          "name": "LIGHT BEIGE / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "e5833b54-79d0-45f5-87ff-6bcea80b0d64",
+      "slug": "yonex-us-astrox-77-pro",
+      "name": "Vợt cầu lông Yonex ASTROX 77 PRO",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "b536d3a4-aed2-4de5-a184-542b1b9e6d62",
+          "sku": "CAT-YONEX-46064961716445",
+          "name": "HIGH ORANGE / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": null,
+            "stringingMaxLbf": null,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "de4f2889-59a9-40ad-8d60-5e33ab641164",
+      "slug": "yonex-astrox-77-pro",
+      "name": "Vợt Cầu Lông Yonex Astrox 77 Pro",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "dd63b270-f2d1-4b88-8733-a57486c20511",
+          "sku": "AX77P-4U-G5",
+          "name": "4U / G5",
+          "specs": null,
+          "imported": false
+        }
+      ]
+    },
+    {
+      "id": "f636457d-ece2-45c4-9749-8d37b8a27705",
+      "slug": "yonex-us-astrox-77-tour",
+      "name": "Vợt cầu lông Yonex ASTROX 77 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "6e98d707-47cb-4cac-8f74-cc14eb521359",
+          "sku": "CAT-YONEX-47575661576413",
+          "name": "LIGHT BEIGE / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "b252660c-42ca-4860-a1e2-dafb1a9df10c",
+      "slug": "yonex-us-astrox-88d-game",
+      "name": "Vợt cầu lông Yonex ASTROX 88D GAME",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "7b874663-b567-46e3-a2b0-6aab5759649a",
+          "sku": "CAT-YONEX-46064961749213",
+          "name": "BLACK/SILVER / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "71fd7ac3-3bf9-409d-9159-06b2bd3bf358",
+      "slug": "yonex-us-astrox-88d-pro",
+      "name": "Vợt cầu lông Yonex ASTROX 88D PRO",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "d477586e-01ea-4bc0-951b-b300585f3649",
+          "sku": "CAT-YONEX-46064961781981",
+          "name": "BLACK/SILVER / 4UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "e9b10ae3-daa6-4241-8ead-5b490ccc250d",
+      "slug": "yonex-astrox-88d-pro",
+      "name": "Vợt Cầu Lông Yonex Astrox 88D Pro 3rd Gen",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "bfefb1aa-9b78-42e6-b374-49ef50cc87d4",
+          "sku": "AX88DP-4U-G5",
+          "name": "4U / G5",
+          "specs": null,
+          "imported": false
+        },
+        {
+          "id": "9a5782a5-0efd-4e56-b27b-a37c61a4dba0",
+          "sku": "AX88DP-3U-G5",
+          "name": "3U / G5",
+          "specs": null,
+          "imported": false
+        }
+      ]
+    },
+    {
+      "id": "0e485759-7bcc-4917-8712-f0c72d292f1d",
+      "slug": "yonex-us-astrox-88d-tour",
+      "name": "Vợt cầu lông Yonex ASTROX 88D TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "7ab3b98b-b3c1-477e-b65c-e0a31403d246",
+          "sku": "CAT-YONEX-46064961814749",
+          "name": "BLACK/SILVER / 3UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": 21,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "8b3f0d01-3ba0-4bc5-9384-82e5e3e07ea2",
+          "sku": "CAT-YONEX-46064961847517",
+          "name": "BLACK/SILVER / 4UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "b8a53740-ab70-415a-936c-75e61f948f6e",
+      "slug": "yonex-us-astrox-88s-game",
+      "name": "Vợt cầu lông Yonex ASTROX 88S GAME",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "5dc520d0-9113-4dc5-97ac-fc5b8c49d039",
+          "sku": "CAT-YONEX-46255531688157",
+          "name": "SILVER/BLACK / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "82d2d2b6-56b1-46f1-9549-bfe1d0d3776f",
+      "slug": "yonex-us-astrox-88s-pro",
+      "name": "Vợt cầu lông Yonex ASTROX 88S PRO",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "bbd54e75-65ae-4d63-88f1-f86f70b99004",
+          "sku": "CAT-YONEX-46255537914077",
+          "name": "SILVER/BLACK / 4UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "7399da04-146b-4fab-93fb-98808801ca75",
+      "slug": "yonex-us-astrox-88s-tour",
+      "name": "Vợt cầu lông Yonex ASTROX 88S TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "869b4863-0031-480e-b28a-35a8efa3368a",
+          "sku": "CAT-YONEX-46255544664285",
+          "name": "SILVER/BLACK / 4UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "19c57b4e-c6aa-446a-89b8-17e78e6acd15",
+          "sku": "CAT-YONEX-46255544631517",
+          "name": "SILVER/BLACK / 3UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": 21,
+            "stringingMaxLbf": 29,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "adc39a3e-ddf0-46dd-a490-7e64fe954dc0",
+      "slug": "yonex-us-astrox-99-game",
+      "name": "Vợt cầu lông Yonex ASTROX 99 GAME",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "3c4eacce-75f3-428b-ab6f-24a50ca06cea",
+          "sku": "CAT-YONEX-46695384449245",
+          "name": "BLACK/GREEN / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "36934fc9-03c6-41fd-8b93-8121d0b10f69",
+      "slug": "yonex-us-astrox-99-play-strung",
+      "name": "Vợt cầu lông Yonex ASTROX 99 PLAY",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "10a52a23-45bd-4d99-95bb-061f46b4d2d9",
+          "sku": "CAT-YONEX-46743059464413",
+          "name": "BLACK/GREEN / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "89c4fce4-f6a8-4721-a152-2427e11a3d20",
+          "sku": "CAT-YONEX-46064962011357",
+          "name": "WHITE TIGER / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "db7e0bba-75d2-4a30-a966-87ab842d7414",
+          "sku": "CAT-YONEX-46064962044125",
+          "name": "CHERRY SUNBURST / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "f9b234d4-18e5-4df6-a4f2-0852fd3c7c44",
+      "slug": "yonex-us-astrox-99-pro",
+      "name": "Vợt cầu lông Yonex ASTROX 99 PRO",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "5887724e-fbe1-4dc8-a5ad-2cb691791772",
+          "sku": "CAT-YONEX-46726382485725",
+          "name": "BLACK/GREEN / 4UG5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "ca0a438f-e7bd-4381-8d87-29515cd8a772",
+      "slug": "yonex-us-astrox-99-tour",
+      "name": "Vợt cầu lông Yonex ASTROX 99 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "7c4c8974-d0f5-459c-92ba-4cedfb78d144",
+          "sku": "CAT-YONEX-46695384383709",
+          "name": "BLACK/GREEN / 4UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "bc6d7b96-bb60-42aa-9bdb-c528df0fceed",
+      "slug": "yonex-us-astrox-nextage",
+      "name": "Vợt cầu lông Yonex ASTROX NEXTAGE",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "5fd730ec-b195-4cc7-8b7b-7849d3048944",
+          "sku": "CAT-YONEX-46064962339037",
+          "name": "BLACK/GREEN / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "65580c69-7a2d-47dc-aef4-a35de1d7126e",
+          "sku": "CAT-YONEX-46064962306269",
+          "name": "LIGHT GRAY / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "fc02fd0a-0f5a-4758-a3f2-49ac175dcd3e",
+      "slug": "yonex-us-duora-z-strike",
+      "name": "Vợt cầu lông Yonex DUORA Z-STRIKE",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "b33ac86b-c8d3-497e-a601-01598ce65466",
+          "sku": "CAT-YONEX-47297045233885",
+          "name": "WHITE/BLACK / 3UG5",
+          "specs": {
+            "shaftFlex": "extra_stiff",
+            "balanceType": null,
+            "weightClass": "3U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "a1508c8e-ed7a-4622-a939-e954487aa277",
+      "slug": "yonex-us-isometric-tr0-strung",
+      "name": "Vợt cầu lông Yonex ISOMETRIC TR0",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "9767348a-5051-4918-b671-931077cba5d6",
+          "sku": "CAT-YONEX-46064972955869",
+          "name": "GREEN / 0G4",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "39c71451-d826-4756-9124-a37f9b5266dd",
+      "slug": "yonex-us-isometric-tr1-strung",
+      "name": "Vợt cầu lông Yonex ISOMETRIC TR1",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "d441899b-ae7b-4ce4-84f2-f06f6a578ee4",
+          "sku": "CAT-YONEX-46064972988637",
+          "name": "BLUE / 1G4",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": null,
+            "weightClass": null,
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 30,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "18fd7157-7e65-467e-84fe-bdf5a6c63216",
+      "slug": "yonex-us-nanoflare-1000-game",
+      "name": "Vợt cầu lông Yonex NANOFLARE 1000 GAME",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "367eeb85-8ca2-43c4-b964-9faa5b43a8f6",
+          "sku": "CAT-YONEX-46841464357085",
+          "name": "LIGHTNING YELLOW / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "782bdde6-a191-4d3d-bca2-e67807809f9b",
+      "slug": "yonex-us-nanoflare-1000-play",
+      "name": "Vợt cầu lông Yonex NANOFLARE 1000 PLAY",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "e97e4780-f26c-43a3-b762-18ce957c886b",
+          "sku": "CAT-YONEX-47060936949981",
+          "name": "LIGHTNING YELLOW / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "1316afa8-ebef-40d4-8e99-48f6b2104602",
+      "slug": "yonex-us-nanoflare-1000-tour",
+      "name": "Vợt cầu lông Yonex NANOFLARE 1000 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "138c1317-93f9-45ea-87b0-211c68a0462b",
+          "sku": "CAT-YONEX-46859163730141",
+          "name": "LIGHTNING YELLOW / 4UG5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "b4701717-401b-41ba-8bef-58081a4a582f",
+      "slug": "yonex-us-nanoflare-1000-z",
+      "name": "Vợt cầu lông Yonex NANOFLARE 1000 Z",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "1e965d10-bf08-4f12-a133-0b7b0b16d7c0",
+          "sku": "CAT-YONEX-46064976265437",
+          "name": "LIGHTNING YELLOW / 4UG5",
+          "specs": {
+            "shaftFlex": "extra_stiff",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "47df1bb9-a4c0-4e98-997a-5f3f52be8592",
+      "slug": "yonex-nanoflare-1000z",
+      "name": "Vợt Cầu Lông Yonex Nanoflare 1000Z",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "6a673bc4-7962-497d-a4a3-50bc62febba2",
+          "sku": "NF1000Z-4U-G5",
+          "name": "4U / G5",
+          "specs": {
+            "shaftFlex": "extra_stiff",
+            "balanceType": null,
+            "averageWeightG": 83,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "approved"
+          },
+          "imported": false
+        }
+      ]
+    },
+    {
+      "id": "6b188756-a590-47a9-95f6-d876c551db65",
+      "slug": "yonex-us-nanoflare-700-game",
+      "name": "Vợt cầu lông Yonex NANOFLARE 700 GAME",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "b6c277b7-d8bb-401f-9dec-b10e706bd8d3",
+          "sku": "CAT-YONEX-46064976298205",
+          "name": "MIDNIGHT PURPLE / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "90ec76b7-de46-4b37-a783-a68456a0b419",
+          "sku": "CAT-YONEX-46064976330973",
+          "name": "SILVER/SKY BLUE / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "9b9b5231-f46f-47fd-856a-9e654e859d72",
+      "slug": "yonex-us-nanoflare-700-play-light-beige-strung",
+      "name": "Vợt cầu lông Yonex NANOFLARE 700 PLAY",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "c8e139c2-0664-47c8-9391-ffb49f1ffa9c",
+          "sku": "CAT-YONEX-47623491354845",
+          "name": "LIGHT BEIGE / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "5f8fb4d3-0c71-4d8d-8e76-1961c84b4f3e",
+      "slug": "yonex-us-nanoflare-700-play",
+      "name": "Vợt cầu lông Yonex NANOFLARE 700 PLAY",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "05027bb5-ac39-4bc3-9673-79af3ffb4dec",
+          "sku": "CAT-YONEX-47060995670237",
+          "name": "MIDNIGHT PURPLE / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "beabdffa-3a21-48f4-ae4b-9dab6729714e",
+          "sku": "CAT-YONEX-67754216292573",
+          "name": "SILVER/SKY BLUE / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "da94c036-1752-4ec1-8772-382fde64eae1",
+      "slug": "yonex-us-nanoflare-700-tour-light-beige",
+      "name": "Vợt cầu lông Yonex NANOFLARE 700 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "0eef4dfb-0317-4aed-a576-9061ce7a6238",
+          "sku": "CAT-YONEX-47623491387613",
+          "name": "LIGHT BEIGE / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": null,
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "62a34491-1c5d-43c8-a033-c5874b6a1060",
+      "slug": "yonex-us-nanoflare-700-tour",
+      "name": "Vợt cầu lông Yonex NANOFLARE 700 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "d005ee42-9b24-42f5-baa9-b6343fbdb5da",
+          "sku": "CAT-YONEX-46064976462045",
+          "name": "MIDNIGHT PURPLE / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "121ab388-98e1-485d-bfdb-9bf525ba8913",
+          "sku": "CAT-YONEX-46064976494813",
+          "name": "SILVER/SKY BLUE / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "70f3decc-189a-4127-9fec-3985855340b0",
+      "slug": "yonex-us-nanoflare-800-game",
+      "name": "Vợt cầu lông Yonex NANOFLARE 800 GAME",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "f173a83b-b711-4460-9b95-140a79de903f",
+          "sku": "CAT-YONEX-46859279925469",
+          "name": "DARK OLIVE / 4UG5",
+          "specs": {
+            "shaftFlex": "flexible",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "bbbfd15a-61af-425b-a4ce-a5e6b595b1ff",
+      "slug": "yonex-us-nanoflare-800-play-strung",
+      "name": "Vợt cầu lông Yonex NANOFLARE 800 PLAY",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "adc73d2f-2fb7-40c4-ac47-b7f35a4ffb57",
+          "sku": "CAT-YONEX-47060936851677",
+          "name": "DEEP GREEN / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "4751ad8b-71b6-4abd-966f-994b1de893a2",
+      "slug": "yonex-us-nanoflare-800pro",
+      "name": "Vợt cầu lông Yonex NANOFLARE 800 PRO",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "243674e5-352b-461f-b32e-3e63a6ff370e",
+          "sku": "CAT-YONEX-46064976560349",
+          "name": "DEEP GREEN / 4UG5",
+          "specs": {
+            "shaftFlex": "stiff",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "37edf512-6d16-4e68-9c3d-d1e81678e71f",
+      "slug": "yonex-us-nanoflare-800-tour",
+      "name": "Vợt cầu lông Yonex NANOFLARE 800 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "8c8f5c44-ec42-450c-ab63-f7b5ebeaaa91",
+          "sku": "CAT-YONEX-46859261051101",
+          "name": "DEEP GREEN / 4UG5",
+          "specs": {
+            "shaftFlex": null,
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "33300efc-c8fa-454f-9da4-cd9cf018d2b8",
+      "slug": "yonex-us-nanoflare-nextage",
+      "name": "Vợt cầu lông Yonex NANOFLARE NEXTAGE",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "00185386-e2e1-4aa8-bdb9-34de44b7b599",
+          "sku": "CAT-YONEX-46064976691421",
+          "name": "WHITE/GRAY / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        },
+        {
+          "id": "65fe26f6-1e2e-4758-8342-ab7ad90b60b9",
+          "sku": "CAT-YONEX-46064976658653",
+          "name": "DARK GRAY / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_light",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "612d14e5-3628-4e3c-851b-8a3d13fa9661",
+      "slug": "yonex-us-astrox-100-game-va",
+      "name": "Vợt cầu lông Yonex VA ASTROX 100 GAME",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "3ffc4332-d52b-47d9-b30f-ee61ce995035",
+          "sku": "CAT-YONEX-46695384350941",
+          "name": "GRAYISH BEIGE / 4UG5",
+          "specs": {
+            "shaftFlex": "medium",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "d1a6267b-eb7d-4524-a9da-13d2189ed091",
+      "slug": "yonex-us-astrox-100-tour-va",
+      "name": "Vợt cầu lông Yonex VA ASTROX 100 TOUR",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "6c336f52-a1af-462b-b88e-01400b73238a",
+          "sku": "CAT-YONEX-46695384416477",
+          "name": "DARK OLIVE / 4UG5",
+          "specs": {
+            "shaftFlex": "extra_stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    },
+    {
+      "id": "71828432-8a87-480c-9ec8-3a4cb7866a0d",
+      "slug": "yonex-us-astrox-100-zz-va",
+      "name": "Vợt cầu lông Yonex VA ASTROX 100ZZ",
+      "brand": "Yonex",
+      "variants": [
+        {
+          "id": "87a79fc3-60ff-47e1-8cbf-56afc8b5f0d3",
+          "sku": "CAT-YONEX-46695384613085",
+          "name": "GRAYISH BEIGE / 4UG5",
+          "specs": {
+            "shaftFlex": "extra_stiff",
+            "balanceType": "head_heavy",
+            "weightClass": "4U",
+            "averageWeightG": null,
+            "stringingMinLbf": 20,
+            "stringingMaxLbf": 28,
+            "sourceKind": "manufacturer"
+          },
+          "imported": true
+        }
+      ]
+    }
+  ]
+}

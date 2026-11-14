@@ -10,9 +10,11 @@ import ProductCard from '../components/ProductCard.jsx';
 import { BlockSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
 import { RevealItem } from '../components/motion.jsx';
+import { describeScalePosition, parseSpecScale } from '../utils/specScale.js';
 import {
   FALLBACK_PRODUCT_IMAGE,
   getDefaultVariant,
+  getProductSpecifications,
   getDiscountPercent,
   hasValidPrice,
   isVariantActive,
@@ -160,6 +162,7 @@ export default function Detail() {
   const allVariants = product.variants || [];
   const variants = allVariants.filter(isVariantActive);
   const variantImages = getImages(getAttributes(selectedVariant).imageUrls);
+  const specifications = getProductSpecifications(product, selectedVariant);
   const productImages = getImages(product.imageUrls);
   // Shared images may show another color, so never mix them into a variant's gallery.
   const galleryImages = variantImages.length ? variantImages : productImages;
@@ -381,13 +384,15 @@ export default function Detail() {
               <ShieldCheck size={19} aria-hidden="true" /> Bảo hành chính hãng
             </li>
           </ul>
-          {product.specs?.length > 0 && (
+          {specifications.length > 0 && (
             <div className="detail-specs">
               <h2>Thông số & đặc tính</h2>
               <ul>
-                {product.specs.map((s, index) => (
-                  <li key={`${index}-${s}`}>{s}</li>
-                ))}
+                {specifications.map((s, index) => {
+                  const scale = parseSpecScale(s);
+                  if (!scale) return <li key={`${index}-${s}`}>{s}</li>;
+                  return (<li key={`${index}-${s}`} className="spec-scale" aria-label={`${scale.label}: ${describeScalePosition(scale, scale.label)}`}><div className="spec-scale__top"><span className="spec-scale__label">{scale.label}</span><strong className="spec-scale__value">{describeScalePosition(scale, scale.label)}</strong></div><div className="spec-scale__track" aria-hidden="true">{Array.from({ length: scale.steps }, (_, step) => (<span key={step} className={step === scale.position ? 'active' : ''} />))}</div><div className="spec-scale__ends" aria-hidden="true"><span>{scale.left}</span><span>{scale.right}</span></div></li>);
+                })}
               </ul>
             </div>
           )}

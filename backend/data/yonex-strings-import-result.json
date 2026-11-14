@@ -1,0 +1,103 @@
+{
+  "batch": "yonex-strings-2026-11-14",
+  "imported": [
+    {
+      "productId": "e64bdffe-bee6-422c-8e10-e2ff0a00b9c7",
+      "variantId": "48a94d68-58f2-4c14-90e7-410be054688d",
+      "slug": "yonex-bg65",
+      "name": "Yonex BG65",
+      "sku": "HAVIE-YONEX-BG65-SET",
+      "priceVnd": 120000,
+      "stockQuantity": 30,
+      "imageUrls": [
+        "/uploads/yonex-strings/yonex-bg65-a03ef216395a.png"
+      ],
+      "created": false,
+      "unchangedCommerce": true
+    },
+    {
+      "productId": "eb49ea69-d7fd-4bfc-9a1c-c7e7c924921a",
+      "variantId": "80cb0070-b61e-4f5e-8174-f5847a5032fc",
+      "slug": "yonex-bg66-ultimax",
+      "name": "Yonex BG66 Ultimax",
+      "sku": "HAVIE-YONEX-BG66UM-SET",
+      "priceVnd": 195000,
+      "stockQuantity": 30,
+      "imageUrls": [
+        "/uploads/yonex-strings/yonex-bg66-ultimax-96d5c0c03d77.png"
+      ],
+      "created": false,
+      "unchangedCommerce": true
+    },
+    {
+      "productId": "6feb65ac-93b7-4c67-a7d6-cc2aeb0ff13c",
+      "variantId": "7796453a-7394-4056-9ee1-feb662cfc99b",
+      "slug": "yonex-bg80",
+      "name": "Yonex BG80",
+      "sku": "HAVIE-YONEX-BG80-SET",
+      "priceVnd": 200000,
+      "stockQuantity": 30,
+      "imageUrls": [
+        "/uploads/yonex-strings/yonex-bg80-2c352d4187ce.png"
+      ],
+      "created": false,
+      "unchangedCommerce": true
+    },
+    {
+      "productId": "19f58bc6-fc14-4d87-90c4-0d36f2ec9ce5",
+      "variantId": "e90114e5-911e-420d-b5d3-2d23eb8b9764",
+      "slug": "yonex-exbolt-63",
+      "name": "Yonex Exbolt 63",
+      "sku": "HAVIE-YONEX-BGXB63-SET",
+      "priceVnd": 205000,
+      "stockQuantity": 30,
+      "imageUrls": [
+        "/uploads/yonex-strings/yonex-exbolt-63-7e67ab847f33.png"
+      ],
+      "created": false,
+      "unchangedCommerce": true
+    },
+    {
+      "productId": "f277870b-9bdb-4e87-a2c9-cde2c5d94d83",
+      "variantId": "e626bf9f-971b-4509-ba06-f25716d24ce3",
+      "slug": "yonex-exbolt-65",
+      "name": "Yonex Exbolt 65",
+      "sku": "HAVIE-YONEX-BGXB65-SET",
+      "priceVnd": 200000,
+      "stockQuantity": 30,
+      "imageUrls": [
+        "/uploads/yonex-strings/yonex-exbolt-65-3e66d3b485f3.png"
+      ],
+      "created": false,
+      "unchangedCommerce": true
+    },
+    {
+      "productId": "2bf04e5b-7e00-4481-a47b-66613e321938",
+      "variantId": "542cb4e1-f6bc-4fe1-bed3-5d4d66a4c579",
+      "slug": "yonex-exbolt-68",
+      "name": "Yonex Exbolt 68",
+      "sku": "HAVIE-YONEX-BGXB68-SET",
+      "priceVnd": 215000,
+      "stockQuantity": 30,
+      "imageUrls": [
+        "/uploads/yonex-strings/yonex-exbolt-68-5bc20385b7d4.png"
+      ],
+      "created": false,
+      "unchangedCommerce": true
+    },
+    {
+      "productId": "89735da3-97e8-4201-91ad-48bc505cc082",
+      "variantId": "9eadb84f-d181-431b-b4f3-0832bd1a18eb",
+      "slug": "yonex-aerobite",
+      "name": "Yonex Aerobite",
+      "sku": "HAVIE-YONEX-BGAB-SET",
+      "priceVnd": 220000,
+      "stockQuantity": 30,
+      "imageUrls": [
+        "/uploads/yonex-strings/yonex-aerobite-dd9006ce7748.png"
+      ],
+      "created": false,
+      "unchangedCommerce": true
+    }
+  ]
+}

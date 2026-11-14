@@ -18,6 +18,7 @@ const Cart = lazy(() => import('./pages/Cart.jsx'));
 const Checkout = lazy(() => import('./pages/Checkout.jsx'));
 const Auth = lazy(() => import('./pages/Auth.jsx'));
 const AccountOrders = lazy(() => import('./pages/AccountOrders.jsx'));
+const PayOrder = lazy(() => import('./pages/PayOrder.jsx'));
 const Favorites = lazy(() => import('./pages/Favorites.jsx'));
 const About = lazy(() => import('./pages/About.jsx'));
 const Admin = lazy(() => import('./pages/admin/Admin.jsx'));
@@ -87,6 +88,7 @@ export default function App() {
                             <Route path="/favorites" element={<Favorites />} />
                             <Route path="/auth" element={<Auth />} />
                             <Route path="/account/orders" element={<AccountOrders />} />
+                            <Route path="/account/orders/:id/pay" element={<PayOrder />} />
                             <Route path="/cart" element={<Cart />} />
                             <Route path="/checkout" element={<Checkout />} />
                             <Route path="*" element={<NotFound />} />

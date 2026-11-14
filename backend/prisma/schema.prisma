@@ -29,6 +29,7 @@ enum OrderStatus {
 enum PaymentMethod {
   COD
   MOCK_QR
+  PAYOS
 }
 
 enum PaymentStatus {
@@ -302,6 +303,11 @@ model Order {
   note            String?
   cancelReason    String?
   paidAt          DateTime?
+  // Thanh toán chuyển khoản QR qua payOS
+  paymentLinkId    String?
+  checkoutUrl      String?
+  qrCode           String?
+  paymentExpiresAt DateTime?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 

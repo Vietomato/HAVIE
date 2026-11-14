@@ -1,0 +1,1204 @@
+{
+  "title": "HAVIE Badminton Advisor Knowledge Base",
+  "version": "1.3",
+  "researched_on": "2026-11-13",
+  "language": "vi",
+  "purpose": "Dữ liệu tham khảo để truy xuất và bổ sung ngữ cảnh LLM, không phải dữ liệu đã fine-tune model.",
+  "confidence_policy": {
+    "official_product_specs": "cao khi dẫn về model/biến thể cụ thể",
+    "playing_recommendations": "heuristic, cần hỏi người chơi và thử thực tế",
+    "community_experience": "chỉ là kinh nghiệm cá nhân, không tuyên bố như nghiên cứu khoa học",
+    "tension_guidance_by_skill": "khung tham khảo giáo dục theo trình độ, KHÔNG phải mức Yonex khuyến nghị",
+    "manufacturer_tension_limit": "chỉ dùng khi đã xác minh đúng model và đúng biến thể trọng lượng (vd. 3U, 4U); thiếu thì không chốt mức căng cho vợt đó"
+  },
+  "racquet": {
+    "weight_classes": [
+      {
+        "code": "2U",
+        "approx_unstrung_g": "90-94",
+        "note": "nặng hơn, không đồng nghĩa mọi vợt 2U đều nặng đầu"
+      },
+      {
+        "code": "3U",
+        "approx_unstrung_g": "85-89",
+        "note": "đầm hơn 4U cùng dòng"
+      },
+      {
+        "code": "4U",
+        "approx_unstrung_g": "80-84",
+        "note": "mức phổ biến linh hoạt"
+      },
+      {
+        "code": "5U",
+        "approx_unstrung_g": "75-79",
+        "note": "nhẹ, thuận xoay trở"
+      },
+      {
+        "code": "6U",
+        "approx_unstrung_g": "70-74",
+        "note": "ước lượng phân hạng, cần kiểm tra model"
+      }
+    ],
+    "weight_warning": "Thông số U mô tả khối lượng chưa căng cước; không phải điểm cân bằng. Quấn cán, căng dây ảnh hưởng cảm giác thực tế. Trọng lượng theo U chỉ là khoảng quy ước, từng hãng/model có thể chênh lệch.",
+    "balance_types": [
+      {
+        "id": "head_heavy",
+        "label": "nặng đầu",
+        "strengths": [
+          "hỗ trợ quán tính khi đập cầu/clear",
+          "cảm giác đầm đầu"
+        ],
+        "tradeoffs": [
+          "có thể chậm trong đổi hướng/phản tạt",
+          "đòi hỏi thích nghi"
+        ],
+        "good_for": [
+          "ưa tấn công",
+          "có kỹ thuật và thể lực phù hợp"
+        ],
+        "not_absolute": "Yonex Astrox thường thiên tấn công nhưng cần xác minh thông số từng mẫu."
+      },
+      {
+        "id": "even",
+        "label": "cân bằng",
+        "strengths": [
+          "cân đối giữa công và thủ",
+          "dễ thử nghiệm nhiều lối chơi"
+        ],
+        "tradeoffs": [
+          "không tối ưu tuyệt đối cho một cực đoan"
+        ],
+        "good_for": [
+          "người muốn lối chơi toàn diện"
+        ]
+      },
+      {
+        "id": "head_light",
+        "label": "nhẹ đầu",
+        "strengths": [
+          "xoay trở và phòng thủ nhanh",
+          "phản tạt, chơi lưới"
+        ],
+        "tradeoffs": [
+          "cảm giác lực đầu vợt thấp hơn, phụ thuộc kỹ thuật"
+        ],
+        "good_for": [
+          "đánh nhanh, ưu tiên tốc độ"
+        ]
+      }
+    ],
+    "shaft_flex": [
+      {
+        "id": "flexible",
+        "label": "dẻo",
+        "advisor_note_vi": "Thường dễ làm quen hơn thân rất cứng khi tốc độ vung chưa cao."
+      },
+      {
+        "id": "medium",
+        "label": "trung bình",
+        "advisor_note_vi": "Dung hòa trợ lực và cảm giác kiểm soát."
+      },
+      {
+        "id": "stiff",
+        "label": "cứng",
+        "advisor_note_vi": "Thường phù hợp người đánh có kỹ thuật và tốc độ vung tương đối tốt."
+      },
+      {
+        "id": "extra_stiff",
+        "label": "rất cứng",
+        "advisor_note_vi": "Không mặc định khuyên cho người mới; cần kỹ thuật phù hợp."
+      }
+    ],
+    "selection_guidance": [
+      {
+        "profile": "beginner",
+        "suggestion_vi": "Bắt đầu từ vợt vừa tay, thân dẻo hoặc trung bình và 4U/5U để thử; không tự động loại vợt nặng đầu nếu người chơi hợp."
+      },
+      {
+        "profile": "doubles_fast",
+        "suggestion_vi": "Ưu tiên khả năng xoay trở; có thể thử 4U/5U nhẹ đầu hoặc cân bằng, nhưng vai trò đánh sau vẫn có thể hợp vợt nặng đầu."
+      },
+      {
+        "profile": "attack",
+        "suggestion_vi": "Thử vợt nặng đầu mức phù hợp, tránh suy ra cứ nặng là đập mạnh hơn."
+      },
+      {
+        "profile": "all_round",
+        "suggestion_vi": "Cân bằng và thân medium là điểm khởi đầu dễ đánh giá."
+      }
+    ],
+    "series_examples": [
+      {
+        "name": "Astrox",
+        "general_position": "power/head-heavy",
+        "source_ids": [
+          "yonex_astrox"
+        ]
+      },
+      {
+        "name": "Arcsaber",
+        "general_position": "control/even-balance-ish; verify model",
+        "source_ids": [
+          "yonex_arcsaber"
+        ]
+      },
+      {
+        "name": "Nanoflare",
+        "general_position": "speed/head-light-ish; verify model",
+        "source_ids": [
+          "yonex_nanoflare"
+        ]
+      }
+    ],
+    "source_ids": [
+      "yonex_arcsaber",
+      "yonex_nanoflare",
+      "yonex_astrox",
+      "yonex_selector"
+    ],
+    "suitability_rules": {
+      "by_skill": {
+        "beginner": {
+          "reason_vi": "người mới nên bắt đầu từ vợt vừa tay, thân dẻo hoặc trung bình, hạng 4U/5U",
+          "weight_classes": {
+            "prefer": [
+              "4U",
+              "5U",
+              "6U"
+            ],
+            "avoid": [
+              "2U",
+              "3U"
+            ]
+          },
+          "shaft_flex": {
+            "prefer": [
+              "flexible",
+              "medium"
+            ],
+            "avoid": [
+              "stiff"
+            ],
+            "exclude": [
+              "extra_stiff"
+            ]
+          },
+          "match_vi": "người mới"
+        },
+        "intermediate": {
+          "reason_vi": "trình trung bình có thể thử nhiều hạng và độ cứng"
+        },
+        "advanced": {
+          "reason_vi": "trình nâng cao tự chọn theo lối chơi"
+        }
+      },
+      "by_play_format": {
+        "doubles": {
+          "reason_vi": "đánh đôi cần xoay trở nhanh nên ưu tiên 4U/5U, nhẹ đầu hoặc cân bằng",
+          "weight_classes": {
+            "prefer": [
+              "4U",
+              "5U"
+            ]
+          },
+          "balance": {
+            "prefer": [
+              "head_light",
+              "even"
+            ]
+          },
+          "match_vi": "đánh đôi"
+        },
+        "singles": {},
+        "both": {}
+      },
+      "by_priority": {
+        "easy_to_use": {
+          "reason_vi": "ưu tiên dễ đánh nên hợp 4U/5U, thân dẻo hoặc trung bình",
+          "weight_classes": {
+            "prefer": [
+              "4U",
+              "5U"
+            ]
+          },
+          "shaft_flex": {
+            "prefer": [
+              "flexible",
+              "medium"
+            ]
+          },
+          "match_vi": "ưu tiên dễ đánh"
+        },
+        "attack_support": {
+          "reason_vi": "ưu tiên hỗ trợ tấn công nên có thể thử vợt nặng đầu",
+          "balance": {
+            "prefer": [
+              "head_heavy"
+            ]
+          },
+          "match_vi": "ưu tiên hỗ trợ tấn công"
+        },
+        "fast_handling": {
+          "reason_vi": "ưu tiên xoay trở nhanh nên hợp vợt nhẹ đầu hoặc cân bằng, 4U/5U",
+          "weight_classes": {
+            "prefer": [
+              "4U",
+              "5U"
+            ]
+          },
+          "balance": {
+            "prefer": [
+              "head_light",
+              "even"
+            ]
+          },
+          "match_vi": "ưu tiên xoay trở nhanh"
+        }
+      },
+      "weight_preference": {
+        "nhẹ": {
+          "prefer": [
+            "5U",
+            "6U"
+          ],
+          "avoid": [
+            "2U",
+            "3U"
+          ]
+        },
+        "không quá nhẹ": {
+          "avoid": [
+            "6U"
+          ]
+        },
+        "nặng": {
+          "prefer": [
+            "2U",
+            "3U"
+          ],
+          "avoid": [
+            "5U",
+            "6U"
+          ]
+        },
+        "không quá nặng": {
+          "avoid": [
+            "2U"
+          ]
+        },
+        "2U": {
+          "prefer": [
+            "2U"
+          ],
+          "avoid": [
+            "3U",
+            "4U",
+            "5U",
+            "6U"
+          ]
+        },
+        "3U": {
+          "prefer": [
+            "3U"
+          ],
+          "avoid": [
+            "2U",
+            "4U",
+            "5U",
+            "6U"
+          ]
+        },
+        "3.5U": {
+          "prefer": [
+            "3.5U"
+          ]
+        },
+        "4U": {
+          "prefer": [
+            "4U"
+          ],
+          "avoid": [
+            "2U",
+            "3U",
+            "5U",
+            "6U"
+          ]
+        },
+        "5U": {
+          "prefer": [
+            "5U"
+          ],
+          "avoid": [
+            "2U",
+            "3U",
+            "4U",
+            "6U"
+          ]
+        },
+        "6U": {
+          "prefer": [
+            "6U"
+          ],
+          "avoid": [
+            "2U",
+            "3U",
+            "4U",
+            "5U"
+          ]
+        }
+      }
+    }
+  },
+  "stringing": {
+    "units": {
+      "lbs": "pounds-force",
+      "kgf": "kilogram-force",
+      "kgf_to_lbs": 2.20462,
+      "note_vi": "10 kgf khoảng 22.05 lbs, 11 kgf khoảng 24.25 lbs, 12 kgf khoảng 26.46 lbs. Khách nói '11 ký' khi bàn về căng vợt thường là 11 kgf; số không kèm đơn vị thì hỏi lại lbs hay kg."
+    },
+    "tension_principles": [
+      "Căng cao thường làm mặt cước cứng, tăng cảm giác phản hồi và yêu cầu chạm đúng điểm ngọt; không đảm bảo lực đập mạnh hơn.",
+      "Căng thấp hơn thường dễ tạo độ bật với người có tốc độ vung chưa cao và dung sai tiếp xúc tốt hơn.",
+      "Không đưa mức căng vượt giới hạn nhà sản xuất cho đúng model, phiên bản và weight class.",
+      "Không tự đặt lực căng theo độ dày cước: gauge (mm) không phải tension (lbs).",
+      "Hỏi mức căng đang dùng và cảm nhận trước khi tăng/giảm; không chẩn đoán chấn thương.",
+      "Không mặc định dây ngang cao hơn dây dọc 2 lbs; tuân thủ kỹ thuật/công thức của thợ và hãng theo từng khung.",
+      "Độ bền dây phụ thuộc lực căng, vị trí tiếp xúc, cách đánh, thời tiết và chất lượng căng dây."
+    ],
+    "string_selection_guidance": [
+      {
+        "need": "bền, tiết kiệm",
+        "options": [
+          "BG65",
+          "Exbolt 68",
+          "Nanogy 95"
+        ]
+      },
+      {
+        "need": "cảm giác đanh, đập cầu",
+        "options": [
+          "BG80",
+          "BG80 Power",
+          "Exbolt 68"
+        ]
+      },
+      {
+        "need": "bật nhanh, phản tạt",
+        "options": [
+          "Exbolt 63",
+          "Exbolt 65",
+          "BG66 Ultimax"
+        ]
+      },
+      {
+        "need": "giữ cầu, cắt cầu",
+        "options": [
+          "Aerobite",
+          "Aerobite Boost",
+          "Exbolt 65"
+        ]
+      },
+      {
+        "need": "mới chơi",
+        "options": [
+          "BG65",
+          "Skyarc"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "brand": "Yonex",
+        "name": "BG65",
+        "gauge_mm": 0.7,
+        "manufacturer_category": "durability",
+        "advisor_note_vi": "Bền, cảm giác tương đối dễ chịu, lựa chọn phổ thông cho người mới và người ưu tiên ít đứt dây.",
+        "suggested_player_levels_heuristic": [
+          "beginner",
+          "intermediate"
+        ],
+        "use_cases": [
+          "durability",
+          "value"
+        ],
+        "source_ids": [
+          "yonex_bg65",
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic",
+        "official_item_code": "BG65"
+      },
+      {
+        "brand": "Yonex",
+        "name": "BG65 Titanium",
+        "gauge_mm": 0.7,
+        "manufacturer_category": "durability",
+        "advisor_note_vi": "Có lớp phủ titanium, cảm giác đánh sắc/đanh hơn BG65 thông thường; thiên về độ bền.",
+        "suggested_player_levels_heuristic": [
+          "intermediate"
+        ],
+        "use_cases": [
+          "durability",
+          "crisp_feel"
+        ],
+        "source_ids": [
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "BG66 Ultimax",
+        "gauge_mm": 0.65,
+        "manufacturer_category": "quick_repulsion",
+        "advisor_note_vi": "Cước mảnh, phản lực tốt và cảm giác nảy rõ; cân nhắc độ bền khi đánh lệch tâm thường xuyên.",
+        "suggested_player_levels_heuristic": [
+          "intermediate",
+          "advanced"
+        ],
+        "use_cases": [
+          "repulsion",
+          "feel"
+        ],
+        "source_ids": [
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "BG66 Force",
+        "gauge_mm": 0.65,
+        "manufacturer_category": "quick_repulsion",
+        "advisor_note_vi": "Cước thiên về lực bật, cảm giác rõ; độ bền thực tế tùy người đánh và mức căng.",
+        "suggested_player_levels_heuristic": [
+          "intermediate",
+          "advanced"
+        ],
+        "use_cases": [
+          "repulsion"
+        ],
+        "source_ids": [
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "BG80",
+        "gauge_mm": 0.68,
+        "manufacturer_category": "quick_repulsion",
+        "advisor_note_vi": "Có sợi Vectran, cảm giác tương đối cứng/đanh, phù hợp người thích phản hồi rõ khi đánh.",
+        "suggested_player_levels_heuristic": [
+          "intermediate",
+          "advanced"
+        ],
+        "use_cases": [
+          "crisp_feel",
+          "power"
+        ],
+        "source_ids": [
+          "yonex_bg80",
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "BG80 Power",
+        "gauge_mm": 0.68,
+        "manufacturer_category": "quick_repulsion",
+        "advisor_note_vi": "Phiên bản nhấn mạnh cảm giác chắc và những cú đánh mạnh.",
+        "suggested_player_levels_heuristic": [
+          "intermediate",
+          "advanced"
+        ],
+        "use_cases": [
+          "power",
+          "crisp_feel"
+        ],
+        "source_ids": [
+          "yonex_bg80power",
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "Exbolt 63",
+        "gauge_mm": 0.63,
+        "manufacturer_category": "quick_repulsion",
+        "advisor_note_vi": "Cước mảnh, phản lực nhanh và tiếng đánh rõ; Yonex thiết kế để cải thiện độ bền so với dây mảnh truyền thống, không có nghĩa là bền hơn mọi dây dày.",
+        "suggested_player_levels_heuristic": [
+          "intermediate",
+          "advanced"
+        ],
+        "use_cases": [
+          "speed",
+          "repulsion"
+        ],
+        "source_ids": [
+          "yonex_exbolt63",
+          "yonex_catalog",
+          "yonex_exbolt63_product"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic",
+        "official_item_code": "BGXB63"
+      },
+      {
+        "brand": "Yonex",
+        "name": "Exbolt 65",
+        "gauge_mm": 0.65,
+        "manufacturer_category": "quick_repulsion",
+        "advisor_note_vi": "Cân bằng phản lực, giữ cầu/kiểm soát và độ bền trong dòng Exbolt.",
+        "suggested_player_levels_heuristic": [
+          "intermediate",
+          "advanced"
+        ],
+        "use_cases": [
+          "balanced_string",
+          "repulsion"
+        ],
+        "source_ids": [
+          "yonex_exbolt65",
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "Exbolt 68",
+        "gauge_mm": 0.68,
+        "manufacturer_category": "durability",
+        "advisor_note_vi": "Yonex định vị là dây bền thiên về đập cầu, vẫn có độ bật; dùng khi muốn tăng độ bền hơn các cước mảnh.",
+        "suggested_player_levels_heuristic": [
+          "beginner",
+          "intermediate",
+          "advanced"
+        ],
+        "use_cases": [
+          "durability",
+          "power"
+        ],
+        "source_ids": [
+          "yonex_exbolt68",
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "Aerobite",
+        "gauge_mm": {
+          "main": 0.67,
+          "cross": 0.61
+        },
+        "manufacturer_category": "control",
+        "advisor_note_vi": "Cước hybrid: dây dọc phủ polyurethane tăng độ bám cầu và dây ngang mảnh; hợp người thích kiểm soát/cắt cầu.",
+        "suggested_player_levels_heuristic": [
+          "intermediate",
+          "advanced"
+        ],
+        "use_cases": [
+          "control",
+          "net_play"
+        ],
+        "source_ids": [
+          "yonex_aerobite",
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "Aerobite Boost",
+        "gauge_mm": {
+          "main": 0.72,
+          "cross": 0.61
+        },
+        "manufacturer_category": "control",
+        "advisor_note_vi": "Hybrid với dây dọc dày hơn Aerobite, thiên về kiểm soát và cảm giác chắc.",
+        "suggested_player_levels_heuristic": [
+          "intermediate",
+          "advanced"
+        ],
+        "use_cases": [
+          "control"
+        ],
+        "source_ids": [
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "Aerosonic",
+        "gauge_mm": 0.61,
+        "manufacturer_category": "quick_repulsion",
+        "advisor_note_vi": "Rất mảnh; thiên về phản lực và tiếng đánh, cần cân nhắc độ bền nếu thường đánh lệch tâm.",
+        "suggested_player_levels_heuristic": [
+          "advanced"
+        ],
+        "use_cases": [
+          "repulsion",
+          "sound"
+        ],
+        "source_ids": [
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "Skyarc",
+        "gauge_mm": 0.69,
+        "manufacturer_category": "control",
+        "advisor_note_vi": "Thiên về cảm giác hỗ trợ đưa cầu sâu cuối sân; dùng công nghệ Hi-Sling Fiber.",
+        "suggested_player_levels_heuristic": [
+          "beginner",
+          "intermediate"
+        ],
+        "use_cases": [
+          "comfort",
+          "clear"
+        ],
+        "source_ids": [
+          "yonex_skyarc",
+          "yonex_catalog"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "Nanogy 95",
+        "gauge_mm": 0.69,
+        "manufacturer_category": "durability",
+        "advisor_note_vi": "Dòng có lớp phủ carbon nanotube, thiên về bền và độ ổn định.",
+        "suggested_player_levels_heuristic": [
+          "beginner",
+          "intermediate",
+          "advanced"
+        ],
+        "use_cases": [
+          "durability"
+        ],
+        "source_ids": [
+          "yonex_nanogy95"
+        ],
+        "evidence_type": "official_specs_plus_advisor_heuristic"
+      },
+      {
+        "brand": "Yonex",
+        "name": "Nanogy 98",
+        "gauge_mm": 0.66,
+        "manufacturer_category": "quick_repulsion",
+        "advisor_note_vi": "Catalog Yonex 2024 xếp dòng này vào nhóm phản lực nhanh và ghi đường kính 0.66 mm. Trang Yonex USA hiện ghi 0.69 mm, nên cần đối chiếu mã NBG98 và bao bì đúng phiên bản trước khi chốt thông số thực tế.",
+        "source_ids": [
+          "yonex_catalog_2024",
+          "yonex_nanogy98_us"
+        ],
+        "evidence_type": "manufacturer_sources_conflict",
+        "official_item_code": "NBG98"
+      }
+    ],
+    "source_ids": [
+      "yonex_catalog",
+      "community_beginner",
+      "community_tension",
+      "coach_guide",
+      "yonex_nf1000z",
+      "yonex_catalog_2024",
+      "yonex_catalog_2026_jp",
+      "guide_badminton_fyi",
+      "guide_intobadminton",
+      "research_tension_skill"
+    ],
+    "tension_guidance_tiers": [
+      {
+        "id": "beginner",
+        "label_vi": "mới chơi, chưa đánh trúng tâm ổn định",
+        "suggested_range": [
+          18,
+          22
+        ],
+        "note_vi": "Dễ làm quen, vùng đánh hiệu quả tương đối rộng. Không chốt mức thấp hơn giới hạn dưới của khung (vd. không chốt 18 lbs cho vợt có giới hạn dưới 20 lbs)."
+      },
+      {
+        "id": "recreational",
+        "label_vi": "phong trào, đã chơi đều",
+        "suggested_range": [
+          22,
+          24
+        ],
+        "note_vi": "Cân bằng giữa trợ lực và cảm giác; có thể giảm nếu hay hụt cuối sân."
+      },
+      {
+        "id": "intermediate",
+        "label_vi": "trung bình, tiếp xúc cầu khá ổn",
+        "suggested_range": [
+          24,
+          26
+        ],
+        "note_vi": "Cảm giác trực tiếp hơn; cần kiểm tra giới hạn hãng và sức vung."
+      },
+      {
+        "id": "upper_intermediate",
+        "label_vi": "khá, đánh đều và kỹ thuật tốt",
+        "suggested_range": [
+          26,
+          28
+        ],
+        "note_vi": "Phản hồi gọn, đòi hỏi điểm tiếp xúc tốt; căng cao không mặc định làm đập mạnh hơn."
+      },
+      {
+        "id": "competitive",
+        "label_vi": "nâng cao hoặc thi đấu",
+        "suggested_range": [
+          28,
+          30
+        ],
+        "open_ended": true,
+        "auto_recommend": false,
+        "note_vi": "Từ 28 đến 30 lbs trở lên: chỉ cân nhắc khi có kỹ thuật và khung phù hợp, thợ có kinh nghiệm phải xác minh. Không tự động khuyến nghị."
+      }
+    ],
+    "skill_tension_map": {
+      "beginner": [
+        "beginner"
+      ],
+      "intermediate": [
+        "recreational",
+        "intermediate"
+      ],
+      "advanced": [
+        "upper_intermediate"
+      ]
+    },
+    "tension_policy": [
+      "Loại cước (BG65, BG80...) không quyết định trần căng của khung vợt.",
+      "Không suy ra mức căng tối đa từ đường kính cước, phân loại U, tên dòng vợt hoặc mức căng của model tương tự.",
+      "Chỉ chốt mức căng sau khi xác minh giới hạn hãng cho đúng model và biến thể (vd. 3U, 4U), tình trạng khung và khả năng thợ căng.",
+      "Thiếu thông số giới hạn hãng: chỉ nói khoảng tham khảo chung mang tính giáo dục, không xác nhận mức nào là an toàn hay tương thích với sản phẩm đó.",
+      "Giới hạn hãng có ưu tiên cao nhất; mức khách muốn nằm ngoài khoảng hãng công bố thì không chốt.",
+      "Khoảng tham khảo theo trình độ không giao với khoảng hãng: nói rõ không đề xuất được trong khung đó, không vượt thông số hãng.",
+      "Chọn cước (cảm giác, độ bền, kiểm soát) và chọn mức căng là hai quyết định khác nhau.",
+      "Khung theo trình độ là gợi ý giáo dục, không gắn nhãn 'Yonex khuyến nghị'."
+    ],
+    "tension_adjustments": [
+      {
+        "id": "off_center",
+        "advice_vi": "Hay đánh lệch tâm hoặc cầu không tới cuối sân: có thể cân nhắc giảm khoảng 1-2 lbs nếu vẫn trong giới hạn hãng, đồng thời xem lại kỹ thuật.",
+        "source_ids": [
+          "guide_badminton_fyi",
+          "guide_intobadminton",
+          "research_tension_skill"
+        ]
+      },
+      {
+        "id": "solid_contact",
+        "advice_vi": "Đánh trúng tâm ổn định và muốn mặt vợt phản hồi chắc hơn: có thể thử tăng dần 1 lbs nếu còn trong giới hạn hãng và phù hợp thể lực.",
+        "source_ids": [
+          "guide_badminton_fyi",
+          "guide_intobadminton",
+          "research_tension_skill"
+        ]
+      },
+      {
+        "id": "pain_or_new",
+        "advice_vi": "Đau cổ tay, đau khuỷu hoặc mới chơi: không nên tăng mức căng để tìm thêm lực; hãy xem lại kỹ thuật, thiết bị và hỏi người có chuyên môn.",
+        "source_ids": [
+          "guide_badminton_fyi",
+          "guide_intobadminton",
+          "research_tension_skill"
+        ]
+      },
+      {
+        "id": "no_style_rule",
+        "advice_vi": "Không có quy luật cố định kiểu đánh đôi phải căng mức này hay vợt nặng đầu phải căng mức kia; lối chơi chỉ là một yếu tố.",
+        "source_ids": [
+          "guide_badminton_fyi",
+          "guide_intobadminton",
+          "research_tension_skill"
+        ]
+      }
+    ]
+  },
+  "assistant_rules": [
+    "Chỉ giới thiệu sản phẩm/cước có trong danh mục và tồn kho hiện tại của HAVIE; knowledge base không chứng minh cửa hàng có hàng.",
+    "Mọi số giá, sản phẩm và mức căng tối đa phải truy vấn database hoặc thông số chính hãng theo từng model; không bịa.",
+    "Hỏi người chơi về ngân sách, trình độ, đánh đơn/đôi, lối chơi, mức căng hiện tại khi cần; không hỏi lặp thông tin đã có.",
+    "Nếu khách nói chưa về việc ngân sách đã bao gồm cước: cập nhật budgetIncludesStringing=false, không hỏi lại.",
+    "Không khẳng định duy nhất một loại vợt phù hợp cho tất cả người chơi.",
+    "Khuyến nghị căng chỉ là tham khảo; giới hạn khung và thợ căng chuyên môn luôn ưu tiên.",
+    "Chỉ cước Yonex trong dữ liệu; không suy hãng khác.",
+    "Phân biệt main string (dọc) / cross string (ngang), mm / lbs, lực căng vợt tối đa / lực căng gợi ý cho người chơi.",
+    "Không trộn lời hãng với ý kiến cộng đồng; thể hiện mức độ chắc chắn.",
+    "Không tự khẳng định dây cước nào giúp tránh hoàn toàn chấn thương.",
+    "Loại cước không quyết định trần căng của vợt; không suy giới hạn từ gauge, phân loại U, tên dòng hay model tương tự.",
+    "Giới hạn căng của hãng phải đúng model và đúng biến thể (3U khác 4U); thiếu thì không chốt mức căng cho vợt đó.",
+    "'11 ký' khi nói về căng vợt là 11 kgf (khoảng 24.25 lbs); số không kèm đơn vị thì hỏi lại lbs hay kg.",
+    "Khung căng theo trình độ là gợi ý giáo dục, không phải mức Yonex khuyến nghị; khoảng này không giao với khoảng hãng thì không đề xuất."
+  ],
+  "sources": [
+    {
+      "id": "yonex_catalog",
+      "url": "https://www.yonex.com/media/wysiwyg/Catalog/Yonex_Badminton_2026.pdf",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_selector",
+      "url": "https://www.yonex.com/media/wysiwyg/download/badminton-racquet-selector.pdf",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_nanoflare",
+      "url": "https://nanoflare.yonex.com/",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_arcsaber",
+      "url": "https://www.yonex.com/arcsaber",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_astrox",
+      "url": "https://www.yonex.com/news/badminton/astrox-99-pure-power/",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_bg65",
+      "url": "https://www.yonex.com/bg65",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_bg80",
+      "url": "https://www.yonex.com/bg80",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_bg80power",
+      "url": "https://www.yonex.com/bg80p",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_exbolt63",
+      "url": "https://www.yonex.com/news/badminton/exbolt-63-the-first-addition-to-the-new-string-series/",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_exbolt65",
+      "url": "https://www.yonex.com/news/exbolt-65-repulsion-control-and-durability/",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_exbolt68",
+      "url": "https://www.yonex.com/news/exbolt-68-hard-hitting-smashes/",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_aerobite",
+      "url": "https://www.yonex.com/bgab",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_skyarc",
+      "url": "https://www.yonex.com/bgsky",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_nanogy95",
+      "url": "https://us.yonex.com/products/nanogy-95-set",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "community_beginner",
+      "url": "https://www.reddit.com/r/badminton/comments/13mb45k",
+      "source_kind": "community"
+    },
+    {
+      "id": "community_tension",
+      "url": "https://www.reddit.com/r/badminton/comments/1m21e31/i_am_confused_on_what_tension_i_should_get_on_my/",
+      "source_kind": "community"
+    },
+    {
+      "id": "coach_guide",
+      "url": "https://100pourcentbad.fr/en/pages/choisir-son-cordage-de-badminton",
+      "source_kind": "retailer_guide"
+    },
+    {
+      "id": "yonex_nf1000z",
+      "url": "https://www.yonex.com/nf-1000z",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_catalog_2024",
+      "url": "https://www.yonex.com/media/wysiwyg/2024-Yonex-Badminton-Catalog.pdf",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_catalog_2026_jp",
+      "url": "https://www.yonex.co.jp/assets/pdf/catalog/badminton/2026_badminton_catalog_rev.pdf?v=20260515",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "guide_badminton_fyi",
+      "url": "https://badminton.fyi/guides/badminton-racket-string-tension-guide",
+      "source_kind": "guidance"
+    },
+    {
+      "id": "guide_intobadminton",
+      "url": "https://intobadminton.com/guides/string-tension/",
+      "source_kind": "guidance"
+    },
+    {
+      "id": "research_tension_skill",
+      "url": "https://www.worldbadminton.com/reference/research/documents/Perceiving_the_affordance_of_string_tens.pdf",
+      "source_kind": "research"
+    },
+    {
+      "id": "yonex_exbolt63_product",
+      "url": "https://www.yonex.com/badminton/bgxb63",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_product_safety",
+      "url": "https://www.yonex.com/product-safety",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_shoe_fit_65z",
+      "url": "https://www.yonex.com/news/find-your-winning-fit-the-new-power-cushion-65-z-in-4-distinct-fits/",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_shoe_stability",
+      "url": "https://www.yonex.com/news/new-power-cushion-eclipsion-reliability-built-on-stability/",
+      "source_kind": "manufacturer"
+    },
+    {
+      "id": "yonex_nanogy98_us",
+      "url": "https://us.yonex.com/products/nanogy-98-set",
+      "source_kind": "manufacturer"
+    }
+  ],
+  "updated_on": "2026-11-14",
+  "consultation_topics": [
+    {
+      "id": "balance_point",
+      "category": "rackets",
+      "triggers_vi": [
+        "điểm cân bằng",
+        "balance point",
+        "bp",
+        "285 mm",
+        "295 mm",
+        "285mm",
+        "295mm"
+      ],
+      "answer_vi": "BP là vị trí cây vợt giữ thăng bằng khi đo từ cuối cán. Chỉ số này khác với khối lượng U; dây và quấn cán có thể làm thay đổi kết quả đo. Các mốc 285/295 mm bạn thường thấy không được dùng làm chuẩn hãng cho mọi model: cần xem phân loại và điều kiện đo của đúng cây vợt, nhất là ở ranh giới 295 mm.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_catalog",
+        "yonex_product_safety"
+      ]
+    },
+    {
+      "id": "beginner_balance",
+      "category": "rackets",
+      "triggers_vi": [
+        "cổ tay yếu",
+        "lực tay yếu",
+        "người mới nên chọn",
+        "mới chơi nên chọn"
+      ],
+      "answer_vi": "Người mới hoặc tốc độ vung chưa cao có thể bắt đầu thử vợt thân dẻo hoặc trung bình, trọng lượng vừa tay, cân bằng hoặc nhẹ đầu nếu hợp nhịp đánh. Không tự loại mọi vợt nặng đầu và không suy rằng vợt nhẹ đầu luôn đập yếu; cần xét kỹ thuật, tốc độ vung và khả năng xoay trở.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_catalog",
+        "yonex_product_safety"
+      ]
+    },
+    {
+      "id": "gauge_tradeoffs",
+      "category": "strings",
+      "triggers_vi": [
+        "dây mỏng",
+        "dây dày",
+        "cước mỏng",
+        "cước dày",
+        "gauge",
+        "độ dày dây",
+        "độ dày cước"
+      ],
+      "answer_vi": "Gauge là đường kính dây tính bằng mm, khác với lực căng. Dây mảnh thường hướng tới phản lực nhanh và cảm giác tiếp xúc rõ, nhưng độ bền còn phụ thuộc vật liệu, vị trí chạm cầu, mức căng và thi công. Dây dày thường được cân nhắc khi ưu tiên độ bền; không thể kết luận chỉ từ đường kính rằng dây ít giãn, giữ căng lâu hơn hay đập mạnh hơn.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_exbolt68",
+        "yonex_catalog_2024"
+      ]
+    },
+    {
+      "id": "tension_retention",
+      "category": "strings",
+      "triggers_vi": [
+        "giữ căng",
+        "giữ mức căng",
+        "ít giãn",
+        "xuống cân",
+        "tụt cân",
+        "tension loss"
+      ],
+      "answer_vi": "Khả năng giữ căng không thể suy ra chỉ từ dây dày hay mỏng. Cần đối chiếu từng loại dây, mức căng, cách thi công và điều kiện sử dụng; không hứa dây không giãn hoặc giữ nguyên mức căng trong một thời gian cụ thể khi chưa có dữ liệu đo.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_catalog_2024"
+      ]
+    },
+    {
+      "id": "shoe_width",
+      "category": "shoes",
+      "triggers_vi": [
+        "chân bè",
+        "bàn chân rộng",
+        "chân rộng",
+        "wide",
+        "bóp ngang",
+        "chật ngang"
+      ],
+      "answer_vi": "Với bàn chân bè, ưu tiên kiểm tra phiên bản phom rộng (Wide) và thử độ ôm ở mũi, thân, gót. Không tự tăng size chỉ để bù bề ngang: giày có thể dài thừa hoặc lỏng gót. Chỉ gọi một model là phom rộng khi thông số của đúng phiên bản đã được xác minh.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_product_safety",
+        "yonex_shoe_fit_65z"
+      ]
+    },
+    {
+      "id": "shoe_size",
+      "category": "shoes",
+      "triggers_vi": [
+        "chọn size",
+        "đổi size",
+        "size eu",
+        "size us",
+        "size uk",
+        "size cm",
+        "đo chân",
+        "dài chân",
+        "chiều dài chân",
+        "42 eu",
+        "size 42"
+      ],
+      "answer_vi": "Chọn size theo bảng của đúng hãng, model và hệ EU/US/UK/CM; cùng một số size không đảm bảo vừa như nhau giữa các hãng hoặc phom. Đo chiều dài chân, xét bề ngang và thử với tất dùng khi chơi; gót cần ổn định, mũi không bị ép. Khi chưa có bảng hãng, mình không tự quy đổi size hoặc chốt độ vừa từ xa.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_product_safety",
+        "yonex_shoe_fit_65z"
+      ]
+    },
+    {
+      "id": "shoe_stability",
+      "category": "shoes",
+      "triggers_vi": [
+        "ổn định",
+        "chống lật",
+        "lật cổ chân",
+        "đổi hướng",
+        "di chuyển ngang",
+        "bám sân",
+        "độ bám"
+      ],
+      "answer_vi": "Khi thường xuyên đổi hướng, nên xem độ ôm gót, hỗ trợ chuyển động ngang và độ bám phù hợp mặt sân. Chỉ gán công nghệ ổn định hoặc cấu trúc đế cho sản phẩm khi catalog có thông số đúng model; không có đôi giày nào được hứa bảo vệ tuyệt đối khỏi lật cổ chân.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_shoe_stability",
+        "yonex_product_safety"
+      ]
+    },
+    {
+      "id": "shoe_cushion",
+      "category": "shoes",
+      "triggers_vi": [
+        "đệm",
+        "giảm chấn",
+        "êm",
+        "cushion",
+        "giày nhẹ"
+      ],
+      "answer_vi": "Đệm, độ nhẹ và độ ổn định là các yếu tố cần cân nhắc cùng độ vừa chân. Không chọn chỉ vì giày nhẹ nhất hoặc đệm dày nhất; công nghệ giảm chấn và trọng lượng phải được kiểm tra theo đúng model, phiên bản và cỡ đo. Giày không thay thế việc đánh giá chuyên môn khi bạn đang đau.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_shoe_fit_65z",
+        "yonex_shoe_stability"
+      ]
+    },
+    {
+      "id": "shoe_fit",
+      "category": "shoes",
+      "triggers_vi": [
+        "chọn giày",
+        "giày cầu lông khác",
+        "giày chạy bộ",
+        "giày tennis",
+        "giày nào phù hợp",
+        "giày cho người mới",
+        "mới chơi chọn giày"
+      ],
+      "answer_vi": "Với giày cầu lông, hãy ưu tiên phom vừa chân, hỗ trợ khi di chuyển ngang, độ bám mặt sân và cảm giác đệm khi tiếp đất. Không chọn chỉ theo màu, giá hay size giày thường ngày. Trước khi gợi ý mẫu cụ thể, cần ngân sách và size kèm hệ EU/US/UK/CM; phom của model vẫn nên được thử trực tiếp.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_product_safety",
+        "yonex_shoe_stability"
+      ]
+    },
+    {
+      "id": "racket_damage",
+      "category": "rackets",
+      "triggers_vi": [
+        "khung nứt",
+        "vợt nứt",
+        "gen vợt",
+        "gen mòn",
+        "khung sửa",
+        "vợt sửa"
+      ],
+      "answer_vi": "Nếu khung hoặc thân có vết nứt, biến dạng hay đã sửa, đừng chốt mức căng từ xa; cần thợ kiểm tra trực tiếp. Gen mòn cũng có thể làm hỏng dây và khiến dây dễ đứt. Giới hạn ghi trên model không phải lời đảm bảo cho một khung đã hư hỏng.",
+      "kind": "reference",
+      "source_ids": [
+        "yonex_product_safety"
+      ]
+    },
+    {
+      "id": "tension_myths",
+      "category": "strings",
+      "triggers_vi": [
+        "căng càng cao",
+        "càng cao càng mạnh",
+        "căng cao đập mạnh",
+        "tránh chấn thương",
+        "không chấn thương"
+      ],
+      "answer_vi": "Căng cao hơn không đồng nghĩa đập mạnh hơn hoặc kiểm soát tốt hơn với mọi người. Cảm giác còn phụ thuộc kỹ thuật, điểm tiếp xúc và khả năng vung; không có mức căng nào được hứa ngăn chấn thương. Mức căng cần nằm trong giới hạn hãng của đúng model và biến thể, đồng thời xét tình trạng khung.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_product_safety",
+        "yonex_catalog_2024"
+      ]
+    },
+    {
+      "id": "racket_power",
+      "category": "rackets",
+      "triggers_vi": [
+        "nhẹ đầu đập yếu",
+        "nhẹ đầu có đập",
+        "nặng đầu đập mạnh",
+        "nặng đầu là đập"
+      ],
+      "answer_vi": "Vợt nặng đầu thường cho cảm giác quán tính đầu vợt rõ hơn, còn vợt nhẹ đầu thường thuận xoay trở và phản tạt. Tuy nhiên nhẹ đầu không đồng nghĩa đập yếu, và nặng đầu không đảm bảo cú đập mạnh hơn: kỹ thuật, tốc độ vung, nhịp đánh và khả năng kiểm soát cây vợt đều ảnh hưởng.",
+      "kind": "advisor",
+      "source_ids": [
+        "yonex_catalog",
+        "yonex_product_safety"
+      ]
+    }
+  ]
+}

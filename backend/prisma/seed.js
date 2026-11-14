@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { cleanRacketName } from '../src/utils/productName.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const prisma = new PrismaClient();
@@ -77,7 +78,7 @@ async function main() {
       await prisma.product.update({
         where: { id: existing.id },
         data: {
-          name: item.name,
+          name: cleanRacketName(item.name, item.categorySlug),
           slug: item.slug,
           description: item.description,
           categoryId,
@@ -115,7 +116,7 @@ async function main() {
     } else {
       await prisma.product.create({
         data: {
-          name: item.name,
+          name: cleanRacketName(item.name, item.categorySlug),
           slug: item.slug,
           description: item.description,
           categoryId,

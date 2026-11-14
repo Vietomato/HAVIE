@@ -20,6 +20,15 @@ export const localizeVariantName = (name = '') => name.replace(/^Size\b/, 'Cỡ'
 
 export const getProductPath = (product) => '/products/' + (product?.slug || product?.id);
 
+export function getProductSpecifications(product, variant) {
+  const data = variant?.attributes?.manufacturerSpecs;
+  if (data?.sku === variant?.sku && data?.productSlug === product?.slug &&
+      Array.isArray(data.publicSpecs) && data.publicSpecs.every((item) => typeof item === 'string')) {
+    return data.publicSpecs;
+  }
+  return product?.specs ?? [];
+}
+
 // The cart API nests the product under its variant.
 export const getCartProduct = (item) => item.variant?.product || item.product || {};
 

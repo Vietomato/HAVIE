@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { cleanRacketName } from "../src/utils/productName.js";
 
 const folder = new URL(
   "../data/catalog-source/HAVIE_Catalog/",
@@ -30,7 +31,7 @@ function vietnameseName(product) {
     .replace(/\(UNSTRUNG\)/gi, "(Chưa căng dây)")
     .trim();
 
-  return `${prefix} ${brand} ${model}`;
+  return cleanRacketName(`${prefix} ${brand} ${model}`, product.categorySlug);
 }
 const output = [];
 

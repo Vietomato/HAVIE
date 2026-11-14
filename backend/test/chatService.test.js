@@ -113,7 +113,7 @@ test("a ceiling reply names the closest available price", async () => {
     budgetMaxVnd: 8000000,
   };
 
-  const result = await handleRacketMessage("Ngân sách 8 triệu", wanted, null, {
+  const result = await handleRacketMessage("Ngân sách 8 triệu", needs, null, {
     polish: keepDraft,
     extract: async () => wanted,
     search: async () => ({
@@ -124,7 +124,7 @@ test("a ceiling reply names the closest available price", async () => {
   });
 
   assert.equal(result.action, "review_candidates");
-  assert.match(result.reply, /hiện có giá 4\.450\.000/);
+  assert.match(result.reply, /Giá: 4\.450\.000/);
 });
 
 test("an off-topic request is answered before the next question", async () => {
@@ -135,7 +135,7 @@ test("an off-topic request is answered before the next question", async () => {
     { polish: keepDraft, extract: async () => createEmptyNeeds() },
   );
 
-  assert.match(result.reply, /^Mình không cấp được mã giảm giá/);
+  assert.match(result.reply, /^Em không cấp được mã giảm giá/);
   assert.match(result.reply, /vợt hay giày/);
 });
 
@@ -146,7 +146,7 @@ test("new needs are repeated back to the customer", async () => {
     extract: async () => next,
   });
 
-  assert.match(result.reply, /^Mình ghi nhận: vợt, tối đa 8\.000\.000/);
+  assert.match(result.reply, /^Em ghi nhận: vợt, tối đa 8\.000\.000/);
 });
 
 test("a beginner sees flexible rackets before stiff ones", async () => {
@@ -159,7 +159,8 @@ test("a beginner sees flexible rackets before stiff ones", async () => {
     advisorSpecs: { shaftFlex: "flexible" },
   };
 
-  const result = await handleRacketMessage("Mới chơi", beginner, null, {
+  // Hồ sơ vừa đổi (trình độ mới được nêu) thì mới đưa danh sách vợt.
+  const result = await handleRacketMessage("Mới chơi", { ...beginner, skillLevel: null }, null, {
     polish: keepDraft,
     extract: async () => beginner,
     search: async () => ({
@@ -187,7 +188,7 @@ test("the polished reply is returned with the draft kept for checks", async () =
   });
 
   assert.equal(result.reply, "Chào bạn! Bạn đang tìm vợt hay giày?");
-  assert.equal(result.draftReply, "Bạn muốn tìm vợt hay giày cầu lông?");
+  assert.equal(result.draftReply, "Anh/chị muốn tìm vợt hay giày cầu lông?");
   assert.equal(result.replySource, "natural");
 });
 
@@ -207,5 +208,5 @@ test("the off-topic answer survives a rewrite that drops it", async () => {
     },
   );
 
-  assert.match(result.reply, /^Mình không cấp được mã giảm giá.*Ok bạn, vợt tầm/);
+  assert.match(result.reply, /^Em không cấp được mã giảm giá.*Ok bạn, vợt tầm/);
 });

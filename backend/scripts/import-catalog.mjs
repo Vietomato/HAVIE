@@ -2,6 +2,7 @@ import "dotenv/config";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { PrismaClient } from "@prisma/client";
+import { cleanRacketName } from "../src/utils/productName.js";
 
 const prisma = new PrismaClient();
 
@@ -189,7 +190,7 @@ async function main() {
 
       await tx.product.create({
         data: {
-          name: item.name,
+          name: cleanRacketName(item.name, item.categorySlug),
           slug: item.slug,
           description: item.description ?? null,
           categoryId: category.id,

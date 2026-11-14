@@ -239,9 +239,9 @@ export default function Home() {
         <div>
           <span className="eyebrow">TRIẾT LÝ HAVIE</span>
           <h2>
-            DỤNG CỤ TỐT.
+            MỖI PHA CẦU,
             <br />
-            TRẬN ĐẤU HAY.
+            MỘT LẦN BỨT PHÁ.
           </h2>
           <p>
             Mỗi chuyển động đều quan trọng. Trang bị phù hợp giúp bạn tự tin thể hiện lối chơi của

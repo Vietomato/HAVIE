@@ -180,7 +180,12 @@ export default function AccountOrders() {
                       <span>
                         Tổng cộng <strong>{money(order.totalAmount)}</strong>
                       </span>
-                      {['PENDING_CONFIRMATION', 'CONFIRMED'].includes(order.status) && (
+                      {order.status === 'PENDING_PAYMENT' && order.paymentMethod === 'PAYOS' && (
+                        <Link className="btn-mini" to={'/account/orders/' + order.id + '/pay'}>
+                          Thanh toán ngay
+                        </Link>
+                      )}
+                      {['PENDING_PAYMENT', 'PENDING_CONFIRMATION', 'CONFIRMED'].includes(order.status) && (
                         <button
                           type="button"
                           className="btn-mini btn-mini-danger"

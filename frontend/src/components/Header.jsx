@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, UserRound, ShoppingBag, Menu, X, ShieldCheck, ClipboardList, Heart } from 'lucide-react';
+import { Search, Menu, X, ShieldCheck } from 'lucide-react';
+import { OrdersIcon, FavoriteIcon, PlayerIcon, ShuttleBagIcon } from './SportIcons.jsx';
 import { useStore } from '../context/StoreContext.jsx';
 import { m } from './motion.jsx';
 import Logo from './Logo.jsx';
@@ -120,7 +121,7 @@ export default function Header() {
               aria-current={pathname === '/account/orders' ? 'page' : undefined}
               title="Lịch sử đơn hàng"
             >
-              <ClipboardList size={22} aria-hidden="true" />
+              <OrdersIcon size={22} aria-hidden="true" />
             </Link>
           )}
           <Link
@@ -129,7 +130,7 @@ export default function Header() {
             aria-label={'Sản phẩm yêu thích: ' + favorites.length}
             title="Sản phẩm yêu thích"
           >
-            <Heart size={22} aria-hidden="true" />
+            <FavoriteIcon size={22} aria-hidden="true" />
             {favorites.length > 0 && (
               <m.span
                 key={favorites.length}
@@ -148,7 +149,7 @@ export default function Header() {
             aria-label={account ? 'Tài khoản của bạn' : 'Đăng nhập'}
             title={account?.fullName || 'Đăng nhập'}
           >
-            <UserRound size={22} aria-hidden="true" />
+            <PlayerIcon size={22} aria-hidden="true" />
           </Link>
           <Link
             to="/cart"
@@ -156,7 +157,7 @@ export default function Header() {
             aria-label={'Giỏ hàng có ' + count + ' sản phẩm'}
             title="Giỏ hàng"
           >
-            <ShoppingBag size={22} aria-hidden="true" />
+            <ShuttleBagIcon size={22} aria-hidden="true" />
             {count > 0 && (
               <m.span
                 key={count}

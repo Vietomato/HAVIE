@@ -1,7 +1,7 @@
 import { Router } from "express";
 import prisma from "../config/prisma.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
-import { handleRacketMessage } from "../services/chatService.js";
+import { handleRacketMessage, sanitizeChatData } from "../services/chatService.js";
 import { createEmptyNeeds } from "../services/needsExtractor.js";
 import { asyncHandler, HttpError } from "../utils/http.js";
 
@@ -9,6 +9,11 @@ const router = Router();
 const processingLeaseMs = 6 * 60 * 1000;
 
 router.use(authMiddleware);
+router.use((req, res, next) => {
+  const sendJson = res.json.bind(res);
+  res.json = (body) => sendJson(sanitizeChatData(body));
+  next();
+});
 
 function getConversationTitle(message) {
   const title = message.trim().replace(/\s+/g, " ");
@@ -208,7 +213,7 @@ router.post(
       throw new HttpError(
         409,
         "CONVERSATION_BUSY",
-        "Cuộc trò chuyện này vẫn đang xử lý. Bạn có thể mở cuộc trò chuyện mới.",
+        "Cuộc trò chuyện này vẫn đang xử lý. Anh/chị có thể mở cuộc trò chuyện mới.",
       );
     }
 

@@ -42,7 +42,7 @@ test("the reply repeats what the customer just said", () => {
 
   assert.match(
     describeNeedsChange(createEmptyNeeds(), next),
-    /^Mình ghi nhận: vợt, hãng Yonex, tầm 4\.500\.000\s₫\.$/u,
+    /^Em ghi nhận: vợt, hãng Yonex, tầm 4\.500\.000\s₫\.$/u,
   );
 });
 
