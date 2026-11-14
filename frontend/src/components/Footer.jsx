@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Logo from './Logo.jsx';
 
 export default function Footer() {
   return (
     <footer className="footer" id="about">
       <div className="container footer-grid">
         <section aria-label="Giới thiệu HAVIE">
-          <Link className="footer-logo" to="/">
-            HAVIE
+          <Link className="footer-logo" to="/" aria-label="Trang chủ HAVIE">
+            <Logo onDark />
           </Link>
           <p>Vượt mọi giới hạn.</p>
           <p>Dành trọn đam mê cho cầu lông.</p>

@@ -26,6 +26,9 @@
   .auth-brand span {
     color: var(--primary);
   }
+  .auth-brand .logo {
+    height: 60px;
+  }
   .auth-art .eyebrow {
     color: var(--highlight);
   }

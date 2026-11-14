@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, UserRound, ShoppingBag, Menu, X, ShieldCheck, ClipboardList, Heart } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
 import { m } from './motion.jsx';
+import Logo from './Logo.jsx';
 
 export default function Header() {
   const { count, account, favorites } = useStore();
@@ -71,8 +72,7 @@ export default function Header() {
     <header className="site-header">
       <div className="container header-inner">
         <Link to="/" className="brand" aria-label="Trang chủ HAVIE">
-          HAVIE
-          <small>CỬA HÀNG CẦU LÔNG</small>
+          <Logo />
         </Link>
         <nav
           id="main-nav"

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Xem thử logo HAVIE</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px; font-family: "Segoe UI", Arial, sans-serif; background: #eef2f7; color: #101827; }
+  h1 { margin: 0 0 4px; font-size: 26px; }
+  p.lead { margin: 0 0 28px; color: #566377; }
+  h2 { margin: 36px 0 12px; font-size: 18px; }
+  h2 small { font-weight: 400; color: #566377; margin-left: 8px; }
+  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+  .card { border-radius: 12px; padding: 28px; display: flex; align-items: center; justify-content: center; min-height: 170px; border: 1px solid #e2e8f0; }
+  .card.white { background: #fff; }
+  .card.soft { background: #f8fafc; }
+  .card.dark { background: #101827; --logo-ink: #fff; --logo-tag: #7db8ff; }
+  .card.red { background: #dc0a2d; --logo-ink: #fff; --logo-tag: #fff; }
+  .card svg { width: 100%; max-width: 360px; height: auto; }
+  .header-sim { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; height: 68px; display: flex; align-items: center; padding: 0 24px; gap: 28px; }
+  .header-sim svg { height: 48px; width: auto; }
+  .header-sim nav { display: flex; gap: 22px; font-size: 15px; font-weight: 500; }
+  .icons { display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap; }
+  .icons figure { margin: 0; text-align: center; font-size: 12px; color: #566377; }
+  .icons img { display: block; margin: 0 auto 6px; border-radius: 6px; }
+  .note { margin-top: 36px; padding: 16px 20px; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; color: #566377; font-size: 14px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<h1>Logo HAVIE Badminton</h1>
+<p class="lead">Ba phương án. Chữ được vẽ bằng đường nét (không phụ thuộc font), nghiêng 12° để tạo cảm giác tốc độ.</p>
+
+<h2>A &mdash; Wordmark tốc độ <small>chữ "I" là quả cầu lông, đỏ #DC0A2D, mực #101827</small></h2>
+<div class="row">
+  <div class="card white" data-src="havie-logo-a.svg"></div>
+  <div class="card dark" data-src="havie-logo-a.svg"></div>
+</div>
+<div class="header-sim" style="margin-top:16px" data-header="havie-logo-a.svg"><nav><span>Trang chủ</span><span>Cửa hàng</span><span>Bộ sưu tập</span><span>Về chúng tôi</span></nav></div>
+
+<h2>B &mdash; Huy hiệu + chữ <small>ô đỏ chứa chữ H, giống miếng patch áo thi đấu</small></h2>
+<div class="row">
+  <div class="card white" data-src="havie-logo-b.svg"></div>
+  <div class="card dark" data-src="havie-logo-b.svg"></div>
+</div>
+<div class="header-sim" style="margin-top:16px" data-header="havie-logo-b.svg"><nav><span>Trang chủ</span><span>Cửa hàng</span><span>Bộ sưu tập</span><span>Về chúng tôi</span></nav></div>
+
+<h2>C &mdash; Biểu tượng vuông <small>dùng làm favicon, avatar, icon ứng dụng</small></h2>
+<div class="icons">
+  <figure><img src="havie-icon.svg" width="120" height="120" alt="" />120px</figure>
+  <figure><img src="havie-icon.svg" width="64" height="64" alt="" />64px</figure>
+  <figure><img src="havie-icon.svg" width="32" height="32" alt="" />32px</figure>
+  <figure><img src="havie-icon.svg" width="16" height="16" alt="" />16px (tab trình duyệt)</figure>
+</div>
+
+<div class="note">
+  Phương án A và B dùng được trên nền sáng lẫn nền tối (footer của web là nền tối). Phương án C là phần icon đi kèm.
+  Chữ "BADMINTON" ở dưới là chữ hệ thống; khi chốt logo, nên vẽ lại thành đường nét để giống nhau trên mọi máy.
+</div>
+
+<script>
+  const cache = {};
+  const load = (name) => (cache[name] ||= fetch(name).then((r) => r.text()));
+  document.querySelectorAll('[data-src]').forEach(async (el) => { el.innerHTML = await load(el.dataset.src); });
+  document.querySelectorAll('[data-header]').forEach(async (el) => { el.insertAdjacentHTML('afterbegin', await load(el.dataset.header)); });
+</script>
+</body>
+</html>

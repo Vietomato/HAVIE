@@ -7,6 +7,7 @@ import { useStore } from '../context/StoreContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import TextField from '../components/TextField.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
+import Logo from '../components/Logo.jsx';
 
 // Only same-site paths are accepted, so a crafted link cannot redirect off the store.
 const getSafeReturnPath = (value) =>
@@ -184,8 +185,8 @@ export default function Auth() {
   return (
     <div className="auth-layout">
       <aside className="auth-art">
-        <span className="auth-brand" aria-hidden="true">
-          HAVIE
+        <span className="auth-brand">
+          <Logo onDark />
         </span>
         <div>
           <span className="eyebrow">CHÀO MỪNG BẠN ĐẾN VỚI HAVIE</span>
