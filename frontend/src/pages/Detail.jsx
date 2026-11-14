@@ -9,6 +9,7 @@ import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import { BlockSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
+import { RevealItem } from '../components/motion.jsx';
 import {
   FALLBACK_PRODUCT_IMAGE,
   getDefaultVariant,
@@ -427,8 +428,10 @@ export default function Detail() {
             CÓ THỂ BẠN CŨNG THÍCH<span className="dot">.</span>
           </h2>
           <div className="products-grid">
-            {related.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {related.map((p, index) => (
+              <RevealItem key={p.id} index={index}>
+                <ProductCard product={p} />
+              </RevealItem>
             ))}
           </div>
         </section>

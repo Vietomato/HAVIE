@@ -9,6 +9,7 @@ import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import { ProductGridSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
+import { RevealItem } from '../components/motion.jsx';
 
 export default function Favorites() {
   usePageTitle('Sản phẩm yêu thích');
@@ -50,8 +51,10 @@ export default function Favorites() {
         <ProductGridSkeleton count={Math.min(favorites.length, 4)} />
       ) : visible.length ? (
         <div className="products-grid">
-          {visible.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {visible.map((product, index) => (
+            <RevealItem key={product.id} index={index}>
+              <ProductCard product={product} />
+            </RevealItem>
           ))}
         </div>
       ) : (

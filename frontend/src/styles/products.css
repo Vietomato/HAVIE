@@ -190,3 +190,15 @@
     transform: scale(0.94);
   }
 }
+
+@layer components {
+  /* Entrance wrapper around cards in a grid: stretches the card to the cell like a direct grid child. */
+  .reveal-cell {
+    display: flex;
+    min-width: 0;
+  }
+  .reveal-cell > * {
+    flex: 1;
+    min-width: 0;
+  }
+}

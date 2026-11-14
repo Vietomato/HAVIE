@@ -15,6 +15,7 @@ import { useProducts } from '../api/queries.js';
 import ProductCard from '../components/ProductCard.jsx';
 import { ProductGridSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
+import { Reveal, RevealItem } from '../components/motion.jsx';
 
 const HOME_BANNERS = [
   { src: '/images/banner1.png', alt: 'Vợt, giày và phụ kiện cầu lông: xem bộ sưu tập' },
@@ -136,7 +137,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="home-intro">
+      <Reveal as="section" className="home-intro" y={20}>
         <div className="container">
           <div>
             <span className="eyebrow">HAVIE — CỬA HÀNG CẦU LÔNG</span>
@@ -148,7 +149,7 @@ export default function Home() {
             MUA SẮM NGAY <ArrowRight size={18} aria-hidden="true" />
           </Link>
         </div>
-      </section>
+      </Reveal>
 
       <section className="section container">
         <div className="section-heading">
@@ -163,8 +164,9 @@ export default function Home() {
           </Link>
         </div>
         <div className="category-grid">
-          {CATEGORIES.map((c) => (
-            <Link className="category-card" key={c.slug} to={'/products?category=' + c.slug}>
+          {CATEGORIES.map((c, index) => (
+            <RevealItem key={c.slug} index={index}>
+            <Link className="category-card" to={'/products?category=' + c.slug}>
               <div className="category-image">
                 <img src={'/images/product-' + c.img + '.svg'} alt="" loading="lazy" />
               </div>
@@ -173,6 +175,7 @@ export default function Home() {
                 <ArrowRight size={20} aria-hidden="true" />
               </div>
             </Link>
+            </RevealItem>
           ))}
         </div>
       </section>
@@ -198,8 +201,10 @@ export default function Home() {
             </p>
           ) : featured.length ? (
             <div className="products-grid">
-              {featured.map((p) => (
-                <ProductCard key={p.id} product={p} />
+              {featured.map((p, index) => (
+                <RevealItem key={p.id} index={index}>
+                  <ProductCard product={p} />
+                </RevealItem>
               ))}
             </div>
           ) : (
@@ -208,7 +213,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="campaign container">
+      <Reveal as="section" className="campaign container">
         <div>
           <span className="eyebrow">TRIẾT LÝ HAVIE</span>
           <h2>
@@ -227,9 +232,9 @@ export default function Home() {
         <div className="campaign-mark" aria-hidden="true">
           H<span>.</span>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="perks container" aria-label="Cam kết của HAVIE">
+      <Reveal as="section" className="perks container" aria-label="Cam kết của HAVIE">
         {PERKS.map(({ icon: Icon, title, text }) => (
           <div key={title}>
             <Icon size={26} aria-hidden="true" />
@@ -237,7 +242,7 @@ export default function Home() {
             <span>{text}</span>
           </div>
         ))}
-      </section>
+      </Reveal>
     </>
   );
 }

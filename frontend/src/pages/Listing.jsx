@@ -7,6 +7,7 @@ import ProductCard from '../components/ProductCard.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import { ProductGridSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
+import { RevealItem } from '../components/motion.jsx';
 
 const PAGE_SIZE = 12;
 
@@ -261,8 +262,10 @@ export default function Listing() {
           ) : productsList.length ? (
             <>
               <div className="products-grid catalog-grid">
-                {productsList.map((p) => (
-                  <ProductCard key={p.id} product={p} />
+                {productsList.map((p, index) => (
+                  <RevealItem key={p.id} index={index}>
+                    <ProductCard product={p} />
+                  </RevealItem>
                 ))}
               </div>
               {meta.totalPages > 1 && (

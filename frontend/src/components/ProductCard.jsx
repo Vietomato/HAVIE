@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Star, Heart, ChevronRight, LoaderCircle } from 'lucide-react';
 import { money } from '../data';
+import { m } from './motion.jsx';
 import { useStore } from '../context/StoreContext.jsx';
 import {
   FALLBACK_PRODUCT_IMAGE,
@@ -62,15 +63,23 @@ export default function ProductCard({ product }) {
             </span>
           )}
         </div>
-        <button
+        <m.button
           type="button"
           className={'favorite ' + (isFavorite ? 'selected' : '')}
           aria-label={'Yêu thích ' + product.name}
           aria-pressed={isFavorite}
           onClick={() => toggleFavorite(product.id)}
         >
-          <Heart size={19} fill={isFavorite ? 'currentColor' : 'none'} aria-hidden="true" />
-        </button>
+          <m.span
+            key={String(isFavorite)}
+            style={{ display: 'inline-flex' }}
+            initial={{ scale: isFavorite ? 0.4 : 1 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 14 }}
+          >
+            <Heart size={19} fill={isFavorite ? 'currentColor' : 'none'} aria-hidden="true" />
+          </m.span>
+        </m.button>
       </div>
       <div className="product-meta">
         <span>{product.category?.name || 'Cầu lông'}</span>

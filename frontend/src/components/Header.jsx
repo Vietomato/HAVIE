@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, UserRound, ShoppingBag, Menu, X, ShieldCheck, ClipboardList, Heart } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
+import { m } from './motion.jsx';
 
 export default function Header() {
   const { count, account, favorites } = useStore();
@@ -129,7 +130,17 @@ export default function Header() {
             title="Sản phẩm yêu thích"
           >
             <Heart size={22} aria-hidden="true" />
-            {favorites.length > 0 && <span aria-hidden="true">{favorites.length}</span>}
+            {favorites.length > 0 && (
+              <m.span
+                key={favorites.length}
+                aria-hidden="true"
+                initial={{ scale: 0.4 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 12 }}
+              >
+                {favorites.length}
+              </m.span>
+            )}
           </Link>
           <Link
             to="/auth"
@@ -146,7 +157,17 @@ export default function Header() {
             title="Giỏ hàng"
           >
             <ShoppingBag size={22} aria-hidden="true" />
-            {count > 0 && <span aria-hidden="true">{count}</span>}
+            {count > 0 && (
+              <m.span
+                key={count}
+                aria-hidden="true"
+                initial={{ scale: 0.4 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 12 }}
+              >
+                {count}
+              </m.span>
+            )}
           </Link>
           <button
             type="button"
