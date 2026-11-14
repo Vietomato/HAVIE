@@ -18,10 +18,12 @@ export default function Footer() {
           <Link to="/products">Tất cả sản phẩm</Link>
           <Link to="/products?category=rackets">Vợt cầu lông</Link>
           <Link to="/products?category=shoes">Giày cầu lông</Link>
+          <Link to="/about">Về chúng tôi</Link>
         </section>
         <section>
           <h2>HỖ TRỢ</h2>
-          <a href="mailto:hello@havie.example">Liên hệ</a>
+          <a href="tel:0329596879">Hotline: 0329 596 879</a>
+          <a href="mailto:hoangvietdinh0506@gmail.com">Email liên hệ</a>
           <Link to="/cart">Giỏ hàng</Link>
           <Link to="/favorites">Sản phẩm yêu thích</Link>
           <Link to="/auth">Tài khoản của tôi</Link>
@@ -29,6 +31,8 @@ export default function Footer() {
         <section>
           <h2>CÙNG ĐAM MÊ CẦU LÔNG</h2>
           <p>Thiết kế cho sân đấu, phù hợp mỗi ngày.</p>
+          <p>66 Đường D1, Phường Tăng Nhơn Phú, TP Thủ Đức</p>
+          <p>Mở cửa 8:00 – 21:00 hằng ngày</p>
         </section>
       </div>
       <div className="container footer-bottom">

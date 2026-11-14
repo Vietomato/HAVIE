@@ -30,14 +30,14 @@ export default function Header() {
     pathname === '/products' && new URLSearchParams(search).get('category') === 'rackets';
   const activeItem =
     pathname === '/'
-      ? hash === '#about'
+      ? 'home'
+      : pathname === '/about'
         ? 'about'
-        : 'home'
-      : pathname === '/products' || pathname.startsWith('/products/')
-        ? isCollection
-          ? 'collection'
-          : 'store'
-        : null;
+        : pathname === '/products' || pathname.startsWith('/products/')
+          ? isCollection
+            ? 'collection'
+            : 'store'
+          : null;
   const navProps = (item) => ({
     className: activeItem === item ? 'active' : undefined,
     'aria-current': activeItem === item ? 'page' : undefined,
@@ -91,7 +91,7 @@ export default function Header() {
           <Link to="/products?category=rackets" {...navProps('collection')}>
             Vợt cầu lông
           </Link>
-          <Link to="/#about" {...navProps('about')}>
+          <Link to="/about" {...navProps('about')}>
             Về chúng tôi
           </Link>
           {account?.role === 'CUSTOMER' && (
