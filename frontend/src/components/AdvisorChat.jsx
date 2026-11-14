@@ -13,6 +13,14 @@ const greeting = {
     'Dạ, em là BOTMINTON, trợ lý tư vấn cầu lông của HAVIE ạ!\n\nAnh/chị đang tìm vợt hay giày cầu lông? Anh/chị cho em biết hãng mong muốn, ngân sách và nhu cầu sử dụng nhé.',
 };
 
+const SAMPLE_PROMPTS = [
+  'Tư vấn vợt cho người mới chơi, ngân sách khoảng 1 triệu',
+  'Mình chơi đôi nam, thiên về tấn công, nên chọn vợt nào?',
+  'Nên căng cước bao nhiêu kg cho người mới?',
+  'Gợi ý giày cầu lông dưới 1 triệu',
+  'Vợt Yonex và Victor khác nhau thế nào?',
+];
+
 const money = new Intl.NumberFormat('vi-VN', {
   style: 'currency',
   currency: 'VND',
@@ -228,9 +236,9 @@ export default function AdvisorChat() {
     }
   }
 
-  async function sendMessage(event) {
-    event.preventDefault();
-    const text = input.trim();
+  async function sendMessage(event, presetText) {
+    event?.preventDefault?.();
+    const text = (typeof presetText === 'string' ? presetText : input).trim();
     if (!account || !text || currentIsPending || loadingHistory) return;
 
     let conversationId = activeConversationId;
@@ -595,6 +603,22 @@ export default function AdvisorChat() {
               </div>
 
               {error && <div className="havie-advisor__error" role="alert">{error}</div>}
+
+              {messages.length <= 1 && !currentIsPending && !loadingHistory && (
+                <div className="havie-advisor__samples" aria-label="Câu hỏi mẫu">
+                  <span className="havie-advisor__samples-title">Câu hỏi mẫu</span>
+                  {SAMPLE_PROMPTS.map((prompt) => (
+                    <button
+                      key={prompt}
+                      type="button"
+                      className="havie-advisor__sample"
+                      onClick={() => sendMessage(null, prompt)}
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+              )}
 
               <form className="havie-advisor__form" onSubmit={sendMessage}>
                 <label className="havie-advisor__sr-only" htmlFor="havie-advisor-input">
