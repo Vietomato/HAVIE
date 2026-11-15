@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -21,9 +21,16 @@ import { useStore } from '../context/StoreContext.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import QrPayment from '../components/QrPayment.jsx';
 import { BlockSkeleton } from '../components/Skeleton.jsx';
+import SearchSelect from '../components/SearchSelect.jsx';
 import TextField from '../components/TextField.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
 import { FALLBACK_PRODUCT_IMAGE, getCartProduct, localizeVariantName } from '../utils/product.js';
+import {
+  districtNames,
+  loadAdministrativeUnits,
+  provinceNames,
+  wardNames,
+} from '../utils/vnAddress.js';
 
 const STEPS = ['Giỏ hàng', 'Giao hàng', 'Hoàn tất'];
 const PHONE_PATTERN = /^(0|\+84)\d{9}$/;
@@ -33,15 +40,19 @@ const EMPTY_ADDRESS = { name: '', phone: '', province: '', district: '', ward: '
 const REQUIRED_MESSAGES = {
   name: 'Vui lòng nhập họ tên người nhận.',
   phone: 'Vui lòng nhập số điện thoại.',
-  province: 'Vui lòng nhập tỉnh/thành phố.',
-  district: 'Vui lòng nhập quận/huyện.',
-  ward: 'Vui lòng nhập phường/xã.',
+  province: 'Vui lòng chọn tỉnh/thành phố.',
+  district: 'Vui lòng chọn quận/huyện.',
+  ward: 'Vui lòng chọn phường/xã.',
   street: 'Vui lòng nhập số nhà, tên đường.',
 };
 
-function validate(form) {
+// Chọn tỉnh thì xóa huyện và xã đã chọn; chọn huyện thì xóa xã, vì chúng không còn thuộc nhau.
+const DEPENDENT_FIELDS = { province: ['district', 'ward'], district: ['ward'] };
+
+function validate(form, { wardOptional = false } = {}) {
   const errors = {};
   Object.entries(REQUIRED_MESSAGES).forEach(([field, message]) => {
+    if (field === 'ward' && wardOptional) return;
     if (!form[field].trim()) errors[field] = message;
   });
   if (!errors.phone && !PHONE_PATTERN.test(form.phone.replace(/[\s.-]/g, ''))) {
@@ -140,6 +151,45 @@ export default function Checkout() {
     }
   }, [account]);
 
+  // Danh sách tỉnh/huyện/xã. Nếu tải lỗi thì quay về ô nhập tay như trước.
+  const [units, setUnits] = useState(null);
+  const [unitsFailed, setUnitsFailed] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadAdministrativeUnits()
+      .then((data) => !cancelled && setUnits(data))
+      .catch(() => !cancelled && setUnitsFailed(true));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const provinceOptions = useMemo(() => (units ? provinceNames(units) : []), [units]);
+  const districtOptions = useMemo(
+    () => (units ? districtNames(units, form.province) : []),
+    [units, form.province],
+  );
+  const wardOptions = useMemo(
+    () => (units ? wardNames(units, form.province, form.district) : []),
+    [units, form.province, form.district],
+  );
+  // Vài huyện đảo (Côn Đảo, Bạch Long Vĩ...) không có cấp phường/xã.
+  const wardOptional = Boolean(units && form.district && !wardOptions.length);
+
+  const setAddressPart = (field, value) => {
+    const cleared = Object.fromEntries((DEPENDENT_FIELDS[field] ?? []).map((key) => [key, '']));
+    setForm((current) => ({ ...current, ...cleared, [field]: value }));
+    setErrors((current) => ({ ...current, [field]: undefined }));
+  };
+
+  const addressSelectProps = (field) => ({
+    id: 'checkout-' + field,
+    value: form[field],
+    error: errors[field],
+    onChange: (value) => setAddressPart(field, value),
+  });
+
   const fieldProps = (field) => ({
     id: 'checkout-' + field,
     value: form[field],
@@ -154,7 +204,7 @@ export default function Checkout() {
     e.preventDefault();
     setSubmitError('');
 
-    const nextErrors = validate(form);
+    const nextErrors = validate(form, { wardOptional });
     setErrors(nextErrors);
     const firstInvalid = Object.keys(nextErrors)[0];
     if (firstInvalid) {
@@ -368,17 +418,51 @@ export default function Checkout() {
                 placeholder="0901234567"
                 {...fieldProps('phone')}
               />
-              <TextField
-                label="Tỉnh / Thành phố"
-                autoComplete="address-level1"
-                {...fieldProps('province')}
-              />
-              <TextField
-                label="Quận / Huyện"
-                autoComplete="address-level2"
-                {...fieldProps('district')}
-              />
-              <TextField label="Phường / Xã" autoComplete="address-level3" {...fieldProps('ward')} />
+              {unitsFailed ? (
+                <>
+                  <TextField
+                    label="Tỉnh / Thành phố"
+                    autoComplete="address-level1"
+                    {...fieldProps('province')}
+                  />
+                  <TextField
+                    label="Quận / Huyện"
+                    autoComplete="address-level2"
+                    {...fieldProps('district')}
+                  />
+                  <TextField label="Phường / Xã" autoComplete="address-level3" {...fieldProps('ward')} />
+                </>
+              ) : (
+                <>
+                  <SearchSelect
+                    label="Tỉnh / Thành phố"
+                    options={provinceOptions}
+                    disabled={!units}
+                    placeholder={units ? 'Gõ để tìm, ví dụ: Hà Nội' : 'Đang tải danh sách...'}
+                    {...addressSelectProps('province')}
+                  />
+                  <SearchSelect
+                    label="Quận / Huyện"
+                    options={districtOptions}
+                    disabled={!form.province}
+                    placeholder={form.province ? 'Gõ để tìm quận/huyện' : 'Chọn tỉnh/thành phố trước'}
+                    {...addressSelectProps('district')}
+                  />
+                  <SearchSelect
+                    label="Phường / Xã"
+                    options={wardOptions}
+                    disabled={!form.district || wardOptional}
+                    placeholder={
+                      wardOptional
+                        ? 'Khu vực này không có phường/xã'
+                        : form.district
+                          ? 'Gõ để tìm phường/xã'
+                          : 'Chọn quận/huyện trước'
+                    }
+                    {...addressSelectProps('ward')}
+                  />
+                </>
+              )}
               <TextField
                 label="Số nhà, tên đường"
                 autoComplete="street-address"
