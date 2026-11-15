@@ -249,4 +249,12 @@
     margin-left: 4px;
     font-size: 16px;
   }
+  .order-discount {
+    display: block;
+    color: var(--success);
+    font-size: 13px;
+  }
+  .voucher-code-input {
+    text-transform: uppercase;
+  }
 }

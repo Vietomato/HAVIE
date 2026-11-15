@@ -6,6 +6,7 @@ import {
   requireCustomer,
 } from "../middlewares/authMiddleware.js";
 import { asyncHandler, HttpError } from "../utils/http.js";
+import { claimVoucher, releaseVoucher } from "../services/voucherService.js";
 
 const router = Router();
 const SHIPPING_FEE = 30000;
@@ -33,7 +34,16 @@ router.post(
       shippingAddress,
       paymentMethod = "COD",
       customerNote,
+      voucherCode,
     } = req.body ?? {};
+
+    if (
+      voucherCode !== undefined &&
+      voucherCode !== null &&
+      typeof voucherCode !== "string"
+    ) {
+      throw new HttpError(400, "VALIDATION_ERROR", "Mã giảm giá không hợp lệ.");
+    }
 
     if (paymentMethod !== "COD") {
       throw new HttpError(
@@ -145,7 +155,11 @@ router.post(
         subtotal += variant.price * item.quantity;
       }
 
-      const totalAmount = subtotal + SHIPPING_FEE;
+      const applied = voucherCode?.trim()
+        ? await claimVoucher(tx, voucherCode, subtotal)
+        : null;
+      const discountAmount = applied?.discountAmount ?? 0;
+      const totalAmount = subtotal - discountAmount + SHIPPING_FEE;
 
       for (const item of cart.items) {
         const result = await tx.productVariant.updateMany({
@@ -186,7 +200,10 @@ router.post(
           paymentStatus: "PENDING",
           subtotal,
           shippingFee: SHIPPING_FEE,
+          discountAmount,
           totalAmount,
+          voucherId: applied?.voucher.id ?? null,
+          voucherCode: applied?.voucher.code ?? null,
           recipientName: recipient,
           recipientPhone: phone,
           shippingAddress: fullAddress,
@@ -294,6 +311,8 @@ router.post(
           "Đơn hàng đã được cập nhật; vui lòng tải lại.",
         );
       }
+
+      await releaseVoucher(tx, current);
 
       for (const item of current.items) {
         await tx.productVariant.update({

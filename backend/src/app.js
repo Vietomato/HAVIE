@@ -7,6 +7,7 @@ import orderRoutes from './routes/orderRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import { authMiddleware } from './middlewares/authMiddleware.js';
 import chatRoutes from './routes/chatRoutes.js';
+import voucherRoutes from './routes/voucherRoutes.js';
 import { UPLOADS_DIR } from './services/imageStorage.js';
 
 const app = express();
@@ -36,6 +37,7 @@ app.get('/api/me', authMiddleware, getCurrentUser);
 app.use('/api', catalogRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/vouchers', voucherRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.use((req, res) => {

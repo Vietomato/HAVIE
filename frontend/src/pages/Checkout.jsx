@@ -1,9 +1,9 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Check, CheckCircle2, LogIn, ShieldCheck, ShoppingBag, Truck } from 'lucide-react';
+import { ArrowRight, Check, CheckCircle2, LogIn, ShieldCheck, ShoppingBag, TicketPercent, Truck, X } from 'lucide-react';
 import { money, SHIPPING_FEE } from '../data';
-import { orderApi, ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from '../api';
+import { orderApi, ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS, voucherApi } from '../api';
 import { useStore } from '../context/StoreContext.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import { BlockSkeleton } from '../components/Skeleton.jsx';
@@ -62,8 +62,57 @@ export default function Checkout() {
   const [submitError, setSubmitError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [createdOrder, setCreatedOrder] = useState(null);
+  const [voucherInput, setVoucherInput] = useState('');
+  const [voucher, setVoucher] = useState(null);
+  const [voucherError, setVoucherError] = useState('');
+  const [applyingVoucher, setApplyingVoucher] = useState(false);
 
   const items = cart?.items || [];
+  const discount = voucher?.discountAmount || 0;
+  const total = subtotal - discount + SHIPPING_FEE;
+  const appliedCode = voucher?.code;
+
+  // The discount depends on the cart, so check the code again when it changes.
+  useEffect(() => {
+    if (!appliedCode || !subtotal || voucher?.subtotal === subtotal) return;
+    let cancelled = false;
+    voucherApi
+      .validate(appliedCode)
+      .then((result) => !cancelled && setVoucher(result))
+      .catch((err) => {
+        if (cancelled) return;
+        setVoucher(null);
+        setVoucherError(err.message || 'Mã giảm giá không còn áp dụng được.');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [appliedCode, subtotal, voucher?.subtotal]);
+
+  const applyVoucher = async (event) => {
+    event.preventDefault();
+    const code = voucherInput.trim();
+    if (!code) {
+      setVoucherError('Vui lòng nhập mã giảm giá.');
+      return;
+    }
+    try {
+      setApplyingVoucher(true);
+      setVoucherError('');
+      setVoucher(await voucherApi.validate(code));
+      setVoucherInput('');
+    } catch (err) {
+      setVoucher(null);
+      setVoucherError(err.message || 'Không áp dụng được mã giảm giá.');
+    } finally {
+      setApplyingVoucher(false);
+    }
+  };
+
+  const removeVoucher = () => {
+    setVoucher(null);
+    setVoucherError('');
+  };
 
   useEffect(() => {
     if (account) {
@@ -110,12 +159,17 @@ export default function Checkout() {
         },
         paymentMethod: 'COD',
         customerNote: note.trim(),
+        ...(appliedCode ? { voucherCode: appliedCode } : {}),
       });
 
       await refreshCart();
       setCreatedOrder(res);
       window.scrollTo({ top: 0, behavior: 'instant' });
     } catch (err) {
+      if (err.code?.startsWith('VOUCHER_')) {
+        setVoucher(null);
+        setVoucherError(err.message);
+      }
       setSubmitError(err.message || 'Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại.');
     } finally {
       setSubmitting(false);
@@ -155,6 +209,12 @@ export default function Checkout() {
                 </span>
               </dd>
             </div>
+            {createdOrder.discountAmount > 0 && (
+              <div>
+                <dt>Giảm giá ({createdOrder.voucherCode})</dt>
+                <dd>-{money(createdOrder.discountAmount)}</dd>
+              </div>
+            )}
             <div>
               <dt>Tổng thanh toán</dt>
               <dd>
@@ -322,17 +382,61 @@ export default function Checkout() {
               );
             })}
           </ul>
+          {voucher ? (
+            <div className="voucher-applied">
+              <TicketPercent size={18} aria-hidden="true" />
+              <span>
+                <strong>{voucher.code}</strong>
+                {voucher.description && <small>{voucher.description}</small>}
+              </span>
+              <button
+                type="button"
+                className="icon-button"
+                aria-label={'Bỏ mã ' + voucher.code}
+                onClick={removeVoucher}
+              >
+                <X size={16} aria-hidden="true" />
+              </button>
+            </div>
+          ) : (
+            <form className="voucher-form" onSubmit={applyVoucher} noValidate>
+              <TextField
+                id="checkout-voucher"
+                label="Mã giảm giá"
+                autoComplete="off"
+                autoCapitalize="characters"
+                spellCheck={false}
+                maxLength={30}
+                placeholder="Nhập mã"
+                value={voucherInput}
+                error={voucherError}
+                onChange={(event) => {
+                  setVoucherInput(event.target.value);
+                  if (voucherError) setVoucherError('');
+                }}
+              />
+              <button type="submit" className="btn btn-outline" disabled={applyingVoucher}>
+                {applyingVoucher ? 'ĐANG KIỂM TRA...' : 'ÁP DỤNG'}
+              </button>
+            </form>
+          )}
           <div>
             <span>Tạm tính</span>
             <strong>{money(subtotal)}</strong>
           </div>
+          {discount > 0 && (
+            <div className="summary-discount">
+              <span>Giảm giá</span>
+              <strong>-{money(discount)}</strong>
+            </div>
+          )}
           <div>
             <span>Phí vận chuyển</span>
             <span>{money(SHIPPING_FEE)}</span>
           </div>
           <div className="summary-total">
             <span>TỔNG CỘNG</span>
-            <strong>{money(subtotal + SHIPPING_FEE)}</strong>
+            <strong>{money(total)}</strong>
           </div>
           {submitError && (
             <p className="inline-alert" role="alert">

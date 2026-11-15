@@ -165,6 +165,16 @@ export const orderApi = {
   },
 };
 
+export const voucherApi = {
+  validate: async (code) => {
+    const res = await apiClient.request('/vouchers/validate', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+    });
+    return res.data;
+  },
+};
+
 export const reviewApi = {
   createReview: async (payload) => {
     const res = await apiClient.request('/reviews', {
@@ -246,6 +256,27 @@ export const adminApi = {
   updateProduct: async (productId, payload) => {
     const res = await apiClient.request(
       `/admin/products/${encodeURIComponent(productId)}`,
+      { method: 'PATCH', body: JSON.stringify(payload) },
+    );
+    return res.data;
+  },
+
+  getVouchers: async () => {
+    const res = await apiClient.request('/admin/vouchers');
+    return res.data;
+  },
+
+  createVoucher: async (payload) => {
+    const res = await apiClient.request('/admin/vouchers', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    return res.data;
+  },
+
+  updateVoucher: async (voucherId, payload) => {
+    const res = await apiClient.request(
+      `/admin/vouchers/${encodeURIComponent(voucherId)}`,
       { method: 'PATCH', body: JSON.stringify(payload) },
     );
     return res.data;

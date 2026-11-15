@@ -1,7 +1,16 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, ClipboardList, LogOut, Plus, RotateCw, Search, ShieldAlert } from 'lucide-react';
+import {
+  ClipboardList,
+  LogOut,
+  Package,
+  Plus,
+  RotateCw,
+  Search,
+  ShieldAlert,
+  TicketPercent,
+} from 'lucide-react';
 import { formatDate, money } from '../../data';
 import {
   adminApi,
@@ -17,6 +26,7 @@ import { useToast } from '../../context/ToastContext.jsx';
 import usePageTitle from '../../hooks/usePageTitle.js';
 import { localizeVariantName } from '../../utils/product';
 import ProductFormModal from './ProductFormModal.jsx';
+import VoucherFormModal from './VoucherFormModal.jsx';
 
 const ORDER_NEXT_STATUSES = {
   PENDING_CONFIRMATION: ['CONFIRMED', 'CANCELLED'],
@@ -29,7 +39,34 @@ const LOW_STOCK_LIMIT = 5;
 const TABS = [
   { key: 'orders', label: 'Đơn hàng', icon: ClipboardList },
   { key: 'products', label: 'Sản phẩm', icon: Package },
+  { key: 'vouchers', label: 'Mã giảm giá', icon: TicketPercent },
 ];
+
+const SEARCH_LABELS = {
+  orders: ['Tìm đơn hàng', 'Mã đơn, tên khách, số điện thoại'],
+  products: ['Tìm sản phẩm', 'Tên sản phẩm, slug, SKU'],
+  vouchers: ['Tìm mã giảm giá', 'Mã hoặc mô tả'],
+};
+
+const VOUCHER_ACTIVE = 'Đang áp dụng';
+
+function voucherState(voucher, now = new Date()) {
+  if (!voucher.isActive) return ['Đã tắt', 'CANCELLED'];
+  if (voucher.endsAt && new Date(voucher.endsAt) < now) return ['Hết hạn', 'CANCELLED'];
+  if (voucher.usageLimit !== null && voucher.usedCount >= voucher.usageLimit) {
+    return ['Hết lượt', 'CANCELLED'];
+  }
+  if (voucher.startsAt && new Date(voucher.startsAt) > now) {
+    return ['Chưa bắt đầu', 'PENDING_CONFIRMATION'];
+  }
+  return [VOUCHER_ACTIVE, 'COMPLETED'];
+}
+
+const describeDiscount = (voucher) =>
+  voucher.discountType === 'PERCENT'
+    ? `Giảm ${voucher.discountValue}%` +
+      (voucher.maxDiscount ? `, tối đa ${money(voucher.maxDiscount)}` : '')
+    : `Giảm ${money(voucher.discountValue)}`;
 
 const includesText = (value, term) => (value || '').toLowerCase().includes(term);
 
@@ -39,6 +76,9 @@ export default function Admin() {
   const [tab, setTab] = useState('orders');
   const [adminOrders, setAdminOrders] = useState([]);
   const [adminProducts, setAdminProducts] = useState([]);
+  const [adminVouchers, setAdminVouchers] = useState([]);
+  const [voucherModalOpen, setVoucherModalOpen] = useState(false);
+  const [editingVoucher, setEditingVoucher] = useState(null);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -56,14 +96,16 @@ export default function Admin() {
     try {
       if (!background) setLoading(true);
       setPageError('');
-      const [ords, prods, categoryList, brandList] = await Promise.all([
+      const [ords, prods, vouchers, categoryList, brandList] = await Promise.all([
         adminApi.getOrders(),
         adminApi.getProducts(),
+        adminApi.getVouchers(),
         catalogApi.getCategories(),
         catalogApi.getBrands(),
       ]);
       setAdminOrders(ords || []);
       setAdminProducts(prods || []);
+      setAdminVouchers(vouchers || []);
       setCategories(categoryList || []);
       setBrands(brandList || []);
     } catch (e) {
@@ -139,6 +181,11 @@ export default function Admin() {
     setProductModalOpen(true);
   };
 
+  const openVoucherForm = (voucher = null) => {
+    setEditingVoucher(voucher);
+    setVoucherModalOpen(true);
+  };
+
   const term = searchTerm.trim().toLowerCase();
   const visibleOrders = adminOrders.filter(
     (order) =>
@@ -156,24 +203,35 @@ export default function Admin() {
       product.variants.some((variant) => includesText(variant.sku, term)),
   );
 
+  const visibleVouchers = adminVouchers.filter(
+    (voucher) =>
+      !term || includesText(voucher.code, term) || includesText(voucher.description, term),
+  );
+
   const countByStatus = (status) => adminOrders.filter((order) => order.status === status).length;
   const lowStockCount = adminProducts.filter((product) =>
     product.variants.some((variant) => variant.stockQuantity <= LOW_STOCK_LIMIT),
   ).length;
-  const stats =
-    tab === 'orders'
-      ? [
-          ['Tổng đơn hàng', adminOrders.length],
-          ['Chờ xác nhận', countByStatus('PENDING_CONFIRMATION')],
-          ['Đang giao', countByStatus('SHIPPING')],
-          ['Hoàn thành', countByStatus('COMPLETED')],
-        ]
-      : [
-          ['Tổng sản phẩm', adminProducts.length],
-          ['Đang kinh doanh', adminProducts.filter((product) => product.isActive).length],
-          ['Đã ẩn', adminProducts.filter((product) => !product.isActive).length],
-          ['Sắp hết hàng', lowStockCount],
-        ];
+  const stats = {
+    orders: [
+      ['Tổng đơn hàng', adminOrders.length],
+      ['Chờ xác nhận', countByStatus('PENDING_CONFIRMATION')],
+      ['Đang giao', countByStatus('SHIPPING')],
+      ['Hoàn thành', countByStatus('COMPLETED')],
+    ],
+    products: [
+      ['Tổng sản phẩm', adminProducts.length],
+      ['Đang kinh doanh', adminProducts.filter((product) => product.isActive).length],
+      ['Đã ẩn', adminProducts.filter((product) => !product.isActive).length],
+      ['Sắp hết hàng', lowStockCount],
+    ],
+    vouchers: [
+      ['Tổng mã', adminVouchers.length],
+      ['Đang áp dụng', adminVouchers.filter((v) => voucherState(v)[0] === VOUCHER_ACTIVE).length],
+      ['Lượt đã dùng', adminVouchers.reduce((sum, voucher) => sum + voucher.usedCount, 0)],
+      ['Đơn có giảm giá', adminOrders.filter((order) => order.discountAmount > 0).length],
+    ],
+  }[tab];
 
   return (
     <div className="admin-app">
@@ -250,6 +308,11 @@ export default function Admin() {
                   <Plus size={18} aria-hidden="true" /> THÊM SẢN PHẨM
                 </button>
               )}
+              {tab === 'vouchers' && (
+                <button type="button" className="btn btn-primary" onClick={() => openVoucherForm()}>
+                  <Plus size={18} aria-hidden="true" /> TẠO MÃ
+                </button>
+              )}
             </div>
           </div>
 
@@ -275,15 +338,13 @@ export default function Admin() {
             <div className="admin-search">
               <Search size={17} aria-hidden="true" />
               <label className="sr-only" htmlFor="admin-search">
-                {tab === 'orders' ? 'Tìm đơn hàng' : 'Tìm sản phẩm'}
+                {SEARCH_LABELS[tab][0]}
               </label>
               <input
                 id="admin-search"
                 type="search"
                 value={searchTerm}
-                placeholder={
-                  tab === 'orders' ? 'Mã đơn, tên khách, số điện thoại' : 'Tên sản phẩm, slug, SKU'
-                }
+                placeholder={SEARCH_LABELS[tab][1]}
                 onChange={(event) => setSearchTerm(event.target.value)}
               />
             </div>
@@ -341,6 +402,11 @@ export default function Admin() {
                             <td className="table-address">{o.shippingAddress}</td>
                             <td>
                               <strong>{money(o.totalAmount)}</strong>
+                              {o.discountAmount > 0 && (
+                                <small>
+                                  {o.voucherCode}: -{money(o.discountAmount)}
+                                </small>
+                              )}
                             </td>
                             <td>
                               <span className={'status-badge ' + o.paymentStatus}>
@@ -386,6 +452,81 @@ export default function Admin() {
               ) : (
                 <p className="admin-empty">
                   {adminOrders.length ? 'Không có đơn hàng phù hợp.' : 'Chưa có đơn hàng nào.'}
+                </p>
+              )}
+            </section>
+          ) : tab === 'vouchers' ? (
+            <section className="admin-panel" aria-label="Danh sách mã giảm giá">
+              {visibleVouchers.length ? (
+                <div className="table-scroll" tabIndex={0} aria-label="Bảng mã giảm giá, có thể cuộn ngang">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">Mã</th>
+                        <th scope="col">Mức giảm</th>
+                        <th scope="col">Lượt dùng</th>
+                        <th scope="col">Thời hạn</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">
+                          <span className="sr-only">Thao tác</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {visibleVouchers.map((v) => {
+                        const [stateLabel, stateClass] = voucherState(v);
+                        return (
+                          <tr key={v.id}>
+                            <td>
+                              <strong>{v.code}</strong>
+                              {v.description && <small>{v.description}</small>}
+                            </td>
+                            <td>
+                              {describeDiscount(v)}
+                              {v.minOrderAmount > 0 && <small>Đơn từ {money(v.minOrderAmount)}</small>}
+                            </td>
+                            <td>
+                              {v.usageLimit === null ? (
+                                <>
+                                  {v.usedCount}
+                                  <small>Không giới hạn</small>
+                                </>
+                              ) : (
+                                `${v.usedCount} / ${v.usageLimit}`
+                              )}
+                            </td>
+                            <td>
+                              {v.startsAt || v.endsAt ? (
+                                <>
+                                  {v.startsAt ? formatDate(v.startsAt) : 'Ngay'}
+                                  <small>đến {v.endsAt ? formatDate(v.endsAt) : 'không thời hạn'}</small>
+                                </>
+                              ) : (
+                                'Không thời hạn'
+                              )}
+                            </td>
+                            <td>
+                              <span className={'status-badge ' + stateClass}>{stateLabel}</span>
+                            </td>
+                            <td>
+                              <button
+                                type="button"
+                                className="btn-mini"
+                                aria-label={'Sửa mã ' + v.code}
+                                onClick={() => openVoucherForm(v)}
+                              >
+                                Sửa
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="admin-empty">
+                  {adminVouchers.length ? 'Không có mã phù hợp.' : 'Chưa có mã giảm giá nào.'}
                 </p>
               )}
             </section>
@@ -480,6 +621,12 @@ export default function Admin() {
         categories={categories}
         brands={brands}
         onClose={() => setProductModalOpen(false)}
+        onSaved={() => reloadData({ background: true })}
+      />
+      <VoucherFormModal
+        open={voucherModalOpen}
+        voucher={editingVoucher}
+        onClose={() => setVoucherModalOpen(false)}
         onSaved={() => reloadData({ background: true })}
       />
       <ReasonDialog

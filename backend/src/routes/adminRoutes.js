@@ -8,6 +8,11 @@ import {
   validateProductPayload,
 } from "../utils/adminValidation.js";
 import { MAX_IMAGE_BYTES, saveImage } from "../services/imageStorage.js";
+import { releaseVoucher } from "../services/voucherService.js";
+import {
+  assertVoucherConsistent,
+  validateVoucherPayload,
+} from "../utils/voucher.js";
 
 const router = Router();
 
@@ -306,6 +311,7 @@ router.patch(
       }
 
       if (status === "CANCELLED") {
+        await releaseVoucher(tx, current);
         for (const item of current.items) {
           await tx.productVariant.update({
             where: { id: item.variantId },
@@ -332,6 +338,59 @@ router.patch(
     });
 
     res.json({ data: order, message: "Đã cập nhật trạng thái đơn hàng." });
+  }),
+);
+
+function handleVoucherConflict(error) {
+  if (error?.code === "P2002") {
+    throw new HttpError(409, "DUPLICATE_VOUCHER_CODE", "Mã giảm giá đã tồn tại.");
+  }
+  throw error;
+}
+
+router.get(
+  "/vouchers",
+  asyncHandler(async (req, res) => {
+    const vouchers = await prisma.voucher.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    res.json({ data: vouchers });
+  }),
+);
+
+router.post(
+  "/vouchers",
+  asyncHandler(async (req, res) => {
+    const voucher = validateVoucherPayload(req.body);
+    assertVoucherConsistent(voucher);
+    try {
+      const created = await prisma.voucher.create({ data: voucher });
+      res.status(201).json({ data: created, message: "Đã tạo mã giảm giá." });
+    } catch (error) {
+      handleVoucherConflict(error);
+    }
+  }),
+);
+
+router.patch(
+  "/vouchers/:id",
+  asyncHandler(async (req, res) => {
+    const changes = validateVoucherPayload(req.body, { partial: true });
+    try {
+      const updated = await prisma.$transaction(async (tx) => {
+        const current = await tx.voucher.findUnique({
+          where: { id: req.params.id },
+        });
+        if (!current) {
+          throw new HttpError(404, "VOUCHER_NOT_FOUND", "Không tìm thấy mã giảm giá.");
+        }
+        assertVoucherConsistent({ ...current, ...changes });
+        return tx.voucher.update({ where: { id: current.id }, data: changes });
+      });
+      res.json({ data: updated, message: "Đã cập nhật mã giảm giá." });
+    } catch (error) {
+      handleVoucherConflict(error);
+    }
   }),
 );
 
