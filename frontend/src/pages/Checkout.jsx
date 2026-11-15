@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -10,18 +10,27 @@ import {
   QrCode,
   ShieldCheck,
   ShoppingBag,
+  TicketPercent,
   Truck,
   Wallet,
+  X,
 } from 'lucide-react';
 import { money, SHIPPING_FEE } from '../data';
-import { orderApi, ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from '../api';
+import { orderApi, ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS, voucherApi } from '../api';
 import { useStore } from '../context/StoreContext.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import QrPayment from '../components/QrPayment.jsx';
 import { BlockSkeleton } from '../components/Skeleton.jsx';
+import SearchSelect from '../components/SearchSelect.jsx';
 import TextField from '../components/TextField.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
 import { FALLBACK_PRODUCT_IMAGE, getCartProduct, localizeVariantName } from '../utils/product.js';
+import {
+  districtNames,
+  loadAdministrativeUnits,
+  provinceNames,
+  wardNames,
+} from '../utils/vnAddress.js';
 
 const STEPS = ['Giỏ hàng', 'Giao hàng', 'Hoàn tất'];
 const PHONE_PATTERN = /^(0|\+84)\d{9}$/;
@@ -31,15 +40,19 @@ const EMPTY_ADDRESS = { name: '', phone: '', province: '', district: '', ward: '
 const REQUIRED_MESSAGES = {
   name: 'Vui lòng nhập họ tên người nhận.',
   phone: 'Vui lòng nhập số điện thoại.',
-  province: 'Vui lòng nhập tỉnh/thành phố.',
-  district: 'Vui lòng nhập quận/huyện.',
-  ward: 'Vui lòng nhập phường/xã.',
+  province: 'Vui lòng chọn tỉnh/thành phố.',
+  district: 'Vui lòng chọn quận/huyện.',
+  ward: 'Vui lòng chọn phường/xã.',
   street: 'Vui lòng nhập số nhà, tên đường.',
 };
 
-function validate(form) {
+// Chọn tỉnh thì xóa huyện và xã đã chọn; chọn huyện thì xóa xã, vì chúng không còn thuộc nhau.
+const DEPENDENT_FIELDS = { province: ['district', 'ward'], district: ['ward'] };
+
+function validate(form, { wardOptional = false } = {}) {
   const errors = {};
   Object.entries(REQUIRED_MESSAGES).forEach(([field, message]) => {
+    if (field === 'ward' && wardOptional) return;
     if (!form[field].trim()) errors[field] = message;
   });
   if (!errors.phone && !PHONE_PATTERN.test(form.phone.replace(/[\s.-]/g, ''))) {
@@ -74,10 +87,59 @@ export default function Checkout() {
   const [submitError, setSubmitError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [createdOrder, setCreatedOrder] = useState(null);
+  const [voucherInput, setVoucherInput] = useState('');
+  const [voucher, setVoucher] = useState(null);
+  const [voucherError, setVoucherError] = useState('');
+  const [applyingVoucher, setApplyingVoucher] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('PAYOS');
   const [qrPayment, setQrPayment] = useState(null);
 
   const items = cart?.items || [];
+  const discount = voucher?.discountAmount || 0;
+  const total = subtotal - discount + SHIPPING_FEE;
+  const appliedCode = voucher?.code;
+
+  // The discount depends on the cart, so check the code again when it changes.
+  useEffect(() => {
+    if (!appliedCode || !subtotal || voucher?.subtotal === subtotal) return;
+    let cancelled = false;
+    voucherApi
+      .validate(appliedCode)
+      .then((result) => !cancelled && setVoucher(result))
+      .catch((err) => {
+        if (cancelled) return;
+        setVoucher(null);
+        setVoucherError(err.message || 'Mã giảm giá không còn áp dụng được.');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [appliedCode, subtotal, voucher?.subtotal]);
+
+  const applyVoucher = async (event) => {
+    event.preventDefault();
+    const code = voucherInput.trim();
+    if (!code) {
+      setVoucherError('Vui lòng nhập mã giảm giá.');
+      return;
+    }
+    try {
+      setApplyingVoucher(true);
+      setVoucherError('');
+      setVoucher(await voucherApi.validate(code));
+      setVoucherInput('');
+    } catch (err) {
+      setVoucher(null);
+      setVoucherError(err.message || 'Không áp dụng được mã giảm giá.');
+    } finally {
+      setApplyingVoucher(false);
+    }
+  };
+
+  const removeVoucher = () => {
+    setVoucher(null);
+    setVoucherError('');
+  };
 
   useEffect(() => {
     if (account) {
@@ -88,6 +150,45 @@ export default function Checkout() {
       }));
     }
   }, [account]);
+
+  // Danh sách tỉnh/huyện/xã. Nếu tải lỗi thì quay về ô nhập tay như trước.
+  const [units, setUnits] = useState(null);
+  const [unitsFailed, setUnitsFailed] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadAdministrativeUnits()
+      .then((data) => !cancelled && setUnits(data))
+      .catch(() => !cancelled && setUnitsFailed(true));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const provinceOptions = useMemo(() => (units ? provinceNames(units) : []), [units]);
+  const districtOptions = useMemo(
+    () => (units ? districtNames(units, form.province) : []),
+    [units, form.province],
+  );
+  const wardOptions = useMemo(
+    () => (units ? wardNames(units, form.province, form.district) : []),
+    [units, form.province, form.district],
+  );
+  // Vài huyện đảo (Côn Đảo, Bạch Long Vĩ...) không có cấp phường/xã.
+  const wardOptional = Boolean(units && form.district && !wardOptions.length);
+
+  const setAddressPart = (field, value) => {
+    const cleared = Object.fromEntries((DEPENDENT_FIELDS[field] ?? []).map((key) => [key, '']));
+    setForm((current) => ({ ...current, ...cleared, [field]: value }));
+    setErrors((current) => ({ ...current, [field]: undefined }));
+  };
+
+  const addressSelectProps = (field) => ({
+    id: 'checkout-' + field,
+    value: form[field],
+    error: errors[field],
+    onChange: (value) => setAddressPart(field, value),
+  });
 
   const fieldProps = (field) => ({
     id: 'checkout-' + field,
@@ -103,7 +204,7 @@ export default function Checkout() {
     e.preventDefault();
     setSubmitError('');
 
-    const nextErrors = validate(form);
+    const nextErrors = validate(form, { wardOptional });
     setErrors(nextErrors);
     const firstInvalid = Object.keys(nextErrors)[0];
     if (firstInvalid) {
@@ -124,6 +225,7 @@ export default function Checkout() {
         },
         paymentMethod,
         customerNote: note.trim(),
+        ...(appliedCode ? { voucherCode: appliedCode } : {}),
       });
 
       await refreshCart();
@@ -132,6 +234,10 @@ export default function Checkout() {
       setCreatedOrder(order);
       window.scrollTo({ top: 0, behavior: 'instant' });
     } catch (err) {
+      if (err.code?.startsWith('VOUCHER_')) {
+        setVoucher(null);
+        setVoucherError(err.message);
+      }
       setSubmitError(err.message || 'Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại.');
     } finally {
       setSubmitting(false);
@@ -207,6 +313,12 @@ export default function Checkout() {
                 </span>
               </dd>
             </div>
+            {createdOrder.discountAmount > 0 && (
+              <div>
+                <dt>Giảm giá ({createdOrder.voucherCode})</dt>
+                <dd>-{money(createdOrder.discountAmount)}</dd>
+              </div>
+            )}
             <div>
               <dt>Tổng thanh toán</dt>
               <dd>
@@ -306,17 +418,51 @@ export default function Checkout() {
                 placeholder="0901234567"
                 {...fieldProps('phone')}
               />
-              <TextField
-                label="Tỉnh / Thành phố"
-                autoComplete="address-level1"
-                {...fieldProps('province')}
-              />
-              <TextField
-                label="Quận / Huyện"
-                autoComplete="address-level2"
-                {...fieldProps('district')}
-              />
-              <TextField label="Phường / Xã" autoComplete="address-level3" {...fieldProps('ward')} />
+              {unitsFailed ? (
+                <>
+                  <TextField
+                    label="Tỉnh / Thành phố"
+                    autoComplete="address-level1"
+                    {...fieldProps('province')}
+                  />
+                  <TextField
+                    label="Quận / Huyện"
+                    autoComplete="address-level2"
+                    {...fieldProps('district')}
+                  />
+                  <TextField label="Phường / Xã" autoComplete="address-level3" {...fieldProps('ward')} />
+                </>
+              ) : (
+                <>
+                  <SearchSelect
+                    label="Tỉnh / Thành phố"
+                    options={provinceOptions}
+                    disabled={!units}
+                    placeholder={units ? 'Gõ để tìm, ví dụ: Hà Nội' : 'Đang tải danh sách...'}
+                    {...addressSelectProps('province')}
+                  />
+                  <SearchSelect
+                    label="Quận / Huyện"
+                    options={districtOptions}
+                    disabled={!form.province}
+                    placeholder={form.province ? 'Gõ để tìm quận/huyện' : 'Chọn tỉnh/thành phố trước'}
+                    {...addressSelectProps('district')}
+                  />
+                  <SearchSelect
+                    label="Phường / Xã"
+                    options={wardOptions}
+                    disabled={!form.district || wardOptional}
+                    placeholder={
+                      wardOptional
+                        ? 'Khu vực này không có phường/xã'
+                        : form.district
+                          ? 'Gõ để tìm phường/xã'
+                          : 'Chọn quận/huyện trước'
+                    }
+                    {...addressSelectProps('ward')}
+                  />
+                </>
+              )}
               <TextField
                 label="Số nhà, tên đường"
                 autoComplete="street-address"
@@ -403,17 +549,61 @@ export default function Checkout() {
               );
             })}
           </ul>
+          {voucher ? (
+            <div className="voucher-applied">
+              <TicketPercent size={18} aria-hidden="true" />
+              <span>
+                <strong>{voucher.code}</strong>
+                {voucher.description && <small>{voucher.description}</small>}
+              </span>
+              <button
+                type="button"
+                className="icon-button"
+                aria-label={'Bỏ mã ' + voucher.code}
+                onClick={removeVoucher}
+              >
+                <X size={16} aria-hidden="true" />
+              </button>
+            </div>
+          ) : (
+            <form className="voucher-form" onSubmit={applyVoucher} noValidate>
+              <TextField
+                id="checkout-voucher"
+                label="Mã giảm giá"
+                autoComplete="off"
+                autoCapitalize="characters"
+                spellCheck={false}
+                maxLength={30}
+                placeholder="Nhập mã"
+                value={voucherInput}
+                error={voucherError}
+                onChange={(event) => {
+                  setVoucherInput(event.target.value);
+                  if (voucherError) setVoucherError('');
+                }}
+              />
+              <button type="submit" className="btn btn-outline" disabled={applyingVoucher}>
+                {applyingVoucher ? 'ĐANG KIỂM TRA...' : 'ÁP DỤNG'}
+              </button>
+            </form>
+          )}
           <div>
             <span>Tạm tính</span>
             <strong>{money(subtotal)}</strong>
           </div>
+          {discount > 0 && (
+            <div className="summary-discount">
+              <span>Giảm giá</span>
+              <strong>-{money(discount)}</strong>
+            </div>
+          )}
           <div>
             <span>Phí vận chuyển</span>
             <span>{money(SHIPPING_FEE)}</span>
           </div>
           <div className="summary-total">
             <span>TỔNG CỘNG</span>
-            <strong>{money(subtotal + SHIPPING_FEE)}</strong>
+            <strong>{money(total)}</strong>
           </div>
           {submitError && (
             <p className="inline-alert" role="alert">

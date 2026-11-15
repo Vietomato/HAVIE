@@ -7,6 +7,7 @@ Customers can browse rackets, shoes, strings and accessories, add items to a car
 ## Features
 
 - **Storefront**: home page, category listing with filters and pagination, product detail with variants (size, weight, grip), favorites, cart, checkout.
+- **Checkout address**: searchable province → district → ward pickers (type without diacritics, e.g. "ha noi"); each list only shows units inside the one chosen above. Data: 63 provinces from [provinces.open-api.vn](https://provinces.open-api.vn) v1, stored in `frontend/public/data/vn-administrative-units.json` and rebuilt with `frontend/scripts/build-vn-administrative-units.mjs`.
 - **Auth**: email/password and OTP signup, server-managed HttpOnly cookie sessions with 30-minute idle expiry, password reset, and configurable Google login.
 - **Payments**: bank-transfer QR through [payOS](https://payos.vn), with webhook-based order confirmation.
 - **Orders**: order history, status tracking, customer-side cancellation.

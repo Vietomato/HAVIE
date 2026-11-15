@@ -1,4 +1,5 @@
 import { PayOS } from "@payos/node";
+import { releaseVoucher } from "./voucherService.js";
 
 // Thanh toán chuyển khoản QR qua payOS.
 // Luồng: đặt đơn (PENDING_PAYMENT) -> tạo link thanh toán -> khách quét QR -> payOS báo về (webhook)
@@ -132,6 +133,9 @@ export async function cancelUnpaidOrder(database, order, { paymentStatus, reason
       data: { status: "CANCELLED", paymentStatus, cancelReason: reason },
     });
     if (claim.count !== 1) return false;
+
+    // Trả lại lượt dùng mã giảm giá đã giữ cho đơn này.
+    await releaseVoucher(tx, order);
 
     const items = order.items ?? (await tx.orderItem.findMany({ where: { orderId: order.id } }));
     for (const item of items) {

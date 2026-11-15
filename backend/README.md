@@ -50,6 +50,8 @@ npx prisma generate
 
 Migration `20261031200000_product_visibility` thêm cột `isActive` để Admin có thể ẩn sản phẩm mà không xóa dữ liệu đơn hàng. Với database đã được Prisma Migrate quản lý, dùng `npx prisma migrate deploy`. Với database cũ chưa quản lý migration, hãy sao lưu trước, chạy file migration này đúng một lần bằng `npx prisma db execute --file prisma/migrations/20261031200000_product_visibility/migration.sql`, rồi chạy `npx prisma generate`.
 
+Migration `20261114120000_add_vouchers` thêm bảng `vouchers` và các cột `discountAmount`, `voucherId`, `voucherCode` vào `orders`. Áp dụng bằng `npx prisma migrate deploy` (hoặc `npx prisma db execute --file prisma/migrations/20261114120000_add_vouchers/migration.sql` với database cũ), rồi chạy `npx prisma generate`.
+
 Không chạy `prisma migrate reset` trên database có dữ liệu.
 
 Để nạp danh mục, thương hiệu, sản phẩm và biến thể trong `prisma/productsData.json`, cấu hình `DATABASE_URL` trong `backend/.env`, sau đó chạy từ thư mục `backend`:
@@ -100,8 +102,9 @@ Web dùng cookie HttpOnly, hết hạn sau 30 phút không hoạt động; Redis
 - `GET /api/categories`, `GET /api/brands`, `GET /api/products`, `GET /api/products/:slug`
 - `GET /api/products/:slug/reviews`
 - `GET /api/cart`, `POST /api/cart/items`, `PATCH /api/cart/items/:id`, `DELETE /api/cart/items/:id`
-- `POST /api/orders`, `GET /api/orders/my`, `POST /api/orders/:id/cancel`
-- Admin (yêu cầu role `ADMIN`): `GET /api/admin/products`, `POST /api/admin/products`, `PATCH /api/admin/products/:id`, `GET /api/admin/orders`, `PATCH /api/admin/orders/:id/status`
+- `POST /api/orders` (nhận thêm `voucherCode` không bắt buộc), `GET /api/orders/my`, `POST /api/orders/:id/cancel`
+- `POST /api/vouchers/validate` (khách đã đăng nhập): xem trước mức giảm của mã với giỏ hàng hiện tại.
+- Admin (yêu cầu role `ADMIN`): `GET /api/admin/products`, `POST /api/admin/products`, `PATCH /api/admin/products/:id`, `GET /api/admin/orders`, `PATCH /api/admin/orders/:id/status`, `GET /api/admin/vouchers`, `POST /api/admin/vouchers`, `PATCH /api/admin/vouchers/:id`
 - Tư vấn (yêu cầu đăng nhập): `GET/POST /api/chat/conversations`, `GET/PATCH/DELETE /api/chat/conversations/:id`, `POST /api/chat/conversations/:id/messages`
 
 OTP hết hạn sau 10 phút, gửi lại sau 60 giây và tối đa 5 lần nhập sai. Các route sản phẩm hỗ trợ bộ lọc và phân trang theo `API_CONTRACT_HAVIE_v1.md`.
@@ -117,6 +120,8 @@ Nội dung câu trả lời do code quyết định (sản phẩm, giá, câu h�
 Admin có thể thêm/cập nhật sản phẩm, biến thể, giá, tồn kho và ẩn sản phẩm khỏi catalog mà không xóa dữ liệu đơn cũ. Thay đổi tồn kho qua màn hình sản phẩm được ghi vào lịch sử kho.
 
 Vòng đời đơn do Admin xử lý theo thứ tự `PENDING_CONFIRMATION → CONFIRMED → SHIPPING → COMPLETED`. Chỉ được hủy khi đơn còn `PENDING_CONFIRMATION` hoặc `CONFIRMED`; hủy bắt buộc có lý do và hoàn kho trong cùng transaction. Đơn đã giao/hoàn thành không thể hủy. Hoàn tất đơn COD đồng thời ghi nhận đã thu tiền.
+
+Mã giảm giá chỉ giảm trên tiền hàng, không giảm phí vận chuyển. Có hai loại: theo phần trăm (có thể đặt mức giảm tối đa) và số tiền cố định; mức giảm không vượt quá tiền hàng. Mỗi mã có thể đặt tiền hàng tối thiểu, số lượt dùng và thời gian áp dụng. Mã không phân biệt hoa thường. Khi đặt đơn, backend kiểm tra lại mã và giữ một lượt dùng trong cùng transaction, nên nhiều khách đặt cùng lúc cũng không vượt giới hạn; hủy đơn (khách hoặc Admin) trả lại lượt đó. Admin tắt mã thay vì xóa để giữ lịch sử đơn.
 
 Giỏ hàng, đặt hàng và xem/hủy đơn cá nhân yêu cầu tài khoản Customer; Admin không thể tạo đơn hoặc dùng lịch sử đơn hàng của khách qua API khách hàng. Khách xem tiến trình đơn tại tab “Đơn hàng của tôi”; trạng thái tự tải lại mỗi 30 giây khi đang mở tab và có nút cập nhật thủ công. API đặt hàng hiện chỉ hỗ trợ COD; thanh toán QR chưa được tích hợp.
 

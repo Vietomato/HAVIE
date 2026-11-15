@@ -6,6 +6,7 @@ import {
   requireCustomer,
 } from "../middlewares/authMiddleware.js";
 import { asyncHandler, HttpError } from "../utils/http.js";
+import { claimVoucher, releaseVoucher } from "../services/voucherService.js";
 import {
   PAYMENT_METHOD_PAYOS,
   createPaymentLink,
@@ -44,7 +45,16 @@ router.post(
       shippingAddress,
       paymentMethod = "COD",
       customerNote,
+      voucherCode,
     } = req.body ?? {};
+
+    if (
+      voucherCode !== undefined &&
+      voucherCode !== null &&
+      typeof voucherCode !== "string"
+    ) {
+      throw new HttpError(400, "VALIDATION_ERROR", "Mã giảm giá không hợp lệ.");
+    }
 
     if (!PAYMENT_METHODS.includes(paymentMethod)) {
       throw new HttpError(
@@ -103,7 +113,8 @@ router.post(
         !requiredText(recipientName) ||
         !requiredText(recipientPhone) ||
         !requiredText(fields.streetAddress) ||
-        !requiredText(fields.ward) ||
+        // Phường/xã có thể trống: vài huyện đảo (Côn Đảo, Bạch Long Vĩ...) không có cấp xã.
+        (fields.ward != null && typeof fields.ward !== "string") ||
         !requiredText(fields.district) ||
         !requiredText(fields.province)
       ) {
@@ -122,7 +133,8 @@ router.post(
         fields.district,
         fields.province,
       ]
-        .map((part) => part.trim())
+        .map((part) => part?.trim())
+        .filter(Boolean)
         .join(", ");
     }
 
@@ -165,7 +177,11 @@ router.post(
         subtotal += variant.price * item.quantity;
       }
 
-      const totalAmount = subtotal + SHIPPING_FEE;
+      const applied = voucherCode?.trim()
+        ? await claimVoucher(tx, voucherCode, subtotal)
+        : null;
+      const discountAmount = applied?.discountAmount ?? 0;
+      const totalAmount = subtotal - discountAmount + SHIPPING_FEE;
 
       for (const item of cart.items) {
         const result = await tx.productVariant.updateMany({
@@ -207,7 +223,10 @@ router.post(
           paymentStatus: "PENDING",
           subtotal,
           shippingFee: SHIPPING_FEE,
+          discountAmount,
           totalAmount,
+          voucherId: applied?.voucher.id ?? null,
+          voucherCode: applied?.voucher.code ?? null,
           recipientName: recipient,
           recipientPhone: phone,
           shippingAddress: fullAddress,
@@ -389,6 +408,8 @@ router.post(
           "Đơn hàng đã được cập nhật; vui lòng tải lại.",
         );
       }
+
+      await releaseVoucher(tx, current);
 
       for (const item of current.items) {
         await tx.productVariant.update({

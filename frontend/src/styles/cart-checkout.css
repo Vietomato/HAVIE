@@ -134,6 +134,48 @@
     font-size: 13px;
     text-align: center;
   }
+  .voucher-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: start;
+    margin-bottom: 16px;
+  }
+  .voucher-form .field input {
+    text-transform: uppercase;
+  }
+  .voucher-form .field input::placeholder {
+    text-transform: none;
+  }
+  .voucher-form > .btn {
+    /* Line up with the input, below the field label. */
+    margin-top: 27px;
+    min-height: 46px;
+    padding-inline: 14px;
+  }
+  .summary > .voucher-applied {
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 0 0 16px;
+    padding: 10px 6px 10px 12px;
+    background: var(--highlight);
+    border: 1px dashed var(--secondary);
+    border-radius: var(--radius-sm);
+    color: var(--link);
+  }
+  .voucher-applied > span {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+  }
+  .voucher-applied small {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .summary > .summary-discount strong {
+    color: var(--success, #15803d);
+  }
   .summary-items {
     display: grid;
     gap: 12px;

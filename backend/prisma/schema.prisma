@@ -41,6 +41,11 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum DiscountType {
+  PERCENT
+  FIXED
+}
+
 enum AdvisorNoteStatus {
   DRAFT
   APPROVED
@@ -337,7 +342,10 @@ model Order {
   paymentStatus   PaymentStatus @default(PENDING)
   subtotal        Int
   shippingFee     Int           @default(0)
+  discountAmount  Int           @default(0)
   totalAmount     Int
+  voucherId       String?
+  voucherCode     String?
   recipientName   String
   recipientPhone  String
   shippingAddress String
@@ -352,11 +360,39 @@ model Order {
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
-  user  User        @relation(fields: [userId], references: [id])
-  items OrderItem[]
+  user    User        @relation(fields: [userId], references: [id])
+  voucher Voucher?    @relation(fields: [voucherId], references: [id], onDelete: SetNull)
+  items   OrderItem[]
 
   @@map("orders")
   @@index([userId, status])
+}
+
+// ============================================================
+// VOUCHERS
+// ============================================================
+
+// Giảm trên tiền hàng, không tính phí vận chuyển.
+model Voucher {
+  id             String       @id @default(uuid())
+  code           String       @unique
+  description    String?
+  discountType   DiscountType
+  // PERCENT: 1-100 (%); FIXED: số tiền VND.
+  discountValue  Int
+  maxDiscount    Int?
+  minOrderAmount Int          @default(0)
+  usageLimit     Int?
+  usedCount      Int          @default(0)
+  startsAt       DateTime?
+  endsAt         DateTime?
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  orders Order[]
+
+  @@map("vouchers")
 }
 
 model OrderItem {
