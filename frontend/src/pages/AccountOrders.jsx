@@ -179,6 +179,11 @@ export default function AccountOrders() {
                     <div className="order-card-footer">
                       <span>
                         Tổng cộng <strong>{money(order.totalAmount)}</strong>
+                        {order.discountAmount > 0 && (
+                          <small className="order-discount">
+                            Đã giảm {money(order.discountAmount)} (mã {order.voucherCode})
+                          </small>
+                        )}
                       </span>
                       {order.status === 'PENDING_PAYMENT' && order.paymentMethod === 'PAYOS' && (
                         <Link className="btn-mini" to={'/account/orders/' + order.id + '/pay'}>

@@ -37,12 +37,13 @@ const order = (overrides = {}) => ({
 
 // Database giả: ghi lại các lệnh cập nhật và trả về đơn theo ý từng test.
 function fakeDatabase(current, { claim = 1 } = {}) {
-  const log = { updates: [], stock: [], moves: [] };
+  const log = { updates: [], stock: [], moves: [], vouchers: [] };
   const tx = {
     order: { updateMany: async (args) => { log.updates.push(args); return { count: claim }; } },
     orderItem: { findMany: async () => current?.items ?? [] },
     productVariant: { update: async (args) => { log.stock.push(args); } },
     stockMovement: { create: async (args) => { log.moves.push(args); } },
+    voucher: { updateMany: async (args) => { log.vouchers.push(args); return { count: 1 }; } },
   };
   return {
     log,
@@ -181,6 +182,22 @@ test("cancelling an unpaid order returns its stock once, and a lost race restock
   const raced = fakeDatabase(order(), { claim: 0 });
   assert.equal(await cancelUnpaidOrder(raced, order(), { paymentStatus: "EXPIRED", reason: "x" }), false);
   assert.deepEqual(raced.log.stock, []);
+});
+
+test("cancelling an unpaid order gives back its voucher use, but only when the cancel wins", async () => {
+  const database = fakeDatabase(order({ voucherId: "vc1" }));
+  await cancelUnpaidOrder(database, order({ voucherId: "vc1" }), { paymentStatus: "EXPIRED", reason: "x" });
+  assert.deepEqual(database.log.vouchers, [
+    { where: { id: "vc1", usedCount: { gt: 0 } }, data: { usedCount: { decrement: 1 } } },
+  ]);
+
+  const raced = fakeDatabase(order({ voucherId: "vc1" }), { claim: 0 });
+  await cancelUnpaidOrder(raced, order({ voucherId: "vc1" }), { paymentStatus: "EXPIRED", reason: "x" });
+  assert.deepEqual(raced.log.vouchers, []);
+
+  const noVoucher = fakeDatabase(order());
+  await cancelUnpaidOrder(noVoucher, order(), { paymentStatus: "EXPIRED", reason: "x" });
+  assert.deepEqual(noVoucher.log.vouchers, []);
 });
 
 // ---------- Đồng bộ với payOS ----------
