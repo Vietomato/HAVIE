@@ -176,6 +176,22 @@ const search = (variants, needs = beginner) =>
 
 const extraStiff = ["Độ cứng: Rất cứng (Extra Stiff)"];
 
+test("semantic ranking never indexes rackets rejected for suitability or opposite balance", async () => {
+  const rows = [
+    variant("hard", 3000000, { specs: extraStiff }),
+    variant("heavy", 2900000, { specs: ["Điểm cân bằng: Nặng đầu"] }),
+    variant("light-a", 2800000, { specs: ["Điểm cân bằng: Nhẹ đầu"] }),
+    variant("light-b", 2700000, { specs: ["Điểm cân bằng: Nhẹ đầu"] }),
+  ];
+  let indexed = [];
+  const result = await searchAdvisorProducts({ ...beginner, balancePreference: "head_light" }, {
+    database: database(rows), allowUnreviewedStock: true, query: "xoay trở linh hoạt",
+    rank: async (_, documents) => { indexed = documents.map((doc) => doc.id); return { hits: [] }; },
+  });
+  assert.deepEqual(indexed.sort(), ["light-a", "light-b"]);
+  assert.ok(result.candidates.every((item) => item.racketTraits.balanceType === "head_light"));
+});
+
 test("a racket that does not suit the player is left out and counted", async () => {
   const result = await search([
     variant("hard", 4000000, { specs: extraStiff }),

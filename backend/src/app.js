@@ -9,14 +9,21 @@ import adminRoutes from './routes/adminRoutes.js';
 import { authMiddleware } from './middlewares/authMiddleware.js';
 import chatRoutes from './routes/chatRoutes.js';
 import { UPLOADS_DIR } from './services/imageStorage.js';
+import { allowedOrigins, csrfProtection, createRateLimiter, publicCatalogCache } from './middlewares/trafficControl.js';
+import socialAuthRoutes from './routes/socialAuthRoutes.js';
 
 const app = express();
+app.disable('x-powered-by');
+if (process.env.TRUST_PROXY_HOPS) app.set('trust proxy', Number(process.env.TRUST_PROXY_HOPS));
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: (origin, callback) => callback(null, !origin || allowedOrigins().includes(origin)),
   credentials: true,
 }));
 app.use(express.json({ limit: '100kb' }));
+app.use(csrfProtection);
+app.use('/api/auth', createRateLimiter({ name: 'auth', limit: 60, windowMs: 600000 }));
+app.use(publicCatalogCache);
 
 app.get('/api/health', (req, res) => {
   res.json({
@@ -33,6 +40,7 @@ app.use('/uploads', express.static(UPLOADS_DIR, {
 }));
 
 app.use('/api/auth', authRoutes);
+app.use('/api/auth', socialAuthRoutes);
 app.get('/api/me', authMiddleware, getCurrentUser);
 app.use('/api', catalogRoutes);
 app.use('/api/cart', cartRoutes);

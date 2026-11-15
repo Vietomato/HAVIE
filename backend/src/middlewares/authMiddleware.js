@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import prisma from '../config/prisma.js';
 import { asyncHandler, HttpError } from '../utils/http.js';
+import { readCookie, sessionCookie, sessions } from '../services/sessionService.js';
 
 export const publicUserSelect = {
   id: true,
@@ -52,33 +53,16 @@ export async function createAccessToken(user) {
 }
 
 export const authMiddleware = asyncHandler(async (req, res, next) => {
-  const authorization = req.get('Authorization');
-  const tokenMatch = authorization?.match(/^Bearer\s+(\S+)$/i);
-
-  if (!tokenMatch) {
-    throw new HttpError(401, 'UNAUTHORIZED', 'Vui lòng đăng nhập để tiếp tục.');
-  }
-
-  const { secret } = getJwtConfiguration();
-  let payload;
+  const token = readCookie(req, sessionCookie());
+  let session;
   try {
-    payload = jwt.verify(tokenMatch[1], secret, { algorithms: ['HS256'] });
-  } catch (error) {
-    const expired = error instanceof jwt.TokenExpiredError;
-    throw new HttpError(
-      401,
-      expired ? 'TOKEN_EXPIRED' : 'INVALID_TOKEN',
-      expired ? 'Phiên đăng nhập đã hết hạn.' : 'Token đăng nhập không hợp lệ.',
-    );
-  }
-
-  if (!payload || typeof payload === 'string' || typeof payload.sub !== 'string') {
-    throw new HttpError(401, 'INVALID_TOKEN', 'Token đăng nhập không hợp lệ.');
-  }
+    session = await sessions.read(token, req.get('X-Havie-Activity') === '1');
+  } catch { throw new HttpError(503, 'SESSION_UNAVAILABLE', 'Tạm thời chưa kiểm tra được phiên đăng nhập. Vui lòng thử lại.'); }
+  if (!session) throw new HttpError(401, 'SESSION_EXPIRED', 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
 
   const user = await prisma.user.findUnique({
-    where: { id: payload.sub },
-    select: publicUserSelect,
+    where: { id: session.userId },
+    select: { ...publicUserSelect, authVersion: true },
   });
 
   if (!user) {
@@ -87,8 +71,12 @@ export const authMiddleware = asyncHandler(async (req, res, next) => {
   if (!user.isActive) {
     throw new HttpError(403, 'ACCOUNT_DISABLED', 'Tài khoản đã bị tạm khóa.');
   }
+  if (user.authVersion !== session.authVersion) throw new HttpError(401, 'SESSION_EXPIRED', 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
 
-  req.user = user;
+  const { authVersion, ...safeUser } = user;
+  req.user = safeUser;
+  req.sessionToken = token;
+  res.set('Cache-Control', 'no-store');
   next();
 });
 

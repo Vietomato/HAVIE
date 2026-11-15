@@ -4,6 +4,7 @@ import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { handleRacketMessage, sanitizeChatData } from "../services/chatService.js";
 import { createEmptyNeeds } from "../services/needsExtractor.js";
 import { asyncHandler, HttpError } from "../utils/http.js";
+import { createChatAdmission, createRateLimiter } from "../middlewares/trafficControl.js";
 
 const router = Router();
 const processingLeaseMs = 6 * 60 * 1000;
@@ -154,6 +155,8 @@ router.delete(
 
 router.post(
   "/conversations/:id/messages",
+  createRateLimiter({ name: 'chat', limit: 20, windowMs: 60000 }),
+  createChatAdmission(),
   asyncHandler(async (req, res) => {
     const { message } = req.body ?? {};
     if (typeof message !== "string" || !message.trim() || message.length > 2000) {
@@ -189,6 +192,14 @@ router.post(
       const hasMessages = await tx.advisorMessage.count({
         where: { conversationId: conversation.id },
       });
+      // Ownership has been checked and the conversation lease is held. Fetch
+      // bounded text only; no catalog/private fields are used as chat context.
+      const history = await tx.advisorMessage.findMany({
+        where: { conversationId: conversation.id },
+        select: { role: true, content: true },
+        orderBy: { createdAt: "desc" },
+        take: 8,
+      });
       await tx.advisorMessage.create({
         data: {
           conversationId: conversation.id,
@@ -206,7 +217,7 @@ router.post(
           data: { title: getConversationTitle(message) },
         });
       }
-      return true;
+      return { history: history.reverse() };
     });
 
     if (!claim) {
@@ -224,6 +235,7 @@ router.post(
           ? conversation.needs
           : createEmptyNeeds(),
         conversation.lastQuestion,
+        { history: claim.history },
       );
 
       const updatedConversation = await prisma.$transaction(async (tx) => {
@@ -252,6 +264,7 @@ router.post(
 
       res.json({ data: updatedConversation });
     } finally {
+      req.releaseChatSlot?.();
       await prisma.advisorConversation.updateMany({
         where: {
           id: conversation.id,

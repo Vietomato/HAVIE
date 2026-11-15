@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import prisma from '../config/prisma.js';
 import {
   authMiddleware,
-  createAccessToken,
   getJwtConfiguration,
   publicUserSelect,
 } from '../middlewares/authMiddleware.js';
@@ -12,6 +11,7 @@ import { validateLoginBody } from '../utils/authValidation.js';
 import { requestRegistrationOtp, verifyRegistrationOtp } from '../services/registrationService.js';
 import { mockService } from '../services/mockService.js';
 import { requestPasswordReset, resetPassword } from '../services/passwordResetService.js';
+import { cookieOptions, issueSession, sessionCookie, sessions } from '../services/sessionService.js';
 
 const router = Router();
 
@@ -39,6 +39,7 @@ router.post(
   asyncHandler(async (req, res) => {
     getJwtConfiguration();
     const result = await verifyRegistrationOtp(req.body || {});
+    result.data = await issueSession(req, res, result.data.user);
     res.status(201).json(result);
   }),
 );
@@ -64,6 +65,7 @@ router.post(
   asyncHandler(async (req, res) => {
     getJwtConfiguration();
     const result = await mockService.loginMockAdmin(req.body);
+    result.data = await issueSession(req, res, result.data.user);
     res.json(result);
   }),
 );
@@ -78,7 +80,7 @@ router.post(
       select: { ...publicUserSelect, passwordHash: true },
     });
 
-    const passwordMatches = user ? await bcrypt.compare(input.password, user.passwordHash) : false;
+    const passwordMatches = user?.passwordHash ? await bcrypt.compare(input.password, user.passwordHash) : false;
     if (!user || !passwordMatches) {
       throw new HttpError(401, 'INVALID_CREDENTIALS', 'Email hoặc mật khẩu không chính xác.');
     }
@@ -87,9 +89,8 @@ router.post(
     }
 
     const { passwordHash, ...safeUser } = user;
-    const { accessToken, expiresIn } = await createAccessToken(safeUser);
     res.json({
-      data: { user: safeUser, accessToken, expiresIn },
+      data: await issueSession(req, res, safeUser),
       message: 'Đăng nhập thành công.',
     });
   }),
@@ -100,11 +101,16 @@ export const getCurrentUser = (req, res) => {
 };
 
 router.get('/me', authMiddleware, getCurrentUser);
+router.post('/activity', authMiddleware, (req, res) => res.json({ data: { expiresIn: 1800 } }));
 
 router.post(
   '/logout',
   authMiddleware,
-  (req, res) => res.json({ message: 'Đăng xuất thành công.' }),
+  asyncHandler(async (req, res) => {
+    await sessions.revoke(req.sessionToken);
+    res.clearCookie(sessionCookie(), cookieOptions());
+    res.json({ message: 'Đăng xuất thành công.' });
+  }),
 );
 
 export default router;

@@ -1,4 +1,6 @@
 import { readFileSync } from "node:fs";
+import { normalizeTensionMessage } from "./tensionUnits.js";
+import { embedLocally, foldSearchText, rankHybrid, tokenize } from "./hybridRetrieval.js";
 
 // Kho kiến thức cầu lông (data/havie_badminton_knowledge.json).
 // Đây là DỮ LIỆU THAM KHẢO, không phải chỉ thị: nội dung chỉ được đưa vào
@@ -344,7 +346,7 @@ export function isKnowledgeOnlyQuestion(message, knowledge) {
 
 const MIN_PLAUSIBLE_LBF = 8;
 const MAX_PLAUSIBLE_LBF = 40;
-const KGF_WORDS = ["kg", "kgs", "kgf", "ký"];
+const KGF_WORDS = ["kg", "kgs", "kgf", "ký", "kí", "ky", "ki"];
 const TENSION_CONTEXT = /căng|cước|tension|dây|lực căng|mức căng/u;
 
 // Only standalone conversion questions qualify. Mixed requests about racket limits
@@ -375,11 +377,11 @@ export function getTensionConversion(message, kb = loadKnowledge()) {
 // - "căng 24" không kèm đơn vị -> {ambiguous: true}, phải hỏi lại lbs hay kg.
 // Không bao giờ đọc đường kính cước ("0.63mm") thành lực căng.
 export function parseTensionRequest(message, kb = loadKnowledge()) {
-  const text = normalize(message);
+  const text = normalizeTensionMessage(message);
   const factor = kb.stringing.units.kgf_to_lbs;
 
   const explicit = text.match(
-    /(\d+(?:[.,]\d+)?)\s*(lbs?|pounds?|kgf|kgs|kg|ký)(?![\p{L}])/u,
+    /(\d+(?:[.,]\d+)?)\s*(lbs?|pounds?|kgf|kgs|kg|ký|kí|ky|ki)(?![\p{L}])/u,
   );
 
   if (explicit) {
@@ -665,4 +667,70 @@ export function getTensionHeuristic(skillLevel, kb = loadKnowledge()) {
     lowLbf: Math.min(...tiers.map((item) => item.suggested_range[0])),
     highLbf: Math.max(...tiers.map((item) => item.suggested_range[1])),
   };
+}
+
+// Derived passages from the existing validated KB. Keep source paths for audits;
+// policy/configuration and source metadata are not customer-facing knowledge.
+export function buildKnowledgeDocuments(kb = loadKnowledge()) {
+  const documents = [];
+  const ignored = /^(?:id|source_ids|source_url|url|evidence_type|official_item_code|skill_tension_map|suitability_rules|tension_policy)$/u;
+  const render = (value) => {
+    if (Array.isArray(value)) return value.map(render).filter(Boolean).join("; ");
+    if (value && typeof value === "object") return Object.entries(value)
+      .filter(([key]) => !ignored.test(key) && key !== "triggers_vi")
+      .map(([key, item]) => typeof item === "number" ? `${key}: ${item}` : render(item)).filter(Boolean).join(". ");
+    return typeof value === "string" ? value : "";
+  };
+  const add = (path, category, topic, value, text = render(value)) => {
+    if (!text) return;
+    // Paragraph-sized chunks, retaining full content rather than truncating it.
+    const words = text.split(/\s+/u);
+    for (let offset = 0; offset < words.length; offset += 140) {
+      const body = words.slice(offset, offset + 160).join(" ");
+      documents.push({ id: `${path}:${offset}`, path, category, topic,
+        kind: value?.kind ?? "advisor", sourceIds: value?.source_ids ?? [], text: body,
+        searchText: `${body} ${(value?.triggers_vi ?? []).join(" ")}` });
+    }
+  };
+  for (const topic of kb.consultation_topics) add(`consultation_topics.${topic.id}`, topic.category, topic.id, topic, topic.answer_vi);
+  for (const [section, category] of [["racquet", "rackets"], ["stringing", "strings"]]) {
+    for (const [key, value] of Object.entries(kb[section])) {
+      if (ignored.test(key)) continue;
+      if (Array.isArray(value)) value.forEach((item, i) => add(`${section}.${key}.${i}`, category,
+        section === "racquet" ? "racket_knowledge" : "string_knowledge", item,
+        key === "models" ? `${describeString(item)} ${render(item)}` : render(item)));
+      else add(`${section}.${key}`, category, section === "racquet" ? "racket_knowledge" : "string_knowledge", value);
+    }
+  }
+  return documents;
+}
+
+export async function retrieveKnowledgeHybrid(message, needs = null, kb = loadKnowledge(), options = {}) {
+  const direct = retrieveKnowledge(message, needs, kb);
+  if (direct.tensionRequest || direct.snippets.some((item) => item.topic === "racket_damage")) return direct;
+  // Deterministic routes retain safety and exact model facts. Retrieval extends
+  // recall for paraphrases; embeddings never decide manufacturer limits.
+  const text = foldSearchText(message);
+  const category = /giay|chan be|ban chan|size|phom/u.test(text) ? "shoes"
+    : /cuoc|day|lbs|cang|bg\d|exbolt|aerobite/u.test(text) ? "strings"
+      : /vot|co tay|phan tat|smash|dap cau|than deo|than cung/u.test(text) ? "rackets" : null;
+  const documents = buildKnowledgeDocuments(kb).filter((doc) => !category || doc.category === category);
+  const ranked = await rankHybrid(message, documents, { limit: MAX_SNIPPETS, ...options });
+  if (direct.snippets.length || direct.tensionRequest || !QUESTION.test(normalize(message)) ||
+      /mua|(?:tìm|tư vấn|gợi ý).*?(?:vợt|giày)|ngân sách|triệu/iu.test(message)) return direct;
+  const terms = [...new Set(tokenize(message))];
+  const hits = ranked.hits.filter((hit) => hit.similarity >= 0.62 ||
+    terms.filter((term) => tokenize(hit.document.searchText).includes(term)).length >= Math.max(2, Math.ceil(terms.length * 0.4)));
+  if (!hits.length) return direct;
+  const snippets = hits.map(({ document }) => ({ topic: document.topic, kind: document.kind, text: document.text }));
+  return { ...direct, topics: [...new Set([...direct.topics, ...snippets.map((item) => item.topic)])], snippets,
+    heuristicNotice: "Đây là gợi ý tham khảo, anh/chị nên thử thực tế." };
+}
+
+export async function warmKnowledgeSearch() {
+  if (process.env.HAVIE_SEMANTIC_SEARCH === "false") return "bm25";
+  try {
+    await embedLocally(buildKnowledgeDocuments().map((doc) => doc.searchText));
+    return "hybrid";
+  } catch { return "bm25"; }
 }

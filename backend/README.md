@@ -73,11 +73,15 @@ Backend mặc định chạy tại `http://localhost:3000`; kiểm tra `http://l
 ## API
 
 - `POST /api/auth/register/request-otp`: gửi mã 6 chữ số qua Gmail.
-- `POST /api/auth/register/verify-otp`: xác minh mã, tạo tài khoản và trả JWT.
+- `POST /api/auth/register/verify-otp`: xác minh mã, tạo tài khoản và đặt cookie phiên HttpOnly.
 - `POST /api/auth/register`: trả `410 EMAIL_VERIFICATION_REQUIRED`; không thể bỏ qua xác minh email.
 - `POST /api/auth/login`
 - `GET /api/auth/me`, `GET /api/me`
 - `POST /api/auth/logout`
+- `POST /api/auth/activity`: gia hạn phiên còn hiệu lực khi người dùng có hoạt động thực.
+- `GET /api/auth/providers`, `POST /api/auth/social/:provider/start`, `GET /api/auth/social/:provider/callback`: Google/Facebook và liên kết tài khoản.
+
+Web dùng cookie HttpOnly, hết hạn sau 30 phút không hoạt động; Redis khi có cấu hình, PostgreSQL khi chạy local không có Redis. Hướng dẫn cấu hình, thay đổi API đăng nhập và kiểm thử tải: [deployment/README.md](../deployment/README.md).
 - `GET /api/categories`, `GET /api/brands`, `GET /api/products`, `GET /api/products/:slug`
 - `GET /api/products/:slug/reviews`
 - `GET /api/cart`, `POST /api/cart/items`, `PATCH /api/cart/items/:id`, `DELETE /api/cart/items/:id`
@@ -129,8 +133,23 @@ Bản cập nhật tư vấn ngày 14/11/2026 bổ sung 12 chủ đề trong ch�
 
 ### Chọn vợt phù hợp theo kho kiến thức
 
+Khách nêu "3tr", "ngân sách 3 triệu" hoặc "tầm 3 triệu" được hiểu là giá mục tiêu: từ 1 triệu trở lên dùng khoảng ±200.000 VNĐ (3 triệu → 2.800.000–3.200.000); dưới 1 triệu dùng ±100.000 VNĐ (500k → 400.000–600.000). Khi khách nói "tối đa", "không quá", "chỉ có" hay "có X thôi", số tiền là trần cứng, không được vượt. Giá do backend lọc từ catalog trước khi xếp hạng BM25/semantic; LLM không tự chọn khoảng giá.
+Khi không có kết quả, bot có thể gợi ý hãng khác trong cùng khoảng giá hoặc hỏi khách đổi ngân sách; không tự mở rộng giá để lấy sản phẩm xa mức khách hỏi.
+
 Bot không chỉ lấy vài vợt gần ngân sách nhất. `racquet.suitability_rules` trong `data/havie_badminton_knowledge.json` định nghĩa luật hợp/không hợp (theo trình độ, đánh đơn/đôi, ưu tiên, sở thích trọng lượng/cân bằng/độ cứng) và được kiểm tra khi nạp. `src/services/racketSuitability.js` áp luật đó lên từng vợt đang bán trước khi cắt còn 5 mẫu:
 - Chỉ dùng thông tin cây vợt thật sự có: hạng U của biến thể, độ cứng và điểm cân bằng từ thông số đã duyệt hoặc từ mô tả sản phẩm của shop (câu trả lời ghi rõ "theo mô tả của shop"). Thiếu thông tin nào thì không đoán, vợt đó ở mức "chưa đủ dữ liệu".
 - Loại hẳn vợt trái hướng dẫn (ví dụ thân rất cứng với người mới); vợt "cần lưu ý" (ví dụ 3U với người mới) chỉ được bổ sung khi có ít hơn 3 vợt hợp. Số mẫu đã loại được nói rõ trong câu trả lời.
 - Cùng một sản phẩm có nhiều biến thể thì chọn biến thể hợp nhất (ví dụ 4U thay vì 3U cho người mới). Thứ tự hiển thị: hợp nhất trước, rồi gần ngân sách.
 - Giày chưa có luật nên không bị lọc.
+
+### BM25 và semantic retrieval trên máy
+
+Luồng tư vấn hiện có dùng chung bộ xếp hạng trong `src/services/hybridRetrieval.js`. Kho JSON được chia thành đoạn theo từng mục, có đường dẫn nguồn; không tạo kho kiến thức hay API tư vấn thứ hai. Chỉ kiến thức cho khách được lập chỉ mục, không đưa chỉ thị nội bộ vào câu trả lời. BM25 chuẩn hóa tiếng Việt có/không dấu; semantic dùng embedding BGE-M3 qua Ollama và cosine similarity; hai danh sách được gộp bằng reciprocal rank fusion. Luật trả lời đúng model, quy đổi đơn vị và kiểm tra mức căng vẫn có ưu tiên.
+
+Với vợt, hệ thống xếp hạng theo mô tả công khai và thông số đã xác minh **sau** khi lọc ngân sách, hãng, tình trạng bán và độ hợp, **trước** khi lấy tối đa 5 mẫu. Vợt trái yêu cầu nhẹ/nặng đầu hoặc bị loại vì trình độ không được semantic đưa trở lại. Điểm tìm kiếm không phải chứng cứ xác nhận thông số; lý do tư vấn vẫn lấy từ dữ liệu đã duyệt.
+
+Chạy `ollama pull bge-m3` một lần, để Ollama hoạt động trên máy rồi khởi động backend. Không cần khóa embedding hoặc sửa `.env`. Mặc định dùng `http://127.0.0.1:11434`, model `bge-m3`; chỉ chấp nhận endpoint loopback. Có thể đặt biến tiến trình `HAVIE_EMBEDDING_URL`, `HAVIE_EMBEDDING_MODEL`; đặt `HAVIE_SEMANTIC_SEARCH=false` để chỉ dùng BM25. Vectors được cache trong RAM theo model/endpoint/nội dung, tự thay khi nội dung đổi, giới hạn 2048 mục. Backend làm nóng embedding kiến thức khi khởi động; lần lập chỉ mục đầu có thể mất vài chục giây. Ollama lỗi thì tự dùng BM25, không làm hỏng chat. Groq cho trích xuất nhu cầu/viết câu trả lời vẫn giữ nguyên.
+
+Kết quả BM25 đứng đầu được giữ trong ba kết quả đầu của bước tìm kiến thức để các đoạn liên quan rộng về ngữ nghĩa không đẩy mất đoạn khớp từ khóa cụ thể. Bộ lọc và thứ tự độ hợp vẫn quyết định danh sách vợt; điểm hybrid chỉ xếp hạng tiếp trong cùng mức độ hợp.
+
+Thử nghiệm thực với model local: `node scripts/evaluate-hybrid-retrieval.mjs`. Báo cáo so sánh BM25/hybrid nằm ở `data/hybrid-retrieval-evaluation.json`; bộ câu hỏi nhỏ chỉ là kiểm tra ban đầu, chưa chứng minh độ chính xác cho mọi câu hỏi. API embedding dựa trên [tài liệu Ollama](https://docs.ollama.com/api/embed), model theo [BGE-M3](https://ollama.com/library/bge-m3).

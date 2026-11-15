@@ -273,9 +273,11 @@ function dropClearsForUpdatedFields(patch) {
   };
 }
 
-function hasApproximateBudgetWord(message) {
+function isTargetBudgetMessage(message) {
+  const text = message.normalize("NFC");
+  if (mentionsWord(text, CEILING_WORDS) || /chỉ có|hết cỡ|có\s+\d[^.!?]*thôi/iu.test(text)) return false;
   return /(^|[^\p{L}\p{N}])(tầm|khoảng|cỡ|dự kiến|dự định|xấp xỉ|quanh|ước chừng)(?=$|[^\p{L}\p{N}])/iu
-    .test(message.normalize("NFC"));
+    .test(text) || readBudgetAmounts(text).length === 1;
 }
 
 function normalizeBudgetPatch(patch, message) {
@@ -292,13 +294,17 @@ function normalizeBudgetPatch(patch, message) {
   const hasTarget = Object.hasOwn(updates, "budgetTargetVnd");
   const hasMaximum = Object.hasOwn(updates, "budgetMaxVnd");
 
-  const approximate = hasApproximateBudgetWord(message);
+  const approximate = isTargetBudgetMessage(message);
   const sameAmount =
     hasTarget &&
     hasMaximum &&
     updates.budgetTargetVnd === updates.budgetMaxVnd;
 
-  if (sameAmount && approximate) {
+  if (approximate && readBudgetAmounts(message).length === 1 && (hasTarget || hasMaximum)) {
+    updates.budgetTargetVnd = updates.budgetTargetVnd ?? updates.budgetMaxVnd;
+    delete updates.budgetMaxVnd;
+    if (!clearFields.includes("budgetMaxVnd")) clearFields.push("budgetMaxVnd");
+  } else if (sameAmount && approximate) {
     delete updates.budgetMaxVnd;
   } else if (hasTarget && (sameAmount || (!hasMaximum && !approximate))) {
     updates.budgetMaxVnd = updates.budgetTargetVnd;
@@ -450,11 +456,12 @@ function alignPatchWithMessage(
 
   if (amounts.length === 1) {
     const isTarget =
-      hasApproximateBudgetWord(message) &&
+      isTargetBudgetMessage(message) &&
       !mentionsWord(message, CEILING_WORDS);
 
     if (isTarget) {
       patch.updates.budgetTargetVnd = amounts[0];
+      if (previous.budgetMaxVnd !== null) patch.clearFields.push("budgetMaxVnd");
     } else {
       patch.updates.budgetMaxVnd = amounts[0];
 
@@ -619,7 +626,8 @@ GIÀY:
 NGÂN SÁCH:
 - Tầm/khoảng/dự kiến: budgetTargetVnd.
 - Tối đa/không vượt: budgetMaxVnd.
-- Chỉ nêu số tiền, "ngân sách X": budgetMaxVnd.
+- Chỉ nêu số tiền ("3tr"), "ngân sách X": budgetTargetVnd, tìm quanh mức đó.
+- Chỉ có X / có X thôi: budgetMaxVnd, không vượt số tiền khách có.
 - Tiền là số nguyên VND.
 - 2tr=2000000; 500k=500000.
 - budgetIncludesStringing chỉ dùng cho vợt:

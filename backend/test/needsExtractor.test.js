@@ -86,7 +86,7 @@ test("clearing an unknown field is still rejected", async () => {
   );
 });
 
-test("a plain budget becomes a ceiling", async () => {
+test("a plain budget becomes an approximate target", async () => {
   mockModelPatch({
     updates: { budgetTargetVnd: 8000000 },
     clearFields: [],
@@ -97,8 +97,8 @@ test("a plain budget becomes a ceiling", async () => {
     { ...createEmptyNeeds(), productType: "rackets" },
   );
 
-  assert.equal(needs.budgetMaxVnd, 8000000);
-  assert.equal(needs.budgetTargetVnd, null);
+  assert.equal(needs.budgetMaxVnd, null);
+  assert.equal(needs.budgetTargetVnd, 8000000);
 });
 
 test("a plain budget replaces the earlier target", async () => {
@@ -109,8 +109,8 @@ test("a plain budget replaces the earlier target", async () => {
 
   const needs = await extractRacketNeeds("8 triệu nhé", racketNeeds);
 
-  assert.equal(needs.budgetMaxVnd, 8000000);
-  assert.equal(needs.budgetTargetVnd, null);
+  assert.equal(needs.budgetMaxVnd, null);
+  assert.equal(needs.budgetTargetVnd, 8000000);
 });
 
 test("an approximate budget stays a target", async () => {
@@ -121,6 +121,20 @@ test("an approximate budget stays a target", async () => {
 
   const needs = await extractRacketNeeds("Tầm 3 triệu thôi", racketNeeds);
 
+  assert.equal(needs.budgetTargetVnd, 3000000);
+  assert.equal(needs.budgetMaxVnd, null);
+});
+
+test("a 3tr target overrides an incorrectly extracted ceiling", async () => {
+  mockModelPatch({ updates: { budgetMaxVnd: 3000000 }, clearFields: [] });
+  const needs = await extractRacketNeeds("3tr", { ...racketNeeds, budgetTargetVnd: null, budgetMaxVnd: 2000000 });
+  assert.equal(needs.budgetTargetVnd, 3000000);
+  assert.equal(needs.budgetMaxVnd, null);
+});
+
+test("a plain budget missed by the model replaces the previous ceiling", async () => {
+  mockModelPatch({ updates: {}, clearFields: [] });
+  const needs = await extractRacketNeeds("3tr", { ...racketNeeds, budgetTargetVnd: null, budgetMaxVnd: 3000000 });
   assert.equal(needs.budgetTargetVnd, 3000000);
   assert.equal(needs.budgetMaxVnd, null);
 });
@@ -175,7 +189,7 @@ test("a stopped model raises the unavailable error", async () => {
   );
 });
 
-test("one amount in both budget fields becomes a ceiling", async () => {
+test("one plain amount in both budget fields becomes an approximate target", async () => {
   mockModelPatch({
     updates: { budgetTargetVnd: 8000000, budgetMaxVnd: 8000000 },
     clearFields: [],
@@ -183,8 +197,8 @@ test("one amount in both budget fields becomes a ceiling", async () => {
 
   const needs = await extractRacketNeeds("Ngân sách 8 triệu", racketNeeds);
 
-  assert.equal(needs.budgetMaxVnd, 8000000);
-  assert.equal(needs.budgetTargetVnd, null);
+  assert.equal(needs.budgetMaxVnd, null);
+  assert.equal(needs.budgetTargetVnd, 8000000);
 });
 
 test("one approximate amount in both fields stays a target", async () => {
@@ -307,6 +321,9 @@ for (const [message, field, amount] of [
   ["Tầm 2 triệu rưỡi", "budgetTargetVnd", 2500000],
   ["Có 4tr5 thôi", "budgetMaxVnd", 4500000],
   ["Khoảng 3,5 triệu", "budgetTargetVnd", 3500000],
+  ["3tr", "budgetTargetVnd", 3000000],
+  ["ngân sách 3 triệu", "budgetTargetVnd", 3000000],
+  ["Tối đa 3tr", "budgetMaxVnd", 3000000],
 ]) {
   test(`reads "${message}" as ${field}`, async () => {
     mockModelPatch({ updates: {}, clearFields: [] });
