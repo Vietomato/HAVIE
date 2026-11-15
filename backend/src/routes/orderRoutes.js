@@ -272,7 +272,7 @@ router.get(
     await expireStalePayosOrders({ database: prisma, payos: getPayosClient(), userId: req.user.id });
     const orders = await prisma.order.findMany({
       where: { userId: req.user.id },
-      include: { items: true },
+      include: { items: { include: { variant: { select: { productId: true, product: { select: { isActive: true } } } } } } },
       orderBy: { createdAt: "desc" },
     });
 

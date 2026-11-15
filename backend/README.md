@@ -72,6 +72,21 @@ Backend mặc định chạy tại `http://localhost:3000`; kiểm tra `http://l
 
 ## API
 
+### Đánh giá sản phẩm của khách hàng
+
+- `GET /api/products/:slug/reviews?page=1&pageSize=10`: danh sách đánh giá công khai, có phân trang và nhãn `isVerifiedPurchase`; không trả email, số điện thoại, userId hoặc orderId.
+- `GET /api/reviews/eligibility?productId=...`: khách đã đăng nhập kiểm tra điều kiện và lấy đánh giá hiện tại của chính mình.
+- `POST /api/reviews`: nhận `productId`, `rating` (số nguyên 1–5), `comment` (không bắt buộc, tối đa 2.000 ký tự).
+- `PATCH /api/reviews/:id`: sửa số sao/nhận xét của chính khách; không đổi chủ sở hữu, sản phẩm hay trạng thái hiển thị.
+
+Chỉ tài khoản CUSTOMER có đơn COMPLETED chứa đúng sản phẩm mới được viết/sửa đánh giá. Backend tự xác định người mua và đơn hợp lệ, không tin userId/orderId do client gửi. Mỗi khách có một đánh giá đã xác minh cho mỗi sản phẩm, được bảo vệ bằng partial unique index trong migration `20261115120000_customer_product_reviews`; đánh giá nhập trước đây được giữ nguyên và không tự gắn nhãn đã mua.
+
+Thao tác lưu khóa dòng sản phẩm trong transaction rồi tính lại trung bình/số lượng từ các đánh giá đang hiển thị, tránh sai số khi nhiều người cùng gửi. Nhận xét được hiển thị như văn bản, không render HTML. API giữ kiểm tra session/CSRF và giới hạn tần suất gửi. Cache catalog trong worker nhận thay đổi được xóa; worker khác có TTL tối đa 10 giây. Giao diện đang mở cập nhật điểm/số lượng trực tiếp từ kết quả lưu.
+
+Giao diện hỗ trợ gửi/sửa từ trang chi tiết hoặc từng sản phẩm trong đơn đã hoàn thành. Kiểm thử API với PostgreSQL/Redis riêng: dựng `deployment/compose.loadtest.yml`, đặt các biến môi trường test theo hướng dẫn triển khai, migrate rồi chạy `node scripts/check-customer-reviews.mjs`. Script chỉ chấp nhận database localhost tên `havie_loadtest` với `NODE_ENV=test`; không tạo đánh giá/tài khoản giả trong shop. Báo cáo kiểm thử local được sinh tại `data/customer-reviews-check.json` và không đưa vào Git.
+
+### Tài khoản
+
 - `POST /api/auth/register/request-otp`: gửi mã 6 chữ số qua Gmail.
 - `POST /api/auth/register/verify-otp`: xác minh mã, tạo tài khoản và đặt cookie phiên HttpOnly.
 - `POST /api/auth/register`: trả `410 EMAIL_VERIFICATION_REQUIRED`; không thể bỏ qua xác minh email.

@@ -73,6 +73,7 @@ export function createChatAdmission({ database = prisma, redis = getRedis, maxim
 }
 
 const cache = new Map();
+export function invalidatePublicCatalogCache() { cache.clear(); }
 export function publicCatalogCache(req, res, next) {
   if (req.method !== 'GET' || !/^\/api\/(?:products(?:\/[^/]+)?|brands|categories)$/u.test(req.path)) return next();
   const key = req.originalUrl;

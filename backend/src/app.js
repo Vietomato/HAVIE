@@ -11,6 +11,7 @@ import chatRoutes from './routes/chatRoutes.js';
 import { UPLOADS_DIR } from './services/imageStorage.js';
 import { allowedOrigins, csrfProtection, createRateLimiter, publicCatalogCache } from './middlewares/trafficControl.js';
 import socialAuthRoutes from './routes/socialAuthRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -45,6 +46,7 @@ app.get('/api/me', authMiddleware, getCurrentUser);
 app.use('/api', catalogRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/reviews', reviewRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 

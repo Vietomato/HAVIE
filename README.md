@@ -10,6 +10,7 @@ Customers can browse rackets, shoes, strings and accessories, add items to a car
 - **Auth**: email/password and OTP signup, server-managed HttpOnly cookie sessions with 30-minute idle expiry, password reset, and configurable Google login.
 - **Payments**: bank-transfer QR through [payOS](https://payos.vn), with webhook-based order confirmation.
 - **Orders**: order history, status tracking, customer-side cancellation.
+- **Product reviews**: customers with completed purchases can rate products from 1–5 stars, leave a comment and edit their own review from the product page or order history. Verified-purchase badges, review pagination and rating totals are supported.
 - **AI advisor**: conversational product recommendations. Chats are stored per account in PostgreSQL, so they survive a reload. Supports Groq Cloud or a local Ollama model.
   Standalone tension questions and lbs/kg conversions take priority over a pending shopping questionnaire, without losing saved shopping preferences. The assistant accepts `Ibs` typos and unaccented conversion questions. Short follow-ups such as “còn 26?” reuse the source unit only from the immediately preceding conversion in the same conversation; at most eight text messages are read locally, without sending raw history to the AI. Tension safety still requires verified specifications for the exact racket and variant.
 - **Admin dashboard**: create/edit/hide products, upload images (local disk or Cloudinary), and update order status.

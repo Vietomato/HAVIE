@@ -190,11 +190,19 @@ export const orderApi = {
 };
 
 export const reviewApi = {
+  getEligibility: async (productId) => {
+    const res = await apiClient.request('/reviews/eligibility?' + queryString({ productId }));
+    return res.data;
+  },
   createReview: async (payload) => {
     const res = await apiClient.request('/reviews', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
+    return res.data;
+  },
+  updateReview: async (id, payload) => {
+    const res = await apiClient.request(`/reviews/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify(payload) });
     return res.data;
   },
 };
