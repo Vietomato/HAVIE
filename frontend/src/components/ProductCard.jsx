@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Star, Heart, ChevronRight, LoaderCircle } from 'lucide-react';
 import { money } from '../data';
+import { m } from './motion.jsx';
 import { useStore } from '../context/StoreContext.jsx';
 import {
   FALLBACK_PRODUCT_IMAGE,
   PRODUCT_BADGE_LABELS,
   getDiscountPercent,
   getProductPath,
+  usesShoePicker,
   hasValidPrice,
   isVariantPurchasable,
   showFallbackImage,
@@ -27,7 +29,7 @@ export default function ProductCard({ product }) {
     (lowest, item) => (!lowest || item.price < lowest.price ? item : lowest),
     null,
   );
-  const hasOptions = variants.length > 1;
+  const hasOptions = variants.length > 1 || usesShoePicker(product);
   const hasPriceRange = new Set(displayVariants.map(({ price }) => price)).size > 1;
   const priceLabel = !variant ? '' : !inStock ? 'Giá niêm yết ' : hasPriceRange ? 'Từ ' : '';
   const discount = getDiscountPercent(variant?.price, variant?.oldPrice);
@@ -62,15 +64,23 @@ export default function ProductCard({ product }) {
             </span>
           )}
         </div>
-        <button
+        <m.button
           type="button"
           className={'favorite ' + (isFavorite ? 'selected' : '')}
           aria-label={'Yêu thích ' + product.name}
           aria-pressed={isFavorite}
           onClick={() => toggleFavorite(product.id)}
         >
-          <Heart size={19} fill={isFavorite ? 'currentColor' : 'none'} aria-hidden="true" />
-        </button>
+          <m.span
+            key={String(isFavorite)}
+            style={{ display: 'inline-flex' }}
+            initial={{ scale: isFavorite ? 0.4 : 1 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 14 }}
+          >
+            <Heart size={19} fill={isFavorite ? 'currentColor' : 'none'} aria-hidden="true" />
+          </m.span>
+        </m.button>
       </div>
       <div className="product-meta">
         <span>{product.category?.name || 'Cầu lông'}</span>

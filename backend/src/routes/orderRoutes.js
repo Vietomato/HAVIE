@@ -7,10 +7,21 @@ import {
 } from "../middlewares/authMiddleware.js";
 import { asyncHandler, HttpError } from "../utils/http.js";
 import { claimVoucher, releaseVoucher } from "../services/voucherService.js";
+import {
+  PAYMENT_METHOD_PAYOS,
+  createPaymentLink,
+  expireStalePayosOrders,
+  getPayosClient,
+  syncPayosOrder,
+  cancelUnpaidOrder,
+  toPayosOrderCode,
+  toPublicPayment,
+} from "../services/payosService.js";
 
 const router = Router();
 const SHIPPING_FEE = 30000;
-const CANCELLABLE_STATUSES = ["PENDING_CONFIRMATION", "CONFIRMED"];
+const CANCELLABLE_STATUSES = ["PENDING_PAYMENT", "PENDING_CONFIRMATION", "CONFIRMED"];
+const PAYMENT_METHODS = ["COD", PAYMENT_METHOD_PAYOS];
 
 router.use(authMiddleware);
 
@@ -45,11 +56,20 @@ router.post(
       throw new HttpError(400, "VALIDATION_ERROR", "Mã giảm giá không hợp lệ.");
     }
 
-    if (paymentMethod !== "COD") {
+    if (!PAYMENT_METHODS.includes(paymentMethod)) {
       throw new HttpError(
         400,
         "UNSUPPORTED_PAYMENT_METHOD",
-        "Hiện tại chỉ hỗ trợ thanh toán COD.",
+        "Phương thức thanh toán không được hỗ trợ.",
+      );
+    }
+    const payFirst = paymentMethod === PAYMENT_METHOD_PAYOS;
+    const payos = payFirst ? getPayosClient() : null;
+    if (payFirst && !payos) {
+      throw new HttpError(
+        503,
+        "PAYMENT_UNAVAILABLE",
+        "Thanh toán chuyển khoản QR tạm thời chưa khả dụng. Bạn vui lòng chọn thanh toán khi nhận hàng.",
       );
     }
 
@@ -195,8 +215,9 @@ router.post(
         data: {
           orderCode: createOrderCode(),
           userId: req.user.id,
-          status: "PENDING_CONFIRMATION",
-          paymentMethod: "COD",
+          // Chuyển khoản QR: chờ khách trả tiền trước; COD: chờ shop xác nhận đơn.
+          status: payFirst ? "PENDING_PAYMENT" : "PENDING_CONFIRMATION",
+          paymentMethod,
           paymentStatus: "PENDING",
           subtotal,
           shippingFee: SHIPPING_FEE,
@@ -227,8 +248,35 @@ router.post(
       return createdOrder;
     });
 
+    if (!payFirst) {
+      res.status(201).json({ data: order, message: "Đặt hàng thành công." });
+      return;
+    }
+
+    // Tạo link thanh toán ở payOS. Nếu payOS lỗi thì hủy đơn và trả hàng về kho, khách có thể thử lại.
+    let paidOrder;
+    try {
+      const link = await createPaymentLink({ payos, order, items: order.items });
+      paidOrder = await prisma.order.update({
+        where: { id: order.id },
+        data: link,
+        include: { items: true },
+      });
+    } catch (error) {
+      console.error("[payos] Không tạo được link thanh toán:", error.message);
+      await cancelUnpaidOrder(prisma, order, {
+        paymentStatus: "FAILED",
+        reason: "Không tạo được link thanh toán",
+      });
+      throw new HttpError(
+        502,
+        "PAYMENT_LINK_FAILED",
+        "Không tạo được mã thanh toán. Vui lòng thử lại hoặc chọn thanh toán khi nhận hàng.",
+      );
+    }
+
     res.status(201).json({
-      data: order,
+      data: { ...paidOrder, payment: toPublicPayment(paidOrder) },
       message: "Đặt hàng thành công.",
     });
   }),
@@ -238,6 +286,7 @@ router.get(
   "/my",
   requireCustomer,
   asyncHandler(async (req, res) => {
+    await expireStalePayosOrders({ database: prisma, payos: getPayosClient(), userId: req.user.id });
     const orders = await prisma.order.findMany({
       where: { userId: req.user.id },
       include: { items: true },
@@ -256,6 +305,38 @@ router.get(
   }),
 );
 
+// Thông tin thanh toán của một đơn chuyển khoản. Khách mở trang này (và trang tự tải lại) thì backend
+// hỏi payOS trạng thái thật, nên đơn được cập nhật ngay khi tiền về.
+router.get(
+  "/:id/payment",
+  requireCustomer,
+  asyncHandler(async (req, res) => {
+    const current = await prisma.order.findFirst({
+      where: { id: req.params.id, userId: req.user.id },
+      include: { items: true },
+    });
+
+    if (!current) {
+      throw new HttpError(404, "ORDER_NOT_FOUND", "Không tìm thấy đơn hàng.");
+    }
+    if (current.paymentMethod !== PAYMENT_METHOD_PAYOS) {
+      throw new HttpError(409, "NOT_QR_PAYMENT", "Đơn hàng này không thanh toán bằng mã QR.");
+    }
+
+    const order = await syncPayosOrder({
+      database: prisma,
+      payos: getPayosClient(),
+      order: current,
+    });
+    const fresh = await prisma.order.findUnique({
+      where: { id: order.id },
+      include: { items: true },
+    });
+
+    res.json({ data: { order: fresh, payment: toPublicPayment(fresh) } });
+  }),
+);
+
 router.post(
   "/:id/cancel",
   requireCustomer,
@@ -264,6 +345,20 @@ router.post(
 
     if (!requiredText(reason)) {
       throw new HttpError(400, "VALIDATION_ERROR", "Vui lòng nhập lý do hủy.");
+    }
+
+    const payos = getPayosClient();
+    const waiting = await prisma.order.findFirst({
+      where: {
+        id: req.params.id,
+        userId: req.user.id,
+        paymentMethod: PAYMENT_METHOD_PAYOS,
+        status: "PENDING_PAYMENT",
+      },
+      include: { items: true },
+    });
+    if (waiting && payos) {
+      await syncPayosOrder({ database: prisma, payos, order: waiting });
     }
 
     const order = await prisma.$transaction(async (tx) => {
@@ -335,6 +430,12 @@ router.post(
         include: { items: true },
       });
     });
+
+    if (waiting && payos) {
+      await payos.paymentRequests
+        .cancel(toPayosOrderCode(order.orderCode), "Khách hủy đơn")
+        .catch((error) => console.error("[payos] Không hủy được link:", error.message));
+    }
 
     res.json({ data: order, message: "Đã hủy đơn hàng." });
   }),

@@ -29,6 +29,7 @@ enum OrderStatus {
 enum PaymentMethod {
   COD
   MOCK_QR
+  PAYOS
 }
 
 enum PaymentStatus {
@@ -92,6 +93,19 @@ model EmailVerificationChallenge {
   updatedAt    DateTime @updatedAt
 
   @@map("email_verification_challenges")
+}
+
+model PasswordResetChallenge {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  otpHash    String
+  expiresAt  DateTime
+  attempts   Int      @default(0)
+  lastSentAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("password_reset_challenges")
 }
 
 model Address {
@@ -297,6 +311,11 @@ model Order {
   note            String?
   cancelReason    String?
   paidAt          DateTime?
+  // Thanh toán chuyển khoản QR qua payOS
+  paymentLinkId    String?
+  checkoutUrl      String?
+  qrCode           String?
+  paymentExpiresAt DateTime?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 

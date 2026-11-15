@@ -1,0 +1,83 @@
+@layer components {
+  .brand-strip {
+    margin-block: 8px 56px;
+    text-align: center;
+  }
+  .brand-strip .eyebrow {
+    display: block;
+    margin-bottom: 24px;
+  }
+  .brand-strip-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 16px;
+    align-items: center;
+    justify-items: center;
+    margin: 0;
+    padding: 24px 16px;
+    list-style: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  .brand-strip-list li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+  }
+  .brand-strip-own .logo {
+    height: 44px;
+  }
+
+  /* Full-colour logo tile shared by the home strip and the About page. */
+  .brand-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: var(--radius-md);
+    transition:
+      transform 200ms var(--ease),
+      box-shadow 200ms var(--ease);
+  }
+  .brand-tile:hover,
+  .brand-tile:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: var(--surface-shadow);
+  }
+  .brand-logo {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: 40px;
+    border-radius: 6px;
+  }
+
+  /* Square-ish logos get extra height so they weigh the same as the wide ones. */
+  .brand-logo-lining {
+    height: 52px;
+  }
+  .brand-logo-mizuno {
+    height: 48px;
+  }
+
+  @media (min-width: 900px) {
+    .brand-strip-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px 36px;
+      padding: 26px 40px;
+    }
+    .brand-logo {
+      height: 48px;
+    }
+    .brand-logo-lining {
+      height: 64px;
+    }
+    .brand-logo-mizuno {
+      height: 58px;
+    }
+  }
+}

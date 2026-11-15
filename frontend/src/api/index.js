@@ -36,6 +36,22 @@ export const authApi = {
     return res.data;
   },
 
+  requestPasswordReset: async (email) => {
+    const res = await apiClient.request('/auth/password/forgot', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+    return res.data;
+  },
+
+  resetPassword: async ({ email, code, newPassword }) => {
+    const res = await apiClient.request('/auth/password/reset', {
+      method: 'POST',
+      body: JSON.stringify({ email, code, newPassword }),
+    });
+    return res.data;
+  },
+
   loginMockAdmin: async (payload) => {
     const res = await apiClient.request('/auth/mock-admin', {
       method: 'POST',
@@ -153,6 +169,11 @@ export const orderApi = {
   getMyOrders: async (params = {}) => {
     const qs = queryString(params);
     const res = await apiClient.request(`/orders/my${qs ? `?${qs}` : ''}`);
+    return res.data;
+  },
+
+  getOrderPayment: async (orderId) => {
+    const res = await apiClient.request(`/orders/${encodeURIComponent(orderId)}/payment`);
     return res.data;
   },
 

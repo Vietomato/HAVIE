@@ -27,10 +27,12 @@ export const ORDER_STATUS_LABELS = {
 
 export const PAYMENT_METHOD = {
   COD: 'COD',
+  PAYOS: 'PAYOS',
 };
 
 export const PAYMENT_METHOD_LABELS = {
   COD: 'Thanh toán khi nhận hàng (COD)',
+  PAYOS: 'Chuyển khoản qua mã QR',
 };
 
 export const PAYMENT_STATUS = {

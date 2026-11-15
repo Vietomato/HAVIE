@@ -381,3 +381,191 @@
     color: var(--muted);
   }
 }
+
+/* Chọn phương thức thanh toán và màn thanh toán chuyển khoản QR */
+@layer components {
+  .payment-options {
+    display: grid;
+    gap: 10px;
+  }
+  .payment-option {
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+  .payment-option:not(.selected) {
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  .payment-option.selected {
+    box-shadow: 0 0 0 3px #087cff22;
+  }
+  .payment-option:hover {
+    border-color: var(--secondary);
+  }
+  .payment-tag {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: #fee2e6;
+    color: #b90825;
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+
+  .qr-payment {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+  }
+  .qr-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .qr-head h1 {
+    font-size: 34px;
+    line-height: 1.1;
+  }
+  .qr-head p {
+    margin-top: 6px;
+    color: var(--muted);
+  }
+  .qr-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #e6f0ff;
+    color: #0560ca;
+    font-size: 14px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .qr-timer.expired {
+    background: #fee2e6;
+    color: #b90825;
+  }
+  .qr-body {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 28px;
+    align-items: start;
+    margin-top: 20px;
+  }
+  .qr-code {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+  }
+  .qr-code img {
+    width: 100%;
+    max-width: 288px;
+    height: auto;
+  }
+  .qr-code-placeholder {
+    display: grid;
+    width: 288px;
+    max-width: 100%;
+    aspect-ratio: 1;
+    place-items: center;
+    color: var(--muted);
+    text-align: center;
+  }
+  .qr-code small {
+    color: var(--muted);
+  }
+  .qr-info {
+    display: grid;
+    gap: 2px;
+  }
+  .qr-row {
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .qr-row > span {
+    color: var(--muted);
+  }
+  .qr-row-strong {
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+  }
+  .qr-copy {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--link);
+    cursor: pointer;
+  }
+  .qr-copy:hover {
+    background: #e6f0ff;
+  }
+  .qr-hint {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .qr-waiting {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    color: #0560ca;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .qr-waiting svg {
+    animation: qr-spin 1s linear infinite;
+  }
+  @keyframes qr-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .qr-waiting svg {
+      animation: none;
+    }
+  }
+  .qr-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  .qr-actions .btn svg {
+    margin-left: 6px;
+  }
+  @media (max-width: 760px) {
+    .qr-payment {
+      padding: 16px;
+    }
+    .qr-body {
+      grid-template-columns: 1fr;
+    }
+    .qr-head h1 {
+      font-size: 28px;
+    }
+  }
+}

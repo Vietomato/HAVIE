@@ -4,6 +4,7 @@ import authRoutes, { getCurrentUser } from './routes/authRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
 import catalogRoutes from './routes/catalogRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import { authMiddleware } from './middlewares/authMiddleware.js';
 import chatRoutes from './routes/chatRoutes.js';
@@ -38,6 +39,7 @@ app.use('/api', catalogRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/vouchers', voucherRoutes);
+app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.use((req, res) => {

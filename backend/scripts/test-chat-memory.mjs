@@ -35,19 +35,20 @@ try {
     }
 
     if (index === 1) {
-      assert.equal(result.action, "ask_followup");
+      // Đủ trình độ, lối chơi và ngân sách: bot tư vấn ngay, không hỏi "đã gồm cước chưa".
       assert.equal(result.needs.budgetTargetVnd, 2_000_000);
-      assert.equal(result.needs.budgetIncludesStringing, null);
+      assert.ok(
+        ["no_reviewed_match", "review_candidates", "suggest_alternatives"]
+          .includes(result.action),
+      );
+      assert.doesNotMatch(result.reply, /đã (?:bao )?gồm.*cước chưa/i);
+      if (result.candidates.length) assert.match(result.reply, /chưa gồm tiền căng cước/i);
     }
 
     if (index === 2) {
       assert.equal(result.needs.budgetTargetVnd, 2_000_000);
+      // Khách nói thêm về cước: không đưa lại danh sách vợt như thể vừa đổi nhu cầu.
       assert.equal(result.needs.budgetIncludesStringing, true);
-
-      assert.ok(
-        ["no_reviewed_match", "review_candidates"]
-          .includes(result.action),
-      );
     }
 
     previousNeeds = result.needs;

@@ -1,4 +1,3 @@
-
 # Dependencies
 node_modules/
 
@@ -10,6 +9,12 @@ dist/
 .env.*
 !.env.example
 
+# Generated Prisma client
+backend/src/generated/prisma
+
+# Product images uploaded through the admin page
+backend/uploads/
+
 # IDE
 .idea/
 .vscode/
@@ -20,15 +25,6 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
-
-# Local environment
-.env
-.env.*
-!.env.example
-
-# Dependencies and build
-node_modules/
-dist/
 
 # Database backups and repair reports
 *.dump

@@ -1,17 +1,23 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ShoppingBag, ArrowRight, Plus, Minus, Star, Truck, ShieldCheck, Heart, RotateCw, PackageSearch } from 'lucide-react';
 import { formatDate, money } from '../data';
-import { catalogApi } from '../api';
+import { useProduct, useProductReviews, useProducts } from '../api/queries.js';
 import { useStore } from '../context/StoreContext.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import { BlockSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
+import { RevealItem } from '../components/motion.jsx';
+import { describeScalePosition, parseSpecScale } from '../utils/specScale.js';
 import {
   FALLBACK_PRODUCT_IMAGE,
   getDefaultVariant,
+  getProductSpecifications,
+  getShoeColor,
+  getShoeSize,
+  usesShoePicker,
   getDiscountPercent,
   hasValidPrice,
   isVariantActive,
@@ -81,67 +87,42 @@ function Stars({ value }) {
 
 export default function Detail() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const productQuery = useProduct(id);
+  const product = productQuery.data || null;
+  const loading = productQuery.isPending || (productQuery.isError && productQuery.isFetching);
+  const loadError = productQuery.error;
   const [selectedVariant, setSelectedVariant] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
-  const [reviews, setReviews] = useState([]);
-  const [reviewsError, setReviewsError] = useState('');
-  const [related, setRelated] = useState([]);
   const [qty, setQty] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState(null);
-  const [retryCount, setRetryCount] = useState(0);
   const [pendingAction, setPendingAction] = useState(null);
+  const [syncedProductId, setSyncedProductId] = useState(null);
+
+  // Secondary sections must not take the product page down when they fail.
+  const reviewsQuery = useProductReviews(product?.id);
+  const reviews = reviewsQuery.data?.data || [];
+  const reviewsError = reviewsQuery.error
+    ? reviewsQuery.error.message || 'Chưa tải được đánh giá.'
+    : '';
+  const categorySlugForRelated = product?.category?.slug;
+  const relatedQuery = useProducts(
+    { category: categorySlugForRelated, pageSize: 5 },
+    { enabled: Boolean(categorySlugForRelated) },
+  );
+  const related = (relatedQuery.data?.data || []).filter((x) => x.id !== product?.id).slice(0, 4);
+
+  // Reset the per-product selection whenever a different product is shown.
+  if (product && product.id !== syncedProductId) {
+    setSyncedProductId(product.id);
+    setSelectedVariant(usesShoePicker(product) ? null : getDefaultVariant(product));
+    setSelectedColor(null);
+    setActiveImage(0);
+    setQty(1);
+  }
+
   const { add, favorites, toggleFavorite } = useStore();
   const navigate = useNavigate();
   usePageTitle(product?.name || 'Chi tiết sản phẩm');
-
-  useEffect(() => {
-    let active = true;
-    setLoading(true);
-    setLoadError(null);
-    setReviews([]);
-    setReviewsError('');
-    setRelated([]);
-    setActiveImage(0);
-    setQty(1);
-
-    catalogApi
-      .getProduct(id)
-      .then((p) => {
-        if (!active) return;
-        setProduct(p);
-        setSelectedVariant(getDefaultVariant(p));
-
-        // Secondary sections must not take the product page down when they fail.
-        catalogApi
-          .getProductReviews(p.id)
-          .then((res) => active && setReviews(res.data || []))
-          .catch((err) => {
-            if (active) setReviewsError(err.message || 'Chưa tải được đánh giá.');
-          });
-        if (p.category?.slug) {
-          catalogApi
-            .getProducts({ category: p.category.slug, pageSize: 5 })
-            .then((res) => {
-              if (active) setRelated((res.data || []).filter((x) => x.id !== p.id).slice(0, 4));
-            })
-            .catch(() => {});
-        }
-      })
-      .catch((err) => {
-        if (!active) return;
-        setProduct(null);
-        setLoadError(err);
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [id, retryCount]);
 
   if (loading) {
     return (
@@ -170,7 +151,7 @@ export default function Detail() {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={() => setRetryCount(retryCount + 1)}
+              onClick={() => productQuery.refetch()}
             >
               <RotateCw size={17} aria-hidden="true" /> THỬ LẠI
             </button>
@@ -185,7 +166,24 @@ export default function Detail() {
 
   const allVariants = product.variants || [];
   const variants = allVariants.filter(isVariantActive);
-  const variantImages = getImages(getAttributes(selectedVariant).imageUrls);
+  const shoePicker = usesShoePicker(product);
+  const shoeColors = shoePicker
+    ? [...new Set(variants.map(getShoeColor).filter(Boolean))]
+    : [];
+  const needsColorChoice = shoeColors.length > 1;
+  const activeColor = needsColorChoice ? selectedColor : shoeColors[0] || null;
+  const shoeSizeVariants = shoePicker
+    ? variants.filter((v) => !shoeColors.length || getShoeColor(v) === activeColor)
+    : [];
+  const shoeSizes = [...new Set(shoeSizeVariants.map(getShoeSize).filter(Boolean))].sort((a, b) =>
+    a.localeCompare(b, undefined, { numeric: true }),
+  );
+  const selectedSize = selectedVariant ? getShoeSize(selectedVariant) : null;
+  const previewVariant =
+    selectedVariant ||
+    (shoePicker && activeColor ? variants.find((v) => getShoeColor(v) === activeColor) : null);
+  const variantImages = getImages(getAttributes(previewVariant).imageUrls);
+  const specifications = getProductSpecifications(product, selectedVariant);
   const productImages = getImages(product.imageUrls);
   // Shared images may show another color, so never mix them into a variant's gallery.
   const galleryImages = variantImages.length ? variantImages : productImages;
@@ -203,6 +201,23 @@ export default function Detail() {
   const maxStock = canBuy ? selectedVariant.stockQuantity : 0;
   const isFavorite = favorites.includes(product.id);
   const reviewCount = product.reviewCount ?? reviews.length;
+
+  const chooseShoeColor = (color) => {
+    setSelectedColor(color);
+    const sameSize = selectedSize
+      ? variants.find((v) => getShoeColor(v) === color && getShoeSize(v) === selectedSize)
+      : null;
+    setSelectedVariant(sameSize && isVariantPurchasable(sameSize) ? sameSize : null);
+    setActiveImage(0);
+    setQty(1);
+  };
+
+  const missingShoeChoice =
+    shoePicker && !selectedVariant
+      ? needsColorChoice && !activeColor
+        ? 'Vui lòng chọn mẫu và size trước khi đặt hàng'
+        : 'Vui lòng chọn size trước khi đặt hàng'
+      : '';
 
   const handleAddToCart = async () => {
     setPendingAction('add');
@@ -277,7 +292,6 @@ export default function Detail() {
           <div className="detail-title">
             <h1>
               {product.name}
-              <span className="dot">.</span>
             </h1>
             <button
               type="button"
@@ -311,7 +325,79 @@ export default function Detail() {
           </div>
           {product.description && <p className="detail-description">{product.description}</p>}
 
-          {variants.length > 0 ? (
+          {shoePicker ? (
+            <>
+              {needsColorChoice && (
+                <fieldset className="variant-picker">
+                  <legend>Chọn mẫu / màu sắc</legend>
+                  <div className="variant-chips">
+                    {shoeColors.map((color) => (
+                      <label
+                        key={color}
+                        className={'variant-chip' + (activeColor === color ? ' active' : '')}
+                      >
+                        <input
+                          type="radio"
+                          className="sr-only"
+                          name="shoe-color"
+                          checked={activeColor === color}
+                          onChange={() => chooseShoeColor(color)}
+                        />
+                        {color}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              )}
+              <fieldset className="variant-picker" disabled={needsColorChoice && !activeColor}>
+                <legend>Chọn size</legend>
+                <div className="variant-chips">
+                  {shoeSizes.map((size) => {
+                    const sizeVariant = shoeSizeVariants.find((v) => getShoeSize(v) === size);
+                    const available = Boolean(activeColor || !needsColorChoice) &&
+                      isVariantPurchasable(sizeVariant);
+                    return (
+                      <label
+                        key={size}
+                        className={
+                          'variant-chip' +
+                          (selectedSize === size ? ' active' : '') +
+                          (available ? '' : ' is-disabled')
+                        }
+                      >
+                        <input
+                          type="radio"
+                          className="sr-only"
+                          name="shoe-size"
+                          checked={selectedSize === size}
+                          disabled={!available}
+                          onChange={() => {
+                            setSelectedVariant(sizeVariant);
+                            setQty(1);
+                          }}
+                        />
+                        {size}
+                        {!available && activeColor && <span className="sr-only"> (hết hàng)</span>}
+                      </label>
+                    );
+                  })}
+                </div>
+                <p
+                  className={
+                    'variant-stock-info ' + (canBuy && maxStock <= 5 ? 'low' : '')
+                  }
+                  role={missingShoeChoice ? 'status' : undefined}
+                >
+                  {missingShoeChoice ||
+                    (!canBuy
+                      ? 'Sản phẩm tạm hết hàng'
+                      : maxStock <= 5
+                        ? `Chỉ còn ${maxStock} sản phẩm`
+                        : 'Còn hàng')}
+                </p>
+              </fieldset>
+            </>
+          ) : variants.length > 0 ? (
             <fieldset className="variant-picker">
               <legend>{categorySlug === 'shoes' ? 'Chọn size / màu sắc' : 'Chọn phiên bản'}</legend>
               <div className="variant-chips">
@@ -350,7 +436,6 @@ export default function Detail() {
                   : maxStock <= 5
                     ? `Chỉ còn ${maxStock} sản phẩm`
                     : 'Còn hàng'}
-                {selectedVariant?.sku && <span> · Mã: {selectedVariant.sku}</span>}
               </p>
             </fieldset>
           ) : (
@@ -387,7 +472,13 @@ export default function Detail() {
               onClick={handleAddToCart}
             >
               <ShoppingBag size={18} aria-hidden="true" />
-              {pendingAction === 'add' ? 'ĐANG THÊM...' : canBuy ? 'THÊM VÀO GIỎ' : 'TẠM HẾT HÀNG'}
+              {pendingAction === 'add'
+                ? 'ĐANG THÊM...'
+                : canBuy
+                  ? 'THÊM VÀO GIỎ'
+                  : missingShoeChoice
+                    ? needsColorChoice && !activeColor ? 'CHỌN MẪU VÀ SIZE' : 'CHỌN SIZE'
+                    : 'TẠM HẾT HÀNG'}
             </button>
             {canBuy && (
               <button
@@ -409,13 +500,15 @@ export default function Detail() {
               <ShieldCheck size={19} aria-hidden="true" /> Bảo hành chính hãng
             </li>
           </ul>
-          {product.specs?.length > 0 && (
+          {specifications.length > 0 && (
             <div className="detail-specs">
               <h2>Thông số & đặc tính</h2>
               <ul>
-                {product.specs.map((s, index) => (
-                  <li key={`${index}-${s}`}>{s}</li>
-                ))}
+                {specifications.map((s, index) => {
+                  const scale = parseSpecScale(s);
+                  if (!scale) return <li key={`${index}-${s}`}>{s}</li>;
+                  return (<li key={`${index}-${s}`} className="spec-scale" aria-label={`${scale.label}: ${describeScalePosition(scale, scale.label)}`}><div className="spec-scale__top"><span className="spec-scale__label">{scale.label}</span><strong className="spec-scale__value">{describeScalePosition(scale, scale.label)}</strong></div><div className="spec-scale__track" aria-hidden="true">{Array.from({ length: scale.steps }, (_, step) => (<span key={step} className={step === scale.position ? 'active' : ''} />))}</div><div className="spec-scale__ends" aria-hidden="true"><span>{scale.left}</span><span>{scale.right}</span></div></li>);
+                })}
               </ul>
             </div>
           )}
@@ -424,7 +517,7 @@ export default function Detail() {
 
       <section className="reviews-section" id="reviews">
         <h2>
-          ĐÁNH GIÁ KHÁCH HÀNG ({reviewCount})<span className="dot">.</span>
+          ĐÁNH GIÁ KHÁCH HÀNG ({reviewCount})
         </h2>
         {reviewsError ? (
           <p className="muted-text" role="alert">
@@ -451,11 +544,13 @@ export default function Detail() {
       {related.length > 0 && (
         <section className="related">
           <h2>
-            CÓ THỂ BẠN CŨNG THÍCH<span className="dot">.</span>
+            CÓ THỂ BẠN CŨNG THÍCH
           </h2>
           <div className="products-grid">
-            {related.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {related.map((p, index) => (
+              <RevealItem key={p.id} index={index}>
+                <ProductCard product={p} />
+              </RevealItem>
             ))}
           </div>
         </section>

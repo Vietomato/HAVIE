@@ -18,6 +18,9 @@
   .footer-logo span {
     color: var(--primary);
   }
+  .footer-logo .logo {
+    height: 54px;
+  }
   .footer p {
     margin-top: 10px;
     color: var(--border);

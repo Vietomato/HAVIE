@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="HAVIE">
+  <title>HAVIE</title>
+  <!-- Concept C: square icon for favicon / avatar / app tile. -->
+  <rect width="120" height="120" rx="26" fill="#101827"/>
+  <g transform="translate(42 16) skewX(-12)">
+    <path transform="scale(0.7)" fill="#fff" d="M0 0H22V39H56V0H78V100H56V61H22V100H0Z"/>
+  </g>
+  <path d="M20 96H64L58 106H14Z" fill="#DC0A2D"/>
+  <path d="M70 96H104L98 106H64Z" fill="#fff" opacity="0.85"/>
+</svg>

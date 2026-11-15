@@ -1,70 +1,204 @@
-# HAVIE Badminton Store
+# HAVIE
 
-Dự án hệ thống website bán hàng cầu lông HAVIE (Frontend React + Backend Node.js / Prisma).
+A full-stack e-commerce web app for a badminton gear shop, with an AI-powered product advisor.
 
-## Cấu trúc thư mục dự án
+Customers can browse rackets, shoes, strings and accessories, add items to a cart, pay by bank-transfer QR (payOS), and track their orders. A built-in chat assistant helps them pick the right racket or string tension. Admins manage products and orders from a dashboard.
+
+## Features
+
+- **Storefront**: home page, category listing with filters and pagination, product detail with variants (size, weight, grip), favorites, cart, checkout.
+- **Auth**: email + password sign-up with a 6-digit OTP sent over email (Gmail SMTP), JWT sessions, password reset.
+- **Payments**: bank-transfer QR through [payOS](https://payos.vn), with webhook-based order confirmation.
+- **Orders**: order history, status tracking, customer-side cancellation.
+- **AI advisor**: conversational product recommendations. Chats are stored per account in PostgreSQL, so they survive a reload. Supports Groq Cloud or a local Ollama model.
+- **Admin dashboard**: create/edit/hide products, upload images (local disk or Cloudinary), and update order status.
+
+## Tech Stack
+
+| Layer    | Stack |
+| -------- | ----- |
+| Frontend | React 19, Vite 6, React Router 7, TanStack Query, Tailwind CSS v4, Framer Motion, lucide-react |
+| Backend  | Node.js (ESM), Express 4, Prisma 6, PostgreSQL |
+| Auth     | JWT, bcrypt, Nodemailer (OTP email) |
+| Payments | payOS (`@payos/node`) |
+| AI       | Groq Cloud or Ollama (switchable via env) |
+| Storage  | Local `uploads/` or Cloudinary |
+
+## Project Structure
 
 ```text
 HAVIE/
-├── frontend/               # Giao diện ứng dụng React + Vite
-│   ├── public/             # Ảnh minh họa SVG, assets tĩnh
-│   ├── src/                # React: App, components, pages, context, api và styles
-│   ├── package.json
-│   └── vite.config.js      # Proxy sẵn /api -> http://localhost:3000
-│
-├── backend/                # Dịch vụ Backend API (Node.js/Express + Prisma)
-│   ├── src/                # server.js, app.js, routes, controllers
-│   ├── package.json
-│   └── README.md
-│
-├── API_CONTRACT_HAVIE_v1.md # Bản đặc tả API v1 chuẩn mực
-├── Rule.md                  # Quy định kiến trúc công nghệ
+├── frontend/              # React + Vite single-page app
+│   ├── public/            # Static assets
+│   └── src/
+│       ├── api/           # HTTP client and service wrappers
+│       ├── components/    # Header, Footer, ProductCard, AdvisorChat, ...
+│       ├── context/       # StoreProvider (auth, cart, favorites)
+│       ├── pages/         # Home, Listing, Detail, Cart, Checkout, ... (+ admin/)
+│       ├── styles/        # Tailwind layers and component styles
+│       └── utils/
+├── backend/               # Express + Prisma API
+│   ├── prisma/            # schema, migrations, seed data
+│   ├── scripts/           # catalog import and advisor tooling
+│   ├── src/
+│   │   ├── routes/        # auth, catalog, cart, orders, payments, chat, admin
+│   │   ├── services/      # business logic (advisor, payOS, email, ...)
+│   │   ├── middlewares/
+│   │   └── utils/
+│   └── test/              # node:test suites
+├── Rule.md                # Project conventions
 └── README.md
 ```
 
-## Tổ chức frontend
+## Getting Started
 
-- `src/main.jsx`: khởi tạo React và import stylesheet tổng.
-- `src/App.jsx`: khai báo routing và bọc ứng dụng trong `StoreProvider`.
-- `src/context/StoreContext.jsx`: state và thao tác dùng chung cho tài khoản, giỏ hàng, yêu thích; export `StoreProvider` và `useStore`.
-- `src/components/`: `Header`, `Footer`, `Shell`, `ProductCard` dùng chung.
-- `src/pages/`: `Home`, `Listing`, `Detail`, `Favorites`, `Cart`, `Checkout`, `Auth`, `AccountOrders`; trang quản trị nằm tại `pages/admin/` (`Admin.jsx`, `ProductFormModal.jsx`).
-- `/account/orders`: trang lịch sử và theo dõi trạng thái đơn riêng của khách đã đăng nhập.
-- Chat tư vấn yêu cầu đăng nhập; danh sách và nội dung hội thoại được lưu theo tài khoản trong PostgreSQL nên còn sau khi reload.
-- Khung chat có thể kéo cạnh trái để đổi chiều rộng, cạnh trên để đổi chiều cao hoặc góc trên-trái để đổi cả hai; giới hạn theo viewport, tối thiểu 320×420px trên màn hình lớn và chừa lề 20px. Có thể phóng toàn màn hình bằng nút trên tiêu đề; nhấn `Esc` để thoát.
-- `src/api/`: HTTP client và các dịch vụ gọi backend thật; mock đã được bỏ theo cập nhật từ branch `dev`.
-- `src/utils/product.js`: nhãn sản phẩm và hàm hiển thị tên biến thể dùng chung.
-- `src/style.tailwind.css`: điểm import Tailwind và các stylesheet trong `styles/`.
-- `src/styles/`: chia theo base, header, home, products, campaign, footer, catalog, detail, auth, cart-checkout, admin, responsive và account-product-extras.
+### Prerequisites
 
-Các stylesheet giữ nguyên selector và nằm trong `@layer components`. Thứ tự import giữ nguyên cascade cũ; `responsive.css` giữ các breakpoint 600/900/1200px và reduced-motion, còn `account-product-extras.css` chứa các phần bổ sung ở cuối stylesheet cũ. `feedback.css` chứa style dùng chung cho field, skeleton, toast và dialog (`Modal` dùng thẻ `<dialog>` gốc). `@source not inline("container")` tắt utility `.container` của Tailwind để `.container` trong `base.css` có hiệu lực. Một số selector dùng chung vẫn ở nhóm gốc (ví dụ `.btn` trong `home.css`, input của checkout trong `auth.css`), vì vậy các file này được nạp toàn cục, không import riêng theo route. Khi sửa giao diện, ưu tiên utility trực tiếp trong JSX theo `Rule.md`.
+- Node.js 20+
+- PostgreSQL 14+
+- (Optional) A Gmail account with an App Password for OTP emails
+- (Optional) A Groq API key or a local [Ollama](https://ollama.com) install for the AI advisor
 
-Kiểm tra biên dịch bằng `cd frontend && npm run build`. Build không thay thế việc kiểm tra giao diện ở mobile/desktop và các trạng thái tương tác.
+### 1. Clone and install
 
-## Hướng dẫn khởi chạy
+```bash
+git clone https://github.com/Vietomato/HAVIE.git
+cd HAVIE
 
-### 1. Khởi chạy Backend
+cd backend && npm install
+cd ../frontend && npm install
+```
+
+### 2. Configure the backend
+
 ```bash
 cd backend
-npm install
-npm run dev
+cp .env.example .env
 ```
-Backend dùng `backend/.env` để kết nối PostgreSQL. Để nạp dữ liệu sản phẩm lần đầu, làm theo hướng dẫn seed trong [backend/README.md](backend/README.md).
 
-### 2. Khởi chạy Frontend
+Edit `backend/.env`. At minimum you need:
+
+| Variable | Description |
+| -------- | ----------- |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `JWT_SECRET` | Random secret, 32+ bytes |
+| `OTP_HASH_SECRET` | A different random secret, 32+ bytes |
+
+Generate a secret with:
+
 ```bash
+node -e "console.log(require('node:crypto').randomBytes(48).toString('base64url'))"
+```
+
+Optional variables:
+
+| Variable | Description |
+| -------- | ----------- |
+| `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | Gmail address and App Password for sending OTP emails |
+| `ADMIN_EMAIL_ALLOWLIST` | Comma-separated emails that get the Admin role after verification |
+| `CLOUDINARY_URL` | `cloudinary://KEY:SECRET@CLOUD`. If empty, uploads go to `backend/uploads` |
+| `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY` | payOS credentials |
+| `AI_PROVIDER` | `groq` or `ollama` (default) |
+| `GROQ_API_KEY`, `GROQ_MODEL` | Required when `AI_PROVIDER=groq` |
+| `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | Used when `AI_PROVIDER=ollama` |
+
+Never commit `.env` or share these values.
+
+### 3. Set up the database
+
+```bash
+cd backend
+npx prisma generate
+npx prisma migrate deploy   # apply migrations
+npm run prisma:seed         # load categories, brands, products, variants
+```
+
+The seed is idempotent: products are upserted by slug and variants by SKU.
+
+> **Warning**: never run `prisma migrate reset` against a database that has data you care about.
+
+### 4. Run the app
+
+In two terminals:
+
+```bash
+# Terminal 1: API on http://localhost:3000
+cd backend
+npm run dev
+
+# Terminal 2: web app on http://localhost:5174
 cd frontend
-npm install
 npm run dev
 ```
-Truy cập: [http://localhost:5173](http://localhost:5173). Frontend gọi backend thật qua `/api`; khi backend hoặc PostgreSQL không sẵn sàng, lỗi kết nối sẽ được hiển thị thay vì dùng dữ liệu mẫu.
 
-Frontend xử lý CSS bằng Tailwind CSS v4 thông qua plugin Vite. Các style component nằm trong `@layer components` và ưu tiên `@apply` Tailwind utilities; arbitrary values được giữ cho các kích thước, màu sắc và giá trị tùy chỉnh để bảo toàn thiết kế. Inline styles đã được chuyển sang utility classes. Các reset và breakpoint gốc được giữ nguyên.
+Open [http://localhost:5174](http://localhost:5174). Vite proxies `/api` and `/uploads` to the backend. You can check the API with `http://localhost:3000/api/health`.
 
-## Clean Racing (Option B)
+### Local admin account (development only)
 
-The frontend theme is centralized in `frontend/src/styles/theme.css`: racing red CTAs, electric blue accents, navy text, and light surfaces. Small blue text uses a darker accessible variant. Header navigation uses text links; the current section has a red underline and matches both pathname and category query. White text sits on `--primary-solid` because the brand `--primary` only reaches 4.23:1. Typography uses Segoe UI with system fallbacks supporting Vietnamese.
+To try the admin dashboard without going through OTP, add this to `backend/.env`:
 
-Component styles remain in `frontend/src/styles/`, in Tailwind's components layer. Existing 600/900/1200px breakpoints are retained; the header stays on one row from 900px up and uses a menu with search below that. Images retain their original artwork colors, and order status badges retain semantic status colors.
+```env
+NODE_ENV=development
+MOCK_ADMIN_ENABLED=true
+MOCK_ADMIN_EMAIL=admin.test@example.com
+MOCK_ADMIN_PASSWORD=your-local-test-password
+```
 
-Validation: production build passed; React render checks covered eight navigation URLs; source UTF-8 validation passed. Full desktop/mobile visual regression and authenticated admin/checkout interaction checks remain pending.
+Restart the backend, then use the dev-only admin login button on the sign-in page. This is rejected outside `NODE_ENV=development`.
+
+## Scripts
+
+**Backend** (`cd backend`)
+
+| Command | Description |
+| ------- | ----------- |
+| `npm run dev` | Start the API with file watching |
+| `npm start` | Start the API |
+| `npm test` | Run the test suite (`node --test`) |
+| `npm run prisma:generate` | Generate the Prisma client |
+| `npm run prisma:migrate` | Create/apply a dev migration |
+| `npm run prisma:seed` | Seed the database |
+
+**Frontend** (`cd frontend`)
+
+| Command | Description |
+| ------- | ----------- |
+| `npm run dev` | Start the Vite dev server |
+| `npm run build` | Production build |
+| `npm run preview` | Preview the production build |
+
+## API Overview
+
+All routes are prefixed with `/api`.
+
+| Area | Endpoints |
+| ---- | --------- |
+| Auth | `POST /auth/register/request-otp`, `POST /auth/register/verify-otp`, `POST /auth/login`, `POST /auth/logout`, `GET /auth/me` |
+| Catalog | `GET /categories`, `GET /brands`, `GET /products`, `GET /products/:slug`, `GET /products/:slug/reviews` |
+| Cart | `GET /cart`, `POST /cart/items`, `PATCH /cart/items/:id`, `DELETE /cart/items/:id` |
+| Orders | `POST /orders`, `GET /orders/my`, `POST /orders/:id/cancel` |
+| Chat (auth) | `GET/POST /chat/conversations`, `GET/PATCH/DELETE /chat/conversations/:id`, `POST /chat/conversations/:id/messages` |
+| Admin (role `ADMIN`) | `GET/POST /admin/products`, `PATCH /admin/products/:id`, `GET /admin/orders`, `PATCH /admin/orders/:id/status` |
+
+OTP codes expire after 10 minutes, can be resent after 60 seconds, and allow at most 5 wrong attempts. See [backend/README.md](backend/README.md) for more detail on database migrations, the AI provider, and catalog tooling.
+
+## Conventions
+
+Frontend code follows [Rule.md](Rule.md): Tailwind CSS v4 utilities first, mobile-first layouts, semantic HTML, and the existing 600 / 900 / 1200px breakpoints. Check the UI at a 375px viewport and on desktop before opening a PR.
+
+Before submitting changes:
+
+```bash
+cd backend && npm test
+cd frontend && npm run build
+```
+
+## Contributing
+
+1. Branch off `main` (`feature/your-change`).
+2. Keep commits focused, using conventional prefixes such as `feat(home): ...` or `fix(cart): ...`.
+3. Run the checks above, then open a pull request.
+
+## License
+
+ISC

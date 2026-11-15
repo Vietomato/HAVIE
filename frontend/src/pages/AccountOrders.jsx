@@ -76,7 +76,7 @@ export default function AccountOrders() {
         <div>
           <span className="eyebrow">THEO DÕI ĐƠN HÀNG</span>
           <h1>
-            ĐƠN HÀNG CỦA TÔI<span className="dot">.</span>
+            ĐƠN HÀNG CỦA TÔI
           </h1>
           <p>Trạng thái đơn tự cập nhật mỗi 30 giây.</p>
         </div>
@@ -185,7 +185,12 @@ export default function AccountOrders() {
                           </small>
                         )}
                       </span>
-                      {['PENDING_CONFIRMATION', 'CONFIRMED'].includes(order.status) && (
+                      {order.status === 'PENDING_PAYMENT' && order.paymentMethod === 'PAYOS' && (
+                        <Link className="btn-mini" to={'/account/orders/' + order.id + '/pay'}>
+                          Thanh toán ngay
+                        </Link>
+                      )}
+                      {['PENDING_PAYMENT', 'PENDING_CONFIRMATION', 'CONFIRMED'].includes(order.status) && (
                         <button
                           type="button"
                           className="btn-mini btn-mini-danger"

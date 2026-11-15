@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 160" role="img" aria-label="HAVIE Badminton">
+  <title>HAVIE Badminton</title>
+  <!-- Concept A: speed wordmark. The "I" is a shuttlecock. -->
+  <g transform="translate(42 18) skewX(-12)">
+    <g fill="var(--logo-ink, #101827)">
+      <path d="M0 0H22V39H56V0H78V100H56V61H22V100H0Z"/>
+      <path transform="translate(88 0)" fill-rule="evenodd" d="M31 0H59L90 100H66L60 78H30L24 100H0Z M37 58H53L45 32.3Z"/>
+      <path transform="translate(170 0)" d="M0 0H24L45 68L66 0H90L58 100H32Z"/>
+    </g>
+    <g transform="translate(270 0)">
+      <path fill="#DC0A2D" d="M14 80L-6 14Q22 2 50 14L30 80Z"/>
+      <circle cx="22" cy="89" r="11" fill="#DC0A2D"/>
+      <path d="M18 80L4 12M22 80V6M26 80L40 12" stroke="#fff" stroke-width="3" fill="none"/>
+      <path d="M-3 24Q22 12 47 24" stroke="#fff" stroke-width="3.5" fill="none"/>
+    </g>
+    <g fill="var(--logo-ink, #101827)">
+      <path transform="translate(338 0)" d="M0 0H70V20H22V40H62V60H22V80H70V100H0Z"/>
+    </g>
+  </g>
+  <g transform="translate(46 146)">
+    <path d="M0 0H26L20 -9H-6Z" fill="#DC0A2D" transform="translate(0 4)"/>
+    <text x="40" y="4" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="9" fill="var(--logo-tag, #087CFF)">BADMINTON</text>
+  </g>
+</svg>

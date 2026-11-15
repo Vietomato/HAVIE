@@ -52,7 +52,7 @@ export default function Cart() {
         <div>
           <span className="eyebrow">LỰA CHỌN CỦA BẠN</span>
           <h1>
-            GIỎ HÀNG CỦA BẠN<span className="dot">.</span>
+            GIỎ HÀNG CỦA BẠN
           </h1>
         </div>
         {items.length > 0 && <span>{count} sản phẩm</span>}
@@ -117,11 +117,17 @@ export default function Cart() {
                   <div className="qty-control" role="group" aria-label={'Số lượng ' + product.name}>
                     <button
                       type="button"
-                      aria-label="Giảm số lượng"
-                      disabled={busy || item.quantity <= 1}
-                      onClick={() => changeQuantity(item, item.quantity - 1)}
+                      aria-label={item.quantity <= 1 ? 'Xóa khỏi giỏ hàng' : 'Giảm số lượng'}
+                      disabled={busy}
+                      onClick={() =>
+                        item.quantity <= 1 ? removeItem(item) : changeQuantity(item, item.quantity - 1)
+                      }
                     >
-                      <Minus size={15} aria-hidden="true" />
+                      {item.quantity <= 1 ? (
+                        <Trash2 size={15} aria-hidden="true" />
+                      ) : (
+                        <Minus size={15} aria-hidden="true" />
+                      )}
                     </button>
                     <output>{item.quantity}</output>
                     <button

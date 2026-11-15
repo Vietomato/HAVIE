@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "yonex-bg65",
+    "page_url": "https://www.yonex.com/bg65",
+    "original_url": "https://www.yonex.com/media/catalog/product/b/g/bg65_ex_pac_1.png",
+    "local_path": "images/yonex-bg65.png",
+    "sha256": "a03ef216395a48218bf7d9ecbaa193ff4b3cd8e92000d5cc22ae2a1a700afb9a",
+    "width": 2500,
+    "height": 3750,
+    "format": "PNG",
+    "watermark_removed": false,
+    "acquired_from": "Yonex official website"
+  },
+  {
+    "slug": "yonex-bg66-ultimax",
+    "page_url": "https://www.yonex.com/bg66um",
+    "original_url": "https://www.yonex.com/media/catalog/product/b/g/bg66um_001-1.png",
+    "local_path": "images/yonex-bg66-ultimax.png",
+    "sha256": "96d5c0c03d775683a5f8ea51aef1951053638e7bcf85cbeceab20f242696d7e8",
+    "width": 2500,
+    "height": 3750,
+    "format": "PNG",
+    "watermark_removed": false,
+    "acquired_from": "Yonex official website"
+  },
+  {
+    "slug": "yonex-bg80",
+    "page_url": "https://www.yonex.com/bg80",
+    "original_url": "https://www.yonex.com/media/catalog/product/b/g/bg80yx_004-1.png",
+    "local_path": "images/yonex-bg80.png",
+    "sha256": "2c352d4187ce811cb919f77ca060b5d38e7b41dad993014c4839d63a40d33990",
+    "width": 2500,
+    "height": 3750,
+    "format": "PNG",
+    "watermark_removed": false,
+    "acquired_from": "Yonex official website"
+  },
+  {
+    "slug": "yonex-exbolt-63",
+    "page_url": "https://www.yonex.com/bgxb63",
+    "original_url": "https://www.yonex.com/media/catalog/product/b/g/bgxb63_ex_pac_022.png",
+    "local_path": "images/yonex-exbolt-63.png",
+    "sha256": "7e67ab847f33c68bd1334c2b2d7e84603ce00a5d9261d004f0f85adc69193e60",
+    "width": 2500,
+    "height": 3750,
+    "format": "PNG",
+    "watermark_removed": false,
+    "acquired_from": "Yonex official website"
+  },
+  {
+    "slug": "yonex-exbolt-65",
+    "page_url": "https://www.yonex.com/bgxb65",
+    "original_url": "https://www.yonex.com/media/catalog/product/b/g/bgxb65_ex_pac_003.png",
+    "local_path": "images/yonex-exbolt-65.png",
+    "sha256": "3e66d3b485f3b14422c1b4ae427ea89d6e5d9dc3f1f660b6a765e9a11ac43b2d",
+    "width": 2500,
+    "height": 3750,
+    "format": "PNG",
+    "watermark_removed": false,
+    "acquired_from": "Yonex official website"
+  },
+  {
+    "slug": "yonex-exbolt-68",
+    "page_url": "https://www.yonex.com/bgxb68",
+    "original_url": "https://www.yonex.com/media/catalog/product/b/g/bgxb68_ex_pac_686.png",
+    "local_path": "images/yonex-exbolt-68.png",
+    "sha256": "5bc20385b7d451cd6a2b77005f0e5fb97c0569663d688c676ae2fbda10ea7529",
+    "width": 2500,
+    "height": 3750,
+    "format": "PNG",
+    "watermark_removed": false,
+    "acquired_from": "Yonex official website"
+  },
+  {
+    "slug": "yonex-aerobite",
+    "page_url": "https://www.yonex.com/bgab",
+    "original_url": "https://www.yonex.com/media/catalog/product/b/g/bgab_114_ex_pac_1_1.png",
+    "local_path": "images/yonex-aerobite.png",
+    "sha256": "dd9006ce7748d5a5db07c9a9b68d83a7518f0fedfc24f0c0b6de40b337746bf8",
+    "width": 2500,
+    "height": 3750,
+    "format": "PNG",
+    "watermark_removed": false,
+    "acquired_from": "Yonex official website"
+  }
+]

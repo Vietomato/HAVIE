@@ -13,6 +13,7 @@ import {
   assertVoucherConsistent,
   validateVoucherPayload,
 } from "../utils/voucher.js";
+import { expireStalePayosOrders, getPayosClient } from "../services/payosService.js";
 
 const router = Router();
 
@@ -242,6 +243,7 @@ router.patch(
 router.get(
   "/orders",
   asyncHandler(async (req, res) => {
+    await expireStalePayosOrders({ database: prisma, payos: getPayosClient() });
     const orders = await prisma.order.findMany({
       include: {
         items: true,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { useQueries } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Heart } from 'lucide-react';
 import { catalogApi } from '../api';
@@ -8,34 +9,28 @@ import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import { ProductGridSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
+import { RevealItem } from '../components/motion.jsx';
 
 export default function Favorites() {
   usePageTitle('Sản phẩm yêu thích');
   const { favorites, toggleFavorite } = useStore();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(favorites.length > 0);
+  // Snapshot of the saved ids: un-favoriting filters the list below without refetching.
+  const [savedIds] = useState(favorites);
+  const results = useQueries({
+    queries: savedIds.map((id) => ({
+      queryKey: ['product', id],
+      queryFn: () => catalogApi.getProduct(id),
+    })),
+  });
+  const loading = results.some((r) => r.isPending);
+  const products = results.filter((r) => r.data).map((r) => r.data);
 
-  // Loaded once: un-favoriting filters the list below without refetching.
+  // Products that no longer exist cannot be shown, so drop them from the saved list.
   useEffect(() => {
-    let active = true;
-
-    Promise.allSettled(favorites.map((id) => catalogApi.getProduct(id))).then((results) => {
-      if (!active) return;
-      setProducts(results.filter((r) => r.status === 'fulfilled').map((r) => r.value));
-      setLoading(false);
-
-      // Products that no longer exist cannot be shown, so drop them from the saved list.
-      results.forEach((result, index) => {
-        if (result.status === 'rejected' && result.reason?.status === 404) {
-          toggleFavorite(favorites[index]);
-        }
-      });
+    results.forEach((result, index) => {
+      if (result.error?.status === 404 && favorites.includes(savedIds[index])) toggleFavorite(savedIds[index]);
     });
-
-    return () => {
-      active = false;
-    };
-  }, []);
+  }, [results.map((r) => r.status).join()]);
 
   const visible = products.filter((product) => favorites.includes(product.id));
 
@@ -46,7 +41,7 @@ export default function Favorites() {
         <div>
           <span className="eyebrow">DANH SÁCH CỦA BẠN</span>
           <h1>
-            SẢN PHẨM YÊU THÍCH<span className="dot">.</span>
+            SẢN PHẨM YÊU THÍCH
           </h1>
           <p>Danh sách được lưu trên trình duyệt này.</p>
         </div>
@@ -56,8 +51,10 @@ export default function Favorites() {
         <ProductGridSkeleton count={Math.min(favorites.length, 4)} />
       ) : visible.length ? (
         <div className="products-grid">
-          {visible.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {visible.map((product, index) => (
+            <RevealItem key={product.id} index={index}>
+              <ProductCard product={product} />
+            </RevealItem>
           ))}
         </div>
       ) : (

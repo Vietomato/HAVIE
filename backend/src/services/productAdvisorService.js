@@ -1,5 +1,63 @@
 import prisma from "../config/prisma.js";
 
+export const MANUFACTURER_SPEC_HOSTS = new Set([
+  "sg.lining.studio", "ae.lining.studio", "vnm.mizuno.com", "shop.au.victorsport.com",
+  "us.yonex.com", "www.yonex.com",
+]);
+
+export function validSpecSource(source) {
+  try {
+    const url = new URL(source?.url);
+    return url.protocol === "https:" && !url.username && !url.password &&
+      MANUFACTURER_SPEC_HOSTS.has(url.hostname) && /^\d{4}-\d{2}-\d{2}$/u.test(source.checkedAt);
+  } catch { return false; }
+}
+
+// Imported specs are validated per field, so missing tension does not hide known flex.
+// The old manually approved record remains a compatible fallback for untouched SKUs.
+export function readRacketSpecs(attributes, { sku, productSlug, legacyEnabled = true } = {}) {
+  const data = attributes?.manufacturerSpecs;
+  if (data !== undefined) {
+    if (!data || data.schemaVersion !== 1 || data.identityStatus !== "SOURCE_VARIANT_ID_MATCH" ||
+        data.sku !== sku || data.productSlug !== productSlug ||
+        !/^CAT-[A-Z]+-\d+$/u.test(sku ?? "") ||
+        String(data.sourceVariantId) !== sku.split("-").at(-1)) return null;
+    const sourced = (field) => validSpecSource(data.fieldSources?.[field]) &&
+      !(data.blockedFields ?? []).includes(field);
+    const specs = {
+      shaftFlex: sourced("shaftFlex") && ["flexible", "medium", "stiff", "extra_stiff"].includes(data.shaftFlex) ? data.shaftFlex : null,
+      balanceType: sourced("balanceType") && ["head_light", "even", "head_heavy"].includes(data.balanceType) ? data.balanceType : null,
+      weightClass: sourced("weightClass") && /^(?:[2-6]|3\.5)U$/u.test(data.weightClass ?? "") ? data.weightClass : null,
+      averageWeightG: null,
+      stringingMinLbf: null,
+      stringingMaxLbf: null,
+      sourceKind: "manufacturer",
+    };
+    const tension = data.manufacturerTension;
+    if (sourced("manufacturerTension") && tension?.unit === "lbf" &&
+        (!tension.weightClass || tension.weightClass === specs.weightClass) &&
+        Number.isFinite(tension.maxLbf) && tension.maxLbf > 0 && tension.maxLbf <= 50) {
+      if (tension.type === "manufacturer_range" && Number.isFinite(tension.minLbf) &&
+          tension.minLbf > 0 && tension.minLbf <= tension.maxLbf) {
+        specs.stringingMinLbf = tension.minLbf;
+        specs.stringingMaxLbf = tension.maxLbf;
+      } else if (tension.type === "manufacturer_max" && tension.minLbf === null) {
+        specs.stringingMaxLbf = tension.maxLbf;
+      }
+    }
+    return [specs.shaftFlex, specs.balanceType, specs.weightClass, specs.stringingMaxLbf].some((value) => value !== null) ? specs : null;
+  }
+  const checked = validateAdvisorSpecs(attributes);
+  if (!legacyEnabled || checked.errors.length || checked.specs?.reviewStatus !== "APPROVED") return null;
+  return {
+    shaftFlex: checked.specs.shaftFlex, balanceType: checked.specs.balanceType ?? null,
+    averageWeightG: checked.specs.averageWeightG,
+    stringingMinLbf: checked.specs.stringingAdvice.minLbf,
+    stringingMaxLbf: checked.specs.stringingAdvice.maxLbf,
+    sourceKind: "approved",
+  };
+}
+
  export function validateAdvisorSpecs(attributes) {
   const specs = attributes?.advisor;
   const errors = [];

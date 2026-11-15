@@ -85,6 +85,10 @@
   a.rating:hover span:last-child {
     text-decoration: underline;
   }
+  .rating + small {
+    display: block;
+    margin-top: 6px;
+  }
   .rating > span:last-child {
     color: var(--muted);
     font-weight: 400;
@@ -305,5 +309,61 @@
   .review-header time {
     color: var(--muted);
     font-size: 13px;
+  }
+}
+
+/* Thông số dạng thang đo (độ cứng, điểm cân bằng) */
+@layer components {
+  .detail-specs ul {
+    list-style-position: outside;
+  }
+  .detail-specs li.spec-scale {
+    margin: 10px 0 14px -20px;
+    padding: 12px 14px;
+    list-style: none;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    line-height: 1.4;
+  }
+  .spec-scale__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .spec-scale__label {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .spec-scale__value {
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 800;
+  }
+  .spec-scale__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 4px;
+  }
+  .spec-scale__track span {
+    height: 8px;
+    border-radius: 999px;
+    background: #e2e8f0;
+  }
+  .spec-scale__track span.active {
+    background: var(--primary-solid, #dc0a2d);
+    box-shadow: 0 0 0 3px #dc0a2d26;
+  }
+  .spec-scale__ends {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
   }
 }
