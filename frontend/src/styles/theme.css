@@ -1,8 +1,10 @@
 /* Clean Racing / Option B. Shared semantic tokens for every storefront and admin view. */
 @layer components {
   :root {
-    /* System stack: renders Vietnamese diacritics reliably without a webfont download. */
-    --font-ui: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* Be Vietnam Pro (tự host, có sẵn bộ dấu tiếng Việt), dự phòng bằng font hệ thống. */
+    --font-ui: "Be Vietnam Pro", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* Tiêu đề lớn: chữ hẹp, đậm, kiểu thể thao. */
+    --font-display: "Barlow Condensed", "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
     --primary: #F5092E;
     --secondary: #087CFF;
     --ink: #101827;

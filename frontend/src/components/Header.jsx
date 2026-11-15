@@ -1,8 +1,11 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, UserRound, ShoppingBag, Menu, X, ShieldCheck, ClipboardList, Heart } from 'lucide-react';
+import { Search, Menu, X, ShieldCheck } from 'lucide-react';
+import { OrdersIcon, FavoriteIcon, PlayerIcon, ShuttleBagIcon } from './SportIcons.jsx';
 import { useStore } from '../context/StoreContext.jsx';
+import { m } from './motion.jsx';
+import Logo from './Logo.jsx';
 
 export default function Header() {
   const { count, account, favorites } = useStore();
@@ -28,14 +31,14 @@ export default function Header() {
     pathname === '/products' && new URLSearchParams(search).get('category') === 'rackets';
   const activeItem =
     pathname === '/'
-      ? hash === '#about'
+      ? 'home'
+      : pathname === '/about'
         ? 'about'
-        : 'home'
-      : pathname === '/products' || pathname.startsWith('/products/')
-        ? isCollection
-          ? 'collection'
-          : 'store'
-        : null;
+        : pathname === '/products' || pathname.startsWith('/products/')
+          ? isCollection
+            ? 'collection'
+            : 'store'
+          : null;
   const navProps = (item) => ({
     className: activeItem === item ? 'active' : undefined,
     'aria-current': activeItem === item ? 'page' : undefined,
@@ -70,8 +73,7 @@ export default function Header() {
     <header className="site-header">
       <div className="container header-inner">
         <Link to="/" className="brand" aria-label="Trang chủ HAVIE">
-          HAVIE<span>.</span>
-          <small>CỬA HÀNG CẦU LÔNG</small>
+          <Logo />
         </Link>
         <nav
           id="main-nav"
@@ -88,9 +90,9 @@ export default function Header() {
             Cửa hàng
           </Link>
           <Link to="/products?category=rackets" {...navProps('collection')}>
-            Bộ sưu tập
+            Vợt cầu lông
           </Link>
-          <Link to="/#about" {...navProps('about')}>
+          <Link to="/about" {...navProps('about')}>
             Về chúng tôi
           </Link>
           {account?.role === 'CUSTOMER' && (
@@ -119,7 +121,7 @@ export default function Header() {
               aria-current={pathname === '/account/orders' ? 'page' : undefined}
               title="Lịch sử đơn hàng"
             >
-              <ClipboardList size={22} aria-hidden="true" />
+              <OrdersIcon size={22} aria-hidden="true" />
             </Link>
           )}
           <Link
@@ -128,8 +130,18 @@ export default function Header() {
             aria-label={'Sản phẩm yêu thích: ' + favorites.length}
             title="Sản phẩm yêu thích"
           >
-            <Heart size={22} aria-hidden="true" />
-            {favorites.length > 0 && <span aria-hidden="true">{favorites.length}</span>}
+            <FavoriteIcon size={22} aria-hidden="true" />
+            {favorites.length > 0 && (
+              <m.span
+                key={favorites.length}
+                aria-hidden="true"
+                initial={{ scale: 0.4 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 12 }}
+              >
+                {favorites.length}
+              </m.span>
+            )}
           </Link>
           <Link
             to="/auth"
@@ -137,7 +149,7 @@ export default function Header() {
             aria-label={account ? 'Tài khoản của bạn' : 'Đăng nhập'}
             title={account?.fullName || 'Đăng nhập'}
           >
-            <UserRound size={22} aria-hidden="true" />
+            <PlayerIcon size={22} aria-hidden="true" />
           </Link>
           <Link
             to="/cart"
@@ -145,8 +157,18 @@ export default function Header() {
             aria-label={'Giỏ hàng có ' + count + ' sản phẩm'}
             title="Giỏ hàng"
           >
-            <ShoppingBag size={22} aria-hidden="true" />
-            {count > 0 && <span aria-hidden="true">{count}</span>}
+            <ShuttleBagIcon size={22} aria-hidden="true" />
+            {count > 0 && (
+              <m.span
+                key={count}
+                aria-hidden="true"
+                initial={{ scale: 0.4 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 12 }}
+              >
+                {count}
+              </m.span>
+            )}
           </Link>
           <button
             type="button"

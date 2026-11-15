@@ -36,6 +36,31 @@ export const authApi = {
     return res.data;
   },
 
+  requestPasswordReset: async (email) => {
+    const res = await apiClient.request('/auth/password/forgot', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+    return res.data;
+  },
+
+  resetPassword: async ({ email, code, newPassword }) => {
+    const res = await apiClient.request('/auth/password/reset', {
+      method: 'POST',
+      body: JSON.stringify({ email, code, newPassword }),
+    });
+    return res.data;
+  },
+
+  loginMockAdmin: async (payload) => {
+    const res = await apiClient.request('/auth/mock-admin', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    if (res.data?.accessToken) apiClient.setToken(res.data.accessToken);
+    return res.data;
+  },
+
   logout: async () => {
     try {
       await apiClient.request('/auth/logout', { method: 'POST' });
@@ -147,6 +172,11 @@ export const orderApi = {
     return res.data;
   },
 
+  getOrderPayment: async (orderId) => {
+    const res = await apiClient.request(`/orders/${encodeURIComponent(orderId)}/payment`);
+    return res.data;
+  },
+
   cancelOrder: async (orderId, reason) => {
     const res = await apiClient.request(`/orders/${encodeURIComponent(orderId)}/cancel`, {
       method: 'POST',
@@ -162,6 +192,53 @@ export const reviewApi = {
       method: 'POST',
       body: JSON.stringify(payload),
     });
+    return res.data;
+  },
+};
+
+export const chatApi = {
+  getConversations: async () => {
+    const res = await apiClient.request('/chat/conversations');
+    return res.data;
+  },
+
+  getConversation: async (conversationId) => {
+    const res = await apiClient.request(
+      `/chat/conversations/${encodeURIComponent(conversationId)}`,
+    );
+    return res.data;
+  },
+
+  createConversation: async () => {
+    const res = await apiClient.request('/chat/conversations', { method: 'POST' });
+    return res.data;
+  },
+
+  renameConversation: async (conversationId, title) => {
+    const res = await apiClient.request(
+      `/chat/conversations/${encodeURIComponent(conversationId)}`,
+      { method: 'PATCH', body: JSON.stringify({ title }) },
+    );
+    return res.data;
+  },
+
+  deleteConversation: async (conversationId) => {
+    const res = await apiClient.request(
+      `/chat/conversations/${encodeURIComponent(conversationId)}`,
+      { method: 'DELETE' },
+    );
+    return res.data;
+  },
+
+  sendMessage: async (conversationId, message, signal) => {
+    const res = await apiClient.request(
+      `/chat/conversations/${encodeURIComponent(conversationId)}/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ message }),
+        signal,
+      },
+    );
     return res.data;
   },
 };

@@ -19,6 +19,7 @@ import { localizeVariantName } from '../../utils/product';
 import ProductFormModal from './ProductFormModal.jsx';
 
 const ORDER_NEXT_STATUSES = {
+  PENDING_PAYMENT: ['CANCELLED'],
   PENDING_CONFIRMATION: ['CONFIRMED', 'CANCELLED'],
   CONFIRMED: ['SHIPPING', 'CANCELLED'],
   SHIPPING: ['COMPLETED'],
@@ -179,7 +180,7 @@ export default function Admin() {
     <div className="admin-app">
       <aside className="admin-sidebar">
         <Link to="/" className="admin-brand">
-          HAVIE<span className="dot">.</span>
+          HAVIE
           <small>QUẢN TRỊ CỬA HÀNG</small>
         </Link>
         <nav aria-label="Điều hướng quản trị">
@@ -205,7 +206,7 @@ export default function Admin() {
         <header className="admin-top">
           <span className="admin-crumb">Quản trị / {activeTab.label}</span>
           <Link to="/" className="admin-brand-mobile">
-            HAVIE<span className="dot">.</span>
+            HAVIE
           </Link>
           <strong>
             <span className="admin-name">{account.fullName}</span>
@@ -233,7 +234,6 @@ export default function Admin() {
           <div className="admin-title">
             <h1>
               {activeTab.label}
-              <span className="dot">.</span>
             </h1>
             <div className="admin-title-actions">
               <button

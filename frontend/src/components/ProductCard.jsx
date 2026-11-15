@@ -3,26 +3,35 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Star, Heart, ChevronRight, LoaderCircle } from 'lucide-react';
 import { money } from '../data';
+import { m } from './motion.jsx';
 import { useStore } from '../context/StoreContext.jsx';
 import {
   FALLBACK_PRODUCT_IMAGE,
   PRODUCT_BADGE_LABELS,
-  getDefaultVariant,
   getDiscountPercent,
   getProductPath,
-  isVariantInStock,
+  usesShoePicker,
+  hasValidPrice,
+  isVariantPurchasable,
   showFallbackImage,
 } from '../utils/product.js';
 
 export default function ProductCard({ product }) {
   const { add, favorites, toggleFavorite } = useStore();
   const [adding, setAdding] = useState(false);
-  const variant = getDefaultVariant(product);
   const variants = product.variants || [];
-  const inStock = variants.some(isVariantInStock);
-  const hasOptions = variants.length > 1;
-  const hasPriceRange = new Set(variants.map(({ price }) => price)).size > 1;
-  const lowestPrice = variants.length ? Math.min(...variants.map(({ price }) => price)) : 0;
+  const pricedVariants = variants.filter(hasValidPrice);
+  const purchasableVariants = pricedVariants.filter(isVariantPurchasable);
+  const inStock = purchasableVariants.length > 0;
+  // Out-of-stock products still show the price stored in the catalog.
+  const displayVariants = inStock ? purchasableVariants : pricedVariants;
+  const variant = displayVariants.reduce(
+    (lowest, item) => (!lowest || item.price < lowest.price ? item : lowest),
+    null,
+  );
+  const hasOptions = variants.length > 1 || usesShoePicker(product);
+  const hasPriceRange = new Set(displayVariants.map(({ price }) => price)).size > 1;
+  const priceLabel = !variant ? '' : !inStock ? 'Giá niêm yết ' : hasPriceRange ? 'Từ ' : '';
   const discount = getDiscountPercent(variant?.price, variant?.oldPrice);
   const isFavorite = favorites.includes(product.id);
   const path = getProductPath(product);
@@ -55,15 +64,23 @@ export default function ProductCard({ product }) {
             </span>
           )}
         </div>
-        <button
+        <m.button
           type="button"
           className={'favorite ' + (isFavorite ? 'selected' : '')}
           aria-label={'Yêu thích ' + product.name}
           aria-pressed={isFavorite}
           onClick={() => toggleFavorite(product.id)}
         >
-          <Heart size={19} fill={isFavorite ? 'currentColor' : 'none'} aria-hidden="true" />
-        </button>
+          <m.span
+            key={String(isFavorite)}
+            style={{ display: 'inline-flex' }}
+            initial={{ scale: isFavorite ? 0.4 : 1 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 14 }}
+          >
+            <Heart size={19} fill={isFavorite ? 'currentColor' : 'none'} aria-hidden="true" />
+          </m.span>
+        </m.button>
       </div>
       <div className="product-meta">
         <span>{product.category?.name || 'Cầu lông'}</span>
@@ -79,8 +96,8 @@ export default function ProductCard({ product }) {
       <div className="product-bottom">
         <div className="product-price">
           <strong>
-            {hasPriceRange && <small>Từ </small>}
-            {money(hasPriceRange ? lowestPrice : variant?.price || 0)}
+            {priceLabel && <small>{priceLabel}</small>}
+            {variant ? money(variant.price) : 'Liên hệ báo giá'}
           </strong>
           {!hasPriceRange && discount > 0 && <del>{money(variant.oldPrice)}</del>}
         </div>

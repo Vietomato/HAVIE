@@ -1,0 +1,154 @@
+@layer components {
+  .about-hero {
+    max-width: 760px;
+    margin-bottom: 8px;
+  }
+  .about-hero h1 {
+    margin: 8px 0 16px;
+    font-size: clamp(30px, 5vw, 52px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  .about-hero p {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.7;
+  }
+  .about-section {
+    margin-top: 56px;
+  }
+  .about-section h2 {
+    margin-top: 6px;
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 800;
+  }
+  .about-reasons {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .about-reason {
+    height: 100%;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  .about-reason svg {
+    color: var(--primary-solid);
+  }
+  .about-reason h3 {
+    margin: 14px 0 8px;
+    font-size: 18px;
+    font-weight: 800;
+  }
+  .about-reason p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .about-brands {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 24px;
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+  }
+  .about-brands .brand-logo {
+    height: 52px;
+  }
+  .about-brands .brand-logo-lining {
+    height: 68px;
+  }
+  .about-brands .brand-logo-mizuno {
+    height: 62px;
+  }
+  .about-contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--surface-shadow);
+  }
+  .about-contact-list {
+    display: grid;
+    gap: 18px;
+    margin: 0;
+  }
+  .about-contact-list > div {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    column-gap: 14px;
+    row-gap: 2px;
+    align-items: start;
+  }
+  .about-contact-list svg {
+    grid-row: 1 / span 2;
+    margin-top: 2px;
+    color: var(--secondary);
+  }
+  .about-contact-list dt {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .about-contact-list dd {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .about-contact-list a {
+    color: var(--link);
+  }
+  .about-contact-list a:hover {
+    text-decoration: underline;
+  }
+  .about-contact-actions {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+  }
+  .about-cta {
+    margin-top: 56px;
+    padding: 36px 24px;
+    background: var(--ink);
+    border-radius: var(--radius-lg);
+    color: #fff;
+    text-align: center;
+  }
+  .about-cta h2 {
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 800;
+  }
+  .about-cta p {
+    margin: 10px 0 22px;
+    color: var(--border);
+    font-size: 16px;
+  }
+
+  @media (min-width: 900px) {
+    .about-reasons {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .about-contact {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      align-items: center;
+      padding: 32px;
+    }
+    .about-cta {
+      padding: 48px 24px;
+    }
+  }
+}

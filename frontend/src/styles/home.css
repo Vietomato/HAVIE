@@ -66,12 +66,15 @@
     position: relative;
     width: 100%;
     overflow: hidden;
+    z-index: 1;
     background: var(--ink);
-    aspect-ratio: 2182 / 721;
+    aspect-ratio: 2172 / 724;
+    box-shadow: 0 14px 30px -14px rgb(16 24 39 / 45%);
   }
   .home-banner-slide {
     position: absolute;
     inset: 0;
+    overflow: hidden;
     opacity: 0;
     pointer-events: none;
     transition: opacity 500ms ease-out;
@@ -87,6 +90,18 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  /* Slow push-in on the visible slide. Kept small so text near the edges is never cropped. */
+  .home-banner-slide.is-active .home-banner-image {
+    animation: banner-push-in 7s ease-out forwards;
+  }
+  @keyframes banner-push-in {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.03);
+    }
   }
   .home-banner-arrow {
     position: absolute;
@@ -214,6 +229,10 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
+  }
+  /* An odd last card fills the row instead of sitting alone in the 2-column layout. */
+  .category-grid > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
   .category-card {
     min-width: 0;

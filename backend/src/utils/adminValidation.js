@@ -182,7 +182,7 @@ export const ADMIN_ORDER_TRANSITIONS = {
   COMPLETED: [],
   CANCELLED: [],
   REFUND_PENDING: [],
-  PENDING_PAYMENT: [],
+  PENDING_PAYMENT: ["CANCELLED"],
 };
 
 export function validateAdminOrderTransition(currentStatus, nextStatus) {

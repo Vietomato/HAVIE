@@ -1,0 +1,990 @@
+.havie-advisor {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  font-family: inherit;
+}
+
+.havie-advisor,
+.havie-advisor * {
+  box-sizing: border-box;
+}
+
+.havie-advisor button,
+.havie-advisor input {
+  font: inherit;
+}
+
+.havie-advisor button {
+  cursor: pointer;
+}
+
+.havie-advisor button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.havie-advisor button:focus-visible,
+.havie-advisor input:focus-visible,
+.havie-advisor a:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
+}
+
+.havie-advisor__launcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 20px;
+  background: #dc0a2d;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 8px 28px #0003;
+}
+
+.havie-advisor__panel {
+  display: flex;
+  flex-direction: column;
+  width: min(390px, calc(100vw - 32px));
+  height: min(600px, calc(100dvh - 40px));
+  min-width: min(320px, calc(100vw - 32px));
+  min-height: min(420px, calc(100dvh - 40px));
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 40px);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #dbe3ef;
+  border-radius: 18px;
+  background: #fff;
+  color: #101827;
+  box-shadow: 0 16px 50px #0003;
+  transition: border-radius 180ms ease;
+}
+
+.havie-advisor__resize-handle {
+  position: absolute;
+  z-index: 5;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  touch-action: none;
+}
+
+.havie-advisor__resize-handle:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -3px;
+}
+
+.havie-advisor__resize-handle--horizontal {
+  top: 50%;
+  left: 0;
+  width: 12px;
+  height: 72px;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+}
+
+.havie-advisor__resize-handle--vertical {
+  top: 0;
+  left: 50%;
+  width: 72px;
+  height: 12px;
+  transform: translateX(-50%);
+  cursor: ns-resize;
+}
+
+.havie-advisor__resize-handle--diagonal {
+  top: 0;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  cursor: nwse-resize;
+}
+
+.havie-advisor__resize-handle--diagonal span {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 11px;
+  height: 11px;
+  border-top: 2px solid #64748b;
+  border-left: 2px solid #64748b;
+}
+
+.havie-advisor__resize-handle:hover
+  ~ .havie-advisor__resize-handle--diagonal span {
+  border-color: #dc0a2d;
+}
+
+.havie-advisor--fullscreen {
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100vw;
+  height: 100dvh;
+  z-index: 2000;
+}
+
+.havie-advisor--fullscreen .havie-advisor__panel {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.havie-advisor--fullscreen .havie-advisor__history {
+  max-height: 150px;
+}
+
+.havie-advisor--fullscreen .havie-advisor__messages {
+  padding: clamp(20px, 4vw, 48px);
+}
+
+.havie-advisor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  background: #dc0a2d;
+  color: #fff;
+}
+
+.havie-advisor__header small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.havie-advisor__header-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.havie-advisor__header-actions button {
+  display: grid;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid #ffffff80;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+}
+
+.havie-advisor__header-actions button:hover {
+  background: #ffffff1a;
+}
+
+.havie-advisor__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.havie-advisor__toolbar strong {
+  font-size: 13px;
+}
+
+.havie-advisor__toolbar button {
+  border: 0;
+  background: transparent;
+  color: #dc0a2d;
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.havie-advisor__history {
+  display: flex;
+  gap: 6px;
+  max-height: 112px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 12px;
+}
+
+.havie-advisor__history > span {
+  align-self: center;
+  color: #64748b;
+}
+
+.havie-advisor__history-card {
+  display: flex;
+  flex: 0 0 170px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.havie-advisor__history-item {
+  display: grid;
+  flex: 1;
+  align-content: center;
+  gap: 3px;
+  width: 100%;
+  min-width: 0;
+  padding: 7px 9px;
+  overflow: hidden;
+  border: 1px solid #dbe3ef;
+  border-radius: 8px;
+  background: #fff;
+  color: #101827;
+  text-align: left;
+}
+
+.havie-advisor__history-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.havie-advisor__history-item small {
+  color: #dc0a2d;
+}
+
+.havie-advisor__history-item.is-active {
+  border-color: #dc0a2d;
+  background: #f1f6ff;
+}
+
+.havie-advisor__history-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.havie-advisor__history-actions button {
+  padding: 1px 3px;
+  border: 0;
+  background: transparent;
+  color: #dc0a2d;
+  font-size: 11px;
+  text-decoration: underline;
+}
+
+.havie-advisor__history-actions button:disabled {
+  cursor: not-allowed;
+  color: #94a3b8;
+  text-decoration: none;
+}
+
+.havie-advisor__login {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.havie-advisor__login p {
+  margin: 0;
+}
+
+.havie-advisor__login a {
+  width: fit-content;
+  color: #dc0a2d;
+  font-weight: 700;
+}
+
+.havie-advisor__messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px;
+  background: #f6f8fc;
+}
+
+.havie-advisor__message {
+  width: fit-content;
+  max-width: 94%;
+  margin-bottom: 14px;
+  padding: 11px 13px;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+
+.havie-advisor__message--assistant {
+  margin-right: auto;
+  border: 1px solid #e1e7f0;
+  background: #fff;
+}
+
+.havie-advisor__message--user {
+  margin-left: auto;
+  background: #e6f0ff;
+}
+
+.havie-advisor__speaker {
+  display: block;
+  margin-bottom: 5px;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.havie-advisor__message p {
+  margin: 0;
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.havie-advisor__candidates {
+  display: grid;
+  gap: 9px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.havie-advisor__product {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid #bbd5c3;
+  border-radius: 9px;
+  color: #101827;
+  text-decoration: none;
+}
+
+.havie-advisor__product:hover {
+  background: #f1f6ff;
+}
+
+.havie-advisor__waiting {
+  display: block;
+  margin-top: 6px;
+  color: #475569;
+  font-size: 12px;
+}
+
+.havie-advisor__dots {
+  display: inline-flex;
+  gap: 5px;
+  padding: 4px 0;
+}
+
+.havie-advisor__dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #dc0a2d;
+  animation: havie-advisor-typing 1.2s ease-in-out infinite;
+}
+
+.havie-advisor__dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.havie-advisor__dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes havie-advisor-typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+.havie-advisor__error {
+  padding: 10px 14px;
+  border-top: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.havie-advisor__samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px 0;
+  border-top: 1px solid #e5e7eb;
+  max-height: 38%;
+  overflow-y: auto;
+}
+
+.havie-advisor__samples-title {
+  flex-basis: 100%;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.havie-advisor__sample {
+  border: 1px solid #dc0a2d;
+  border-radius: 999px;
+  padding: 6px 11px;
+  background: #fff;
+  color: #b90825;
+  font-size: 12.5px;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+}
+
+.havie-advisor__sample:hover,
+.havie-advisor__sample:focus-visible {
+  background: #dc0a2d;
+  color: #fff;
+}
+
+.havie-advisor__form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.havie-advisor__form input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid #94a3b8;
+  border-radius: 9px;
+  background: #fff;
+  color: #101827;
+  font-size: 14px;
+}
+
+.havie-advisor__form button {
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 13px;
+  background: #dc0a2d;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.havie-advisor__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .havie-advisor {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+/* Icon-only launcher on small screens so it covers less of the page. */
+@media (max-width: 599px) {
+  .havie-advisor__launcher {
+    padding: 15px;
+  }
+  .havie-advisor__launcher-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* Stay above the sticky buy bar on the product page. */
+@media (max-width: 599px) {
+  body:has(.detail-actions) .havie-advisor:has(> .havie-advisor__launcher) {
+    bottom: 84px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .havie-advisor__dots span {
+    animation: none;
+    opacity: 0.6;
+  }
+
+  .havie-advisor__panel {
+    transition: none;
+  }
+}
+/* ---------- BOTMINTON: nhận diện thể thao ---------- */
+.havie-advisor__header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(115deg, #0b1220 0%, #dc0a2d 55%, #0f3b80 100%);
+}
+
+/* Vệt chéo tốc độ phía sau tiêu đề */
+.havie-advisor__header::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: 22%;
+  width: 56px;
+  height: 140%;
+  background: linear-gradient(90deg, #dc0a2d40, #dc0a2d0d);
+  transform: skewX(-22deg);
+  pointer-events: none;
+}
+
+.havie-advisor__header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.havie-advisor__identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.havie-advisor__logo {
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px #0004);
+}
+
+.havie-advisor__brand small {
+  margin-top: 2px;
+  color: #cfe3ff;
+  font-size: 12px;
+}
+
+.botword {
+  display: inline-block;
+  font-size: 21px;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  transform: skewX(-8deg);
+}
+
+.botword__bot {
+  color: #fff;
+}
+
+.botword__minton {
+  color: #7db8ff;
+}
+
+.havie-advisor__launcher {
+  gap: 10px;
+  padding: 8px 20px 8px 10px;
+  background: linear-gradient(115deg, #0b1220, #dc0a2d 60%, #0f3b80);
+  box-shadow: 0 8px 28px #10182766;
+  font-style: italic;
+  letter-spacing: 0.06em;
+}
+
+.havie-advisor__launcher-mark {
+  flex-shrink: 0;
+}
+
+.havie-advisor__launcher::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 #dc0a2d88;
+  animation: botminton-pulse 2.6s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes botminton-pulse {
+  0% { box-shadow: 0 0 0 0 #dc0a2d88; }
+  70%, 100% { box-shadow: 0 0 0 14px #dc0a2d00; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .havie-advisor__launcher::before {
+    animation: none;
+  }
+}
+
+.havie-advisor__message--assistant .havie-advisor__speaker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #dc0a2d;
+  font-style: italic;
+  letter-spacing: 0.06em;
+}
+
+.havie-advisor__message--assistant {
+  border-left: 3px solid #7db8ff;
+}
+
+/* ---------- Tin nhắn của bot: thẻ từng mẫu vợt ---------- */
+.botmsg__p {
+  margin: 0 0 10px;
+}
+
+.botmsg > :last-child {
+  margin-bottom: 0;
+}
+
+.botcard {
+  margin: 4px 0 12px;
+  padding: 10px 12px 6px;
+  border: 1px solid #d5e3f7;
+  border-radius: 12px;
+  background: #f5f9ff;
+}
+
+.botcard__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #d5e3f7;
+}
+
+.botcard__num {
+  display: grid;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  background: #dc0a2d;
+  color: #7db8ff;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 900;
+}
+
+.botcard__name {
+  color: #101827;
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+
+.botcard__row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px dashed #d5e3f7;
+}
+
+.botcard__row:last-child {
+  border-bottom: 0;
+}
+
+.botcard__label {
+  color: #dc0a2d;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+.botcard__value {
+  min-width: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.botcard__price {
+  margin-right: 8px;
+  color: #101827;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.botcard__chip {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.botcard__row--warn {
+  margin: 2px -6px 4px;
+  padding: 7px 6px;
+  border: 0;
+  border-radius: 8px;
+  background: #fffbeb;
+}
+
+.botcard__row--warn .botcard__label {
+  color: #b45309;
+}
+
+@media (max-width: 480px) {
+  .botcard__row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* ---------- Bảng màu HAVIE: navy + đỏ + xanh dương ---------- */
+.havie-advisor__header {
+  background: linear-gradient(115deg, #0b1220 0%, #101827 52%, #0f3b80 100%);
+}
+
+.havie-advisor__brand small {
+  color: #cfe3ff;
+}
+
+.botword__minton {
+  color: #ff4d63;
+}
+
+.havie-advisor__launcher {
+  background: linear-gradient(115deg, #101827, #0f3b80);
+  box-shadow: 0 8px 28px #10182766;
+}
+
+.havie-advisor__message--assistant {
+  border-left: 3px solid #087cff;
+}
+
+.havie-advisor__message--assistant .havie-advisor__speaker,
+.botcard__label {
+  color: #0560ca;
+}
+
+.botcard__num {
+  background: #101827;
+  color: #7db8ff;
+}
+
+.botcard__name {
+  color: #101827;
+}
+
+.botcard__price {
+  color: #b90825;
+}
+
+.botcard__chip {
+  background: #fee2e6;
+  color: #b90825;
+}
+
+.havie-advisor__form button:hover {
+  background: #b90825;
+}
+
+/* ---------- Chuyển động: sống động nhưng nhẹ ---------- */
+.havie-advisor__panel {
+  transform-origin: bottom right;
+  animation: botminton-open 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}
+
+@keyframes botminton-open {
+  from { opacity: 0; transform: translateY(18px) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Vệt chéo ở đầu khung trượt nhẹ như ánh sáng quét qua */
+.havie-advisor__header::after {
+  animation: botminton-sweep 6s ease-in-out infinite;
+}
+
+@keyframes botminton-sweep {
+  0%, 100% { transform: translateX(0) skewX(-22deg); opacity: 0.8; }
+  50% { transform: translateX(-70px) skewX(-22deg); opacity: 1; }
+}
+
+/* Quả cầu lông ở logo đầu khung đung đưa như vừa được đánh */
+.havie-advisor__logo {
+  transform-origin: 30% 85%;
+  animation: botminton-swing 3.6s ease-in-out infinite;
+}
+
+@keyframes botminton-swing {
+  0%, 100% { transform: rotate(0); }
+  12% { transform: rotate(-9deg) translateY(-2px); }
+  24% { transform: rotate(7deg); }
+  36% { transform: rotate(0); }
+}
+
+/* Tin nhắn trượt vào từ phía người gửi */
+.havie-advisor__message {
+  animation: botminton-in-left 0.34s ease-out both;
+}
+
+.havie-advisor__message--user {
+  animation-name: botminton-in-right;
+}
+
+@keyframes botminton-in-left {
+  from { opacity: 0; transform: translateX(-14px) translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes botminton-in-right {
+  from { opacity: 0; transform: translateX(14px) translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Thẻ vợt bật lên lần lượt */
+.botcard {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  animation: botminton-pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+.botmsg > .botcard:nth-of-type(1) { animation-delay: 0.1s; }
+.botmsg > .botcard:nth-of-type(2) { animation-delay: 0.22s; }
+.botmsg > .botcard:nth-of-type(3) { animation-delay: 0.34s; }
+.botmsg > .botcard:nth-of-type(4) { animation-delay: 0.46s; }
+.botmsg > .botcard:nth-of-type(5) { animation-delay: 0.58s; }
+
+@keyframes botminton-pop {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+.botcard:hover {
+  border-color: #087cff;
+  box-shadow: 0 6px 18px #087cff26;
+  transform: translateY(-2px);
+}
+
+.botcard__num {
+  transition: transform 0.25s ease;
+}
+
+.botcard:hover .botcard__num {
+  transform: rotate(-12deg) scale(1.12);
+}
+
+/* Giá nhấp nháy sáng nhẹ một lần khi thẻ hiện ra */
+.botcard__price {
+  animation: botminton-price 0.9s ease-out 0.5s both;
+}
+
+@keyframes botminton-price {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+/* Ba chấm "đang soạn tin" nảy với ba màu HAVIE */
+.havie-advisor__dots span {
+  width: 8px;
+  height: 8px;
+  animation: botminton-bounce 1s ease-in-out infinite;
+}
+
+.havie-advisor__dots span:nth-child(1) { background: #dc0a2d; }
+.havie-advisor__dots span:nth-child(2) { background: #087cff; }
+.havie-advisor__dots span:nth-child(3) { background: #101827; }
+
+@keyframes botminton-bounce {
+  0%, 70%, 100% { transform: translateY(0); opacity: 0.55; }
+  35% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* Nút mở chat: nổi nhẹ, hover nghiêng logo */
+.havie-advisor__launcher {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: botminton-float 3.4s ease-in-out infinite;
+}
+
+@keyframes botminton-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.havie-advisor__launcher:hover {
+  box-shadow: 0 12px 32px #0f3b8099;
+  animation: none;
+  transform: translateY(-3px) scale(1.04);
+}
+
+.havie-advisor__launcher:active {
+  transform: scale(0.97);
+}
+
+.havie-advisor__launcher-mark {
+  transition: transform 0.25s ease;
+}
+
+.havie-advisor__launcher:hover .havie-advisor__launcher-mark {
+  transform: rotate(-14deg) scale(1.1);
+}
+
+/* Nút gửi, ô nhập, thẻ sản phẩm phản hồi khi tương tác */
+.havie-advisor__form button {
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.havie-advisor__form button:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px #dc0a2d55;
+}
+
+.havie-advisor__form button:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+.havie-advisor__form input {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.havie-advisor__form input:focus {
+  border-color: #087cff;
+  box-shadow: 0 0 0 3px #087cff33;
+  outline: none;
+}
+
+.havie-advisor__product {
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+.havie-advisor__product:hover {
+  border-color: #087cff;
+  box-shadow: 0 6px 16px #087cff22;
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .havie-advisor__panel,
+  .havie-advisor__header::after,
+  .havie-advisor__logo,
+  .havie-advisor__message,
+  .botcard,
+  .botcard__price,
+  .havie-advisor__dots span,
+  .havie-advisor__launcher {
+    animation: none !important;
+  }
+
+  .botcard:hover,
+  .havie-advisor__product:hover,
+  .havie-advisor__launcher:hover {
+    transform: none;
+  }
+}

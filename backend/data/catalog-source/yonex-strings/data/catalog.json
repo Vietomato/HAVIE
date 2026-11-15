@@ -1,0 +1,503 @@
+{
+  "schemaVersion": "1.0",
+  "packageName": "HAVIE Yonex strings catalog",
+  "preparedAt": "2026-11-14",
+  "productCount": 7,
+  "scope": "Seven models; proposed single-set packaging only; no reel variants and no stock color variants created",
+  "importPolicy": {
+    "upsertProductBy": "slug after existing-record reconciliation",
+    "preserveExistingCommercialValues": true,
+    "preserveExistingIdsAndRelations": true,
+    "createProductsAsDraft": true,
+    "allowMissingCommerceValues": true,
+    "createVariantOnlyWhenPriceAndStockProvided": true,
+    "autoApproveAdvisorNotes": false
+  },
+  "products": [
+    {
+      "name": "Yonex BG65",
+      "slug": "yonex-bg65",
+      "brandSlug": "yonex",
+      "brandName": "Yonex",
+      "categorySlugSuggested": "strings",
+      "categoryNameSuggested": "Cước cầu lông",
+      "description": "Cước cầu lông đường kính 0,70 mm, lõi nylon đa sợi. Yonex nhấn mạnh khả năng chịu mài mòn của lớp sợi bện ngoài.",
+      "specs": [
+        "Mã sản phẩm hãng: BG65",
+        "Đường kính: 0.70 mm",
+        "Chiều dài bộ: 10 m",
+        "Lõi: High Polymer Nylon Multifilament",
+        "Lớp ngoài: Special Braided High Polymer Nylon",
+        "Xuất xứ công bố: Japan"
+      ],
+      "imageUrls": [
+        "/images/strings/yonex-bg65.png"
+      ],
+      "isActive": false,
+      "variantCandidates": [
+        {
+          "proposedStoreSku": "HAVIE-YONEX-BG65-SET",
+          "skuOrigin": "HAVIE proposed identifier, not a manufacturer SKU",
+          "name": "Bộ 10 m",
+          "attributes": {
+            "manufacturerCode": "BG65",
+            "packaging": "SET",
+            "lengthM": 10,
+            "gaugeMm": 0.7,
+            "mainGaugeMm": null,
+            "crossGaugeMm": null,
+            "mainLengthM": null,
+            "crossLengthM": null,
+            "core": "High Polymer Nylon Multifilament",
+            "outer": "Special Braided High Polymer Nylon",
+            "coating": null,
+            "madeIn": "Japan",
+            "color": null,
+            "recommendedTensionKgf": null,
+            "maxTensionKgf": null
+          },
+          "price": null,
+          "oldPrice": null,
+          "stockQuantity": null,
+          "isAvailable": false
+        }
+      ],
+      "source": {
+        "type": "manufacturer",
+        "url": "https://www.yonex.com/bg65",
+        "checkedAt": "2026-11-14",
+        "rawSpecifications": {
+          "Color(s)": "Yellow, Orange, Black, White, Amber, Lavender, Violet, Royal Blue, Turquoise",
+          "Gauge": "0.70 mm",
+          "Length": "10 m (33 ft) / 200 m (656 ft) / 500 m (1,640 ft)",
+          "Core": "High Polymer Nylon Multifilament",
+          "Outer": "Special Braided High Polymer Nylon",
+          "Made In": "Japan",
+          "Item Code": "BG65"
+        },
+        "publishedLengthOptionsAreNotStoreInventory": true,
+        "manufacturerColorsReferenceOnly": "Yellow, Orange, Black, White, Amber, Lavender, Violet, Royal Blue, Turquoise",
+        "imageOriginalUrl": "https://www.yonex.com/media/catalog/product/b/g/bg65_ex_pac_1.png",
+        "imageLocalFile": "images/yonex-bg65.png",
+        "imageSha256": "a03ef216395a48218bf7d9ecbaa193ff4b3cd8e92000d5cc22ae2a1a700afb9a",
+        "imageColorIsIllustrationNotStockVariant": true
+      }
+    },
+    {
+      "name": "Yonex BG66 Ultimax",
+      "slug": "yonex-bg66-ultimax",
+      "brandSlug": "yonex",
+      "brandName": "Yonex",
+      "categorySlugSuggested": "strings",
+      "categoryNameSuggested": "Cước cầu lông",
+      "description": "Cước cầu lông đường kính 0,65 mm. Theo mô tả Yonex, sản phẩm hướng đến độ nảy, kiểm soát và độ bền trong một cấu hình dây mảnh.",
+      "specs": [
+        "Mã sản phẩm hãng: BG66UM",
+        "Đường kính: 0.65 mm",
+        "Chiều dài bộ: 10 m",
+        "Lõi: High-Intensity Nylon Multifilament",
+        "Lớp ngoài: Special Braided High Polymer Nylon",
+        "Xuất xứ công bố: Japan"
+      ],
+      "imageUrls": [
+        "/images/strings/yonex-bg66-ultimax.png"
+      ],
+      "isActive": false,
+      "variantCandidates": [
+        {
+          "proposedStoreSku": "HAVIE-YONEX-BG66UM-SET",
+          "skuOrigin": "HAVIE proposed identifier, not a manufacturer SKU",
+          "name": "Bộ 10 m",
+          "attributes": {
+            "manufacturerCode": "BG66UM",
+            "packaging": "SET",
+            "lengthM": 10,
+            "gaugeMm": 0.65,
+            "mainGaugeMm": null,
+            "crossGaugeMm": null,
+            "mainLengthM": null,
+            "crossLengthM": null,
+            "core": "High-Intensity Nylon Multifilament",
+            "outer": "Special Braided High Polymer Nylon",
+            "coating": null,
+            "madeIn": "Japan",
+            "color": null,
+            "recommendedTensionKgf": null,
+            "maxTensionKgf": null
+          },
+          "price": null,
+          "oldPrice": null,
+          "stockQuantity": null,
+          "isAvailable": false
+        }
+      ],
+      "source": {
+        "type": "manufacturer",
+        "url": "https://www.yonex.com/bg66um",
+        "checkedAt": "2026-11-14",
+        "rawSpecifications": {
+          "Color(s)": "Red, Yellow, Orange, Black, Metallic White, Neon Pink, Pearl Navy, Pastel Green, Blue",
+          "Gauge": "0.65 mm",
+          "Length": "10 m (33 ft) / 200 m (656 ft)",
+          "Core": "High-Intensity Nylon Multifilament",
+          "Outer": "Special Braided High Polymer Nylon",
+          "Made In": "Japan",
+          "Item Code": "BG66UM"
+        },
+        "publishedLengthOptionsAreNotStoreInventory": true,
+        "manufacturerColorsReferenceOnly": "Red, Yellow, Orange, Black, Metallic White, Neon Pink, Pearl Navy, Pastel Green, Blue",
+        "imageOriginalUrl": "https://www.yonex.com/media/catalog/product/b/g/bg66um_001-1.png",
+        "imageLocalFile": "images/yonex-bg66-ultimax.png",
+        "imageSha256": "96d5c0c03d775683a5f8ea51aef1951053638e7bcf85cbeceab20f242696d7e8",
+        "imageColorIsIllustrationNotStockVariant": true
+      }
+    },
+    {
+      "name": "Yonex BG80",
+      "slug": "yonex-bg80",
+      "brandSlug": "yonex",
+      "brandName": "Yonex",
+      "categorySlugSuggested": "strings",
+      "categoryNameSuggested": "Cước cầu lông",
+      "description": "Cước cầu lông đường kính 0,68 mm, lõi nylon đa sợi kết hợp Vectran. Lớp ngoài là nylon bện có tiết diện oval.",
+      "specs": [
+        "Mã sản phẩm hãng: BG80",
+        "Đường kính: 0.68 mm",
+        "Chiều dài bộ: 10 m",
+        "Lõi: High Polymer Nylon Multifilament with Vectran™",
+        "Lớp ngoài: Special Braided Oval Shaped High Polymer Nylon",
+        "Xuất xứ công bố: Japan"
+      ],
+      "imageUrls": [
+        "/images/strings/yonex-bg80.png"
+      ],
+      "isActive": false,
+      "variantCandidates": [
+        {
+          "proposedStoreSku": "HAVIE-YONEX-BG80-SET",
+          "skuOrigin": "HAVIE proposed identifier, not a manufacturer SKU",
+          "name": "Bộ 10 m",
+          "attributes": {
+            "manufacturerCode": "BG80",
+            "packaging": "SET",
+            "lengthM": 10,
+            "gaugeMm": 0.68,
+            "mainGaugeMm": null,
+            "crossGaugeMm": null,
+            "mainLengthM": null,
+            "crossLengthM": null,
+            "core": "High Polymer Nylon Multifilament with Vectran™",
+            "outer": "Special Braided Oval Shaped High Polymer Nylon",
+            "coating": null,
+            "madeIn": "Japan",
+            "color": null,
+            "recommendedTensionKgf": null,
+            "maxTensionKgf": null
+          },
+          "price": null,
+          "oldPrice": null,
+          "stockQuantity": null,
+          "isAvailable": false
+        }
+      ],
+      "source": {
+        "type": "manufacturer",
+        "url": "https://www.yonex.com/bg80",
+        "checkedAt": "2026-11-14",
+        "rawSpecifications": {
+          "Color(s)": "Yellow, Black, White, Sky Blue, Violet, Royal Blue, Neon Pink",
+          "Gauge": "0.68 mm",
+          "Length": "10 m (33 ft) / 200 m (656 ft)",
+          "Core": "High Polymer Nylon Multifilament with Vectran™",
+          "Outer": "Special Braided Oval Shaped High Polymer Nylon",
+          "Made In": "Japan",
+          "Item Code": "BG80"
+        },
+        "publishedLengthOptionsAreNotStoreInventory": true,
+        "manufacturerColorsReferenceOnly": "Yellow, Black, White, Sky Blue, Violet, Royal Blue, Neon Pink",
+        "imageOriginalUrl": "https://www.yonex.com/media/catalog/product/b/g/bg80yx_004-1.png",
+        "imageLocalFile": "images/yonex-bg80.png",
+        "imageSha256": "2c352d4187ce811cb919f77ca060b5d38e7b41dad993014c4839d63a40d33990",
+        "imageColorIsIllustrationNotStockVariant": true
+      }
+    },
+    {
+      "name": "Yonex Exbolt 63",
+      "slug": "yonex-exbolt-63",
+      "brandSlug": "yonex",
+      "brandName": "Yonex",
+      "categorySlugSuggested": "strings",
+      "categoryNameSuggested": "Cước cầu lông",
+      "description": "Cước cầu lông đường kính 0,63 mm với lớp ngoài Forged Fiber. Yonex định vị sản phẩm theo hướng nảy nhanh và âm thanh tiếp xúc cầu.",
+      "specs": [
+        "Mã sản phẩm hãng: BGXB63",
+        "Đường kính: 0.63 mm",
+        "Chiều dài bộ: 10 m",
+        "Lõi: High-Intensity Nylon Multifilament",
+        "Lớp ngoài: Special Braided Forged Fiber"
+      ],
+      "imageUrls": [
+        "/images/strings/yonex-exbolt-63.png"
+      ],
+      "isActive": false,
+      "variantCandidates": [
+        {
+          "proposedStoreSku": "HAVIE-YONEX-BGXB63-SET",
+          "skuOrigin": "HAVIE proposed identifier, not a manufacturer SKU",
+          "name": "Bộ 10 m",
+          "attributes": {
+            "manufacturerCode": "BGXB63",
+            "packaging": "SET",
+            "lengthM": 10,
+            "gaugeMm": 0.63,
+            "mainGaugeMm": null,
+            "crossGaugeMm": null,
+            "mainLengthM": null,
+            "crossLengthM": null,
+            "core": "High-Intensity Nylon Multifilament",
+            "outer": "Special Braided Forged Fiber",
+            "coating": null,
+            "madeIn": null,
+            "color": null,
+            "recommendedTensionKgf": null,
+            "maxTensionKgf": null
+          },
+          "price": null,
+          "oldPrice": null,
+          "stockQuantity": null,
+          "isAvailable": false
+        }
+      ],
+      "source": {
+        "type": "manufacturer",
+        "url": "https://www.yonex.com/bgxb63",
+        "checkedAt": "2026-11-14",
+        "rawSpecifications": {
+          "Color(s)": "Lavender, Ruby Red, Mint, Light Pink, Yellow, Black, White",
+          "Gauge": "0.63 mm",
+          "Length": "10 m (33 ft) / 200 m (656 ft)",
+          "Core": "High-Intensity Nylon Multifilament",
+          "Outer": "Special Braided Forged Fiber",
+          "Item Code": "BGXB63"
+        },
+        "publishedLengthOptionsAreNotStoreInventory": true,
+        "manufacturerColorsReferenceOnly": "Lavender, Ruby Red, Mint, Light Pink, Yellow, Black, White",
+        "imageOriginalUrl": "https://www.yonex.com/media/catalog/product/b/g/bgxb63_ex_pac_022.png",
+        "imageLocalFile": "images/yonex-exbolt-63.png",
+        "imageSha256": "7e67ab847f33c68bd1334c2b2d7e84603ce00a5d9261d004f0f85adc69193e60",
+        "imageColorIsIllustrationNotStockVariant": true
+      }
+    },
+    {
+      "name": "Yonex Exbolt 65",
+      "slug": "yonex-exbolt-65",
+      "brandSlug": "yonex",
+      "brandName": "Yonex",
+      "categorySlugSuggested": "strings",
+      "categoryNameSuggested": "Cước cầu lông",
+      "description": "Cước cầu lông đường kính 0,65 mm với lớp ngoài Forged Fiber và lớp phủ Elasticity Outer. Theo mô tả hãng, sản phẩm hướng đến độ nảy và kiểm soát.",
+      "specs": [
+        "Mã sản phẩm hãng: BGXB65",
+        "Đường kính: 0.65 mm",
+        "Chiều dài bộ: 10 m",
+        "Lõi: High-Intensity Nylon Multifilament",
+        "Lớp ngoài: Special Braided Forged Fiber",
+        "Lớp phủ: Elasticity Outer",
+        "Xuất xứ công bố: Japan"
+      ],
+      "imageUrls": [
+        "/images/strings/yonex-exbolt-65.png"
+      ],
+      "isActive": false,
+      "variantCandidates": [
+        {
+          "proposedStoreSku": "HAVIE-YONEX-BGXB65-SET",
+          "skuOrigin": "HAVIE proposed identifier, not a manufacturer SKU",
+          "name": "Bộ 10 m",
+          "attributes": {
+            "manufacturerCode": "BGXB65",
+            "packaging": "SET",
+            "lengthM": 10,
+            "gaugeMm": 0.65,
+            "mainGaugeMm": null,
+            "crossGaugeMm": null,
+            "mainLengthM": null,
+            "crossLengthM": null,
+            "core": "High-Intensity Nylon Multifilament",
+            "outer": "Special Braided Forged Fiber",
+            "coating": "Elasticity Outer",
+            "madeIn": "Japan",
+            "color": null,
+            "recommendedTensionKgf": null,
+            "maxTensionKgf": null
+          },
+          "price": null,
+          "oldPrice": null,
+          "stockQuantity": null,
+          "isAvailable": false
+        }
+      ],
+      "source": {
+        "type": "manufacturer",
+        "url": "https://www.yonex.com/bgxb65",
+        "checkedAt": "2026-11-14",
+        "rawSpecifications": {
+          "Color(s)": "Green, Red, Blue, Purple, White, Black, Yellow",
+          "Gauge": "0.65 mm",
+          "Length": "10 m (33 ft) / 200 m (656 ft)",
+          "Core": "High-Intensity Nylon Multifilament",
+          "Outer": "Special Braided Forged Fiber",
+          "Coating": "Elasticity Outer",
+          "Made In": "Japan",
+          "Item Code": "BGXB65"
+        },
+        "publishedLengthOptionsAreNotStoreInventory": true,
+        "manufacturerColorsReferenceOnly": "Green, Red, Blue, Purple, White, Black, Yellow",
+        "imageOriginalUrl": "https://www.yonex.com/media/catalog/product/b/g/bgxb65_ex_pac_003.png",
+        "imageLocalFile": "images/yonex-exbolt-65.png",
+        "imageSha256": "3e66d3b485f3b14422c1b4ae427ea89d6e5d9dc3f1f660b6a765e9a11ac43b2d",
+        "imageColorIsIllustrationNotStockVariant": true
+      }
+    },
+    {
+      "name": "Yonex Exbolt 68",
+      "slug": "yonex-exbolt-68",
+      "brandSlug": "yonex",
+      "brandName": "Yonex",
+      "categorySlugSuggested": "strings",
+      "categoryNameSuggested": "Cước cầu lông",
+      "description": "Cước cầu lông đường kính 0,68 mm, lớp ngoài Oval Forged Fiber và lớp phủ Elasticity Outer. Yonex định vị sản phẩm theo hướng tấn công và độ bền.",
+      "specs": [
+        "Mã sản phẩm hãng: BGXB68",
+        "Đường kính: 0.68 mm",
+        "Chiều dài bộ: 10 m",
+        "Lõi: High-Intensity Nylon Multifilament",
+        "Lớp ngoài: Special Braided Oval Forged Fiber",
+        "Lớp phủ: Elasticity Outer"
+      ],
+      "imageUrls": [
+        "/images/strings/yonex-exbolt-68.png"
+      ],
+      "isActive": false,
+      "variantCandidates": [
+        {
+          "proposedStoreSku": "HAVIE-YONEX-BGXB68-SET",
+          "skuOrigin": "HAVIE proposed identifier, not a manufacturer SKU",
+          "name": "Bộ 10 m",
+          "attributes": {
+            "manufacturerCode": "BGXB68",
+            "packaging": "SET",
+            "lengthM": 10,
+            "gaugeMm": 0.68,
+            "mainGaugeMm": null,
+            "crossGaugeMm": null,
+            "mainLengthM": null,
+            "crossLengthM": null,
+            "core": "High-Intensity Nylon Multifilament",
+            "outer": "Special Braided Oval Forged Fiber",
+            "coating": "Elasticity Outer",
+            "madeIn": null,
+            "color": null,
+            "recommendedTensionKgf": null,
+            "maxTensionKgf": null
+          },
+          "price": null,
+          "oldPrice": null,
+          "stockQuantity": null,
+          "isAvailable": false
+        }
+      ],
+      "source": {
+        "type": "manufacturer",
+        "url": "https://www.yonex.com/bgxb68",
+        "checkedAt": "2026-11-14",
+        "rawSpecifications": {
+          "Color(s)": "Flash Orange, Lime Green, Turquoise, Flash Red, Yellow, Black, White",
+          "Gauge": "0.68 mm",
+          "Length": "10 m (33 ft) / 200 m (656 ft)",
+          "Core": "High-Intensity Nylon Multifilament",
+          "Outer": "Special Braided Oval Forged Fiber",
+          "Coating": "Elasticity Outer",
+          "Item Code": "BGXB68"
+        },
+        "publishedLengthOptionsAreNotStoreInventory": true,
+        "manufacturerColorsReferenceOnly": "Flash Orange, Lime Green, Turquoise, Flash Red, Yellow, Black, White",
+        "imageOriginalUrl": "https://www.yonex.com/media/catalog/product/b/g/bgxb68_ex_pac_686.png",
+        "imageLocalFile": "images/yonex-exbolt-68.png",
+        "imageSha256": "5bc20385b7d451cd6a2b77005f0e5fb97c0569663d688c676ae2fbda10ea7529",
+        "imageColorIsIllustrationNotStockVariant": true
+      }
+    },
+    {
+      "name": "Yonex Aerobite",
+      "slug": "yonex-aerobite",
+      "brandSlug": "yonex",
+      "brandName": "Yonex",
+      "categorySlugSuggested": "strings",
+      "categoryNameSuggested": "Cước cầu lông",
+      "description": "Bộ cước hybrid có dây dọc 0,67 mm và dây ngang 0,61 mm. Dây dọc dài 5,5 m, dây ngang dài 5 m; dây dọc có lớp phủ polyurethane.",
+      "specs": [
+        "Mã sản phẩm hãng: BGAB",
+        "Đường kính: mains - 0.67 mm; crosses - 0.61 mm",
+        "Chiều dài bộ: 10.5 m",
+        "Lõi: mains - High-Intensity Nylon Multifilament crosses - High-Intensity Nylon Multifilament",
+        "Lớp ngoài: Special Braided High Polymer Nylon",
+        "Lớp phủ: Mains - Polyurethane Coating",
+        "Xuất xứ công bố: Japan"
+      ],
+      "imageUrls": [
+        "/images/strings/yonex-aerobite.png"
+      ],
+      "isActive": false,
+      "variantCandidates": [
+        {
+          "proposedStoreSku": "HAVIE-YONEX-BGAB-SET",
+          "skuOrigin": "HAVIE proposed identifier, not a manufacturer SKU",
+          "name": "Bộ 10.5 m",
+          "attributes": {
+            "manufacturerCode": "BGAB",
+            "packaging": "SET",
+            "lengthM": 10.5,
+            "gaugeMm": null,
+            "mainGaugeMm": 0.67,
+            "crossGaugeMm": 0.61,
+            "mainLengthM": 5.5,
+            "crossLengthM": 5,
+            "core": "mains - High-Intensity Nylon Multifilament crosses - High-Intensity Nylon Multifilament",
+            "outer": "Special Braided High Polymer Nylon",
+            "coating": "Mains - Polyurethane Coating",
+            "madeIn": "Japan",
+            "color": null,
+            "recommendedTensionKgf": null,
+            "maxTensionKgf": null
+          },
+          "price": null,
+          "oldPrice": null,
+          "stockQuantity": null,
+          "isAvailable": false
+        }
+      ],
+      "source": {
+        "type": "manufacturer",
+        "url": "https://www.yonex.com/bgab",
+        "checkedAt": "2026-11-14",
+        "rawSpecifications": {
+          "Color(s)": "White / Red, White / Green, White / Blue",
+          "Gauge": "mains - 0.67 mm; crosses - 0.61 mm",
+          "Length": "10.5m / mains-5.5m(18ft); crosses-5m(16ft); 200m / mains-105m(344ft); crosses-95m(311ft)",
+          "Core": "mains - High-Intensity Nylon Multifilament crosses - High-Intensity Nylon Multifilament",
+          "Outer": "Special Braided High Polymer Nylon",
+          "Coating": "Mains - Polyurethane Coating",
+          "Made In": "Japan",
+          "Item Code": "BGAB"
+        },
+        "publishedLengthOptionsAreNotStoreInventory": true,
+        "manufacturerColorsReferenceOnly": "White / Red, White / Green, White / Blue",
+        "imageOriginalUrl": "https://www.yonex.com/media/catalog/product/b/g/bgab_114_ex_pac_1_1.png",
+        "imageLocalFile": "images/yonex-aerobite.png",
+        "imageSha256": "dd9006ce7748d5a5db07c9a9b68d83a7518f0fedfc24f0c0b6de40b337746bf8",
+        "imageColorIsIllustrationNotStockVariant": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,2117 @@
+{
+  "applied": true,
+  "summary": {
+    "batch": "racket-basic-specs-2026-11-15",
+    "inputProducts": 173,
+    "inputSkus": 244,
+    "productsWithImportedSpecs": 163,
+    "variantsWithImportedSpecs": 228,
+    "namesCleaned": 58,
+    "normalizedFlex": 163,
+    "normalizedBalance": 153,
+    "fullTensionRanges": 63,
+    "maximumOnly": 85
+  },
+  "issues": [
+    {
+      "slug": "lining-sg-3d-calibar-900",
+      "sku": "CAT-LINING-42929103863910",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-axforce-100",
+      "reason": "LOCAL_SKU_NEEDS_IDENTITY_REVIEW",
+      "skus": [
+        "AXF100-3U-G5",
+        "AXF100-4U-G5"
+      ]
+    },
+    {
+      "slug": "lining-sg-axforce-40-3u",
+      "sku": "CAT-LINING-43022928937062",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-axforce-40-4u",
+      "sku": "CAT-LINING-43022929854566",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-axforce-70",
+      "reason": "LOCAL_SKU_NEEDS_IDENTITY_REVIEW",
+      "skus": [
+        "AXF70-4U-G5"
+      ]
+    },
+    {
+      "slug": "lining-axforce-80",
+      "reason": "LOCAL_SKU_NEEDS_IDENTITY_REVIEW",
+      "skus": [
+        "AXF80-5U-G6",
+        "AXF80-4U-G5"
+      ]
+    },
+    {
+      "slug": "lining-sg-bladex-200-3u",
+      "sku": "CAT-LINING-42929071554662",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "lining-sg-bladex-200-4u",
+      "sku": "CAT-LINING-42929071620198",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "lining-sg-bladex-500-3u",
+      "sku": "CAT-LINING-42929071685734",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-bladex-500-4u",
+      "sku": "CAT-LINING-42929071784038",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "lining-sg-bladex-800-3u",
+      "sku": "CAT-LINING-42929077026918",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-halbertec-2000-4u",
+      "sku": "CAT-LINING-42929278910566",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-halbertec-3000-5u",
+      "sku": "CAT-LINING-42929295622246",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-halbertec-4000-3u",
+      "sku": "CAT-LINING-42929277501542",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-halbertec-4000-4u",
+      "sku": "CAT-LINING-42929278058598",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-halbertec-7000-3u",
+      "sku": "CAT-LINING-43022911537254",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-halbertec-7000-4u",
+      "sku": "CAT-LINING-43022916780134",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-halbertec-8000",
+      "reason": "LOCAL_SKU_NEEDS_IDENTITY_REVIEW",
+      "skus": [
+        "HBT8000-4U-G5",
+        "HBT8000-3U-G5"
+      ]
+    },
+    {
+      "slug": "lining-sg-halbertec-8000-3u",
+      "sku": "CAT-LINING-42929142857830",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-halbertec-8000-4u",
+      "sku": "CAT-LINING-42929146986598",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-halbertec-9000-4u",
+      "sku": "CAT-LINING-42929284120678",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-tectonic-3-5u",
+      "sku": "CAT-LINING-42929071390822",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "lining-sg-tecctonic-6-4u",
+      "sku": "CAT-LINING-42929071456358",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-tectonic-6-5u",
+      "sku": "CAT-LINING-42929071489126",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-tectonic-7",
+      "reason": "LOCAL_SKU_NEEDS_IDENTITY_REVIEW",
+      "skus": [
+        "TEC7-4U-G5"
+      ]
+    },
+    {
+      "slug": "lining-sg-tectonic-7i",
+      "sku": "CAT-LINING-42928871637094",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859054182",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859086950",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859119718",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859152486",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859185254",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859218022",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859250790",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859283558",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859316326",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859349094",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859381862",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859414630",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859447398",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72",
+      "sku": "CAT-LINING-42928859480166",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72-power",
+      "sku": "CAT-LINING-43116259639398",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72-s",
+      "sku": "CAT-LINING-42929124638822",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72-s",
+      "sku": "CAT-LINING-42929124671590",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72-s",
+      "sku": "CAT-LINING-42929124474982",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72-s",
+      "sku": "CAT-LINING-42929124606054",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72-s",
+      "sku": "CAT-LINING-42929124507750",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72-s",
+      "sku": "CAT-LINING-42929124540518",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-72-s",
+      "sku": "CAT-LINING-42929124573286",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-78-s",
+      "sku": "CAT-LINING-42929093574758",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-78-s",
+      "sku": "CAT-LINING-42929093607526",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-78-s",
+      "sku": "CAT-LINING-42929093640294",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-78-s",
+      "sku": "CAT-LINING-42929093673062",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "lining-sg-windstorm-78-s",
+      "sku": "CAT-LINING-42929093705830",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "mizuno-vn-bdss-altius-sonic-73jtb309-2025ss",
+      "sku": "CAT-MIZUNO-47212912935166",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-bdss-fortius-10-73jtb500-2025ss",
+      "sku": "CAT-MIZUNO-47212913000702",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-sea-acrospeed-0-73jtb400-2024ss",
+      "sku": "CAT-MIZUNO-47212912771326",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-sea-acrospeed-001-73jtb491-2024ss",
+      "sku": "CAT-MIZUNO-47212912738558",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acroforce-100-73jtb510-2025aw",
+      "sku": "CAT-MIZUNO-47503443198206",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acroforce-300-73jtb503-2025aw",
+      "sku": "CAT-MIZUNO-48122101727486",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "mizuno-vn-acroforce-600-blackxgreen-73jtb506-2025aw",
+      "sku": "CAT-MIZUNO-48122101694718",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-0-73jtb400-2024ss",
+      "sku": "CAT-MIZUNO-47212912673022",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-1-accel-73jtb402-2024ss",
+      "sku": "CAT-MIZUNO-47212912836862",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-1-drive-73jtb451-2024aw",
+      "sku": "CAT-MIZUNO-47212912804094",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-1-drive-j-edition-73jtb451-2025aw",
+      "sku": "CAT-MIZUNO-48122101661950",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-1-focus-73jtb401-2024ss",
+      "sku": "CAT-MIZUNO-47212912869630",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-2-73jtb422-2025ss",
+      "sku": "CAT-MIZUNO-47212912967934",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-3-73jtb403-2024ss",
+      "sku": "CAT-MIZUNO-47212912607486",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-6-73jtb406-2024ss",
+      "sku": "CAT-MIZUNO-47212912640254",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-6-73jtb406-2024ss",
+      "sku": "CAT-MIZUNO-47212915917054",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-7-73jtb407-2024aw",
+      "sku": "CAT-MIZUNO-47212912541950",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-7-73jtb407-2024aw",
+      "sku": "CAT-MIZUNO-47212915884286",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-8-73jtb408-2024aw",
+      "sku": "CAT-MIZUNO-47212912574718",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-acrospeed-8-73jtb408-2024aw",
+      "sku": "CAT-MIZUNO-47212915851518",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-altius-sonic-73jtb309-2025ss",
+      "sku": "CAT-MIZUNO-47212912902398",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-altius-sonic-73jtb309-2025ss",
+      "sku": "CAT-MIZUNO-47212915949822",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-altius-vx5-73mtb523-2025aw",
+      "sku": "CAT-MIZUNO-47288436654334",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-altrax-870-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288437080318",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-altrax-870-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288437276926",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-caliber-s-boost-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47212911886590",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-caliber-s-boost-2-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288436916478",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-caliber-v-pro-73mtb254-2025aw",
+      "sku": "CAT-MIZUNO-47288436850942",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-carbo-pro-835-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47212912115966",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-carbo-pro-839-73mtb424-2024ss",
+      "sku": "CAT-MIZUNO-47212912148734",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "mizuno-vn-fioria-lite-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288436982014",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-fioria-lite-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288437244158",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-fortius-50-spirit-73mtb450-2024ss",
+      "sku": "CAT-MIZUNO-47212911493374",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-fortius-50-swift-73mtb450-2024ss",
+      "sku": "CAT-MIZUNO-47212911526142",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-fortius-52-ks-73mtb523-2025aw",
+      "sku": "CAT-MIZUNO-47288436621566",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-fortius-71-vt-73mtb523-2025aw",
+      "sku": "CAT-MIZUNO-47288436687102",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-jpx-10-5-ct-control-73mtb523-2025aw",
+      "sku": "CAT-MIZUNO-47288436719870",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-jpx-3-3-rage-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47988403044606",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-jpx-3-3-rage-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47988410253566",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-jpx-7-0-sp-73mtb523-2025aw",
+      "sku": "CAT-MIZUNO-47288436752638",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-jpx-8-force-73mtb423-2024aw",
+      "sku": "CAT-MIZUNO-47212911591678",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-jpx-8-2-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47212911722750",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-jpx-8-2-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47212915654910",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-jpx-reserve-edition-mb-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47212911558910",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-powerblade-597-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47552210927870",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-promax-ht1-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288437014782",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-prototype-x-1i-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47212911788286",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-prototype-x-3d-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47212911821054",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-prototype-x1-2-73mtb523-2025aw",
+      "sku": "CAT-MIZUNO-47288436785406",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-prototype-x5-ct-control-73mtb523-2025aw",
+      "sku": "CAT-MIZUNO-47288436818174",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-speedflex-9-0-feel-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288436949246",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-turboblade-587-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288437113086",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-turboblade-587-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288437309694",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-turboblade-587-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288437342462",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-carbo-pro-837-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47212912443646",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-jpx-8-flash-73mtb423-2024ss",
+      "sku": "CAT-MIZUNO-47212911624446",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY"
+      ]
+    },
+    {
+      "slug": "mizuno-vn-xyst-07-73mtb623-2024ss",
+      "sku": "CAT-MIZUNO-47212911755518",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "mizuno-vn-zephyr-zr8-73mtb524-2025aw",
+      "sku": "CAT-MIZUNO-47288437047550",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "SOURCE_OMITS_TENSION_UNIT"
+      ],
+      "sourceIssues": [
+        "SOURCE_OMITS_LENGTH_UNIT",
+        "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY",
+        "SOURCE_OMITS_TENSION_UNIT"
+      ]
+    },
+    {
+      "slug": "victor-au-ars-100x-ultra-g",
+      "sku": "CAT-VICTOR-46434091729053",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED",
+        "SOURCE_HAS_MULTIPLE_WEIGHT_ROWS_WITHOUT_EXPLICIT_LABELS",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-ars-90k-metallic-r",
+      "sku": "CAT-VICTOR-45287936426141",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED",
+        "SOURCE_HAS_MULTIPLE_WEIGHT_ROWS_WITHOUT_EXPLICIT_LABELS",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-ars-fantome-f-hyq-m",
+      "sku": "CAT-VICTOR-47161028509853",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType"
+      ],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-ars-fantome-j",
+      "sku": "CAT-VICTOR-46571346985117",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED",
+        "SOURCE_HAS_MULTIPLE_WEIGHT_ROWS_WITHOUT_EXPLICIT_LABELS",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-ars-fantome-sc25-ac",
+      "sku": "CAT-VICTOR-46780301738141",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED",
+        "SOURCE_HAS_MULTIPLE_WEIGHT_ROWS_WITHOUT_EXPLICIT_LABELS",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-ars-90f-m",
+      "sku": "CAT-VICTOR-41372462186653",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "VARIANT_GRIP_CONFLICT_G5_VS_SOURCE_TABLE_G6"
+      ],
+      "sourceIssues": [
+        "GRIP_SOURCE_CONFLICT",
+        "GRIP_SOURCE_CONFLICT",
+        "VARIANT_GRIP_CONFLICT_G5_VS_SOURCE_TABLE_G6",
+        "VARIANT_GRIP_CONFLICT_G5_VS_SOURCE_TABLE_G6"
+      ]
+    },
+    {
+      "slug": "victor-au-ars-90f-m",
+      "sku": "CAT-VICTOR-42579608699037",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "VARIANT_GRIP_CONFLICT_G5_VS_SOURCE_TABLE_G6"
+      ],
+      "sourceIssues": [
+        "GRIP_SOURCE_CONFLICT",
+        "GRIP_SOURCE_CONFLICT",
+        "VARIANT_GRIP_CONFLICT_G5_VS_SOURCE_TABLE_G6",
+        "VARIANT_GRIP_CONFLICT_G5_VS_SOURCE_TABLE_G6"
+      ]
+    },
+    {
+      "slug": "victor-au-auraspeed-90k-ii",
+      "sku": "CAT-VICTOR-43667139526813",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-brave-sword-12-blue",
+      "sku": "CAT-VICTOR-41372764111005",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": [
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING"
+      ]
+    },
+    {
+      "slug": "victor-au-brave-sword-12-blue",
+      "sku": "CAT-VICTOR-42579660734621",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": [
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING"
+      ]
+    },
+    {
+      "slug": "victor-au-bravesword-12l",
+      "sku": "CAT-VICTOR-42579666469021",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": [
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING"
+      ]
+    },
+    {
+      "slug": "victor-au-bravesword-12l",
+      "sku": "CAT-VICTOR-41372537356445",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": [
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING",
+        "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING"
+      ]
+    },
+    {
+      "slug": "victor-au-dx-12-zsw-j",
+      "sku": "CAT-VICTOR-47161033359517",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType"
+      ],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-tk-ryuga-ii-pro-b",
+      "sku": "CAT-VICTOR-44621053558941",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-tk-ryuga-ii-pro-cps-j",
+      "sku": "CAT-VICTOR-46676042907805",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED",
+        "SOURCE_HAS_MULTIPLE_WEIGHT_ROWS_WITHOUT_EXPLICIT_LABELS",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-tk-ryuga-metallic-c",
+      "sku": "CAT-VICTOR-44179313295517",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED",
+        "SOURCE_HAS_MULTIPLE_WEIGHT_ROWS_WITHOUT_EXPLICIT_LABELS",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-tk-ryuga-metallic-co24",
+      "sku": "CAT-VICTOR-46213593825437",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED",
+        "SOURCE_HAS_MULTIPLE_WEIGHT_ROWS_WITHOUT_EXPLICIT_LABELS",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-tk-ryuga-metallic-cps-i",
+      "sku": "CAT-VICTOR-46676040253597",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType",
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED",
+        "SOURCE_HAS_MULTIPLE_WEIGHT_ROWS_WITHOUT_EXPLICIT_LABELS",
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "victor-au-tk-ryuga-muse-i",
+      "sku": "CAT-VICTOR-45846889496733",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType"
+      ],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-arcsaber-11-pro",
+      "sku": "CAT-YONEX-46064960962781",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-arcsaber-11-pro",
+      "sku": "CAT-YONEX-46064960995549",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-arcsaber-11-pro",
+      "reason": "LOCAL_SKU_NEEDS_IDENTITY_REVIEW",
+      "skus": [
+        "ARC11P-4U-G5",
+        "ARC11P-3U-G5"
+      ]
+    },
+    {
+      "slug": "yonex-us-arcsaber7-play",
+      "sku": "CAT-YONEX-47575661510877",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-arcsaber7-tour",
+      "sku": "CAT-YONEX-47575661543645",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-astrox-100zz",
+      "sku": "CAT-YONEX-46064961552605",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "GLOBAL_COLOR_SCOPE_NOT_CONFIRMED",
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-astrox-100zz",
+      "sku": "CAT-YONEX-46064961585373",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-astrox-100zz",
+      "sku": "CAT-YONEX-46064961618141",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-astrox-100zz",
+      "sku": "CAT-YONEX-46064961519837",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "GLOBAL_COLOR_SCOPE_NOT_CONFIRMED",
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-astrox-100zz",
+      "reason": "LOCAL_SKU_NEEDS_IDENTITY_REVIEW",
+      "skus": [
+        "AX100ZZ-4U-G5",
+        "AX100ZZ-3U-G5"
+      ]
+    },
+    {
+      "slug": "yonex-us-astrox-77-play",
+      "sku": "CAT-YONEX-47575661609181",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-astrox-77-pro",
+      "sku": "CAT-YONEX-46064961716445",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "manufacturerTension"
+      ],
+      "reviewFlags": [
+        "TENSION_SOURCE_CONFLICT"
+      ],
+      "sourceIssues": [
+        "TENSION_SOURCE_CONFLICT",
+        "TENSION_SOURCE_CONFLICT"
+      ]
+    },
+    {
+      "slug": "yonex-astrox-77-pro",
+      "reason": "LOCAL_SKU_NEEDS_IDENTITY_REVIEW",
+      "skus": [
+        "AX77P-4U-G5"
+      ]
+    },
+    {
+      "slug": "yonex-us-astrox-77-tour",
+      "sku": "CAT-YONEX-47575661576413",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-astrox-88d-pro",
+      "reason": "LOCAL_SKU_NEEDS_IDENTITY_REVIEW",
+      "skus": [
+        "AX88DP-4U-G5",
+        "AX88DP-3U-G5"
+      ]
+    },
+    {
+      "slug": "yonex-us-astrox-88d-tour",
+      "sku": "CAT-YONEX-46064961814749",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-astrox-88d-tour",
+      "sku": "CAT-YONEX-46064961847517",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-astrox-88s-tour",
+      "sku": "CAT-YONEX-46255544631517",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-astrox-88s-tour",
+      "sku": "CAT-YONEX-46255544664285",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [
+        "REGIONAL_TENSION_NOT_WEIGHT_SCOPED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-astrox-99-pro",
+      "sku": "CAT-YONEX-46726382485725",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "FLEX_SOURCE_CONFLICT"
+      ]
+    },
+    {
+      "slug": "yonex-us-duora-z-strike",
+      "sku": "CAT-YONEX-47297045233885",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-isometric-tr0-strung",
+      "sku": "CAT-YONEX-46064972955869",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType"
+      ],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-isometric-tr1-strung",
+      "sku": "CAT-YONEX-46064972988637",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex",
+        "balanceType"
+      ],
+      "reviewFlags": [
+        "VARIANT_WEIGHT_NOT_SELECTED"
+      ],
+      "sourceIssues": [
+        "FLEX_SOURCE_CONFLICT"
+      ]
+    },
+    {
+      "slug": "yonex-us-nanoflare-1000-tour",
+      "sku": "CAT-YONEX-46859163730141",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "FLEX_SOURCE_CONFLICT"
+      ]
+    },
+    {
+      "slug": "yonex-nanoflare-1000z",
+      "reason": "LOCAL_SKU_NEEDS_IDENTITY_REVIEW",
+      "skus": [
+        "NF1000Z-4U-G5"
+      ]
+    },
+    {
+      "slug": "yonex-us-nanoflare-700-play-light-beige-strung",
+      "sku": "CAT-YONEX-47623491354845",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-nanoflare-700-tour-light-beige",
+      "sku": "CAT-YONEX-47623491387613",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "balanceType"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": []
+    },
+    {
+      "slug": "yonex-us-nanoflare-800-game",
+      "sku": "CAT-YONEX-46859279925469",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "GLOBAL_COLOR_OR_EDITION_MISMATCH"
+      ]
+    },
+    {
+      "slug": "yonex-us-nanoflare-800-tour",
+      "sku": "CAT-YONEX-46859261051101",
+      "reason": "PARTIAL_SPECS",
+      "blockedFields": [
+        "shaftFlex"
+      ],
+      "reviewFlags": [],
+      "sourceIssues": [
+        "FLEX_SOURCE_CONFLICT"
+      ]
+    }
+  ],
+  "backup": "C:\\Users\\LENOVO\\OneDrive\\Desktop\\Project\\HAVIE\\backend\\data\\racket-basic-specs-backup-1794679155862.json"
+}

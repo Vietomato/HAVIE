@@ -11,15 +11,32 @@ import {
   Pause,
   Play,
 } from 'lucide-react';
-import { catalogApi } from '../api';
+import { useProducts } from '../api/queries.js';
 import ProductCard from '../components/ProductCard.jsx';
 import { ProductGridSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
+import { Reveal, RevealItem } from '../components/motion.jsx';
+import BrandStrip from '../components/BrandStrip.jsx';
+
+// Each banner ships a 1280w and a full 2172w WebP so phones download the smaller one.
+const bannerSource = (name) => ({
+  src: `/images/${name}-2172.webp`,
+  srcSet: `/images/${name}-1280.webp 1280w, /images/${name}-2172.webp 2172w`,
+});
 
 const HOME_BANNERS = [
-  { src: '/images/banner1.png', alt: 'Vợt, giày và phụ kiện cầu lông: xem bộ sưu tập' },
-  { src: '/images/banner2.png', alt: 'Trang bị cầu lông nổi bật: xem bộ sưu tập' },
-  { src: '/images/banner3.png', alt: 'Sản phẩm cầu lông mới: xem bộ sưu tập' },
+  {
+    ...bannerSource('banner-vietnam-open'),
+    alt: 'Giải cầu lông quốc tế Yonex Sunrise Vietnam Open 2026, từ 8 đến 13 tháng 9: xem sản phẩm',
+  },
+  {
+    ...bannerSource('banner-momota'),
+    alt: 'Kento Momota, cảm hứng trên sân đấu: xem sản phẩm',
+  },
+  {
+    ...bannerSource('banner-collection'),
+    alt: 'Bộ sưu tập cầu lông HAVIE từ Yonex, Li-Ning, Victor và Mizuno: xem sản phẩm',
+  },
 ];
 
 const CATEGORIES = [
@@ -27,6 +44,12 @@ const CATEGORIES = [
   { name: 'Giày cầu lông', slug: 'shoes', img: 2 },
   { name: 'Trang phục', slug: 'apparel', img: 4 },
   { name: 'Phụ kiện', slug: 'accessories', img: 6 },
+  {
+    name: 'Cước',
+    slug: 'strings',
+    img: 6,
+    image: '/uploads/yonex-strings/yonex-exbolt-68-5bc20385b7d4.png',
+  },
 ];
 
 const PERKS = [
@@ -41,32 +64,15 @@ const prefersReducedMotion = () =>
 
 export default function Home() {
   usePageTitle();
-  const [featured, setFeatured] = useState([]);
-  const [featuredLoading, setFeaturedLoading] = useState(true);
-  const [featuredError, setFeaturedError] = useState('');
+  const featuredQuery = useProducts({ pageSize: 4, sort: 'rating_desc' });
+  const featured = featuredQuery.data?.data || [];
+  const featuredLoading = featuredQuery.isPending;
+  const featuredError = featuredQuery.error
+    ? featuredQuery.error.message || 'Không thể tải sản phẩm nổi bật.'
+    : '';
   const [activeBanner, setActiveBanner] = useState(0);
   const [paused, setPaused] = useState(prefersReducedMotion);
   const [interacting, setInteracting] = useState(false);
-
-  useEffect(() => {
-    let active = true;
-
-    catalogApi
-      .getProducts({ pageSize: 4, sort: 'rating_desc' })
-      .then((res) => {
-        if (active) setFeatured(res.data || []);
-      })
-      .catch((error) => {
-        if (active) setFeaturedError(error.message || 'Không thể tải sản phẩm nổi bật.');
-      })
-      .finally(() => {
-        if (active) setFeaturedLoading(false);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, []);
 
   useEffect(() => {
     if (paused || interacting) return undefined;
@@ -108,9 +114,11 @@ export default function Home() {
             <img
               className="home-banner-image"
               src={banner.src}
+              srcSet={banner.srcSet}
+              sizes="100vw"
               alt={banner.alt}
-              width="2182"
-              height="721"
+              width="2172"
+              height="724"
               fetchPriority={index === 0 ? 'high' : undefined}
             />
           </Link>
@@ -153,43 +161,43 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="home-intro">
+      <Reveal as="section" className="home-intro" y={20}>
         <div className="container">
           <div>
             <span className="eyebrow">HAVIE — CỬA HÀNG CẦU LÔNG</span>
             <h1>
-              Dành trọn đam mê cho cầu lông<span className="dot">.</span>
+              Dành trọn đam mê cho cầu lông
             </h1>
           </div>
           <Link to="/products" className="btn btn-primary">
             MUA SẮM NGAY <ArrowRight size={18} aria-hidden="true" />
           </Link>
         </div>
-      </section>
+      </Reveal>
 
       <section className="section container">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">DANH MỤC</span>
-            <h2>
-              SẢN PHẨM<span className="dot">.</span>
-            </h2>
+            <span className="eyebrow">KHÁM PHÁ</span>
+            <h2>DANH MỤC SẢN PHẨM</h2>
           </div>
           <Link className="text-link" to="/products">
             TẤT CẢ <ArrowRight size={17} aria-hidden="true" />
           </Link>
         </div>
         <div className="category-grid">
-          {CATEGORIES.map((c) => (
-            <Link className="category-card" key={c.slug} to={'/products?category=' + c.slug}>
+          {CATEGORIES.map((c, index) => (
+            <RevealItem key={c.slug} index={index}>
+            <Link className="category-card" to={'/products?category=' + c.slug}>
               <div className="category-image">
-                <img src={'/images/product-' + c.img + '.svg'} alt="" loading="lazy" />
+                <img src={c.image || '/images/product-' + c.img + '.svg'} alt="" loading="lazy" />
               </div>
               <div className="category-label">
                 <span>{c.name}</span>
                 <ArrowRight size={20} aria-hidden="true" />
               </div>
             </Link>
+            </RevealItem>
           ))}
         </div>
       </section>
@@ -200,7 +208,7 @@ export default function Home() {
             <div>
               <span className="eyebrow">ĐƯỢC YÊU THÍCH</span>
               <h2>
-                SẢN PHẨM NỔI BẬT<span className="dot">.</span>
+                SẢN PHẨM NỔI BẬT
               </h2>
             </div>
             <Link className="text-link" to="/products?sort=rating_desc">
@@ -215,8 +223,10 @@ export default function Home() {
             </p>
           ) : featured.length ? (
             <div className="products-grid">
-              {featured.map((p) => (
-                <ProductCard key={p.id} product={p} />
+              {featured.map((p, index) => (
+                <RevealItem key={p.id} index={index}>
+                  <ProductCard product={p} />
+                </RevealItem>
               ))}
             </div>
           ) : (
@@ -225,13 +235,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="campaign container">
+      <Reveal as="section" className="campaign container">
         <div>
           <span className="eyebrow">TRIẾT LÝ HAVIE</span>
           <h2>
-            DỤNG CỤ TỐT.
+            MỖI PHA CẦU,
             <br />
-            TRẬN ĐẤU HAY.
+            MỘT LẦN BỨT PHÁ.
           </h2>
           <p>
             Mỗi chuyển động đều quan trọng. Trang bị phù hợp giúp bạn tự tin thể hiện lối chơi của
@@ -242,11 +252,11 @@ export default function Home() {
           </Link>
         </div>
         <div className="campaign-mark" aria-hidden="true">
-          H<span>.</span>
+          H
         </div>
-      </section>
+      </Reveal>
 
-      <section className="perks container" aria-label="Cam kết của HAVIE">
+      <Reveal as="section" className="perks container" aria-label="Cam kết của HAVIE">
         {PERKS.map(({ icon: Icon, title, text }) => (
           <div key={title}>
             <Icon size={26} aria-hidden="true" />
@@ -254,7 +264,9 @@ export default function Home() {
             <span>{text}</span>
           </div>
         ))}
-      </section>
+      </Reveal>
+
+      <BrandStrip />
     </>
   );
 }

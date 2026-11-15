@@ -1,0 +1,28 @@
+{
+  "products": 173,
+  "brandCounts": {
+    "Li-Ning": 54,
+    "Mizuno": 49,
+    "Victor": 16,
+    "Yonex": 54
+  },
+  "sourcePages": 201,
+  "exactSourceVariantMatchedProducts": 163,
+  "identityReviewProducts": 10,
+  "productsWithAnyConfirmedVariantTension": 98,
+  "productsWithSplitFrameShaft": 58,
+  "issueCodes": {
+    "LOCAL_SKU_NEEDS_MODEL_RECONCILIATION": 10,
+    "GOLDEN_MAX_EDITION_NAME_NEEDS_CONFIRMATION": 1,
+    "SOURCE_OMITS_TENSION_UNIT": 51,
+    "SOURCE_OMITS_LENGTH_UNIT": 37,
+    "MIZUNO_STYLE_CODE_NOT_A_UNIQUE_MATCH_KEY": 33,
+    "GRIP_SOURCE_CONFLICT": 2,
+    "VARIANT_GRIP_CONFLICT_G5_VS_SOURCE_TABLE_G6": 2,
+    "HORIZONTAL_VERTICAL_TENSION_NEEDS_MANUAL_BINDING": 4,
+    "TENSION_SOURCE_CONFLICT": 6,
+    "FLEX_SOURCE_CONFLICT": 4,
+    "GLOBAL_COLOR_OR_EDITION_MISMATCH": 1,
+    "REFERENCE_IMAGE_CONFLICT": 1
+  }
+}

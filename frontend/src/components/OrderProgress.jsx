@@ -22,7 +22,12 @@ export default function OrderProgress({ order }) {
     );
   }
 
-  const currentStep = ORDER_PROGRESS_STEPS.findIndex(({ status }) => status === order.status);
+  // Đơn chuyển khoản QR có thêm bước đầu: chờ thanh toán.
+  const steps =
+    order.paymentMethod === 'PAYOS'
+      ? [{ status: 'PENDING_PAYMENT', label: 'Chờ thanh toán' }, ...ORDER_PROGRESS_STEPS]
+      : ORDER_PROGRESS_STEPS;
+  const currentStep = steps.findIndex(({ status }) => status === order.status);
   const activeStep = currentStep < 0 ? 0 : currentStep;
 
   return (
@@ -30,7 +35,7 @@ export default function OrderProgress({ order }) {
       className="order-progress"
       aria-label={`Tiến trình đơn hàng: ${ORDER_STATUS_LABELS[order.status] || order.status}`}
     >
-      {ORDER_PROGRESS_STEPS.map((step, index) => {
+      {steps.map((step, index) => {
         const complete = index < activeStep || order.status === 'COMPLETED';
         const current = index === activeStep && order.status !== 'COMPLETED';
         return (
