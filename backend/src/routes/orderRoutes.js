@@ -113,7 +113,8 @@ router.post(
         !requiredText(recipientName) ||
         !requiredText(recipientPhone) ||
         !requiredText(fields.streetAddress) ||
-        !requiredText(fields.ward) ||
+        // Phường/xã có thể trống: vài huyện đảo (Côn Đảo, Bạch Long Vĩ...) không có cấp xã.
+        (fields.ward != null && typeof fields.ward !== "string") ||
         !requiredText(fields.district) ||
         !requiredText(fields.province)
       ) {
@@ -132,7 +133,8 @@ router.post(
         fields.district,
         fields.province,
       ]
-        .map((part) => part.trim())
+        .map((part) => part?.trim())
+        .filter(Boolean)
         .join(", ");
     }
 
