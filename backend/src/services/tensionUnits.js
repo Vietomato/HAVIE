@@ -43,15 +43,43 @@ export function buildConversionTable(from = 20, to = 32, step = 2) {
   return rows;
 }
 
-const KG_UNITS = ["kg", "kgs", "kgf", "ký", "kí"];
+const KG_UNITS = ["kg", "kgs", "kgf", "ký", "kí", "ky", "ki"];
 const LBS_UNITS = ["lb", "lbs", "pound", "pounds"];
-const UNIT_PATTERN = "(kgf|kgs|kg|ký|kí|lbs|lb|pounds?)";
+const UNIT_PATTERN = "(kgf|kgs|kg|ký|kí|ky|ki|lbs|lb|pounds?)";
 const NUMBER = "(\\d+(?:[.,]\\d+)?)";
 const toNumber = (text) => Number(text.replace(",", "."));
 const isKg = (unit) => KG_UNITS.includes(unit);
 
-const normalize = (message) =>
-  String(message ?? "").normalize("NFC").toLowerCase().replace(/\s+/gu, " ").trim();
+export const normalizeTensionMessage = (message) =>
+  String(message ?? "").normalize("NFC")
+    .replace(/\bIbs\b/gu, "lbs")
+    .toLowerCase()
+    .replace(/(\d)\s*ibs\b/gu, "$1 lbs")
+    .replace(/\s+/gu, " ").trim();
+
+const fold = (text) => text.normalize("NFD").replace(/\p{M}/gu, "").replaceAll("đ", "d");
+
+// Only infer an omitted unit from the immediately preceding user conversion.
+// Shopping amounts, racket weights and string gauges never establish a unit.
+export function resolveTensionFollowup(message, history = []) {
+  const text = fold(normalizeTensionMessage(message));
+  const amount = text.match(/^(?:con\s+)?(\d+(?:[.,]\d+)?)\s*(?:thi sao|thi sao a|thi bao nhieu|nhi)?\s*[?.!]*$/u)?.[1];
+  if (!amount) return message;
+  const recent = history.slice(-8);
+  const previousIndex = recent.findLastIndex((item) => item.role === "user");
+  if (previousIndex < 0) return message;
+  const previous = resolveTensionFollowup(recent[previousIndex].content, recent.slice(0, previousIndex));
+  if (!answerTensionConversion(previous)) return message;
+  const source = fold(normalizeTensionMessage(previous)).match(new RegExp(`${NUMBER}\\s*${UNIT_PATTERN}`, "u"));
+  if (!source) return message;
+  return `${amount} ${source[2]} bao nhiêu ${isKg(source[2]) ? "lbs" : "kg"}`;
+}
+
+export function answerTensionUnitDefinition(message) {
+  const text = fold(normalizeTensionMessage(message));
+  if (!/^(?:(?:cho minh hoi|cho hoi)\s+)?(?:lbs?|pounds?)\s+(?:la gi|nghia la gi|la don vi gi|la sao)\s*[?.!]*$/u.test(text)) return null;
+  return 'Lbs (pound-force) là đơn vị lực căng cước. 1 kg lực (kgf, thường gọi là "ký") tương đương khoảng 2.2 lbs; ví dụ 25 lbs khoảng 11.3 kg.';
+}
 
 const TABLE_REQUEST = /bảng\s+(?:quy\s*đổi|đổi)|quy\s*đổi\s+(?:lbs|kg|ký)\s*(?:sang|ra)\s*(?:lbs|kg|ký)\s*(?:là\s*)?(?:gì|thế nào)?\s*$/u;
 
@@ -59,9 +87,9 @@ const TABLE_REQUEST = /bảng\s+(?:quy\s*đổi|đổi)|quy\s*đổi\s+(?:lbs|kg
 // ("26lbs mấy ký", "26 lbs = ? kg"). Trả về câu trả lời hoặc null nếu không phải
 // câu hỏi quy đổi thuần.
 export function answerTensionConversion(message) {
-  const text = normalize(message);
+  const text = fold(normalizeTensionMessage(message));
 
-  if (TABLE_REQUEST.test(text) && /(?:lbs|kg|ký)/u.test(text) && !/\d/u.test(text)) {
+  if (new RegExp(fold(TABLE_REQUEST.source), "u").test(text) && /(?:lbs|kg|ky)/u.test(text) && !/\d/u.test(text)) {
     const rows = buildConversionTable()
       .map(({ lbs, kg }) => `${lbs} lbs ≈ ${plain(kg)} kg`)
       .join("\n");
@@ -72,7 +100,7 @@ export function answerTensionConversion(message) {
   const connector =
     "(?:thì\\s+)?(?:=|→|->|tương đương|bằng|là|ra|sang|đổi ra|đổi sang|quy ra|quy đổi ra|bao nhiêu|mấy)?\\s*(?:khoảng\\s*)?(?:bao nhiêu|mấy)?\\s*[?]?\\s*";
   const pattern = new RegExp(
-    `^(?:quy đổi|đổi|cho mình hỏi|cho hỏi)?\\s*(?:căng\\s+)?${NUMBER}(?:\\s*[-–~]\\s*${NUMBER})?\\s*${UNIT_PATTERN}\\s*${connector}${UNIT_PATTERN}${ending}`,
+    fold(`^(?:quy đổi|đổi|cho mình hỏi|cho hỏi)?\\s*(?:căng\\s+)?${NUMBER}(?:\\s*[-–~]\\s*${NUMBER})?\\s*${UNIT_PATTERN}\\s*${connector}${UNIT_PATTERN}${ending}`),
     "u",
   );
   const match = text.match(pattern);

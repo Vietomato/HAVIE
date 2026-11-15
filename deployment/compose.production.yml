@@ -1,0 +1,55 @@
+name: havie
+services:
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: havie
+      POSTGRES_USER: havie
+      POSTGRES_PASSWORD: ${HAVIE_DB_PASSWORD:?Set HAVIE_DB_PASSWORD}
+    volumes: ["database:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U havie -d havie"]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "noeviction"]
+    volumes: ["redis:/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+  api:
+    build: ../backend
+    env_file: ${HAVIE_RUNTIME_FILE:?Set path to backend runtime configuration outside source control}
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://havie:${HAVIE_DB_PASSWORD}@database:5432/havie?schema=public&connection_limit=10&pool_timeout=10
+      REDIS_URL: redis://redis:6379
+      APP_ORIGIN: ${HAVIE_APP_ORIGIN:?Set public HTTPS origin}
+      CORS_ORIGIN: ${HAVIE_APP_ORIGIN}
+      TRUST_PROXY_HOPS: 1
+      CHAT_MAX_CONCURRENT: 2
+      HAVIE_SEMANTIC_SEARCH: "false"
+    volumes: ["uploads:/app/uploads"]
+    depends_on:
+      database: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    deploy: { replicas: 2 }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 15s
+      retries: 5
+    restart: unless-stopped
+  web:
+    build: ../frontend
+    ports: ["127.0.0.1:8080:80"]
+    depends_on: [api]
+    restart: unless-stopped
+volumes:
+  database:
+  redis:
+  uploads:

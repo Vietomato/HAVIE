@@ -1,7 +1,9 @@
 import React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { apiClient, authApi, cartApi } from '../api';
+import { authApi, cartApi } from '../api';
 import { useToast } from './ToastContext.jsx';
+import { ACTIVITY_KEY, AUTH_EVENT_KEY, signalSignedOut } from '../api/client.js';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Store = createContext(null);
 
@@ -9,6 +11,7 @@ const loginPath = () =>
   '/auth?returnTo=' + encodeURIComponent(window.location.pathname + window.location.search);
 
 export function StoreProvider({ children }) {
+  const queryClient = useQueryClient();
   const { notify } = useToast();
   const [account, setAccount] = useState(null);
   const [cart, setCart] = useState({ items: [] });
@@ -24,20 +27,59 @@ export function StoreProvider({ children }) {
 
   // Initialize Account
   useEffect(() => {
-    if (!apiClient.getToken()) {
-      setAuthLoading(false);
-      return;
-    }
+    localStorage.removeItem('havie_access_token');
 
     authApi
       .getMe()
       .then((user) => setAccount(user))
       .catch((error) => {
-        if (error.status === 401) apiClient.clearToken();
         setAccount(null);
       })
       .finally(() => setAuthLoading(false));
   }, []);
+
+  useEffect(() => {
+    const signedOut = () => { void queryClient.cancelQueries(); queryClient.clear(); setAccount(null); setCart({ items: [] }); };
+    const storage = (event) => { if (event.key === AUTH_EVENT_KEY) signedOut(); };
+    window.addEventListener('havie:logout', signedOut);
+    window.addEventListener('storage', storage);
+    return () => { window.removeEventListener('havie:logout', signedOut); window.removeEventListener('storage', storage); };
+  }, []);
+
+  useEffect(() => {
+    if (!account) return undefined;
+    let lastWrite = 0;
+    let lastSent = 0;
+    let expiring = false;
+    const idleMs = 30 * 60 * 1000;
+    const activity = () => {
+      if (document.visibilityState !== 'visible') return;
+      const now = Date.now();
+      if (now - lastWrite > 1000) { localStorage.setItem(ACTIVITY_KEY, String(now)); lastWrite = now; }
+    };
+    activity();
+    const tick = async () => {
+      if (expiring) return;
+      const now = Date.now();
+      const lastActive = Number(localStorage.getItem(ACTIVITY_KEY)) || 0;
+      if (now - lastActive >= idleMs) {
+        expiring = true;
+        try { await authApi.logout(); } catch { /* Server expiry is authoritative. */ }
+        signalSignedOut();
+        setAccount(null); setCart({ items: [] });
+      } else if (document.visibilityState === 'visible' && now - lastActive < 60000 && now - lastSent >= 60000) {
+        lastSent = now;
+        try { await authApi.activity(); } catch { /* 401 handling updates all tabs. */ }
+      }
+    };
+    for (const type of ['pointerdown', 'keydown', 'scroll', 'touchstart']) window.addEventListener(type, activity, { passive: true });
+    const timer = window.setInterval(tick, 10000);
+    void tick();
+    return () => {
+      window.clearInterval(timer);
+      for (const type of ['pointerdown', 'keydown', 'scroll', 'touchstart']) window.removeEventListener(type, activity);
+    };
+  }, [account?.id]);
 
   // Fetch Cart on mount and on account change
   const refreshCart = async (user = account) => {
@@ -75,7 +117,7 @@ export function StoreProvider({ children }) {
   };
 
   const add = async (variantId, quantity = 1, { silent = false } = {}) => {
-    if (!apiClient.getToken()) return promptLogin();
+    if (!account) return promptLogin();
 
     try {
       const updated = await cartApi.addItem(variantId, quantity);

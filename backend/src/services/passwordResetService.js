@@ -131,7 +131,7 @@ export function createPasswordResetService({
 
       const passwordHash = await hashPassword(password);
       await database.$transaction(async (transaction) => {
-        await transaction.user.update({ where: { id: user.id }, data: { passwordHash } });
+        await transaction.user.update({ where: { id: user.id }, data: { passwordHash, authVersion: { increment: 1 } } });
         await transaction.passwordResetChallenge.delete({ where: { id: challenge.id } });
       });
 

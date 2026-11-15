@@ -10,6 +10,10 @@ import ProductCard from '../components/ProductCard.jsx';
 import { BlockSkeleton } from '../components/Skeleton.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
 import { RevealItem } from '../components/motion.jsx';
+import { useQueryClient } from '@tanstack/react-query';
+import { refreshReviewData } from '../api/queries.js';
+import { useToast } from '../context/ToastContext.jsx';
+import ProductReviewDialog from '../components/ProductReviewDialog.jsx';
 import { describeScalePosition, parseSpecScale } from '../utils/specScale.js';
 import {
   FALLBACK_PRODUCT_IMAGE,
@@ -97,9 +101,13 @@ export default function Detail() {
   const [qty, setQty] = useState(1);
   const [pendingAction, setPendingAction] = useState(null);
   const [syncedProductId, setSyncedProductId] = useState(null);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [reviewPage, setReviewPage] = useState(1);
+  const queryClient = useQueryClient();
+  const { notify } = useToast();
 
   // Secondary sections must not take the product page down when they fail.
-  const reviewsQuery = useProductReviews(product?.id);
+  const reviewsQuery = useProductReviews(product?.id, { page: reviewPage, pageSize: 10 });
   const reviews = reviewsQuery.data?.data || [];
   const reviewsError = reviewsQuery.error
     ? reviewsQuery.error.message || 'Chưa tải được đánh giá.'
@@ -114,13 +122,15 @@ export default function Detail() {
   // Reset the per-product selection whenever a different product is shown.
   if (product && product.id !== syncedProductId) {
     setSyncedProductId(product.id);
+    setReviewPage(1);
+    setReviewOpen(false);
     setSelectedVariant(usesShoePicker(product) ? null : getDefaultVariant(product));
     setSelectedColor(null);
     setActiveImage(0);
     setQty(1);
   }
 
-  const { add, favorites, toggleFavorite } = useStore();
+  const { add, favorites, toggleFavorite, account, authLoading } = useStore();
   const navigate = useNavigate();
   usePageTitle(product?.name || 'Chi tiết sản phẩm');
 
@@ -519,7 +529,15 @@ export default function Detail() {
         <h2>
           ĐÁNH GIÁ KHÁCH HÀNG ({reviewCount})
         </h2>
-        {reviewsError ? (
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          {!authLoading && (!account ? (
+            <Link to={'/auth?returnTo=' + encodeURIComponent(`/products/${product.slug}#reviews`)} className="btn btn-outline">ĐĂNG NHẬP ĐỂ ĐÁNH GIÁ</Link>
+          ) : account.role === 'CUSTOMER' ? (
+            <button type="button" className="btn btn-outline" onClick={() => setReviewOpen(true)}><Star size={17} aria-hidden="true" />ĐÁNH GIÁ SẢN PHẨM</button>
+          ) : null)}
+          <p className="text-sm text-slate-500">Dành cho khách đã mua sản phẩm trong đơn hàng hoàn thành.</p>
+        </div>
+        {reviewsQuery.isPending ? <p role="status" className="text-sm text-slate-500">Đang tải đánh giá…</p> : reviewsError ? (
           <p className="muted-text" role="alert">
             {reviewsError}
           </p>
@@ -532,14 +550,25 @@ export default function Detail() {
                   <time dateTime={r.createdAt}>{formatDate(r.createdAt)}</time>
                 </div>
                 <Stars value={r.rating} />
-                <p>{r.comment}</p>
+                {r.isVerifiedPurchase && <span className="my-2 inline-flex items-center gap-1 text-xs text-emerald-700"><ShieldCheck size={14} aria-hidden="true" />Đã mua hàng</span>}
+                {r.comment && <p className="whitespace-pre-wrap break-words">{r.comment}</p>}
               </article>
             ))}
           </div>
         ) : (
           <p className="muted-text">Chưa có đánh giá nào cho sản phẩm này.</p>
         )}
+        {(reviewsQuery.data?.meta?.totalPages ?? 1) > 1 && <nav className="mt-5 flex items-center justify-center gap-3" aria-label="Phân trang đánh giá">
+          <button type="button" className="btn-mini" disabled={reviewPage <= 1 || reviewsQuery.isFetching} onClick={() => setReviewPage((page) => page - 1)}>Trang trước</button>
+          <span className="text-sm text-slate-600">{reviewPage}/{reviewsQuery.data.meta.totalPages}</span>
+          <button type="button" className="btn-mini" disabled={reviewPage >= reviewsQuery.data.meta.totalPages || reviewsQuery.isFetching} onClick={() => setReviewPage((page) => page + 1)}>Trang sau</button>
+        </nav>}
       </section>
+      {reviewOpen && account?.role === 'CUSTOMER' && <ProductReviewDialog key={`${account.id}:${product.id}`} productId={product.id} productName={product.name} onClose={() => setReviewOpen(false)} onSaved={(_, summary) => {
+        refreshReviewData(queryClient, product.id, summary);
+        setReviewPage(1);
+        notify({ message: 'Đã lưu đánh giá của bạn. Cảm ơn bạn đã chia sẻ!' });
+      }} />}
 
       {related.length > 0 && (
         <section className="related">

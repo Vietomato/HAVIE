@@ -1,0 +1,37 @@
+name: havie-loadtest
+services:
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: havie_loadtest
+      POSTGRES_USER: havie_test
+      POSTGRES_PASSWORD: local-loadtest-only
+    ports: ["127.0.0.1:55432:5432"]
+    tmpfs: ["/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U havie_test -d havie_loadtest"]
+      interval: 2s
+      retries: 30
+  redis:
+    image: redis:7-alpine
+    ports: ["127.0.0.1:56379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      retries: 30
+  runner:
+    profiles: ["runner"]
+    build:
+      context: ../backend
+      target: loadtest
+    environment:
+      NODE_ENV: test
+      HAVIE_LOADTEST_CONTAINER: "true"
+      DATABASE_URL: postgresql://havie_test:local-loadtest-only@database:5432/havie_loadtest?schema=public&connection_limit=10&pool_timeout=30
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: isolated-loadtest-only-secret-at-least-32-bytes
+      HAVIE_SEMANTIC_SEARCH: "false"
+    volumes: ["../backend/data:/app/data"]
+    depends_on:
+      database: { condition: service_healthy }
+      redis: { condition: service_healthy }

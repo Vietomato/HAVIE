@@ -356,12 +356,13 @@ test("the variant limits from the Nanoflare 1000Z example are enforced per varia
 
 test("12 kgf is converted and checked as about 26.5 lbs; 13.5 kgf is blocked on a 4U", async () => {
   const candidates = [{ ...racket("Nanoflare 1000Z", 4450000, specs()), variantName: "4U / G5" }];
+  const extra = { lookupProducts: async () => [{ name: "Nanoflare 1000Z", variants: [{ name: "4U / G5", advisorSpecs: specs() }] }] };
 
-  const inside = await ask("Mình muốn căng 12 kg được không?", baseNeeds, candidates);
+  const inside = await ask("Nanoflare 1000Z 4U căng 12 kg được không?", baseNeeds, candidates, extra);
   assert.match(inside.reply, /12 kgf khoảng 26\.5 lbs/);
   assert.match(inside.reply, /26\.5 lbs nằm trong khoảng 20-28 lbs \(khoảng 9\.1-12\.7 kg\) hãng khuyến nghị cho Nanoflare 1000Z 4U \/ G5/);
 
-  const outside = await ask("Mình muốn căng 13,5 ký được không?", baseNeeds, candidates);
+  const outside = await ask("Nanoflare 1000Z 4U căng 13,5 ký được không?", baseNeeds, candidates, extra);
   assert.match(outside.reply, /13\.5 kgf khoảng 29\.8 lbs/);
   assert.match(outside.reply, /vượt giới hạn 28 lbs/);
 });
@@ -547,18 +548,17 @@ test("a string comparison answers the question without resuming a pending racket
   assert.deepEqual(result.needs, open);
 });
 
-test("a requested tension above the verified racket limit is refused", async () => {
+test("a tension question does not use a search result as the selected racket", async () => {
   const result = await ask("Căng 30 lbs được không?", baseNeeds, [racket("Vợt A", 3900000, specs())]);
 
-  assert.match(result.reply, /30 lbs vượt giới hạn 28 lbs/);
+  assert.match(result.reply, /cần biết đúng mẫu và phiên bản vợt/);
   assert.doesNotMatch(result.reply, /30 lbs nằm trong/);
 });
 
 test("a requested tension is not confirmed when the limit is unknown", async () => {
   const result = await ask("Căng 26 lbs được không?", baseNeeds, [racket("Vợt B", 3900000, null)]);
 
-  assert.match(result.reply, /chưa có giới hạn căng đã xác minh của hãng/);
-  assert.match(result.reply, /chưa xác nhận 26 lbs/);
+  assert.match(result.reply, /cần biết đúng mẫu và phiên bản vợt/);
   assert.doesNotMatch(result.reply, /26 lbs nằm trong/);
 });
 
@@ -680,7 +680,7 @@ test("a knowledge question with unchanged needs does not repeat the racket list"
   const candidates = [racket("Vợt A", 3900000, specs())];
   const result = await ask("Căng 30 lbs được không?", baseNeeds, candidates);
 
-  assert.match(result.reply, /30 lbs vượt giới hạn 28 lbs/);
+  assert.match(result.reply, /cần biết đúng mẫu và phiên bản vợt/);
   assert.doesNotMatch(result.reply, /Danh sách vợt ở trên vẫn giữ nguyên/);
   assert.doesNotMatch(result.reply, /Em tìm được/);
   // Khách đang hỏi điều khác: tập trung trả lời, không đưa lại danh sách vợt.
@@ -772,7 +772,7 @@ test("a kgf request with no verified limit is converted but not confirmed", asyn
   const result = await ask("Căng 11 ký được không?", baseNeeds, [racket("Vợt B", 3900000, null)]);
 
   assert.match(result.reply, /11 kgf khoảng 24\.3 lbs/);
-  assert.match(result.reply, /chưa xác nhận 24\.3 lbs có an toàn không/);
+  assert.match(result.reply, /cần biết đúng mẫu và phiên bản vợt/);
 });
 
 test("without a verified limit only a general educational range is given", async () => {

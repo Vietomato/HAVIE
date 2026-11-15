@@ -179,6 +179,7 @@ router.get(
           id: true,
           rating: true,
           comment: true,
+          isVerifiedPurchase: true,
           createdAt: true,
           user: { select: { fullName: true } },
         },

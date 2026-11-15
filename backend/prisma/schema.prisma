@@ -58,14 +58,15 @@ enum AdvisorNoteStatus {
 
 model User {
   id                String    @id @default(uuid())
-  email             String    @unique
-  passwordHash      String
+  email             String?   @unique
+  passwordHash      String?
   fullName          String
   phone             String?
   role              Role      @default(CUSTOMER)
   isActive          Boolean   @default(true)
   emailVerifiedAt   DateTime?
   deactivatedReason String?
+  authVersion       Int       @default(0)
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -75,8 +76,45 @@ model User {
   cart      Cart?
   auditLogs AuditLog[]
   advisorConversations AdvisorConversation[]
+  oauthIdentities OAuthIdentity[]
 
   @@map("users")
+}
+
+model OAuthIdentity {
+  id String @id @default(uuid())
+  provider String
+  subject String
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  @@unique([provider, subject])
+  @@index([userId])
+  @@map("oauth_identities")
+}
+
+// Shared, expiring sessions and OAuth state; Redis is preferred when configured.
+model AuthRecord {
+  key String @id
+  value Json
+  expiresAt DateTime
+  @@index([expiresAt])
+  @@map("auth_records")
+}
+
+model RateCounter {
+  key String @id
+  hits Int @default(1)
+  expiresAt DateTime
+  @@index([expiresAt])
+  @@map("rate_counters")
+}
+
+model RuntimeLease {
+  key String @id
+  expiresAt DateTime
+  @@index([expiresAt])
+  @@map("runtime_leases")
 }
 
 model EmailVerificationChallenge {
@@ -181,6 +219,7 @@ model Product {
   advisorNotes ProductAdvisorNote[]
 
   @@map("products")
+  @@index([isActive, categoryId, brandId])
 }
 
 model ProductVariant {
@@ -203,6 +242,8 @@ model ProductVariant {
   advisorNotes ProductAdvisorNote[]
 
   @@map("product_variants")
+  @@index([price, productId])
+  @@index([productId, isAvailable])
 }
 
 // ============================================================
@@ -324,6 +365,7 @@ model Order {
   items   OrderItem[]
 
   @@map("orders")
+  @@index([userId, status])
 }
 
 // ============================================================
@@ -367,6 +409,7 @@ model OrderItem {
   variant ProductVariant @relation(fields: [variantId], references: [id])
 
   @@map("order_items")
+  @@index([orderId, variantId])
 }
 
 // ============================================================
@@ -381,6 +424,7 @@ model Review {
   rating    Int
   comment   String
   isVisible Boolean  @default(true)
+  isVerifiedPurchase Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -388,6 +432,9 @@ model Review {
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@map("reviews")
+  @@index([productId, isVisible, createdAt])
+  // A partial unique index for verified reviews is defined in the SQL migration.
+  // Existing imported reviews are retained without assuming purchase verification.
 }
 
 // ============================================================

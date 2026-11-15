@@ -1,6 +1,7 @@
 ﻿import prisma from "../config/prisma.js";
 import { readRacketSpecs } from "./productAdvisorService.js";
 import { findStringModels, loadKnowledge } from "./knowledgeBase.js";
+import { rankHybrid } from "./hybridRetrieval.js";
 import {
   assessRacket,
   NEUTRAL_FIT,
@@ -9,13 +10,11 @@ import {
   preferenceRank,
 } from "./racketSuitability.js";
 
-const BUDGET_TOLERANCE_VND = 300_000;
+const budgetTolerance = (target) => target < 1_000_000 ? 100_000 : 200_000;
 const MAX_CANDIDATES = 5;
 const MAX_ALTERNATIVES = 3;
 // Ít hơn số này vợt hợp thì bổ sung thêm vợt "cần lưu ý" (không bao giờ bổ sung vợt bị loại).
 const MIN_SUITABLE = 3;
-// Gợi ý thay thế không vượt quá 30% ngân sách mục tiêu.
-const ALTERNATIVE_OVER_BUDGET_RATIO = 1.3;
 
 const foldCatalogText = (text) => String(text).normalize("NFD").replace(/\p{M}/gu, "")
   .replace(/đ/gu, "d").toLowerCase();
@@ -135,7 +134,7 @@ function readSize(attributes) {
   return { size, system };
 }
 
-export function getBudgetRange(needs, { anyPrice = false } = {}) {
+export function getBudgetRange(needs) {
   const target = needs.budgetTargetVnd ?? null;
   const maximum = needs.budgetMaxVnd ?? null;
 
@@ -162,26 +161,19 @@ export function getBudgetRange(needs, { anyPrice = false } = {}) {
 
   const anchor = target ?? maximum;
 
-  if (anyPrice) {
-    return {
-      anchor,
-      lower: 1,
-      upper: maximum ?? Math.ceil(anchor * ALTERNATIVE_OVER_BUDGET_RATIO),
-    };
-  }
-
   // Chỉ có trần: mọi mức giá không vượt trần đều phù hợp.
   if (target === null) {
     return { anchor, lower: 1, upper: maximum };
   }
 
-  const lower = Math.max(1, anchor - BUDGET_TOLERANCE_VND);
+  const tolerance = budgetTolerance(anchor);
+  const lower = Math.max(1, anchor - tolerance);
 
   // Có trần thì không bao giờ vượt trần.
   const upper = maximum === null
-    ? anchor + BUDGET_TOLERANCE_VND
+    ? anchor + tolerance
     : Math.min(
-        anchor + BUDGET_TOLERANCE_VND,
+        anchor + tolerance,
         maximum,
       );
 
@@ -193,7 +185,8 @@ export async function searchAdvisorProducts(
   {
     database = prisma,
     ignoreBrand = false,
-    anyPrice = false,
+    query = "",
+    rank = rankHybrid,
     // Mọi sản phẩm đang bán trên cửa hàng (cùng điều kiện với trang bán hàng, giỏ hàng
     // và đặt hàng) được tìm kể cả khi chưa duyệt thông số tư vấn. Đặt
     // ADVISOR_ONLY_REVIEWED=true để chỉ lấy hàng đã duyệt.
@@ -204,7 +197,7 @@ export async function searchAdvisorProducts(
     throw new Error("Cần xác định vợt hoặc giày trước khi tìm.");
   }
 
-  const budget = getBudgetRange(needs, { anyPrice });
+  const budget = getBudgetRange(needs);
 
   const previewEnabled =
     process.env.NODE_ENV !== "production" &&
@@ -458,12 +451,39 @@ export async function searchAdvisorProducts(
     ? suitable
     : [...suitable, ...cautions];
 
+  // Rank only eligible products; no text/vector match can resurrect an excluded
+  // racket, bypass a budget or turn marketing copy into verified specifications.
+  if (needs.productType === "rackets" && query && kept.length > 1) {
+    const kb = loadKnowledge().racquet;
+    const descriptionQuery = [query,
+      kb.balance_types.find((item) => item.id === needs.balancePreference)?.label,
+      kb.shaft_flex.find((item) => item.id === needs.shaftFlexPreference)?.label,
+      needs.weightPreference,
+      ...(needs.priorities ?? []).map((priority) => ({
+        easy_to_use: "dễ đánh, dễ làm quen", attack_support: "tấn công, đập cầu", fast_handling: "xoay trở linh hoạt, phản tạt nhanh",
+      })[priority]),
+    ].filter(Boolean).join(". ");
+    const documents = kept.map((candidate) => {
+      const specs = candidate.advisorSpecs;
+      const balance = specs && kb.balance_types.find((item) => item.id === specs.balanceType);
+      const flex = specs && kb.shaft_flex.find((item) => item.id === specs.shaftFlex);
+      return { id: candidate.variantId, text: [candidate.name, candidate.variantName,
+        String(candidate.description ?? "").replace(/<[^>]*>/gu, " ").slice(0, 2400),
+        specs?.weightClass, balance?.label, ...(balance?.strengths ?? []), flex?.label, flex?.advisor_note_vi,
+      ].filter(Boolean).join(". ") };
+    });
+    const ranked = await rank(descriptionQuery, documents, { limit: documents.length });
+    const scores = new Map(ranked.hits.map((hit) => [hit.document.id, hit.score]));
+    for (const candidate of kept) candidate.relevanceScore = scores.get(candidate.variantId) ?? 0;
+  }
+
   // Hợp nhất trước, rồi gần ngân sách, rồi mới giới hạn số sản phẩm.
   const candidates = kept
     .sort((left, right) =>
       preferenceRank(left, needs) - preferenceRank(right, needs) ||
       right.fit.tier - left.fit.tier ||
       right.fit.score - left.fit.score ||
+      (right.relevanceScore ?? 0) - (left.relevanceScore ?? 0) ||
       left.budgetDistanceVnd - right.budgetDistanceVnd ||
       sizeRank(left) - sizeRank(right) ||
       left.priceVnd - right.priceVnd ||
@@ -493,23 +513,20 @@ export async function searchAdvisorProducts(
   };
 }
 
-// Không có mẫu đúng điều kiện: nới lần lượt hãng rồi giá, không vượt trần.
+// Có thể gợi ý hãng khác, nhưng không tự nới khoảng giá khách yêu cầu.
 export async function findAdvisorAlternatives(
   needs,
-  { database = prisma } = {},
+  { database = prisma, query = "" } = {},
 ) {
   const attempts = needs.brandPreference
-    ? [
-        { reason: "brand", ignoreBrand: true },
-        { reason: "price", anyPrice: true },
-        { reason: "brand_and_price", ignoreBrand: true, anyPrice: true },
-      ]
-    : [{ reason: "price", anyPrice: true }];
+    ? [{ reason: "brand", ignoreBrand: true }]
+    : [];
 
   for (const { reason, ...options } of attempts) {
     const { candidates } = await searchAdvisorProducts(needs, {
       ...options,
       database,
+      query,
     });
 
     if (candidates.length) {

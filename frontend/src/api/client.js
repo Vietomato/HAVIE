@@ -1,4 +1,12 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+export const apiUrl = (endpoint) => `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+export const AUTH_EVENT_KEY = 'havie-auth-event';
+export const ACTIVITY_KEY = 'havie-last-activity';
+export function signalSignedOut() {
+  localStorage.removeItem('havie_access_token');
+  localStorage.setItem(AUTH_EVENT_KEY, JSON.stringify({ type: 'logout', at: Date.now(), id: crypto.randomUUID() }));
+  window.dispatchEvent(new Event('havie:logout'));
+}
 
 export class ApiError extends Error {
   constructor(status, code, message, details = {}) {
@@ -11,28 +19,10 @@ export class ApiError extends Error {
 }
 
 class ApiClient {
-  tokenKey = 'havie_access_token';
-
-  getToken() {
-    return localStorage.getItem(this.tokenKey);
-  }
-
-  setToken(token) {
-    if (token) {
-      localStorage.setItem(this.tokenKey, token);
-    } else {
-      localStorage.removeItem(this.tokenKey);
-    }
-  }
-
-  clearToken() {
-    this.setToken(null);
-  }
-
   async request(endpoint, options = {}) {
-    const token = this.getToken();
     const headers = {
       Accept: 'application/json',
+      'X-Havie-Request': '1',
       ...options.headers,
     };
 
@@ -40,14 +30,14 @@ class ApiClient {
     if (options.body && !(options.body instanceof FormData) && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json';
     }
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
+    if (options.activity === true) {
+      headers['X-Havie-Activity'] = '1';
     }
 
-    const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+    const url = apiUrl(endpoint);
     let response;
     try {
-      response = await fetch(url, { ...options, headers });
+      response = await fetch(url, { ...options, headers, credentials: 'include' });
     } catch (error) {
       throw new ApiError(0, 'NETWORK_ERROR', `Không thể kết nối máy chủ API: ${error.message}`);
     }
@@ -56,6 +46,7 @@ class ApiClient {
     const body = isJson ? await response.json() : null;
 
     if (!response.ok) {
+      if ((response.status === 401 || body?.error?.code === 'ACCOUNT_DISABLED') && !/\/auth\/(?:login|register|social|mock-admin)/u.test(endpoint)) signalSignedOut();
       const error = body?.error || {};
       throw new ApiError(
         response.status,

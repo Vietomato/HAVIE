@@ -32,3 +32,10 @@ backend/migration-repair/
 
 # Editor backups
 *.bak
+
+# Generated local UI previews and experiment results
+deployment/auth-*.png
+backend/data/hybrid-retrieval-evaluation.json
+backend/data/session-loadtest*-report.json
+backend/data/customer-reviews-check.json
+deployment/reviews-*.png

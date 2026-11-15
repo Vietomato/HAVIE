@@ -1,5 +1,5 @@
 // HAVIE API Contract v1 - HTTP Domain Services
-import { apiClient } from './client';
+import { apiClient, signalSignedOut } from './client';
 
 export * from './types';
 export { apiClient, ApiError } from './client';
@@ -23,7 +23,6 @@ export const authApi = {
       method: 'POST',
       body: JSON.stringify({ email, code }),
     });
-    if (res.data?.accessToken) apiClient.setToken(res.data.accessToken);
     return res.data;
   },
 
@@ -32,7 +31,6 @@ export const authApi = {
       method: 'POST',
       body: JSON.stringify(payload),
     });
-    if (res.data?.accessToken) apiClient.setToken(res.data.accessToken);
     return res.data;
   },
 
@@ -57,22 +55,27 @@ export const authApi = {
       method: 'POST',
       body: JSON.stringify(payload),
     });
-    if (res.data?.accessToken) apiClient.setToken(res.data.accessToken);
     return res.data;
   },
 
   logout: async () => {
     try {
       await apiClient.request('/auth/logout', { method: 'POST' });
-    } finally {
-      apiClient.clearToken();
+    } catch (error) {
+      if (error.status !== 401) throw error;
     }
+    signalSignedOut();
   },
 
   getMe: async () => {
     const res = await apiClient.request('/me');
     return res.data;
   },
+  activity: () => apiClient.request('/auth/activity', { method: 'POST', activity: true }),
+  providers: async () => (await apiClient.request('/auth/providers')).data,
+  startSocial: async (provider, payload) => (await apiClient.request(`/auth/social/${provider}/start`, {
+    method: 'POST', body: JSON.stringify(payload),
+  })).data,
 
   updateMe: async (payload) => {
     const res = await apiClient.request('/me', {
@@ -197,11 +200,19 @@ export const voucherApi = {
 };
 
 export const reviewApi = {
+  getEligibility: async (productId) => {
+    const res = await apiClient.request('/reviews/eligibility?' + queryString({ productId }));
+    return res.data;
+  },
   createReview: async (payload) => {
     const res = await apiClient.request('/reviews', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
+    return res.data;
+  },
+  updateReview: async (id, payload) => {
+    const res = await apiClient.request(`/reviews/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify(payload) });
     return res.data;
   },
 };

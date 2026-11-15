@@ -96,7 +96,7 @@ export function createMockService({
           "MOCK_ADMIN_EMAIL_IN_USE",
           "Email Admin thử nghiệm đang thuộc tài khoản không phải Admin.",
         );
-      } else if (!(await comparePassword(password, admin.passwordHash))) {
+      } else if (!admin.passwordHash || !(await comparePassword(password, admin.passwordHash))) {
         throw new HttpError(
           409,
           "MOCK_ADMIN_EMAIL_IN_USE",

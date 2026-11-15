@@ -8,11 +8,15 @@ Customers can browse rackets, shoes, strings and accessories, add items to a car
 
 - **Storefront**: home page, category listing with filters and pagination, product detail with variants (size, weight, grip), favorites, cart, checkout.
 - **Checkout address**: searchable province → district → ward pickers (type without diacritics, e.g. "ha noi"); each list only shows units inside the one chosen above. Data: 63 provinces from [provinces.open-api.vn](https://provinces.open-api.vn) v1, stored in `frontend/public/data/vn-administrative-units.json` and rebuilt with `frontend/scripts/build-vn-administrative-units.mjs`.
-- **Auth**: email + password sign-up with a 6-digit OTP sent over email (Gmail SMTP), JWT sessions, password reset.
+- **Auth**: email/password and OTP signup, server-managed HttpOnly cookie sessions with 30-minute idle expiry, password reset, and configurable Google login.
 - **Payments**: bank-transfer QR through [payOS](https://payos.vn), with webhook-based order confirmation.
 - **Orders**: order history, status tracking, customer-side cancellation.
+- **Product reviews**: customers with completed purchases can rate products from 1–5 stars, leave a comment and edit their own review from the product page or order history. Verified-purchase badges, review pagination and rating totals are supported.
 - **AI advisor**: conversational product recommendations. Chats are stored per account in PostgreSQL, so they survive a reload. Supports Groq Cloud or a local Ollama model.
+  Standalone tension questions and lbs/kg conversions take priority over a pending shopping questionnaire, without losing saved shopping preferences. The assistant accepts `Ibs` typos and unaccented conversion questions. Short follow-ups such as “còn 26?” reuse the source unit only from the immediately preceding conversion in the same conversation; at most eight text messages are read locally, without sending raw history to the AI. Tension safety still requires verified specifications for the exact racket and variant.
 - **Admin dashboard**: create/edit/hide products, upload images (local disk or Cloudinary), and update order status.
+
+Session expiry, Google/Facebook setup, production topology and the isolated 1,000-user browsing test are documented in [deployment/README.md](deployment/README.md).
 
 ## Tech Stack
 
@@ -20,7 +24,7 @@ Customers can browse rackets, shoes, strings and accessories, add items to a car
 | -------- | ----- |
 | Frontend | React 19, Vite 6, React Router 7, TanStack Query, Tailwind CSS v4, Framer Motion, lucide-react |
 | Backend  | Node.js (ESM), Express 4, Prisma 6, PostgreSQL |
-| Auth     | JWT, bcrypt, Nodemailer (OTP email) |
+| Auth     | Cookie sessions, Redis/PostgreSQL, OAuth, bcrypt, Nodemailer (OTP email) |
 | Payments | payOS (`@payos/node`) |
 | AI       | Groq Cloud or Ollama (switchable via env) |
 | Storage  | Local `uploads/` or Cloudinary |

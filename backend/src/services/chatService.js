@@ -22,10 +22,10 @@ import {
   polishReply,
   preferencePenalty,
 } from "./advisorReply.js";
-import { findStringModels, getStringQuestionIntent, getTensionConversion, isKnowledgeOnlyQuestion, loadKnowledge, retrieveKnowledge } from "./knowledgeBase.js";
+import { findStringModels, getStringQuestionIntent, getTensionConversion, isKnowledgeOnlyQuestion, loadKnowledge, retrieveKnowledgeHybrid } from "./knowledgeBase.js";
 import { preferenceRank } from "./racketSuitability.js";
 import { NO_STRINGING_NOTICE, describeRacketRecommendations } from "./racketRecommendation.js";
-import { answerTensionConversion } from "./tensionUnits.js";
+import { answerTensionConversion, answerTensionUnitDefinition, formatLbsWithKg, formatLbsRangeWithKg, resolveTensionFollowup } from "./tensionUnits.js";
 import { formatReplyParagraphs } from "../utils/replyFormat.js";
 import {
   adviseTension,
@@ -192,6 +192,7 @@ function sortCandidates(candidates, needs) {
       (right.fit?.tier ?? 1) - (left.fit?.tier ?? 1) ||
       fitPenalty(left, needs) - fitPenalty(right, needs) ||
       preferencePenalty(left, needs) - preferencePenalty(right, needs) ||
+      (right.relevanceScore ?? 0) - (left.relevanceScore ?? 0) ||
       distance(left) - distance(right) ||
       (left.priceVnd ?? 0) - (right.priceVnd ?? 0),
   );
@@ -277,7 +278,7 @@ function describeCandidates(needs, candidates, excludedForFit = 0) {
 }
 
 // Quyết định nội dung trả lời; câu chữ cuối cùng do polishReply xử lý.
-async function decideReply(needs, { search, findAlternatives }) {
+async function decideReply(needs, { search, findAlternatives, query }) {
   const decision = decideNextAction(needs);
 
   if (decision.action === "ask_followup") {
@@ -297,7 +298,7 @@ async function decideReply(needs, { search, findAlternatives }) {
     throw new Error(`Hành động chưa được hỗ trợ: ${decision.action}`);
   }
 
-  const found = await search(needs);
+  const found = await search(needs, { query });
 
   if (!["CANDIDATES_FOUND", "NO_REVIEWED_MATCH"].includes(found.status)) {
     throw new Error(`Trạng thái tìm kiếm chưa được hỗ trợ: ${found.status}`);
@@ -320,7 +321,7 @@ async function decideReply(needs, { search, findAlternatives }) {
   };
 
   if (found.status === "NO_REVIEWED_MATCH" || found.candidates.length === 0) {
-    const alternatives = await findAlternatives(needs);
+    const alternatives = await findAlternatives(needs, { query });
 
     if (alternatives) {
       const followUp = "Anh/chị muốn xem mẫu này hay đổi hãng, khoảng giá tìm kiếm?";
@@ -394,15 +395,20 @@ async function handleRacketMessageCore(
     polish = polishReply,
     searchStrings = searchYonexStrings,
     lookupProducts = findCatalogProductsByModel,
+    history = [],
+    retrieve = retrieveKnowledgeHybrid,
   } = {},
 ) {
   const savedNeeds = { ...createEmptyNeeds(), ...(previousNeeds ?? {}) };
   const privateNotice = describePrivateRequest(message);
   if (privateNotice) return knowledgeResult(savedNeeds, lastQuestion, privateNotice);
+  // Resolve only a short numeric follow-up to a conversion, locally. Raw history
+  // is never included in the AI prompt, and the current buying message wins.
+  const tensionMessage = resolveTensionFollowup(message, history);
   // A unit conversion does not change shopping needs or select a racket.
   // Keep it deterministic, including when the AI provider/catalog is unavailable.
   try {
-    const conversion = getTensionConversion(message) ?? answerTensionConversion(message);
+    const conversion = getTensionConversion(tensionMessage) ?? answerTensionConversion(tensionMessage) ?? answerTensionUnitDefinition(message);
     if (conversion) return {
       action: "answer_knowledge",
       needs: { ...createEmptyNeeds(), ...(previousNeeds ?? {}) },
@@ -428,7 +434,7 @@ async function handleRacketMessageCore(
     return knowledgeResult(savedNeeds, lastQuestion, STOCK_PRIVACY);
   }
   if (stringIntent.focused) {
-    const knowledge = retrieveKnowledge(message, savedNeeds);
+    const knowledge = await retrieve(message, savedNeeds);
     const draft = stringIntent.description
       ? knowledge.snippets.filter((item) => ["string", "string_choice", "gauge_tradeoffs", "tension_retention"].includes(item.topic))
         .map((item) => item.text).join(" ")
@@ -499,7 +505,7 @@ async function handleRacketMessageCore(
   // Education about rackets, strings and shoes uses the same KB, without a sales questionnaire.
   let educationalKnowledge;
   try {
-    educationalKnowledge = retrieveKnowledge(message, savedNeeds);
+    educationalKnowledge = await retrieve(message, savedNeeds);
   } catch (error) {
     console.error("[chatService] Không đọc được kiến thức tư vấn:", error.message);
   }
@@ -523,6 +529,23 @@ async function handleRacketMessageCore(
       specs: variant?.advisorSpecs ?? null, requestedLbf: request.lbf });
     return knowledgeResult(savedNeeds, lastQuestion, describeTensionAnswer(advice,
       model ? [model.name, variant?.name].filter(Boolean).join(" ") : null, request));
+  }
+  // A numeric tension question is not an answer to a pending buying question.
+  // Never take the first recommended racket as the customer's selected model.
+  if (educationalKnowledge?.tensionRequest &&
+      !/mua|tìm\s+(?:vợt|giày)|gợi ý\s+(?:vợt|giày|mẫu)|ngân sách|triệu|giá|bao nhiêu tiền|đánh đôi|đánh đơn/iu.test(message)) {
+    const request = educationalKnowledge.tensionRequest;
+    const skillLevel = /mới chơi|người mới|mới bắt đầu/iu.test(message) ? "beginner"
+      : /nâng cao|chuyên nghiệp/iu.test(message) ? "advanced"
+        : /trung cấp|trung bình|phong trào/iu.test(message) ? "intermediate" : savedNeeds.skillLevel;
+    const advice = adviseTension({ skillLevel, specs: null, requestedLbf: request.lbf });
+    const sentences = [];
+    if (request.lbf && request.unit === "lbs") sentences.push(`${formatLbsWithKg(request.lbf)}.`);
+    if (request.lbf && advice.heuristic) {
+      sentences.push(`Khoảng tham khảo chung theo trình độ của anh/chị là ${formatLbsRangeWithKg(advice.heuristic.lowLbf, advice.heuristic.highLbf)}, chưa phải giới hạn của một cây vợt cụ thể.`);
+    }
+    sentences.push(describeTensionAnswer(advice, null, request));
+    return knowledgeResult(savedNeeds, lastQuestion, sentences.join(" "));
   }
   if (educationalKnowledge && isKnowledgeOnlyQuestion(message, educationalKnowledge)) {
     const sentences = educationalKnowledge.snippets.map((item) => item.text);
@@ -562,13 +585,13 @@ async function handleRacketMessageCore(
     return { ...fallback, reply, draftReply: reply, replySource: "template" };
   }
 
-  const result = await decideReply(needs, { search, findAlternatives });
+  const result = await decideReply(needs, { search, findAlternatives, query: message });
 
   // Lỗi kho kiến thức không được làm hỏng cuộc trò chuyện.
   let knowledge = { topics: [], snippets: [], requestedTensionLbf: null };
 
   try {
-    knowledge = retrieveKnowledge(message, needs);
+    knowledge = await retrieve(message, needs);
   } catch (error) {
     console.error("[chatService] Không đọc được kho kiến thức:", error);
   }

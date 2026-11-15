@@ -12,6 +12,9 @@ import { useStore } from '../context/StoreContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
 import { localizeVariantName } from '../utils/product.js';
+import { useQueryClient } from '@tanstack/react-query';
+import { refreshReviewData } from '../api/queries.js';
+import ProductReviewDialog from '../components/ProductReviewDialog.jsx';
 
 const ORDER_TABS = [
   { key: 'all', label: 'Tất cả', statuses: null },
@@ -34,6 +37,8 @@ export default function AccountOrders() {
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('all');
   const [cancelTarget, setCancelTarget] = useState(null);
+  const [reviewTarget, setReviewTarget] = useState(null);
+  const queryClient = useQueryClient();
 
   const refreshOrders = useCallback(async (background = false) => {
     try {
@@ -176,6 +181,13 @@ export default function AccountOrders() {
                       ))}
                     </div>
                     <OrderProgress order={order} />
+                    {order.status === 'COMPLETED' && (
+                      <div className="my-4 flex flex-wrap gap-2">
+                        {[...new Map(order.items.filter((item) => item.variant?.product?.isActive).map((item) => [item.variant.productId, item])).values()].map((item) => (
+                          <button key={item.variant.productId} type="button" className="btn-mini max-w-full whitespace-normal break-words text-left" onClick={() => setReviewTarget({ id: item.variant.productId, name: item.productName })}>Đánh giá {item.productName}</button>
+                        ))}
+                      </div>
+                    )}
                     <div className="order-card-footer">
                       <span>
                         Tổng cộng <strong>{money(order.totalAmount)}</strong>
@@ -217,6 +229,10 @@ export default function AccountOrders() {
         onClose={() => setCancelTarget(null)}
         onConfirm={confirmCancel}
       />
+      {reviewTarget && account?.role === 'CUSTOMER' && <ProductReviewDialog key={`${account.id}:${reviewTarget.id}`} productId={reviewTarget.id} productName={reviewTarget.name} onClose={() => setReviewTarget(null)} onSaved={(_, summary) => {
+        refreshReviewData(queryClient, reviewTarget.id, summary);
+        notify({ message: 'Đã lưu đánh giá của bạn. Cảm ơn bạn đã chia sẻ!' });
+      }} />}
     </div>
   );
 }

@@ -43,9 +43,17 @@ export const useProduct = (idOrSlug) =>
     enabled: Boolean(idOrSlug),
   });
 
-export const useProductReviews = (productId) =>
+export const useProductReviews = (productId, params = {}) =>
   useQuery({
-    queryKey: ['product-reviews', productId],
-    queryFn: () => catalogApi.getProductReviews(productId),
+    queryKey: ['product-reviews', productId, params],
+    queryFn: () => catalogApi.getProductReviews(productId, params),
     enabled: Boolean(productId),
   });
+
+export function refreshReviewData(client, productId, summary) {
+  client.setQueriesData({ queryKey: ['product'] }, (product) => product?.id === productId ? { ...product, ...summary } : product);
+  client.setQueriesData({ queryKey: ['products'] }, (result) => result?.data ? {
+    ...result, data: result.data.map((product) => product.id === productId ? { ...product, ...summary } : product),
+  } : result);
+  void client.invalidateQueries({ queryKey: ['product-reviews', productId] });
+}

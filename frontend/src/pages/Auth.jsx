@@ -8,6 +8,7 @@ import { useToast } from '../context/ToastContext.jsx';
 import TextField from '../components/TextField.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
 import Logo from '../components/Logo.jsx';
+import googleLogo from '../assets/google-g.png';
 
 // Only same-site paths are accepted, so a crafted link cannot redirect off the store.
 const getSafeReturnPath = (value) =>
@@ -51,6 +52,8 @@ export default function Auth() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [loading, setLoading] = useState(false);
+  const [providers, setProviders] = useState({ google: false });
+  const [socialLoading, setSocialLoading] = useState(false);
   const { account, login, loginMockAdmin, register, logout } = useStore();
   const { notify } = useToast();
   const navigate = useNavigate();
@@ -70,6 +73,43 @@ export default function Auth() {
     if (user.role === 'ADMIN') navigate('/admin');
     else navigate(returnTo || '/');
   };
+
+  useEffect(() => {
+    authApi.providers().then(setProviders).catch(() => {});
+    const messages = {
+      OAUTH_CANCELLED: 'Bạn đã hủy đăng nhập.',
+      OAUTH_ACCOUNT_EXISTS: 'Email đã có tài khoản HAVIE. Hãy đăng nhập bằng cách đang dùng rồi liên kết Google trong trang tài khoản.',
+      OAUTH_ALREADY_LINKED: 'Tài khoản này đã được liên kết với tài khoản HAVIE khác.',
+      ACCOUNT_DISABLED: 'Tài khoản đã bị khóa.',
+    };
+    const failure = searchParams.get('socialError');
+    if (failure) setError(messages[failure] || 'Chưa đăng nhập được. Vui lòng thử lại hoặc dùng email.');
+  }, []);
+
+  useEffect(() => {
+    if (account && searchParams.get('social') === 'success') {
+      navigate(account.role === 'ADMIN' ? '/admin' : returnTo || '/', { replace: true });
+    }
+  }, [account, searchParams, returnTo, navigate]);
+
+  const startSocial = async (provider, link = false) => {
+    setError(''); setSocialLoading(true);
+    try {
+      const result = await authApi.startSocial(provider, { mode: link ? 'link' : 'login', returnTo: returnTo || '/' });
+      window.location.assign(result.url);
+    } catch (failure) { setError(failure.message || 'Chưa kết nối được. Vui lòng thử lại.'); setSocialLoading(false); }
+  };
+
+  const socialButtons = (link = false) => (
+    <div className="my-4">
+      <button type="button" disabled={!providers.google || socialLoading || loading}
+        className="flex min-h-12 w-full items-center justify-center gap-3 rounded-full border border-[#747775] bg-white px-4 py-3 text-sm font-medium text-[#1f1f1f] transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none"
+        onClick={() => startSocial('google', link)}>
+        <img src={googleLogo} alt="" aria-hidden="true" width="20" height="20" className="size-5 shrink-0 object-contain" />
+        <span>{socialLoading ? 'Đang kết nối…' : link ? 'Liên kết với Google' : 'Tiếp tục với Google'}</span>
+      </button>
+    </div>
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -168,8 +208,8 @@ export default function Auth() {
   };
 
   const handleLogout = async () => {
-    await logout();
-    notify({ message: 'Bạn đã đăng xuất.' });
+    try { await logout(); notify({ message: 'Bạn đã đăng xuất.' }); }
+    catch (failure) { setError(failure.message || 'Chưa kết nối được để đăng xuất. Vui lòng thử lại.'); }
   };
 
   const submitLabel = isForgot
@@ -209,13 +249,15 @@ export default function Auth() {
               <dl className="account-details">
                 <div>
                   <dt>Email</dt>
-                  <dd>{account.email}</dd>
+                  <dd>{account.email || 'Chưa cung cấp'}</dd>
                 </div>
                 <div>
                   <dt>Số điện thoại</dt>
                   <dd>{account.phone || 'Chưa cập nhật'}</dd>
                 </div>
               </dl>
+              {socialButtons(true)}
+              {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
 
               <div className="auth-actions">
                 {account.role === 'ADMIN' && (
@@ -253,6 +295,9 @@ export default function Auth() {
               )}
 
               {!isForgot && (
+                <>
+                {socialButtons()}
+                {!providers.google && <p className="mb-4 text-sm text-slate-500">Đăng nhập Google chưa được kích hoạt. Bạn có thể dùng email bên dưới.</p>}
               <div className="auth-tabs" role="group" aria-label="Chọn đăng nhập hoặc đăng ký">
                 <button
                   type="button"
@@ -271,6 +316,7 @@ export default function Auth() {
                   ĐĂNG KÝ
                 </button>
               </div>
+                </>
               )}
 
               <form onSubmit={handleSubmit} className="auth-form">

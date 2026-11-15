@@ -61,6 +61,24 @@ const needs = {
   budgetMaxVnd: null,
 };
 
+test("description retrieval ranks the eligible pool before limiting results and contains no inventory", async () => {
+  const rows = Array.from({ length: 7 }, (_, i) => variant(String(i), 2000000 + i * 10000, "yonex"));
+  rows.forEach((row) => { row.product.description = "Mô tả vợt công khai"; });
+  let indexed;
+  const result = await searchAdvisorProducts({ ...needs, budgetMaxVnd: 3000000 }, {
+    database: createDatabase(rows), query: "vợt dễ xoay trở",
+    rank: async (query, documents) => {
+      assert.equal(query, "vợt dễ xoay trở");
+      indexed = documents;
+      return { mode: "hybrid", hits: [{ document: documents.find((doc) => doc.id === "6"), score: 1 }] };
+    },
+  });
+  assert.equal(indexed.length, 7);
+  assert.equal(result.candidates[0].variantId, "6");
+  assert.equal(result.candidates.length, 5);
+  assert.doesNotMatch(JSON.stringify(indexed), /stockQuantity|isAvailable|supplier|password/u);
+});
+
 test("a ceiling accepts every price up to that ceiling", () => {
   assert.deepEqual(getBudgetRange({ ...needs, budgetMaxVnd: 8000000 }), {
     anchor: 8000000,
@@ -72,8 +90,24 @@ test("a ceiling accepts every price up to that ceiling", () => {
 test("a target keeps the tolerance around the price", () => {
   const range = getBudgetRange({ ...needs, budgetTargetVnd: 4500000 });
 
-  assert.equal(range.lower, 4200000);
-  assert.equal(range.upper, 4800000);
+  assert.equal(range.lower, 4300000);
+  assert.equal(range.upper, 4700000);
+});
+
+test("a 3 million target includes 2.8 through 3.2 million and excludes both outside edges", async () => {
+  const query = { ...needs, budgetTargetVnd: 3000000 };
+  assert.deepEqual(getBudgetRange(query), { anchor: 3000000, lower: 2800000, upper: 3200000 });
+  const result = await searchAdvisorProducts(query, {
+    database: createDatabase([variant("below", 2799999, "yonex"), variant("low", 2800000, "yonex"),
+      variant("middle", 3000000, "yonex"), variant("high", 3200000, "yonex"), variant("above", 3200001, "yonex")]),
+  });
+  assert.deepEqual(result.candidates.map((item) => item.slug).sort(), ["high", "low", "middle"]);
+});
+
+test("targets below one million use a narrower 100k margin", () => {
+  assert.deepEqual(getBudgetRange({ ...needs, budgetTargetVnd: 500000 }), { anchor: 500000, lower: 400000, upper: 600000 });
+  assert.deepEqual(getBudgetRange({ ...needs, budgetTargetVnd: 1000000 }), { anchor: 1000000, lower: 800000, upper: 1200000 });
+  assert.equal(getBudgetRange({ ...needs, budgetTargetVnd: 500000, budgetMaxVnd: 550000 }).upper, 550000);
 });
 
 test("a target never searches above the stated maximum", () => {
@@ -124,13 +158,13 @@ test("alternatives relax the brand before the price", async () => {
   assert.equal(result.candidates[0].slug, "nf");
 });
 
-test("alternatives relax the price when the brand has stock", async () => {
+test("alternatives do not automatically expand the requested price window", async () => {
   const result = await findAdvisorAlternatives(
     { ...needs, brandPreference: "yonex", budgetTargetVnd: 3600000 },
     { database: createDatabase([variant("nf", 4450000, "yonex")]) },
   );
 
-  assert.equal(result.reason, "price");
+  assert.equal(result, null);
 });
 
 test("alternatives never exceed a stated maximum", async () => {
@@ -153,11 +187,11 @@ test("alternatives skip products far above a target", async () => {
 
 test("alternatives stay limited to three products", async () => {
   const result = await findAdvisorAlternatives(
-    { ...needs, budgetTargetVnd: 5000000 },
+    { ...needs, brandPreference: "victor", budgetTargetVnd: 5000000 },
     {
       database: createDatabase(
         ["a", "b", "c", "d"].map((id, index) =>
-          variant(id, 1000000 + index, "yonex"),
+          variant(id, 4900000 + index, "yonex"),
         ),
       ),
     },
