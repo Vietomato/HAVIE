@@ -1,0 +1,393 @@
+tags:
+  - name: Cart
+    description: Giỏ hàng của người đang đăng nhập
+  - name: Orders
+    description: Đặt hàng, xem đơn, thanh toán QR, huỷ đơn
+  - name: Vouchers
+    description: Kiểm tra mã giảm giá
+  - name: Reviews
+    description: Đánh giá sản phẩm (chỉ khách đã mua và đơn đã hoàn thành)
+  - name: Payments
+    description: Webhook payOS
+
+paths:
+  /api/cart:
+    get:
+      tags: [Cart]
+      summary: Lấy giỏ hàng (tự tạo nếu chưa có)
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Cart' }
+                  message: { type: string }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/cart/items:
+    post:
+      tags: [Cart]
+      summary: Thêm biến thể sản phẩm vào giỏ
+      description: Nếu biến thể đã có trong giỏ thì cộng dồn số lượng.
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [variantId, quantity]
+              properties:
+                variantId: { type: string, format: uuid }
+                quantity: { type: integer, minimum: 1, example: 1 }
+      responses:
+        '200':
+          description: Giỏ hàng sau khi thêm
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Cart' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/cart/items/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: Id của dòng trong giỏ (cart item), không phải id biến thể
+        schema: { type: string, format: uuid }
+    patch:
+      tags: [Cart]
+      summary: Đổi số lượng một sản phẩm trong giỏ
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [quantity]
+              properties:
+                quantity: { type: integer, minimum: 1, example: 2 }
+      responses:
+        '200':
+          description: Giỏ hàng sau khi cập nhật
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Cart' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+    delete:
+      tags: [Cart]
+      summary: Xoá một sản phẩm khỏi giỏ
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: Giỏ hàng sau khi xoá
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Cart' }
+                  message: { type: string }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/orders:
+    post:
+      tags: [Orders]
+      summary: Đặt hàng từ giỏ hàng hiện tại
+      description: |
+        Chỉ tài khoản CUSTOMER. Gửi **một trong hai**: `addressId` (địa chỉ đã lưu)
+        hoặc `recipientName` + `recipientPhone` + `shippingAddress`.
+        Với `paymentMethod: PAYOS`, response có thêm `data.payment` để hiện mã QR.
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                addressId: { type: string, format: uuid }
+                recipientName: { type: string, example: Nguyễn Văn A }
+                recipientPhone: { type: string, example: '0901234567' }
+                shippingAddress: { $ref: '#/components/schemas/ShippingAddressInput' }
+                paymentMethod: { type: string, enum: [COD, PAYOS], default: COD }
+                customerNote: { type: string, example: Giao giờ hành chính }
+                voucherCode: { type: string, nullable: true, example: HAVIE10 }
+      responses:
+        '201':
+          description: Đặt hàng thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/Order'
+                      - type: object
+                        properties:
+                          payment: { $ref: '#/components/schemas/PublicPayment' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/orders/my:
+    get:
+      tags: [Orders]
+      summary: Danh sách đơn hàng của tôi
+      description: Đồng thời đánh dấu hết hạn các đơn payOS quá hạn thanh toán.
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/Order' } }
+                  meta: { $ref: '#/components/schemas/PageMeta' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/orders/{id}/payment:
+    get:
+      tags: [Orders]
+      summary: Thông tin thanh toán QR của một đơn
+      description: Backend hỏi payOS trạng thái thật trước khi trả về.
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      order: { $ref: '#/components/schemas/Order' }
+                      payment: { $ref: '#/components/schemas/PublicPayment' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: Đơn không thanh toán bằng QR (NOT_QR_PAYMENT)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/orders/{id}/cancel:
+    post:
+      tags: [Orders]
+      summary: Khách tự huỷ đơn
+      description: Chỉ huỷ được khi đơn ở trạng thái PENDING_PAYMENT, PENDING_CONFIRMATION hoặc CONFIRMED.
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason: { type: string, example: Đổi ý, muốn chọn mẫu khác }
+      responses:
+        '200':
+          description: Đã huỷ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Order' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/vouchers/validate:
+    post:
+      tags: [Vouchers]
+      summary: Kiểm tra mã giảm giá với giỏ hàng hiện tại
+      description: Chỉ xem trước. Khi đặt hàng, server kiểm tra lại mã và mới trừ lượt dùng.
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code: { type: string, example: HAVIE10 }
+      responses:
+        '200':
+          description: Mã hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      code: { type: string }
+                      description: { type: string, nullable: true }
+                      discountType: { type: string, enum: [PERCENT, FIXED] }
+                      discountValue: { type: integer }
+                      subtotal: { type: integer, example: 1200000 }
+                      discountAmount: { type: integer, example: 100000 }
+                  message: { type: string }
+        '400':
+          description: Thiếu mã, giỏ trống (CART_EMPTY) hoặc mã không dùng được
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/reviews/eligibility:
+    get:
+      tags: [Reviews]
+      summary: Kiểm tra tôi có được đánh giá sản phẩm này không
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - in: query
+          name: productId
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Kết quả kiểm tra (kèm đánh giá cũ nếu đã có)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: object, additionalProperties: true }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/reviews:
+    post:
+      tags: [Reviews]
+      summary: Gửi đánh giá sản phẩm
+      description: Cần có ít nhất một đơn COMPLETED chứa sản phẩm này. Giới hạn 20 request / 10 phút.
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [productId, rating]
+              properties:
+                productId: { type: string, format: uuid }
+                rating: { type: integer, minimum: 1, maximum: 5, example: 5 }
+                comment: { type: string, example: Vợt nhẹ đầu, đánh rất sướng tay. }
+      responses:
+        '201':
+          description: Đã gửi
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/OwnReview' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+
+  /api/reviews/{id}:
+    patch:
+      tags: [Reviews]
+      summary: Sửa đánh giá của chính mình
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rating]
+              properties:
+                rating: { type: integer, minimum: 1, maximum: 5 }
+                comment: { type: string }
+      responses:
+        '200':
+          description: Đã cập nhật
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/OwnReview' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+
+  /api/payments/payos/webhook:
+    post:
+      tags: [Payments]
+      summary: Webhook payOS báo giao dịch (chỉ payOS gọi)
+      description: |
+        Không cần đăng nhập và không cần header CSRF. Server kiểm tra chữ ký bằng `PAYOS_CHECKSUM_KEY`.
+        Không gọi thử từ trang này vì chữ ký sẽ sai.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code: { type: string }
+                desc: { type: string }
+                success: { type: boolean }
+                data: { type: object, additionalProperties: true }
+                signature: { type: string }
+      responses:
+        '200':
+          description: Đã nhận
+          content:
+            application/json:
+              example: { success: true }
+        '400':
+          description: Chữ ký sai hoặc payload không hợp lệ
+          content:
+            application/json:
+              example: { success: false, message: Webhook không hợp lệ. }

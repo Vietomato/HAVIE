@@ -1,0 +1,3668 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "HAVIE API",
+    "version": "1.0.0",
+    "description": "API của cửa hàng cầu lông HAVIE.\n\n**Đăng nhập:** gọi `POST /api/auth/login`, server trả cookie `havie_session` (HttpOnly).\nTrình duyệt tự gửi cookie này ở các request sau, nên không cần bấm Authorize.\n\n**CSRF:** mọi request POST/PATCH/DELETE cần header `X-Havie-Request: 1`\nvà Origin hợp lệ. Trang docs này tự thêm header đó.\n\n**Định dạng response:** thành công trả `{ data, message?, meta? }`,\nlỗi trả `{ error: { code, message, details? } }`."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Backend chạy trên máy (npm run dev)"
+    }
+  ],
+  "paths": {
+    "/api/cart": {
+      "get": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Lấy giỏ hàng (tự tạo nếu chưa có)",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Cart"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/cart/items": {
+      "post": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Thêm biến thể sản phẩm vào giỏ",
+        "description": "Nếu biến thể đã có trong giỏ thì cộng dồn số lượng.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "variantId",
+                  "quantity"
+                ],
+                "properties": {
+                  "variantId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Giỏ hàng sau khi thêm",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Cart"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/api/cart/items/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "description": "Id của dòng trong giỏ (cart item), không phải id biến thể",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Đổi số lượng một sản phẩm trong giỏ",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "quantity"
+                ],
+                "properties": {
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Giỏ hàng sau khi cập nhật",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Cart"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Xoá một sản phẩm khỏi giỏ",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Giỏ hàng sau khi xoá",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Cart"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/orders": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Đặt hàng từ giỏ hàng hiện tại",
+        "description": "Chỉ tài khoản CUSTOMER. Gửi **một trong hai**: `addressId` (địa chỉ đã lưu)\nhoặc `recipientName` + `recipientPhone` + `shippingAddress`.\nVới `paymentMethod: PAYOS`, response có thêm `data.payment` để hiện mã QR.\n",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "addressId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "recipientName": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
+                  },
+                  "recipientPhone": {
+                    "type": "string",
+                    "example": "0901234567"
+                  },
+                  "shippingAddress": {
+                    "$ref": "#/components/schemas/ShippingAddressInput"
+                  },
+                  "paymentMethod": {
+                    "type": "string",
+                    "enum": [
+                      "COD",
+                      "PAYOS"
+                    ],
+                    "default": "COD"
+                  },
+                  "customerNote": {
+                    "type": "string",
+                    "example": "Giao giờ hành chính"
+                  },
+                  "voucherCode": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "HAVIE10"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Đặt hàng thành công",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/Order"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "payment": {
+                              "$ref": "#/components/schemas/PublicPayment"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/api/orders/my": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Danh sách đơn hàng của tôi",
+        "description": "Đồng thời đánh dấu hết hạn các đơn payOS quá hạn thanh toán.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Order"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PageMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/orders/{id}/payment": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Thông tin thanh toán QR của một đơn",
+        "description": "Backend hỏi payOS trạng thái thật trước khi trả về.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "order": {
+                          "$ref": "#/components/schemas/Order"
+                        },
+                        "payment": {
+                          "$ref": "#/components/schemas/PublicPayment"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Đơn không thanh toán bằng QR (NOT_QR_PAYMENT)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/{id}/cancel": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Khách tự huỷ đơn",
+        "description": "Chỉ huỷ được khi đơn ở trạng thái PENDING_PAYMENT, PENDING_CONFIRMATION hoặc CONFIRMED.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "reason"
+                ],
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "example": "Đổi ý",
+                    "muốn chọn mẫu khác": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đã huỷ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Order"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/api/vouchers/validate": {
+      "post": {
+        "tags": [
+          "Vouchers"
+        ],
+        "summary": "Kiểm tra mã giảm giá với giỏ hàng hiện tại",
+        "description": "Chỉ xem trước. Khi đặt hàng, server kiểm tra lại mã và mới trừ lượt dùng.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "code"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "example": "HAVIE10"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mã hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "discountType": {
+                          "type": "string",
+                          "enum": [
+                            "PERCENT",
+                            "FIXED"
+                          ]
+                        },
+                        "discountValue": {
+                          "type": "integer"
+                        },
+                        "subtotal": {
+                          "type": "integer",
+                          "example": 1200000
+                        },
+                        "discountAmount": {
+                          "type": "integer",
+                          "example": 100000
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thiếu mã, giỏ trống (CART_EMPTY) hoặc mã không dùng được",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/reviews/eligibility": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Kiểm tra tôi có được đánh giá sản phẩm này không",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "productId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Kết quả kiểm tra (kèm đánh giá cũ nếu đã có)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/reviews": {
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Gửi đánh giá sản phẩm",
+        "description": "Cần có ít nhất một đơn COMPLETED chứa sản phẩm này. Giới hạn 20 request / 10 phút.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "productId",
+                  "rating"
+                ],
+                "properties": {
+                  "productId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "rating": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "example": 5
+                  },
+                  "comment": {
+                    "type": "string",
+                    "example": "Vợt nhẹ đầu",
+                    "đánh rất sướng tay.": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Đã gửi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/OwnReview"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/api/reviews/{id}": {
+      "patch": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Sửa đánh giá của chính mình",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "rating"
+                ],
+                "properties": {
+                  "rating": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "comment": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đã cập nhật",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/OwnReview"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/api/payments/payos/webhook": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "Webhook payOS báo giao dịch (chỉ payOS gọi)",
+        "description": "Không cần đăng nhập và không cần header CSRF. Server kiểm tra chữ ký bằng `PAYOS_CHECKSUM_KEY`.\nKhông gọi thử từ trang này vì chữ ký sẽ sai.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  },
+                  "desc": {
+                    "type": "string"
+                  },
+                  "success": {
+                    "type": "boolean"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  "signature": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đã nhận",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Chữ ký sai hoặc payload không hợp lệ",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Webhook không hợp lệ."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat/conversations": {
+      "get": {
+        "tags": [
+          "Chat advisor"
+        ],
+        "summary": "Danh sách cuộc trò chuyện của tôi",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Conversation"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Chat advisor"
+        ],
+        "summary": "Tạo cuộc trò chuyện mới",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Đã tạo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Conversation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/chat/conversations/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/IdPath"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Chat advisor"
+        ],
+        "summary": "Xem một cuộc trò chuyện kèm tin nhắn",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Conversation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Chat advisor"
+        ],
+        "summary": "Đổi tên cuộc trò chuyện",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "example": "Chọn vợt tấn công"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đã đổi tên",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Conversation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Chat advisor"
+        ],
+        "summary": "Xoá cuộc trò chuyện",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Đã xoá",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                  },
+                  "message": "Đã xóa cuộc trò chuyện."
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Trợ lý đang xử lý (CONVERSATION_BUSY)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat/conversations/{id}/messages": {
+      "post": {
+        "tags": [
+          "Chat advisor"
+        ],
+        "summary": "Gửi tin nhắn và nhận câu trả lời của trợ lý",
+        "description": "Giới hạn 20 tin / phút mỗi người, và tối đa `CHAT_MAX_CONCURRENT` (mặc định 2) request AI chạy cùng lúc trên toàn hệ thống.\nKhi quá tải trả 429 `CHAT_BUSY` kèm header `Retry-After`.\n",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "message"
+                ],
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "example": "Mình mới chơi",
+                    "nên chọn vợt nào dưới 2 triệu?": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cuộc trò chuyện sau khi trợ lý trả lời",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Conversation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Cuộc trò chuyện đang xử lý tin nhắn trước",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "Danh sách danh mục",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Category"
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/brands": {
+      "get": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "Danh sách thương hiệu",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Brand"
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "Tìm kiếm, lọc và phân trang sản phẩm",
+        "description": "Lọc theo thuộc tính biến thể bằng query `attribute.<tên>`, ví dụ\n`/api/products?attribute.weight=4U&attribute.grip=G5`.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageQuery"
+          },
+          {
+            "$ref": "#/components/parameters/PageSizeQuery"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Từ khoá (tên, mô tả, danh mục), tối đa 100 ký tự",
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "description": "Slug, id hoặc tên danh mục",
+            "schema": {
+              "type": "string",
+              "example": "vot-cau-long"
+            }
+          },
+          {
+            "in": "query",
+            "name": "brand",
+            "description": "Slug hoặc id thương hiệu",
+            "schema": {
+              "type": "string",
+              "example": "yonex"
+            }
+          },
+          {
+            "in": "query",
+            "name": "minPrice",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "maxPrice",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "inStock",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "featured",
+                "price_asc",
+                "price_desc",
+                "rating_desc",
+                "newest"
+              ],
+              "default": "featured"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PageMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/api/products/{slug}": {
+      "get": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "Chi tiết sản phẩm",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "description": "Slug hoặc id sản phẩm",
+            "schema": {
+              "type": "string",
+              "example": "yonex-astrox-77-pro"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Product"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/products/{slug}/reviews": {
+      "get": {
+        "tags": [
+          "Catalog",
+          "Reviews"
+        ],
+        "summary": "Đánh giá của một sản phẩm (public)",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "description": "Slug hoặc id sản phẩm",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/PageQuery"
+          },
+          {
+            "$ref": "#/components/parameters/PageSizeQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Review"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PageMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Kiểm tra API còn sống",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "ok",
+                  "message": "HAVIE Backend API is running",
+                  "timestamp": "2026-11-16T08:00:00.000Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "(Đã ngừng dùng) Đăng ký trực tiếp",
+        "deprecated": true,
+        "description": "Luôn trả 410. Dùng `/api/auth/register/request-otp` rồi `/api/auth/register/verify-otp`.",
+        "responses": {
+          "410": {
+            "description": "Cần xác minh email bằng OTP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register/request-otp": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Bước 1 đăng ký - gửi mã OTP 6 số qua email",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "fullName",
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "fullName": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "khachhang@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "0901234567"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "MatKhau@123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đã gửi OTP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/api/auth/register/verify-otp": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Bước 2 đăng ký - xác minh OTP, tạo tài khoản và đăng nhập",
+        "description": "Thành công thì server đặt cookie session.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "code"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "code": {
+                    "type": "string",
+                    "pattern": "^\\d{6}$",
+                    "example": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Đã tạo tài khoản",
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Cookie `havie_session`"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/SessionResult"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Đăng nhập bằng email và mật khẩu",
+        "description": "Thành công thì server đặt cookie `havie_session`. Các request sau trên trang này sẽ tự gửi kèm cookie.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "khachhang@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đăng nhập thành công",
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/SessionResult"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Đăng nhập thành công."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "description": "Sai email hoặc mật khẩu (INVALID_CREDENTIALS)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Tài khoản bị khoá (ACCOUNT_DISABLED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/api/auth/mock-admin": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Đăng nhập admin giả lập (chỉ môi trường development)",
+        "description": "Cần `NODE_ENV=development` và `MOCK_ADMIN_ENABLED=true`. Dùng email/mật khẩu trong `MOCK_ADMIN_EMAIL` và `MOCK_ADMIN_PASSWORD`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đăng nhập thành công",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/SessionResult"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Lấy tài khoản đang đăng nhập",
+        "description": "Không gia hạn thời gian chờ của phiên. Giống `GET /api/me`.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/me": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Lấy tài khoản đang đăng nhập",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auth/activity": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Báo người dùng còn hoạt động để gia hạn phiên",
+        "description": "Phiên hết hạn sau 30 phút không hoạt động. Cần thêm header `X-Havie-Activity` = `1`.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Havie-Activity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Đã gia hạn",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "expiresIn": 1800
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Đăng xuất và huỷ phiên trên server",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Đã đăng xuất",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageOnly"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auth/password/forgot": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Quên mật khẩu - gửi mã đặt lại qua email",
+        "description": "Luôn trả cùng một thông báo dù email có tồn tại hay không.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đã xử lý yêu cầu",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/api/auth/password/reset": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Đặt lại mật khẩu bằng mã trong email",
+        "description": "Thành công thì mọi phiên đăng nhập cũ của tài khoản bị huỷ.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "code",
+                  "newPassword"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "code": {
+                    "type": "string",
+                    "example": "123456"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đã đổi mật khẩu",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/api/auth/providers": {
+      "get": {
+        "tags": [
+          "Social login"
+        ],
+        "summary": "Xem nhà cung cấp đăng nhập nào đã được cấu hình",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "google": true,
+                    "facebook": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/social/{provider}/start": {
+      "post": {
+        "tags": [
+          "Social login"
+        ],
+        "summary": "Bắt đầu đăng nhập/liên kết bằng Google hoặc Facebook",
+        "description": "Trả về `data.url`. Frontend chuyển trình duyệt sang URL đó.\nVới `mode: link` thì phải đang đăng nhập (liên kết vào tài khoản hiện tại).\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "google",
+                "facebook"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "login",
+                      "link"
+                    ],
+                    "default": "login"
+                  },
+                  "returnTo": {
+                    "type": "string",
+                    "example": "/account"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "URL đăng nhập của nhà cung cấp",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "url": "https://accounts.google.com/o/oauth2/v2/auth?..."
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auth/social/{provider}/callback": {
+      "get": {
+        "tags": [
+          "Social login"
+        ],
+        "summary": "Callback do Google/Facebook gọi về (không gọi trực tiếp)",
+        "description": "Luôn chuyển hướng về `/auth?social=success` hoặc `/auth?socialError=<CODE>` trên frontend.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "google",
+                "facebook"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "code",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "state",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Chuyển hướng về frontend"
+          }
+        }
+      }
+    },
+    "/api/admin/uploads": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Tải ảnh sản phẩm lên",
+        "description": "Lưu vào Cloudinary nếu có `CLOUDINARY_URL`, nếu không thì lưu ở `backend/uploads`.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "image"
+                ],
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Đã tải lên",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "url": "/uploads/abc123.webp"
+                  },
+                  "message": "Đã tải ảnh lên."
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/api/admin/products": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Tất cả sản phẩm (kể cả đang ẩn)",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Tạo sản phẩm kèm biến thể",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ProductInput"
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "slug",
+                      "categoryId",
+                      "brandId",
+                      "variants"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Đã tạo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Product"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/api/admin/products/{id}": {
+      "patch": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Sửa sản phẩm (chỉ gửi các field cần đổi)",
+        "description": "Ẩn sản phẩm bằng cách gửi `isActive` = false.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đã cập nhật",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Product"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/api/admin/orders": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Tất cả đơn hàng",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Order"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "user": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  "fullName": {
+                                    "type": "string"
+                                  },
+                                  "email": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/api/admin/orders/{id}/status": {
+      "patch": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Đổi trạng thái đơn hàng",
+        "description": "Chỉ cho phép chuyển trạng thái hợp lệ (ví dụ CONFIRMED → SHIPPING → COMPLETED). Huỷ đơn cần `reason`.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "PENDING_PAYMENT",
+                      "PENDING_CONFIRMATION",
+                      "CONFIRMED",
+                      "SHIPPING",
+                      "COMPLETED",
+                      "CANCELLED",
+                      "REFUND_PENDING"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Bắt buộc khi status = CANCELLED"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đã cập nhật",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Order"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/api/admin/vouchers": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Tất cả voucher",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Voucher"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Tạo voucher",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VoucherInput"
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "code",
+                      "discountType",
+                      "discountValue"
+                    ]
+                  }
+                ]
+              },
+              "example": {
+                "code": "HAVIE10",
+                "description": "Giảm 10% tối đa 100.000đ cho đơn từ 500.000đ",
+                "discountType": "PERCENT",
+                "discountValue": 10,
+                "maxDiscount": 100000,
+                "minOrderAmount": 500000,
+                "usageLimit": 100,
+                "endsAt": "2026-12-31T16:59:59.000Z"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Đã tạo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Voucher"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "description": "Mã voucher đã tồn tại",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/vouchers/{id}": {
+      "patch": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Sửa voucher (chỉ gửi các field cần đổi)",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VoucherInput"
+              },
+              "example": {
+                "isActive": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Đã cập nhật",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Voucher"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "havie_session",
+        "description": "Cookie session nhận được sau khi đăng nhập. Trên production tên là `__Host-havie_session`."
+      }
+    },
+    "parameters": {
+      "IdPath": {
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "PageQuery": {
+        "in": "query",
+        "name": "page",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        }
+      },
+      "PageSizeQuery": {
+        "in": "query",
+        "name": "pageSize",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Dữ liệu gửi lên không hợp lệ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": {
+                "code": "VALIDATION_ERROR",
+                "message": "Dữ liệu không hợp lệ."
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Chưa đăng nhập hoặc phiên đã hết hạn",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Không có quyền, hoặc thiếu header `X-Havie-Request` (ORIGIN_REJECTED)",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Không tìm thấy",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "Xung đột trạng thái (hết hàng, sai trạng thái đơn...)",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Gửi quá nhiều request, thử lại sau (xem header Retry-After)",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "example": "VALIDATION_ERROR"
+              },
+              "message": {
+                "type": "string",
+                "example": "Dữ liệu không hợp lệ."
+              },
+              "details": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        }
+      },
+      "MessageOnly": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "PageMeta": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "example": 20
+          },
+          "total": {
+            "type": "integer",
+            "example": 57
+          },
+          "totalPages": {
+            "type": "integer",
+            "example": 3
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fullName": {
+            "type": "string",
+            "example": "Nguyễn Văn A"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "example": "0901234567"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "CUSTOMER",
+              "ADMIN"
+            ]
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SessionResult": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "description": "Số giây trước khi phiên hết hạn nếu không hoạt động",
+            "example": 1800
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Vợt cầu lông"
+          },
+          "slug": {
+            "type": "string",
+            "example": "vot-cau-long"
+          }
+        }
+      },
+      "Brand": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Yonex"
+          },
+          "slug": {
+            "type": "string",
+            "example": "yonex"
+          }
+        }
+      },
+      "Variant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sku": {
+            "type": "string",
+            "example": "YNX-AX77-4U-G5"
+          },
+          "name": {
+            "type": "string",
+            "example": "4U / G5"
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "weight": "4U",
+              "grip": "G5"
+            }
+          },
+          "price": {
+            "type": "integer",
+            "description": "Giá (VND)",
+            "example": 3290000
+          },
+          "oldPrice": {
+            "type": "integer",
+            "nullable": true,
+            "example": 3590000
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "example": 12
+          },
+          "isAvailable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Yonex Astrox 77 Pro"
+          },
+          "slug": {
+            "type": "string",
+            "example": "yonex-astrox-77-pro"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "badge": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "specs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Trọng lượng: 4U",
+              "Điểm cân bằng: nặng đầu"
+            ]
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "ratingAverage": {
+            "type": "number",
+            "example": 4.6
+          },
+          "reviewCount": {
+            "type": "integer",
+            "example": 18
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "brand": {
+            "$ref": "#/components/schemas/Brand"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variant"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "VariantInput": {
+        "type": "object",
+        "required": [
+          "sku",
+          "name",
+          "price"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Chỉ gửi khi sửa biến thể đã có"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "price": {
+            "type": "integer"
+          },
+          "oldPrice": {
+            "type": "integer",
+            "nullable": true
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "isAvailable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ProductInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "brandId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "badge": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "specs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VariantInput"
+            }
+          }
+        }
+      },
+      "CartItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 2
+          },
+          "variant": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Variant"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "product": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "slug": {
+                        "type": "string"
+                      },
+                      "isActive": {
+                        "type": "boolean"
+                      },
+                      "imageUrls": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "category": {
+                        "$ref": "#/components/schemas/Category"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Cart": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CartItem"
+            }
+          }
+        }
+      },
+      "ShippingAddressInput": {
+        "type": "object",
+        "required": [
+          "streetAddress",
+          "district",
+          "province"
+        ],
+        "properties": {
+          "streetAddress": {
+            "type": "string",
+            "example": "123 Nguyễn Trãi"
+          },
+          "ward": {
+            "type": "string",
+            "nullable": true,
+            "example": "Phường 2",
+            "description": "Có thể để trống với huyện đảo không có cấp xã"
+          },
+          "district": {
+            "type": "string",
+            "example": "Quận 5"
+          },
+          "province": {
+            "type": "string",
+            "example": "TP. Hồ Chí Minh"
+          }
+        }
+      },
+      "OrderItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "variantId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "variantName": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "subtotal": {
+            "type": "integer"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "orderCode": {
+            "type": "string",
+            "example": "HV-20261116-1A2B3C4D"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING_PAYMENT",
+              "PENDING_CONFIRMATION",
+              "CONFIRMED",
+              "SHIPPING",
+              "COMPLETED",
+              "CANCELLED",
+              "REFUND_PENDING"
+            ]
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "COD",
+              "MOCK_QR",
+              "PAYOS"
+            ]
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "PAID",
+              "FAILED",
+              "EXPIRED",
+              "REFUND_PENDING",
+              "REFUNDED"
+            ]
+          },
+          "subtotal": {
+            "type": "integer"
+          },
+          "shippingFee": {
+            "type": "integer"
+          },
+          "discountAmount": {
+            "type": "integer"
+          },
+          "totalAmount": {
+            "type": "integer"
+          },
+          "voucherCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "recipientName": {
+            "type": "string"
+          },
+          "recipientPhone": {
+            "type": "string"
+          },
+          "shippingAddress": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "cancelReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "paidAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItem"
+            }
+          }
+        }
+      },
+      "PublicPayment": {
+        "type": "object",
+        "description": "Thông tin thanh toán QR payOS",
+        "properties": {
+          "method": {
+            "type": "string",
+            "example": "PAYOS"
+          },
+          "checkoutUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "qrCode": {
+            "type": "string",
+            "nullable": true,
+            "description": "Chuỗi VietQR để vẽ mã QR"
+          },
+          "amount": {
+            "type": "integer"
+          },
+          "transferContent": {
+            "type": "string",
+            "description": "Nội dung chuyển khoản (mã đơn)"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expired": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "comment": {
+            "type": "string"
+          },
+          "isVerifiedPurchase": {
+            "type": "boolean"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "OwnReview": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "comment": {
+            "type": "string"
+          },
+          "isVisible": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Voucher": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string",
+            "example": "HAVIE10"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "discountType": {
+            "type": "string",
+            "enum": [
+              "PERCENT",
+              "FIXED"
+            ]
+          },
+          "discountValue": {
+            "type": "integer",
+            "description": "PERCENT: 1-100 (%), FIXED: số tiền VND",
+            "example": 10
+          },
+          "maxDiscount": {
+            "type": "integer",
+            "nullable": true,
+            "example": 100000
+          },
+          "minOrderAmount": {
+            "type": "integer",
+            "example": 500000
+          },
+          "usageLimit": {
+            "type": "integer",
+            "nullable": true
+          },
+          "usedCount": {
+            "type": "integer"
+          },
+          "startsAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endsAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "VoucherInput": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "HAVIE10",
+            "description": "Tự động trim và viết hoa"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "discountType": {
+            "type": "string",
+            "enum": [
+              "PERCENT",
+              "FIXED"
+            ]
+          },
+          "discountValue": {
+            "type": "integer",
+            "example": 10
+          },
+          "maxDiscount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "minOrderAmount": {
+            "type": "integer",
+            "default": 0
+          },
+          "usageLimit": {
+            "type": "integer",
+            "nullable": true
+          },
+          "startsAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endsAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "Conversation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "example": "Tư vấn vợt cho người mới chơi"
+          },
+          "isProcessing": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Health"
+    },
+    {
+      "name": "Auth",
+      "description": "Đăng ký OTP, đăng nhập, phiên làm việc, quên mật khẩu"
+    },
+    {
+      "name": "Social login",
+      "description": "Đăng nhập bằng Google (Facebook vẫn còn ở backend nhưng không hiện trên giao diện)"
+    },
+    {
+      "name": "Catalog",
+      "description": "Danh mục, thương hiệu, sản phẩm (public, có cache 10 giây)"
+    },
+    {
+      "name": "Cart",
+      "description": "Giỏ hàng của người đang đăng nhập"
+    },
+    {
+      "name": "Vouchers",
+      "description": "Kiểm tra mã giảm giá"
+    },
+    {
+      "name": "Orders",
+      "description": "Đặt hàng, xem đơn, thanh toán QR, huỷ đơn"
+    },
+    {
+      "name": "Reviews",
+      "description": "Đánh giá sản phẩm (chỉ khách đã mua và đơn đã hoàn thành)"
+    },
+    {
+      "name": "Payments",
+      "description": "Webhook payOS"
+    },
+    {
+      "name": "Chat advisor",
+      "description": "Trợ lý AI tư vấn sản phẩm. Lịch sử lưu theo tài khoản."
+    },
+    {
+      "name": "Admin",
+      "description": "Chỉ tài khoản ADMIN. Quản lý sản phẩm, đơn hàng, voucher, ảnh."
+    }
+  ]
+}

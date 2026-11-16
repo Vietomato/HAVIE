@@ -138,6 +138,24 @@ npm run dev
 
 Open [http://localhost:5174](http://localhost:5174). Vite proxies `/api` and `/uploads` to the backend. You can check the API with `http://localhost:3000/api/health`.
 
+### API docs (Swagger)
+
+With both servers running, open [http://localhost:5174/api/docs](http://localhost:5174/api/docs). The raw OpenAPI spec is at `/api/docs.json` and can be imported into Postman. Docs are disabled when `NODE_ENV=production`.
+
+- Call `POST /api/auth/login` first; the browser keeps the session cookie for the other requests.
+- The page adds the required `X-Havie-Request: 1` header automatically.
+- To use the docs directly on port 3000 (`http://localhost:3000/api/docs`), add `http://localhost:3000` to `CORS_ORIGIN` in `backend/.env`, otherwise write requests get `403 ORIGIN_REJECTED`.
+- Endpoints are described in `backend/src/docs/openapi/*.yaml`. Update the matching file when you add or change a route.
+
+**Public API docs:** [bodybuilderorcoder.github.io/havie-api-docs](https://bodybuilderorcoder.github.io/havie-api-docs/) (read-only, hosted from the public repo `BodybuilderOrCoder/havie-api-docs`). The same files live in [docs/api/](docs/api/). After changing the YAML files:
+
+```bash
+cd backend
+npm run docs:export   # rewrites docs/api/openapi.json
+```
+
+Then copy `docs/api/openapi.json` into the `havie-api-docs` repo and push; GitHub Pages updates within a minute.
+
 ### Local admin account (development only)
 
 To try the admin dashboard without going through OTP, add this to `backend/.env`:

@@ -1,0 +1,325 @@
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: havie_session
+      description: Cookie session nhận được sau khi đăng nhập. Trên production tên là `__Host-havie_session`.
+
+  parameters:
+    IdPath:
+      in: path
+      name: id
+      required: true
+      schema: { type: string, format: uuid }
+    PageQuery:
+      in: query
+      name: page
+      schema: { type: integer, minimum: 1, default: 1 }
+    PageSizeQuery:
+      in: query
+      name: pageSize
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+
+  responses:
+    BadRequest:
+      description: Dữ liệu gửi lên không hợp lệ
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: { code: VALIDATION_ERROR, message: Dữ liệu không hợp lệ. } }
+    Unauthorized:
+      description: Chưa đăng nhập hoặc phiên đã hết hạn
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Forbidden:
+      description: Không có quyền, hoặc thiếu header `X-Havie-Request` (ORIGIN_REJECTED)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: Không tìm thấy
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Conflict:
+      description: Xung đột trạng thái (hết hàng, sai trạng thái đơn...)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    TooManyRequests:
+      description: Gửi quá nhiều request, thử lại sau (xem header Retry-After)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string, example: VALIDATION_ERROR }
+            message: { type: string, example: Dữ liệu không hợp lệ. }
+            details: { type: object, additionalProperties: true }
+
+    MessageOnly:
+      type: object
+      properties:
+        message: { type: string }
+
+    PageMeta:
+      type: object
+      properties:
+        page: { type: integer, example: 1 }
+        pageSize: { type: integer, example: 20 }
+        total: { type: integer, example: 57 }
+        totalPages: { type: integer, example: 3 }
+
+    User:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        fullName: { type: string, example: Nguyễn Văn A }
+        email: { type: string, format: email }
+        phone: { type: string, nullable: true, example: '0901234567' }
+        role: { type: string, enum: [CUSTOMER, ADMIN] }
+        isActive: { type: boolean }
+
+    SessionResult:
+      type: object
+      properties:
+        user: { $ref: '#/components/schemas/User' }
+        expiresIn: { type: integer, description: Số giây trước khi phiên hết hạn nếu không hoạt động, example: 1800 }
+
+    Category:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string, example: Vợt cầu lông }
+        slug: { type: string, example: vot-cau-long }
+
+    Brand:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string, example: Yonex }
+        slug: { type: string, example: yonex }
+
+    Variant:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        sku: { type: string, example: YNX-AX77-4U-G5 }
+        name: { type: string, example: 4U / G5 }
+        attributes:
+          type: object
+          additionalProperties: { type: string }
+          example: { weight: 4U, grip: G5 }
+        price: { type: integer, description: Giá (VND), example: 3290000 }
+        oldPrice: { type: integer, nullable: true, example: 3590000 }
+        stockQuantity: { type: integer, example: 12 }
+        isAvailable: { type: boolean }
+
+    Product:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string, example: Yonex Astrox 77 Pro }
+        slug: { type: string, example: yonex-astrox-77-pro }
+        description: { type: string, nullable: true }
+        badge: { type: string, nullable: true }
+        imageUrls: { type: array, items: { type: string } }
+        specs: { type: array, items: { type: string }, example: ['Trọng lượng: 4U', 'Điểm cân bằng: nặng đầu'] }
+        isActive: { type: boolean }
+        ratingAverage: { type: number, example: 4.6 }
+        reviewCount: { type: integer, example: 18 }
+        category: { $ref: '#/components/schemas/Category' }
+        brand: { $ref: '#/components/schemas/Brand' }
+        variants:
+          type: array
+          items: { $ref: '#/components/schemas/Variant' }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    VariantInput:
+      type: object
+      required: [sku, name, price]
+      properties:
+        id: { type: string, format: uuid, description: Chỉ gửi khi sửa biến thể đã có }
+        sku: { type: string }
+        name: { type: string }
+        attributes: { type: object, additionalProperties: { type: string } }
+        price: { type: integer }
+        oldPrice: { type: integer, nullable: true }
+        stockQuantity: { type: integer, minimum: 0 }
+        isAvailable: { type: boolean }
+
+    ProductInput:
+      type: object
+      properties:
+        name: { type: string }
+        slug: { type: string }
+        description: { type: string }
+        categoryId: { type: string, format: uuid }
+        brandId: { type: string, format: uuid }
+        badge: { type: string, nullable: true }
+        imageUrls: { type: array, items: { type: string } }
+        specs: { type: array, items: { type: string } }
+        isActive: { type: boolean }
+        variants:
+          type: array
+          items: { $ref: '#/components/schemas/VariantInput' }
+
+    CartItem:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        quantity: { type: integer, example: 2 }
+        variant:
+          allOf:
+            - $ref: '#/components/schemas/Variant'
+            - type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    id: { type: string, format: uuid }
+                    name: { type: string }
+                    slug: { type: string }
+                    isActive: { type: boolean }
+                    imageUrls: { type: array, items: { type: string } }
+                    category: { $ref: '#/components/schemas/Category' }
+
+    Cart:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/CartItem' }
+
+    ShippingAddressInput:
+      type: object
+      required: [streetAddress, district, province]
+      properties:
+        streetAddress: { type: string, example: 123 Nguyễn Trãi }
+        ward: { type: string, nullable: true, example: Phường 2, description: Có thể để trống với huyện đảo không có cấp xã }
+        district: { type: string, example: Quận 5 }
+        province: { type: string, example: TP. Hồ Chí Minh }
+
+    OrderItem:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        variantId: { type: string, format: uuid }
+        productName: { type: string }
+        variantName: { type: string }
+        price: { type: integer }
+        quantity: { type: integer }
+        subtotal: { type: integer }
+
+    Order:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        orderCode: { type: string, example: HV-20261116-1A2B3C4D }
+        status:
+          type: string
+          enum: [PENDING_PAYMENT, PENDING_CONFIRMATION, CONFIRMED, SHIPPING, COMPLETED, CANCELLED, REFUND_PENDING]
+        paymentMethod: { type: string, enum: [COD, MOCK_QR, PAYOS] }
+        paymentStatus: { type: string, enum: [PENDING, PAID, FAILED, EXPIRED, REFUND_PENDING, REFUNDED] }
+        subtotal: { type: integer }
+        shippingFee: { type: integer }
+        discountAmount: { type: integer }
+        totalAmount: { type: integer }
+        voucherCode: { type: string, nullable: true }
+        recipientName: { type: string }
+        recipientPhone: { type: string }
+        shippingAddress: { type: string }
+        note: { type: string, nullable: true }
+        cancelReason: { type: string, nullable: true }
+        paidAt: { type: string, format: date-time, nullable: true }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/OrderItem' }
+
+    PublicPayment:
+      type: object
+      description: Thông tin thanh toán QR payOS
+      properties:
+        method: { type: string, example: PAYOS }
+        checkoutUrl: { type: string, nullable: true }
+        qrCode: { type: string, nullable: true, description: Chuỗi VietQR để vẽ mã QR }
+        amount: { type: integer }
+        transferContent: { type: string, description: Nội dung chuyển khoản (mã đơn) }
+        expiresAt: { type: string, format: date-time }
+        expired: { type: boolean }
+
+    Review:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        rating: { type: integer, minimum: 1, maximum: 5 }
+        comment: { type: string }
+        isVerifiedPurchase: { type: boolean }
+        userName: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    OwnReview:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        productId: { type: string, format: uuid }
+        rating: { type: integer, minimum: 1, maximum: 5 }
+        comment: { type: string }
+        isVisible: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    Voucher:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        code: { type: string, example: HAVIE10 }
+        description: { type: string, nullable: true }
+        discountType: { type: string, enum: [PERCENT, FIXED] }
+        discountValue: { type: integer, description: 'PERCENT: 1-100 (%), FIXED: số tiền VND', example: 10 }
+        maxDiscount: { type: integer, nullable: true, example: 100000 }
+        minOrderAmount: { type: integer, example: 500000 }
+        usageLimit: { type: integer, nullable: true }
+        usedCount: { type: integer }
+        startsAt: { type: string, format: date-time, nullable: true }
+        endsAt: { type: string, format: date-time, nullable: true }
+        isActive: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    VoucherInput:
+      type: object
+      properties:
+        code: { type: string, example: HAVIE10, description: Tự động trim và viết hoa }
+        description: { type: string, nullable: true }
+        discountType: { type: string, enum: [PERCENT, FIXED] }
+        discountValue: { type: integer, example: 10 }
+        maxDiscount: { type: integer, nullable: true }
+        minOrderAmount: { type: integer, default: 0 }
+        usageLimit: { type: integer, nullable: true }
+        startsAt: { type: string, format: date-time, nullable: true }
+        endsAt: { type: string, format: date-time, nullable: true }
+        isActive: { type: boolean, default: true }
+
+    Conversation:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string, example: Tư vấn vợt cho người mới chơi }
+        isProcessing: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      additionalProperties: true

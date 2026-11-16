@@ -1,0 +1,254 @@
+tags:
+  - name: Admin
+    description: Chỉ tài khoản ADMIN. Quản lý sản phẩm, đơn hàng, voucher, ảnh.
+
+paths:
+  /api/admin/uploads:
+    post:
+      tags: [Admin]
+      summary: Tải ảnh sản phẩm lên
+      description: Lưu vào Cloudinary nếu có `CLOUDINARY_URL`, nếu không thì lưu ở `backend/uploads`.
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [image]
+              properties:
+                image: { type: string, format: binary }
+      responses:
+        '201':
+          description: Đã tải lên
+          content:
+            application/json:
+              example: { data: { url: /uploads/abc123.webp }, message: Đã tải ảnh lên. }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/admin/products:
+    get:
+      tags: [Admin]
+      summary: Tất cả sản phẩm (kể cả đang ẩn)
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/Product' } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    post:
+      tags: [Admin]
+      summary: Tạo sản phẩm kèm biến thể
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ProductInput'
+                - type: object
+                  required: [name, slug, categoryId, brandId, variants]
+      responses:
+        '201':
+          description: Đã tạo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Product' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/admin/products/{id}:
+    patch:
+      tags: [Admin]
+      summary: Sửa sản phẩm (chỉ gửi các field cần đổi)
+      description: Ẩn sản phẩm bằng cách gửi `isActive` = false.
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ProductInput' }
+      responses:
+        '200':
+          description: Đã cập nhật
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Product' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/admin/orders:
+    get:
+      tags: [Admin]
+      summary: Tất cả đơn hàng
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/Order'
+                        - type: object
+                          properties:
+                            user:
+                              type: object
+                              properties:
+                                id: { type: string, format: uuid }
+                                fullName: { type: string }
+                                email: { type: string }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/admin/orders/{id}/status:
+    patch:
+      tags: [Admin]
+      summary: Đổi trạng thái đơn hàng
+      description: Chỉ cho phép chuyển trạng thái hợp lệ (ví dụ CONFIRMED → SHIPPING → COMPLETED). Huỷ đơn cần `reason`.
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [PENDING_PAYMENT, PENDING_CONFIRMATION, CONFIRMED, SHIPPING, COMPLETED, CANCELLED, REFUND_PENDING]
+                reason: { type: string, description: Bắt buộc khi status = CANCELLED }
+      responses:
+        '200':
+          description: Đã cập nhật
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Order' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/admin/vouchers:
+    get:
+      tags: [Admin]
+      summary: Tất cả voucher
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/Voucher' } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    post:
+      tags: [Admin]
+      summary: Tạo voucher
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/VoucherInput'
+                - type: object
+                  required: [code, discountType, discountValue]
+            example:
+              code: HAVIE10
+              description: Giảm 10% tối đa 100.000đ cho đơn từ 500.000đ
+              discountType: PERCENT
+              discountValue: 10
+              maxDiscount: 100000
+              minOrderAmount: 500000
+              usageLimit: 100
+              endsAt: '2026-12-31T16:59:59.000Z'
+      responses:
+        '201':
+          description: Đã tạo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Voucher' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409':
+          description: Mã voucher đã tồn tại
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/admin/vouchers/{id}:
+    patch:
+      tags: [Admin]
+      summary: Sửa voucher (chỉ gửi các field cần đổi)
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/VoucherInput' }
+            example: { isActive: false }
+      responses:
+        '200':
+          description: Đã cập nhật
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Voucher' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
