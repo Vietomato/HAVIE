@@ -599,6 +599,7 @@ VỢT:
 - skillLevel: beginner=mới chơi;
   intermediate=trung bình; advanced=nâng cao.
 - Không suy trình độ từ ngân sách hay số năm chơi.
+- Chỉ nói phong trào, thi đấu hoặc đánh giải chưa xác định trình độ; không tự gán intermediate/advanced.
 - playFormat: singles=đơn; doubles=đôi; both=cả hai.
 - weightPreference: nhẹ, không quá nhẹ, nặng,
   không quá nặng, hoặc nhóm U khách nêu.
@@ -781,13 +782,11 @@ function parseShortSkillAnswer(message, lastQuestion, previous) {
       "mới bắt đầu chơi", "người mới", "mới học chơi", "mới học",
     ],
     intermediate: [
-      "trung bình", "bình thường", "phong trào", "chơi phong trào",
+      "trung bình", "bình thường",
       "tạm được", "tạm", "trình trung bình", "trình độ trung bình",
     ],
     advanced: [
-      "nâng cao", "giỏi", "chuyên nghiệp", "thi đấu", "đánh giải",
-      "chơi giải", "trình nâng cao", "trình độ nâng cao",
-      "chơi thi đấu", "đánh thi đấu", "chơi nâng cao",
+      "nâng cao", "giỏi", "chuyên nghiệp", "trình nâng cao", "trình độ nâng cao", "chơi nâng cao",
     ],
   };
 
@@ -903,6 +902,11 @@ export async function extractRacketNeeds(
     });
   }
 
+  const broadSkillAnswer = message.normalize('NFC').toLowerCase().trim();
+  if (typeof lastQuestion === 'string' && /trình độ|mới chơi|mới bắt đầu/u.test(lastQuestion) &&
+      /^(?:(?:mình|tôi|em)\s+)?(?:chơi\s+|đánh\s+)?(?:phong trào|thi đấu|đánh giải|chơi giải)(?:\s+thôi)?[.!]?$/u.test(broadSkillAnswer)) {
+    return validateNeeds(previous);
+  }
   const skillAnswer = parseShortSkillAnswer(message, lastQuestion, previous);
 
   if (skillAnswer) {
@@ -1055,6 +1059,12 @@ export async function extractRacketNeeds(
     }
   }
 
+  // Playing recreationally or entering competitions is not a skill rating.
+  const skillText = message.normalize('NFC').toLowerCase();
+  if (/phong trào|thi đấu|đánh giải|chơi giải/u.test(skillText) &&
+      !/mới chơi|mới bắt đầu|trung bình|nâng cao|trình (?:độ )?cao|chuyên nghiệp|\bgiỏi\b/u.test(skillText)) {
+    next.skillLevel = previous.skillLevel;
+  }
   return validateNeeds(next);
 }
 

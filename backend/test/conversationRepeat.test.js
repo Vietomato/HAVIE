@@ -41,12 +41,18 @@ test("clear short skill answers are read without the model", async () => {
     ["người mới ạ", "beginner"],
     ["trung bình", "intermediate"],
     ["bình thường thôi", "intermediate"],
-    ["chơi phong trào", "intermediate"],
     ["nâng cao", "advanced"],
-    ["mình chơi thi đấu", "advanced"],
   ]) {
     const needs = await extractRacketNeeds(answer, withBudget, SKILL_Q);
     assert.equal(needs.skillLevel, expected, answer);
+  }
+});
+
+test('recreational play or entering competition does not assign a skill level', async () => {
+  noModel();
+  for (const message of ['chơi phong trào', 'mình chơi thi đấu', 'đánh giải']) {
+    const result = await extractRacketNeeds(message, withBudget, SKILL_Q);
+    assert.equal(result.skillLevel, withBudget.skillLevel);
   }
 });
 

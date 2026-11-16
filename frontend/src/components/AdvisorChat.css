@@ -643,6 +643,28 @@
   margin: 0 0 10px;
 }
 
+.botmsg__section {
+  margin-bottom: 12px;
+}
+
+.botmsg strong {
+  font-weight: 700;
+}
+
+.botmsg__list {
+  margin: 6px 0 0;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.botmsg__list li + li {
+  margin-top: 6px;
+}
+
+.botmsg__section > :last-child {
+  margin-bottom: 0;
+}
+
 .botmsg > :last-child {
   margin-bottom: 0;
 }

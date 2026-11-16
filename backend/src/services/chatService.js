@@ -24,9 +24,13 @@ import {
 } from "./advisorReply.js";
 import { findStringModels, getStringQuestionIntent, getTensionConversion, isKnowledgeOnlyQuestion, loadKnowledge, retrieveKnowledgeHybrid } from "./knowledgeBase.js";
 import { preferenceRank } from "./racketSuitability.js";
-import { NO_STRINGING_NOTICE, describeRacketRecommendations } from "./racketRecommendation.js";
+import { NO_STRINGING_NOTICE, describeRacketRecommendations, readTraits, specLine } from "./racketRecommendation.js";
+import { answerRacketFollowup } from "./racketFollowup.js";
+import { answerBrandQuestion } from "./brandKnowledge.js";
+import { answerPlayerEquipmentQuestion } from "./playerEquipmentKnowledge.js";
+import { answerTrainingQuestion, isAthleteAdviceRequest, professionalTip } from "./athleteAdvice.js";
 import { answerTensionConversion, answerTensionUnitDefinition, formatLbsWithKg, formatLbsRangeWithKg, resolveTensionFollowup } from "./tensionUnits.js";
-import { formatReplyParagraphs } from "../utils/replyFormat.js";
+import { courteousReply, formatReplyParagraphs } from "../utils/replyFormat.js";
 import {
   adviseTension,
   describeTensionAnswer,
@@ -402,6 +406,16 @@ async function handleRacketMessageCore(
   const savedNeeds = { ...createEmptyNeeds(), ...(previousNeeds ?? {}) };
   const privateNotice = describePrivateRequest(message);
   if (privateNotice) return knowledgeResult(savedNeeds, lastQuestion, privateNotice);
+  const equipmentAnswer = answerPlayerEquipmentQuestion(message);
+  if (equipmentAnswer) return knowledgeResult(savedNeeds, lastQuestion, equipmentAnswer);
+  if (isAthleteAdviceRequest(message)) return knowledgeResult(savedNeeds, lastQuestion,
+    'Dạ, em gửi anh/chị lời khuyên ngắn gọn này nhé.');
+  const trainingAnswer = answerTrainingQuestion(message);
+  if (trainingAnswer) return knowledgeResult(savedNeeds, lastQuestion, trainingAnswer);
+  const brandAnswer = answerBrandQuestion(message, savedNeeds);
+  if (brandAnswer) return knowledgeResult(savedNeeds, lastQuestion, brandAnswer);
+  const racketFollowup = answerRacketFollowup(message, savedNeeds, history);
+  if (racketFollowup) return knowledgeResult(savedNeeds, lastQuestion, racketFollowup);
   // Resolve only a short numeric follow-up to a conversion, locally. Raw history
   // is never included in the AI prompt, and the current buying message wins.
   const tensionMessage = resolveTensionFollowup(message, history);
@@ -457,11 +471,31 @@ async function handleRacketMessageCore(
       console.error("[chatService] Không tra được model:", error.message);
       return knowledgeResult(savedNeeds, lastQuestion, "Hiện em chưa tra được dữ liệu sản phẩm, anh/chị thử lại sau nhé.");
     }
+    const comparing = /so sánh|so sanh/iu.test(message);
+    if (products.length > 1 && !comparing) {
+      return knowledgeResult(savedNeeds, lastQuestion,
+        `Tên này khớp nhiều sản phẩm. Anh/chị muốn hỏi mẫu nào?\n\n${products.map((product) => `- **${product.name}**`).join('\n')}`);
+    }
+    const directModel = /\bmua\b|quan tâm|quan tam|kurenai|\bVA\b|bản thường|bản gốc/iu.test(message) ||
+      /^\s*\d{2,4}\s*(?:zz|[a-z]\d*|game|pro|tour|play)[?!.\s]*$/iu.test(message);
+    if (directModel && products.length === 1 && products[0].productType !== 'shoes') {
+      const product = products[0];
+      const variants = product.variants.slice(0, 3);
+      const rows = variants.map((variant) => {
+        const specs = specLine(readTraits({ advisorSpecs: variant.advisorSpecs }));
+        return `- **${variant.name || 'Phiên bản trong danh mục'}:** **${formatVnd(variant.priceVnd)}** (${NO_STRINGING_NOTICE.toLowerCase()}). ${specs || 'Chưa có đủ thông số hãng đã duyệt cho bản này.'}`;
+      });
+      if (!rows.length) rows.push('- Chưa có phiên bản và giá hợp lệ trong danh mục để báo.');
+      if (variants.some((variant) => variant.advisorSpecs?.shaftFlex === 'extra_stiff')) {
+        rows.push('- **Lưu ý:** thân rất cứng, cần kỹ thuật và tốc độ vung phù hợp; không mặc định dễ chơi.');
+      }
+      return knowledgeResult(savedNeeds, lastQuestion, `**${product.name}**\n${rows.join('\n')}`);
+    }
     const priceOnly = /giá|bao nhiêu tiền/iu.test(message) && !/thông số|so sánh|tìm hiểu|muốn biết|giới thiệu|cứng|dẻo|cân bằng|nặng đầu|nhẹ đầu|trọng lượng|khối lượng/iu.test(message);
     const generalSpecs = /thông số|so sánh|tìm hiểu|muốn biết|giới thiệu|hợp/iu.test(message);
     const asksFlex = !generalSpecs && /cứng|dẻo|flex/iu.test(message);
     const asksBalance = !generalSpecs && /cân bằng|nặng đầu|nhẹ đầu|\bbp\b/iu.test(message);
-    const asksWeight = !generalSpecs && /trọng lượng|khối lượng/iu.test(message);
+    const asksWeight = !generalSpecs && /trọng lượng|khối lượng|\bnặng\b|nhẹ/iu.test(message);
     const lines = products.flatMap((product) => {
       const prices = [...new Set(product.variants.map((variant) => variant.priceVnd))].sort((a, b) => a - b);
       const price = prices.length ? (prices.length === 1 ? formatVnd(prices[0])
@@ -622,7 +656,9 @@ async function handleRacketMessageCore(
     (lastQuestion === result.lastQuestion || lastQuestion === result.clarification);
 
   if (repeatedQuestion) {
-    result.reply = `Em chưa hiểu rõ ý anh/chị. ${result.clarification}`;
+    result.reply = /phong trào|thi đấu|đánh giải/iu.test(message)
+      ? `Dạ, người chơi phong trào và người đánh giải đều có nhiều trình độ ạ. Anh/chị tự đánh giá mình mới bắt đầu, trình trung bình hay nâng cao để em tư vấn vừa sức nhé?`
+      : `Em chưa hiểu rõ ý anh/chị. ${result.clarification}`;
     result.lastQuestion = result.clarification;
   }
 
@@ -707,5 +743,7 @@ async function handleRacketMessageCore(
 // Mọi câu trả lời được chia đoạn ngắn để dễ đọc; câu đã có cấu trúc nhiều dòng giữ nguyên.
 export async function handleRacketMessage(...args) {
   const result = await handleRacketMessageCore(...args);
-  return { ...result, reply: formatReplyParagraphs(result.reply) };
+  const tip = describePrivateRequest(args[0]) ? null : professionalTip(args[0], result, undefined, args[3] ?? {});
+  const reply = [result.reply, tip].filter(Boolean).join('\n\n');
+  return { ...result, reply: formatReplyParagraphs(courteousReply(reply)) };
 }

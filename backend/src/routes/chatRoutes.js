@@ -2,6 +2,7 @@ import { Router } from "express";
 import prisma from "../config/prisma.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { handleRacketMessage, sanitizeChatData } from "../services/chatService.js";
+import { getAthleteAdviceUsage } from "../services/athleteAdvice.js";
 import { createEmptyNeeds } from "../services/needsExtractor.js";
 import { asyncHandler, HttpError } from "../utils/http.js";
 import { createChatAdmission, createRateLimiter } from "../middlewares/trafficControl.js";
@@ -193,10 +194,11 @@ router.post(
         where: { conversationId: conversation.id },
       });
       // Ownership has been checked and the conversation lease is held. Fetch
-      // bounded text only; no catalog/private fields are used as chat context.
+      // Bounded text plus public recommendation snapshots for local follow-up
+      // resolution. The snapshots are never sent to an AI provider.
       const history = await tx.advisorMessage.findMany({
         where: { conversationId: conversation.id },
-        select: { role: true, content: true },
+        select: { role: true, content: true, candidates: true },
         orderBy: { createdAt: "desc" },
         take: 8,
       });
@@ -217,7 +219,8 @@ router.post(
           data: { title: getConversationTitle(message) },
         });
       }
-      return { history: history.reverse() };
+      const adviceUsage = await getAthleteAdviceUsage(tx, conversation.id);
+      return { history: history.reverse(), ...adviceUsage };
     });
 
     if (!claim) {
@@ -235,7 +238,8 @@ router.post(
           ? conversation.needs
           : createEmptyNeeds(),
         conversation.lastQuestion,
-        { history: claim.history },
+        { history: claim.history, usedAthleteAdviceIds: claim.usedAthleteAdviceIds,
+          lastAthleteAdviceId: claim.lastAthleteAdviceId },
       );
 
       const updatedConversation = await prisma.$transaction(async (tx) => {

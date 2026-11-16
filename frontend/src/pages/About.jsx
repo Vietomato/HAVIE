@@ -14,6 +14,7 @@ import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import { BRANDS, BrandLogoLink } from '../components/BrandStrip.jsx';
 import { Reveal, RevealItem } from '../components/motion.jsx';
 import usePageTitle from '../hooks/usePageTitle.js';
+import { STORE } from '../content/store.js';
 
 const SHOP = {
   address: '66 Đường D1, Phường Tăng Nhơn Phú, TP Thủ Đức',
@@ -56,11 +57,17 @@ export default function About() {
         <span className="eyebrow">VỀ CHÚNG TÔI</span>
         <h1>Trang bị chỉn chu cho từng trận cầu</h1>
         <p>
-          HAVIE là cửa hàng cầu lông tại TP Thủ Đức, chuyên vợt, giày, trang phục, phụ kiện và cước.
-          Chúng tôi giúp người chơi chọn đúng dụng cụ cho trình độ, ngân sách và lối chơi của mình,
-          để mỗi buổi tập, mỗi trận đấu đều tự tin hơn.
+          {STORE.description}
         </p>
       </Reveal>
+
+      <section className="about-section" aria-labelledby="about-values">
+        <h2 id="about-values">Sứ mệnh và tầm nhìn</h2>
+        <div className="store-values">
+          <article><h3>Sứ mệnh</h3><p>{STORE.mission}</p></article>
+          <article><h3>Tầm nhìn</h3><p>{STORE.vision}</p></article>
+        </div>
+      </section>
 
       <section className="about-section" aria-labelledby="about-why">
         <Reveal>
@@ -144,6 +151,15 @@ export default function About() {
           </div>
         </Reveal>
       </section>
+
+      <aside className="service-feedback" aria-labelledby="service-feedback-title">
+        <MessageCircle size={28} aria-hidden="true" />
+        <div>
+          <h3 id="service-feedback-title">Góp ý / than phiền dịch vụ</h3>
+          <p>HAVIE lắng nghe góp ý của anh/chị để cải thiện sản phẩm và cách phục vụ. Liên hệ Zalo {STORE.feedbackPhone} ({STORE.feedbackName}).</p>
+        </div>
+        <a className="btn btn-primary" href={STORE.feedbackUrl} target="_blank" rel="noopener noreferrer">GỬI GÓP Ý QUA ZALO</a>
+      </aside>
 
       <Reveal as="section" className="about-cta" aria-label="Bắt đầu mua sắm">
         <h2>Chưa biết chọn vợt nào?</h2>

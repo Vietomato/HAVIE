@@ -5,6 +5,15 @@
 // (3.000.000 ₫, 10.9 kg) không có khoảng trắng sau dấu chấm nên không bị tách.
 const SENTENCE_BREAK = /(?<=[.!?])\s+(?=[A-ZÀ-ỸĐ0-9"“])/u;
 
+// Add one courteous opening to terse deterministic answers. Existing greetings
+// and first-person/customer address stay intact; facts and units are unchanged.
+export function courteousReply(text) {
+  const value = typeof text === 'string' ? text.trim() : '';
+  if (!value || /^(?:Dạ|Vâng|Chào|Xin chào|Anh\/chị|Em\b|Nếu anh\/chị)/iu.test(value)) return value;
+  if (/^(?:\*\*|\d+\.\s)/u.test(value)) return `Dạ, em gửi anh/chị thông tin như sau ạ:\n\n${value}`;
+  return `Dạ, ${value}`;
+}
+
 export function formatReplyParagraphs(text, { sentencesPerParagraph = 2 } = {}) {
   const value = typeof text === "string" ? text.trim() : "";
   if (!value || value.includes("\n")) return value;

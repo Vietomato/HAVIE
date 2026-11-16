@@ -10,6 +10,9 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 32px 20px;
   }
+  .footer-general {
+    grid-column: 1 / -1;
+  }
   .footer-logo {
     font-size: 32px;
     font-weight: 900;
@@ -33,6 +36,13 @@
     font-weight: 800;
     letter-spacing: 1.2px;
   }
+  .footer .footer-general-heading {
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  .footer p strong {
+    color: var(--primary);
+  }
   .footer section > a:not(.footer-logo) {
     display: flex;
     align-items: center;
@@ -47,6 +57,11 @@
   }
   .footer a:focus-visible {
     outline-color: #fff;
+  }
+  @media (min-width: 900px) {
+    .footer-general {
+      grid-column: auto;
+    }
   }
   .footer-bottom {
     display: flex;

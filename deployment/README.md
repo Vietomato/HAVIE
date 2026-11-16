@@ -1,5 +1,7 @@
 # HAVIE: sessions, social login and capacity
 
+For Vercel frontend + Render API/PostgreSQL setup, see [VERCEL_RENDER.md](VERCEL_RENDER.md).
+
 ## What is implemented
 
 - The web uses an opaque, random session cookie: HttpOnly, SameSite=Lax, Secure in production. No authentication credential is stored in localStorage. Existing JWT-only browser logins need to sign in once after this change.

@@ -16,6 +16,7 @@ TRÌNH ĐỘ — skillLevel
 - Khách tự xác nhận trình độ trung bình: intermediate.
 - Khách tự xác nhận trình độ nâng cao: advanced.
 - Chỉ nói số năm chơi hoặc không nói trình độ: null.
+- Chỉ nói chơi phong trào, thi đấu hoặc đánh giải: chưa đủ xác định trình độ, không tự gán intermediate/advanced.
 
 HÌNH THỨC CHƠI — playFormat
 - Đánh đơn: singles.

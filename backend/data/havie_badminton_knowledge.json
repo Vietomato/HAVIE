@@ -1,6 +1,6 @@
 {
   "title": "HAVIE Badminton Advisor Knowledge Base",
-  "version": "1.3",
+  "version": "1.6",
   "researched_on": "2026-11-13",
   "language": "vi",
   "purpose": "Dữ liệu tham khảo để truy xuất và bổ sung ngữ cảnh LLM, không phải dữ liệu đã fine-tune model.",
@@ -126,6 +126,99 @@
         "profile": "all_round",
         "suggestion_vi": "Cân bằng và thân medium là điểm khởi đầu dễ đánh giá."
       }
+    ],
+    "brand_comparison": {
+      "scope_vi": "Định hướng dòng vợt để tham khảo, không phải thông số hay thứ hạng chất lượng cho mọi model.",
+      "shared_points_vi": [
+        "Cả bốn hãng có nhiều hướng công, tốc độ, kiểm soát và nhiều mức độ dễ chơi.",
+        "Cùng hãng vẫn có vợt dễ sử dụng và vợt đòi hỏi kỹ thuật tốt.",
+        "Trọng lượng, độ cứng, phân bố khối lượng và khung tạo cảm giác khác nhau.",
+        "Cảm giác thực tế còn tùy cước, mức căng, quấn cán và khả năng người chơi."
+      ],
+      "brands": [
+        {
+          "id": "yonex", "name": "Yonex", "aliases": ["yonex"],
+          "series": [
+            {"name": "Astrox", "direction_vi": "sức mạnh, tấn công"},
+            {"name": "Nanoflare", "direction_vi": "tốc độ, xoay trở"},
+            {"name": "Arcsaber", "direction_vi": "kiểm soát, điều cầu"}
+          ],
+          "note_vi": "Xem đúng model và cấp phiên bản, không suy ra thông số chỉ từ tên dòng.",
+          "source_ids": ["yonex_selector", "yonex_astrox", "yonex_nanoflare", "yonex_arcsaber"]
+        },
+        {
+          "id": "victor", "name": "Victor", "aliases": ["victor"],
+          "series": [
+            {"name": "Thruster", "direction_vi": "sức mạnh, tấn công"},
+            {"name": "Auraspeed", "direction_vi": "tốc độ, xoay trở"},
+            {"name": "DriveX", "direction_vi": "công thủ toàn diện, kiểm soát"}
+          ],
+          "note_vi": "Không mặc định Auraspeed nào cũng nhẹ đầu hoặc DriveX nào cũng dễ đánh.",
+          "source_ids": ["victor_workbook_series", "user_brand_comparison_20261116"]
+        },
+        {
+          "id": "lining", "name": "Li-Ning", "aliases": ["li-ning", "li ning", "lining"],
+          "series": [
+            {"name": "Axforce", "direction_vi": "định hướng tấn công"},
+            {"name": "BladeX", "direction_vi": "có bản Speed và Power, cần xem đúng phiên bản"},
+            {"name": "Halbertec", "direction_vi": "định hướng kiểm soát, cần xem đúng phiên bản"}
+          ],
+          "note_vi": "Đọc đầy đủ tên và hậu tố; không gắn toàn bộ BladeX với một kiểu đánh duy nhất.",
+          "source_ids": ["lining_axforce_halbertec", "lining_bladex_variants", "user_brand_comparison_20261116"]
+        },
+        {
+          "id": "mizuno", "name": "Mizuno", "aliases": ["mizuno"],
+          "series": [
+            {"name": "Fortius", "direction_vi": "sức mạnh"},
+            {"name": "Acrospeed", "direction_vi": "tốc độ"},
+            {"name": "Altius", "direction_vi": "kiểm soát"}
+          ],
+          "note_vi": "Định hướng chỉ là điểm bắt đầu, vẫn kiểm tra từng model cụ thể.",
+          "source_ids": ["mizuno_racket_series", "user_brand_comparison_20261116"]
+        }
+      ],
+      "guardrails_vi": [
+        "Không kết luận Yonex luôn tốt hơn, Li-Ning luôn nặng đầu hay hãng nào phù hợp với mọi người.",
+        "Không có thang độ cứng chung tuyệt đối giữa các hãng; cùng Medium hoặc 4U vẫn có thể khác cảm giác vung và tiếp cầu.",
+        "Đề xuất sản phẩm và mức căng phải dựa trên đúng model, biến thể và trình độ; không suy ra mức căng từ tên hãng hoặc dòng."
+      ],
+      "choosing_order_vi": [
+        "kỹ thuật, sức tay và sức bền", "lối chơi và vai trò trên sân", "thông số đúng model/biến thể",
+        "ngân sách gồm cước và công căng", "thương hiệu và màu sắc theo sở thích"
+      ],
+      "beginner_example_vi": "Người mới thích đập vẫn nên tìm bản dễ vung, độ cứng vừa sức; không chọn ngay mẫu cao cấp cứng và nặng đầu chỉ vì tên dòng."
+    },
+    "player_equipment_guidance": {
+      "source_ids": ["user_player_comparison_20261116", "nhs_elbow_overuse", "aaos_elbow_overuse"],
+      "recreational_racket_vi": "Ưu tiên vợt vừa sức, phông đủ cuối sân, thủ kịp và chơi lâu vẫn thoải mái; thân dẻo/trung bình thường dễ tiếp cận hơn, nhưng người phong trào trình cao vẫn có thể dùng thân cứng.",
+      "professional_racket_vi": "Chọn theo kỹ thuật, chiến thuật, nội dung thi đấu và vai trò trên sân; người có tốc độ vung và điểm tiếp xúc ổn định có thể khai thác thân cứng, nhưng không phải VĐV nào cũng dùng vợt cứng hoặc nặng.",
+      "recreational_strings_vi": "Cân bằng độ nảy, cảm giác, độ bền và chi phí. Dây dày là hướng cân nhắc khi ưu tiên độ bền; dây mảnh cho cảm giác khác, không mặc định tốt hơn. Mức căng cần vừa sức và giúp tiếp cầu ổn định.",
+      "professional_strings_vi": "Tối ưu loại dây và mức căng theo cảm giác cá nhân; có thể dùng dây mảnh hoặc dày. Việc chuẩn bị nhiều vợt và thay cước giúp duy trì cảm giác đồng đều, không tạo ra một loại dây hay số kg chung cho mọi VĐV.",
+      "skill_distinction_vi": "Phong trào có nhiều trình độ; chơi lâu năm hoặc đánh giải không tự đồng nghĩa chuyên nghiệp. Người kỹ thuật tốt có thể dùng cùng model với VĐV, nhưng không nên chọn chỉ vì thần tượng dùng.",
+      "tension_myth_vi": "Căng cao không tự làm cú đập mạnh hơn. Mặt cước có thể cho cảm giác chắc hơn nhưng đòi hỏi tiếp cầu chính xác; nếu chưa đáp ứng, cầu có thể đi ngắn và khó đánh. Tiếng cầu hay không chứng minh mức căng phù hợp.",
+      "setup_consistency_vi": "Loại dây và mức căng là hai quyết định riêng. Giữ cùng dây, máy và người căng khi so sánh; thay đổi từng yếu tố một thay vì tăng kg theo cảm tính.",
+      "no_universal_kg_vi": "Không có số kg an toàn chung cho mọi người phong trào. Giới hạn tối đa trên vợt không phải mức căng mục tiêu; cần đúng model, biến thể, tình trạng khung và khả năng người chơi.",
+      "risk_vi": "Thiết bị không phù hợp, kỹ thuật và việc liên tục gồng tay có thể góp phần gây quá tải. Không phải cứ vợt nặng, thân cứng hoặc kg cao là chắc chắn chấn thương; còn tùy lượng vận động, thể lực và tiền sử đau.",
+      "evidence_scope_vi": "Nguồn AAOS/NHS mô tả quá tải tay/khuỷu và thể thao dùng vợt, chủ yếu tennis; không dùng để đặt ngưỡng kg an toàn riêng cho cầu lông hoặc chẩn đoán người dùng.",
+      "not_painful_vi": "Nếu chỉ thấy khó đánh, chưa đau: chọn bộ vợt–cước vừa sức hơn, chỉnh từng yếu tố và nhờ HLV kiểm tra động tác, cách cầm cán.",
+      "pain_action_vi": "Nếu đang đau: giảm hoặc ngừng động tác gây đau, đừng cố đánh để quen vợt; thay vợt hoặc hạ kg không thay thế việc đánh giá nguyên nhân.",
+      "clinical_review_vi": "Nếu đau tăng, yếu tay hoặc ảnh hưởng sinh hoạt, nên được nhân viên y tế đánh giá. Đau khuỷu còn sau khoảng hai tuần giảm tải và tự chăm sóc cũng nên đi khám."
+    },
+    "training_guidance": {
+      "source_ids": ["bwf_shuttle_time_basics", "babolat_arm_speed_tension", "user_training_guidance_20261116"],
+      "fundamentals_vi": "Ưu tiên cầm vợt, đổi grip, di chuyển, điểm tiếp xúc và trở về vị trí chuẩn bị trước khi học động tác nâng cao.",
+      "focus_enjoyment_vi": "Tập tập trung và lặp lại nghiêm túc nhưng giữ niềm vui; đây là ý tóm tắt lời khuyên Axelsen được The Star tường thuật.",
+      "comparison_motivation_vi": "Dùng thành tích người khác làm động lực thay vì so sánh đến mức mất tự tin; đây là ý tóm tắt lời khuyên Axelsen, không phải trích dẫn nguyên văn.",
+      "session_steps_vi": ["Khởi động nhẹ rồi tăng dần tốc độ", "Chọn một mục tiêu kỹ thuật, nhờ người có chuyên môn quan sát và sửa", "Tập tình huống rồi đánh trận áp dụng", "Ghi lại lỗi lặp lại, mức mệt và cảm giác khó chịu"],
+      "racket_trial_vi": "Khi đổi vợt, giữ dây và mức căng để dễ so sánh; thử phông, thủ, phản tạt và khi hơi mệt, không chỉ vài cú đập.",
+      "string_trial_vi": "Thay từng yếu tố, ghi lại cảm giác sau vài buổi. Chọn dây theo độ bền, chi phí và cảm giác; mức căng còn tùy tốc độ vung, điểm tiếp xúc và giới hạn đúng model/biến thể.",
+      "recovery_vi": "Tính cả mệt mỏi do học tập, công việc và sinh hoạt; tăng tải từng bước, không sao chép khối lượng tập của tuyển thủ.",
+      "scope_vi": "Cấu trúc buổi tập là gợi ý HAVIE, không phải giáo án hay lời của Axelsen. Shuttle Time là tài liệu nền tảng cho trường học, không phải giáo án thể lực người lớn."
+    },
+    "athlete_advice": [
+      {"id": "axelsen_foundation", "athlete": "Viktor Axelsen", "paraphrase_vi": "Ưu tiên nền tảng và bộ pháp trước khi tăng cường độ tập.", "source_label": "WHOOP", "source_ids": ["axelsen_whoop_interview"], "kind": "paraphrase", "topics": ["technique", "racket", "tension"]},
+      {"id": "axelsen_recovery", "athlete": "Viktor Axelsen", "paraphrase_vi": "Coi trọng giấc ngủ và cân bằng tập luyện với hồi phục.", "source_label": "WHOOP", "source_ids": ["axelsen_whoop_interview"], "kind": "paraphrase", "topics": ["recovery", "discomfort"]},
+      {"id": "axelsen_basics", "athlete": "Viktor Axelsen", "paraphrase_vi": "Nắm chắc kỹ thuật cơ bản trước khi học động tác nâng cao.", "source_label": "The Star", "source_ids": ["axelsen_star_youth_advice"], "kind": "paraphrase", "topics": ["technique"]}
     ],
     "series_examples": [
       {
@@ -840,6 +933,19 @@
     "Khung căng theo trình độ là gợi ý giáo dục, không phải mức Yonex khuyến nghị; khoảng này không giao với khoảng hãng thì không đề xuất."
   ],
   "sources": [
+    {"id": "axelsen_whoop_interview", "source_kind": "athlete_interview", "url": "https://www.whoop.com/us/en/thelocker/pillars-performance-viktor-axelsen-badminton-champion/", "scope": "Ý của Axelsen về nền tảng, bộ pháp, giấc ngủ và hồi phục; không có chỉ dẫn chọn model hay mức kg cho khách."},
+    {"id": "axelsen_star_youth_advice", "source_kind": "reported_athlete_advice", "url": "https://www.thestar.com.my/sport/badminton/2024/11/02/viktor-offers-tips-for-youngsters-to-achieve-smashing-success", "scope": "Bài báo tường thuật lời khuyên về kỹ thuật cơ bản, tập nghiêm túc nhưng vui và tránh so sánh quá mức; chỉ dùng ý tóm tắt."},
+    {"id": "bwf_shuttle_time_basics", "source_kind": "federation_coaching_manual", "url": "https://www.badminton.org.au/wp-content/uploads/2022/11/1.-BWF-ST-Teachers-Manual_Inclusivity_ENGLISH.pdf"},
+    {"id": "babolat_arm_speed_tension", "source_kind": "manufacturer", "url": "https://www.babolat.com/gb/news-articles-blog-badminton-strings-choice/badminton-strings-choice.html", "scope": "Phối hợp tốc độ đầu vợt và mức căng; không nhập các mức kg trong bài thành chuẩn cho mọi khách."},
+    {"id": "user_training_guidance_20261116", "source_kind": "user_supplied", "note": "Hướng dẫn tổng hợp tập luyện, chọn vợt/cước và nghỉ ngơi do người dùng bổ sung; không gán cho VĐV nếu không có nguồn lời nói tương ứng."},
+    {"id": "user_player_comparison_20261116", "source_kind": "user_supplied", "note": "Kiến thức chọn vợt/cước cho phong trào và chuyên nghiệp do người dùng bổ sung 2026-11-16; giữ hướng dẫn tham khảo, không tự gán trình độ hay mức kg."},
+    {"id": "nhs_elbow_overuse", "source_kind": "clinical_guidance", "url": "https://www.nhs.uk/conditions/tennis-elbow/", "scope": "Giảm hoạt động gây đau và khám khi đau khuỷu còn sau ít nhất hai tuần tự chăm sóc; không phải nghiên cứu ngưỡng kg cầu lông."},
+    {"id": "aaos_elbow_overuse", "source_kind": "clinical_guidance", "url": "https://orthoinfo.aaos.org/en/diseases--conditions/tennis-elbow-lateral-epicondylitis/", "scope": "Quá tải, kỹ thuật và thiết bị trong thể thao dùng vợt; không chẩn đoán qua chat hay gán nguyên nhân chỉ từ độ cứng/mức căng."},
+    {"id": "user_brand_comparison_20261116", "source_kind": "user_supplied", "note": "Kiến thức so sánh Yonex, Victor, Li-Ning, Mizuno do người dùng cung cấp ngày 2026-11-16; định hướng chung, không phải thông số model."},
+    {"id": "victor_workbook_series", "source_kind": "manufacturer_catalog", "url": "https://b01be1a963.clvaw-cdnwnd.com/5855cc754c7c7fafd014c741a1598fb3/200000630-d14bcd14be/VICTOR_Workbook_2025_web_noPrice.pdf?ph=b01be1a963"},
+    {"id": "lining_axforce_halbertec", "source_kind": "brand_local_site", "url": "https://liningvietnam.com.vn/blogs/tu-van-huong-dan/axforce-va-halbertec-khac-nhau"},
+    {"id": "lining_bladex_variants", "source_kind": "brand_local_site", "url": "https://liningvietnam.com.vn/collections/bladex"},
+    {"id": "mizuno_racket_series", "source_kind": "manufacturer", "url": "https://jpn.mizuno.com/badminton/racket"},
     {
       "id": "yonex_catalog",
       "url": "https://www.yonex.com/media/wysiwyg/Catalog/Yonex_Badminton_2026.pdf",

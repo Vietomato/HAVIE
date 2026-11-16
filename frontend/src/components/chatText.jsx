@@ -4,6 +4,8 @@ import React from 'react';
 // mức căng (lbs/kg) và lưu ý "chưa gồm tiền căng cước". Chỉ đổi cách hiển thị, không đổi nội dung.
 const IMPORTANT = new RegExp(
   [
+    // Explicit emphasis from the bot; rendered as React text, never as HTML.
+    '(\\*\\*[^*\\n]+\\*\\*)',
     // Dòng tên mẫu: "1. Vợt cầu lông Yonex ..."
     '^(\\d+\\.\\s.+)$',
     // Nhãn đầu dòng của từng mẫu
@@ -14,6 +16,7 @@ const IMPORTANT = new RegExp(
     '(chưa gồm tiền căng cước)',
     // Mức căng: 24 lbs, 24-28 lbs, 10.9 kg
     '(\\d+(?:[.,]\\d+)?(?:\\s?-\\s?\\d+(?:[.,]\\d+)?)?\\s?(?:lbs|kg)\\b)',
+    '(\\b[2-6](?:\\.5)?U\\b)',
   ].join('|'),
   'gimu',
 );
@@ -25,12 +28,32 @@ export function BotText({ text }) {
 
   for (const match of content.matchAll(IMPORTANT)) {
     if (match.index > last) parts.push(content.slice(last, match.index));
-    parts.push(<strong key={match.index}>{match[0]}</strong>);
+    const value = match[0];
+    parts.push(<strong key={match.index}>{value.startsWith('**') ? value.slice(2, -2) : value}</strong>);
     last = match.index + match[0].length;
   }
   if (last < content.length) parts.push(content.slice(last));
 
   return <>{parts}</>;
+}
+
+function ProseBlock({ lines }) {
+  const groups = [];
+  for (const line of lines) {
+    const bullet = line.match(/^\s*[-•]\s+(.+)$/u);
+    const type = bullet ? 'list' : 'paragraph';
+    if (groups.at(-1)?.type !== type) groups.push({ type, lines: [] });
+    groups.at(-1).lines.push(bullet ? bullet[1] : line);
+  }
+  return (
+    <div className="botmsg__section">
+      {groups.map((group, index) => group.type === 'list'
+        ? <ul key={index} className="botmsg__list">
+            {group.lines.map((line, item) => <li key={item}><BotText text={line} /></li>)}
+          </ul>
+        : <p key={index} className="botmsg__p"><BotText text={group.lines.join('\n')} /></p>)}
+    </div>
+  );
 }
 
 const ROW = /^(Giá|Thông số|Vì sao phù hợp|Đặc tính|Lưu ý):\s*(.*)$/u;
@@ -86,7 +109,7 @@ export function BotMessage({ text }) {
         const isCard = TITLE.test(lines[0]) && lines.slice(1).some((line) => ROW.test(line));
         return isCard
           ? <RacketCard key={index} lines={lines} />
-          : <p key={index} className="botmsg__p"><BotText text={block} /></p>;
+          : <ProseBlock key={index} lines={lines} />;
       })}
     </div>
   );

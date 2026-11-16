@@ -17,13 +17,16 @@ const MAX_ALTERNATIVES = 3;
 const MIN_SUITABLE = 3;
 
 const foldCatalogText = (text) => String(text).normalize("NFD").replace(/\p{M}/gu, "")
-  .replace(/đ/gu, "d").toLowerCase();
+  .replace(/đ/gu, "d").toLowerCase()
+  .replace(/\b(\d{2,4})\s+(zz|z|d|s)\b/gu, '$1$2');
 
 export function isNamedCatalogQuestion(message) {
   const text = foldCatalogText(message);
   const modelText = text.replace(/\bsize\s*\d+(?:[.,]\d+)?(?:\s*(?:eu|us|uk|cm))?\b/gu, "")
     .replace(/\b[2-6]\s*u\b/gu, "");
-  return /\bgia\b|bao nhieu tien|thong so|so sanh|tim hieu|muon biet|gioi thieu|cung|deo|can bang|nang dau|nhe dau|trong luong|khoi luong|co hop|hop khong/u.test(text) &&
+  const shorthand = modelText.trim().replace(/[?!.]+$/u, '');
+  const bareModel = /^\d{2,4}(?:zz|[a-z]\d*)$|^\d{2,4}\s+(?:game|pro|tour|play)$/u.test(shorthand);
+  return (bareModel || /\bmua\b|quan tam|kurenai|\bva\b|ban thuong|ban goc|\bgia\b|bao nhieu tien|thong so|so sanh|tim hieu|muon biet|gioi thieu|cung|deo|can bang|\bnang\b|\bnhe\b|trong luong|khoi luong|co hop|hop khong/u.test(text)) &&
     /[a-z]+[\s-]*\d|\d+[\s-]*[a-z]/u.test(modelText) &&
     // Câu nói về ngân sách ("tầm giá 4tr", "khoảng 3 triệu", "500k") không phải hỏi một model cụ thể.
     !/ngan sach|trieu|toi da|duoi|khong qua|tam gia|khoang gia|tam\s+\d|\d+\s*(?:kg|ky|lbs|mm)\b|(?<![a-z-])\d+\s*(?:tr|k|nghin|ngan|vnd)\b/u.test(text);
@@ -42,6 +45,8 @@ export async function findCatalogProductsByModel(message, { database = prisma } 
   });
   const common = new Set(["vot", "cau", "long", "giay", "yonex", "li", "ning", "lining", "victor", "mizuno", "nam", "nu", "mens", "womens"]);
   const requestedEditions = ["tour", "pro", "game", "play"].filter((word) => new RegExp(`\\b${word}\\b`, "u").test(query));
+  const qualifiers = ['kurenai', 'va'].filter((word) => new RegExp(`\\b${word}\\b`, 'u').test(query));
+  const standard = /ban thuong|ban goc|tieu chuan/u.test(query);
   return products.filter((product) => {
     if (!product.isActive || !["rackets", "shoes"].includes(product.category.slug)) return false;
     const words = foldCatalogText(product.name).split(/[^a-z0-9]+/u).filter((word) => word && !common.has(word));
@@ -51,11 +56,13 @@ export async function findCatalogProductsByModel(message, { database = prisma } 
       const number = word.match(/\d+/u)[0];
       const requestedCode = query.match(new RegExp(`(?<!\\d)${number}[a-z]+\\d*`, "u"))?.[0];
       if (requestedCode && !foldCatalogText(product.name).replace(/[^a-z0-9]/gu, "").includes(requestedCode)) return false;
-      return (/[a-z]/u.test(word) && compactQuery.includes(word)) ||
-        (familyMatch && new RegExp(`(?<!\\d)${number}(?!\\d)`, "u").test(query));
+      return (/[a-z]/u.test(word) && new RegExp(`(?<![a-z0-9])${word}(?![a-z0-9])`, 'u').test(query)) ||
+        ((familyMatch || requestedEditions.length > 0) && new RegExp(`(?<!\\d)${number}(?!\\d)`, "u").test(query));
     });
     const brand = ["yonex", "victor", "mizuno"].find((name) => query.includes(name));
-    return modelMatch && (!brand || product.brand.slug === brand) &&
+    return modelMatch && qualifiers.every((word) => words.includes(word)) &&
+      (!standard || !words.some((word) => ['kurenai', 'va'].includes(word))) &&
+      (!brand || product.brand.slug === brand) &&
       (!requestedEditions.length || requestedEditions.some((edition) => words.includes(edition)));
   }).slice(0, 4).map((product) => ({
     productId: product.id, name: product.name, slug: product.slug, productType: product.category.slug,

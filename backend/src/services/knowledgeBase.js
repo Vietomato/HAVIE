@@ -61,6 +61,50 @@ export function validateKnowledge(kb) {
   }
 
   const racquet = kb.racquet ?? {};
+  const trainingGuide = racquet.training_guidance;
+  for (const key of ['fundamentals_vi', 'racket_trial_vi', 'string_trial_vi', 'recovery_vi', 'scope_vi']) {
+    if (typeof trainingGuide?.[key] !== 'string' || !trainingGuide[key].trim()) errors.push(`Thiếu kiến thức tập luyện: ${key}.`);
+  }
+  if (!Array.isArray(trainingGuide?.session_steps_vi) || !trainingGuide.session_steps_vi.length ||
+      !Array.isArray(trainingGuide?.source_ids) || !trainingGuide.source_ids.length ||
+      trainingGuide.source_ids.some((id) => !sourceIds.has(id))) errors.push('Hướng dẫn tập luyện thiếu bước/nguồn.');
+  if (!Array.isArray(racquet.athlete_advice) || !racquet.athlete_advice.length) errors.push('Thiếu lời khuyên VĐV.');
+  for (const advice of racquet.athlete_advice ?? []) {
+    if (advice.kind !== 'paraphrase' || !advice.athlete || !advice.id || !advice.source_label ||
+        typeof advice.paraphrase_vi !== 'string' || advice.paraphrase_vi.split(/\s+/u).length > 25 ||
+        !Array.isArray(advice.source_ids) || !advice.source_ids.length ||
+        advice.source_ids.some((id) => !sourceIds.has(id))) errors.push(`Lời khuyên VĐV không hợp lệ/thiếu nguồn: ${advice.id}.`);
+  }
+  const playerGuide = racquet.player_equipment_guidance;
+  for (const key of ['recreational_racket_vi', 'professional_racket_vi', 'recreational_strings_vi',
+    'professional_strings_vi', 'skill_distinction_vi', 'tension_myth_vi', 'setup_consistency_vi',
+    'no_universal_kg_vi', 'risk_vi', 'evidence_scope_vi', 'not_painful_vi', 'pain_action_vi', 'clinical_review_vi']) {
+    if (typeof playerGuide?.[key] !== 'string' || !playerGuide[key].trim()) errors.push(`Thiếu kiến thức trình độ/thiết bị: ${key}.`);
+  }
+  if (!Array.isArray(playerGuide?.source_ids) || !playerGuide.source_ids.length ||
+      playerGuide.source_ids.some((id) => !sourceIds.has(id))) errors.push('Kiến thức trình độ/thiết bị thiếu nguồn hợp lệ.');
+  const brandGuide = racquet.brand_comparison;
+  const brands = brandGuide?.brands;
+  if (!Array.isArray(brands) || brands.length !== 4 ||
+      new Set(brands.map((brand) => brand.id)).size !== 4 ||
+      !['yonex', 'victor', 'lining', 'mizuno'].every((id) => brands.some((brand) => brand.id === id))) {
+    errors.push('Thiếu hoặc trùng hãng trong racquet.brand_comparison.');
+  }
+  for (const brand of brands ?? []) {
+    if (!brand.name || !Array.isArray(brand.aliases) || !brand.aliases.length ||
+        !Array.isArray(brand.series) || brand.series.length !== 3 ||
+        brand.series.some((series) => !series.name || !series.direction_vi) || !brand.note_vi ||
+        !Array.isArray(brand.source_ids) || !brand.source_ids.length ||
+        brand.source_ids.some((id) => !sourceIds.has(id))) {
+      errors.push(`Hướng dẫn hãng thiếu dữ liệu/nguồn: ${brand.id}.`);
+    }
+  }
+  for (const key of ['shared_points_vi', 'guardrails_vi', 'choosing_order_vi']) {
+    if (!Array.isArray(brandGuide?.[key]) || !brandGuide[key].length ||
+        brandGuide[key].some((value) => typeof value !== 'string' || !value.trim())) {
+      errors.push(`Thiếu kiến thức so sánh hãng: ${key}.`);
+    }
+  }
 
   for (const key of ["weight_classes", "balance_types", "shaft_flex", "selection_guidance"]) {
     if (!isArray(racquet[key]) || racquet[key].length === 0) {
@@ -673,7 +717,7 @@ export function getTensionHeuristic(skillLevel, kb = loadKnowledge()) {
 // policy/configuration and source metadata are not customer-facing knowledge.
 export function buildKnowledgeDocuments(kb = loadKnowledge()) {
   const documents = [];
-  const ignored = /^(?:id|source_ids|source_url|url|evidence_type|official_item_code|skill_tension_map|suitability_rules|tension_policy)$/u;
+  const ignored = /^(?:id|source_ids|source_url|url|evidence_type|official_item_code|skill_tension_map|suitability_rules|tension_policy|brand_comparison|player_equipment_guidance|training_guidance|athlete_advice)$/u;
   const render = (value) => {
     if (Array.isArray(value)) return value.map(render).filter(Boolean).join("; ");
     if (value && typeof value === "object") return Object.entries(value)

@@ -48,7 +48,7 @@ function displayName(candidate) {
 }
 
 // Thông số hiệu lực của một mẫu: ưu tiên thông số hãng đã duyệt, sau đó mô tả của shop.
-function readTraits(candidate) {
+export function readTraits(candidate) {
   const specs = candidate.advisorSpecs ?? {};
   const traits = candidate.racketTraits ?? {};
   const verifiedFlex = specs.shaftFlex ?? null;
@@ -65,6 +65,35 @@ function readTraits(candidate) {
   };
 }
 
+// These are play-style tradeoffs, not manufacturer claims that a racket is
+// exclusively for singles/doubles. Only explain traits present on this variant.
+export function describePlayFormatReasons(traits, format) {
+  if (!['singles', 'doubles', 'both'].includes(format)) return [];
+  if (format === 'both') return [
+    ...describePlayFormatReasons(traits, 'singles'),
+    ...describePlayFormatReasons(traits, 'doubles'),
+  ];
+  const balanceReasons = format === 'singles' ? {
+    head_heavy: 'Đánh đơn: điểm cân bằng nặng đầu là một hướng để cân nhắc khi ưu tiên phông cầu và tấn công cuối sân; cần kỹ thuật và thể lực phù hợp, không có nghĩa cứ nặng đầu là đập mạnh hơn.',
+    even: 'Đánh đơn: vợt cân bằng là hướng toàn diện để phối hợp phông cầu, điều cầu và phòng thủ khi tự bao quát sân.',
+    head_light: 'Đánh đơn: vợt nhẹ đầu có thể hợp khi ưu tiên xoay trở và phòng thủ; khả năng phông cầu, tấn công vẫn phụ thuộc kỹ thuật và tốc độ vung, nên không chỉ nhìn điểm cân bằng để chốt độ hợp.',
+  } : {
+    head_heavy: 'Đánh đôi: vợt nặng đầu vẫn có thể hợp vai trò tấn công cuối sân; cần thử khả năng đổi hướng và phản tạt, không mặc định mọi người đánh đôi đều cần vợt nhẹ đầu.',
+    even: 'Đánh đôi: vợt cân bằng là hướng dung hòa công và thủ khi luân chuyển giữa lên lưới và đánh cuối sân.',
+    head_light: 'Đánh đôi: vợt nhẹ đầu là một hướng để ưu tiên xoay trở, phản tạt, phòng thủ và xử lý trên lưới trong các pha nhanh.',
+  };
+  const reasons = [];
+  if (balanceReasons[traits.balanceType]) reasons.push(balanceReasons[traits.balanceType]);
+  if (['4U', '5U'].includes(traits.weightClass)) {
+    reasons.push(format === 'singles'
+      ? `Bản ${traits.weightClass} là lựa chọn để cân nhắc khi muốn khối lượng vừa tay trong các pha cầu kéo dài; hạng U riêng lẻ chưa đủ xác nhận khả năng trợ lực.`
+      : `Bản ${traits.weightClass} có khối lượng thấp hơn 3U cùng phân hạng, là hướng để thử khi cần đưa vợt và đổi hướng nhanh; cảm giác thực tế còn phụ thuộc cấu trúc vợt.`);
+  } else if (traits.weightClass === '3U') {
+    reasons.push(`Bản 3U có khối lượng cao hơn 4U cùng phân hạng; cần thử sức bền tay${format === 'doubles' ? ' và tốc độ xoay trở khi phản tạt' : ' khi tự bao quát sân'}, không suy ra chỉ từ khối lượng rằng cây này đánh mạnh hơn.`);
+  }
+  return reasons;
+}
+
 function describeNeeds(needs) {
   const parts = [];
   if (needs.skillLevel) parts.push(SKILL_LABELS[needs.skillLevel]);
@@ -75,7 +104,7 @@ function describeNeeds(needs) {
   return parts.filter(Boolean).join(", ");
 }
 
-function specLine(traits) {
+export function specLine(traits) {
   const bits = [];
   if (traits.weightClass) {
     bits.push(`hạng ${traits.weightClass}${traits.averageWeightG ? ` (khoảng ${traits.averageWeightG} g)` : ""}`);
@@ -106,12 +135,14 @@ function reasonLine(candidate, traits, needs) {
 
   const fitNote = candidate.fit?.tier === 2 ? candidate.fit.fitNotes?.[0] : null;
   if (fitNote) reasons.push(`${fitNote}.`);
+  const formatReasons = describePlayFormatReasons(traits, needs.playFormat);
+  reasons.push(...formatReasons);
 
   const balance = knowledge.balance_types.find((item) => item.id === traits.balanceType);
   if (balance && needs.balancePreference && traits.balanceType === needs.balancePreference) {
     reasons.push(`Có điểm cân bằng ${balance.label}, đúng ý anh/chị.`);
   }
-  if (balance?.strengths?.length) {
+  if (balance?.strengths?.length && !formatReasons.length) {
     const strengths = balance.strengths.slice(0, 2).join(", ");
     // "cân bằng" là nhãn của chính điểm cân bằng nên không viết "điểm cân bằng cân bằng".
     reasons.push(

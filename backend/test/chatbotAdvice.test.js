@@ -78,7 +78,7 @@ test("a plain conversion question in chat gets the conversion and no racket list
     extract: fail, search: fail, findAlternatives: fail, polish: fail,
   });
 
-  assert.equal(result.reply, "26 lbs khoảng 11.8 kg.");
+  assert.equal(result.reply, "Dạ, 26 lbs khoảng 11.8 kg.");
   assert.deepEqual(result.candidates, []);
 });
 

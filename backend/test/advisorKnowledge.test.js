@@ -714,7 +714,7 @@ test("standalone conversion answers do not resume racket advice or call AI/searc
     const result = await handleRacketMessage("Căng 11 ký tương đương bao nhiêu lbs", previous, question, {
       extract: fail, search: fail, findAlternatives: fail, polish: fail, searchStrings: fail,
     });
-    assert.equal(result.reply, "11 kgf tương đương khoảng 24.3 lbs.");
+    assert.equal(result.reply, "Dạ, 11 kgf tương đương khoảng 24.3 lbs.");
     assert.equal(result.action, "answer_knowledge");
     assert.deepEqual(result.candidates, []);
     assert.deepEqual(result.needs, { ...createEmptyNeeds(), ...(previous ?? {}) });
