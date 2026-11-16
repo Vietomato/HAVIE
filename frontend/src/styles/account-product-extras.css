@@ -257,4 +257,16 @@
   .voucher-code-input {
     text-transform: uppercase;
   }
+  .admin-voucher-form .form-grid {
+    align-items: end;
+  }
+  .admin-voucher-form label,
+  .admin-voucher-form input,
+  .admin-voucher-form select {
+    min-width: 0;
+  }
+  .admin-voucher-form input,
+  .admin-voucher-form select {
+    max-width: 100%;
+  }
 }

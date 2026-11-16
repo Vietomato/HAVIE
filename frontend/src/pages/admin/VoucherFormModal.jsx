@@ -95,8 +95,9 @@ export default function VoucherFormModal({ open, voucher, onClose, onSaved }) {
       onClose={onClose}
       title={voucher ? 'Cập nhật mã giảm giá' : 'Tạo mã giảm giá'}
       busy={saving}
+      wide
     >
-      <form className="admin-form" onSubmit={handleSubmit}>
+      <form className="admin-form admin-voucher-form" onSubmit={handleSubmit}>
         <div className="form-grid">
           <label>
             Mã

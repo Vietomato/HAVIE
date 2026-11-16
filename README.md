@@ -15,6 +15,7 @@ Customers can browse rackets, shoes, strings and accessories, add items to a car
 - **AI advisor**: conversational product recommendations. Chats are stored per account in PostgreSQL, so they survive a reload. Supports Groq Cloud or a local Ollama model.
   Standalone tension questions and lbs/kg conversions take priority over a pending shopping questionnaire, without losing saved shopping preferences. The assistant accepts `Ibs` typos and unaccented conversion questions. Short follow-ups such as “còn 26?” reuse the source unit only from the immediately preceding conversion in the same conversation; at most eight text messages are read locally, without sending raw history to the AI. Tension safety still requires verified specifications for the exact racket and variant.
 - **Admin dashboard**: create/edit/hide products, upload images (local disk or Cloudinary), and update order status.
+- **Voucher editor**: create/edit vouchers in a dialog up to 760px wide, with two columns on desktop and one on mobile; date/time fields stay inside the form.
 
 Session expiry, Google/Facebook setup, production topology and the isolated 1,000-user browsing test are documented in [deployment/README.md](deployment/README.md).
 
