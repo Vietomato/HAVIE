@@ -1,0 +1,133 @@
+tags:
+  - name: Chat advisor
+    description: Trợ lý AI tư vấn sản phẩm. Lịch sử lưu theo tài khoản.
+
+paths:
+  /api/chat/conversations:
+    get:
+      tags: [Chat advisor]
+      summary: Danh sách cuộc trò chuyện của tôi
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/Conversation' } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      tags: [Chat advisor]
+      summary: Tạo cuộc trò chuyện mới
+      security: [{ cookieAuth: [] }]
+      responses:
+        '201':
+          description: Đã tạo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Conversation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/chat/conversations/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPath'
+    get:
+      tags: [Chat advisor]
+      summary: Xem một cuộc trò chuyện kèm tin nhắn
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Conversation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Chat advisor]
+      summary: Đổi tên cuộc trò chuyện
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title: { type: string, minLength: 1, maxLength: 60, example: Chọn vợt tấn công }
+      responses:
+        '200':
+          description: Đã đổi tên
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Conversation' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      tags: [Chat advisor]
+      summary: Xoá cuộc trò chuyện
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: Đã xoá
+          content:
+            application/json:
+              example: { data: { id: 3fa85f64-5717-4562-b3fc-2c963f66afa6 }, message: Đã xóa cuộc trò chuyện. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: Trợ lý đang xử lý (CONVERSATION_BUSY)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/chat/conversations/{id}/messages:
+    post:
+      tags: [Chat advisor]
+      summary: Gửi tin nhắn và nhận câu trả lời của trợ lý
+      description: |
+        Giới hạn 20 tin / phút mỗi người, và tối đa `CHAT_MAX_CONCURRENT` (mặc định 2) request AI chạy cùng lúc trên toàn hệ thống.
+        Khi quá tải trả 429 `CHAT_BUSY` kèm header `Retry-After`.
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message]
+              properties:
+                message: { type: string, minLength: 1, maxLength: 2000, example: Mình mới chơi, nên chọn vợt nào dưới 2 triệu? }
+      responses:
+        '200':
+          description: Cuộc trò chuyện sau khi trợ lý trả lời
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Conversation' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: Cuộc trò chuyện đang xử lý tin nhắn trước
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }

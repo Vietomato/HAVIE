@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HAVIE API Docs</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
+  <style>
+    body { margin: 0; }
+    .havie-note { font: 14px/1.5 system-ui, sans-serif; background: #fff8e1; border-bottom: 1px solid #f0d77a; padding: 10px 20px; }
+  </style>
+</head>
+<body>
+  <div class="havie-note">
+    Tài liệu API của cửa hàng cầu lông HAVIE. Đây là bản xem tĩnh nên không gọi thử API được.
+    Muốn gọi thử, chạy backend trên máy và mở <code>http://localhost:5174/api/docs</code>.
+    File spec: <a href="openapi.json">openapi.json</a>.
+  </div>
+  <div id="swagger-ui"></div>
+  <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+  <script>
+    window.ui = SwaggerUIBundle({
+      url: 'openapi.json',
+      dom_id: '#swagger-ui',
+      deepLinking: true,
+      docExpansion: 'list',
+      supportedSubmitMethods: [],
+    });
+  </script>
+</body>
+</html>

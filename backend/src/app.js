@@ -13,6 +13,7 @@ import { UPLOADS_DIR } from './services/imageStorage.js';
 import { allowedOrigins, csrfProtection, createRateLimiter, publicCatalogCache } from './middlewares/trafficControl.js';
 import socialAuthRoutes from './routes/socialAuthRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
+import { mountSwagger } from './docs/swagger.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -34,6 +35,9 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// API docs at /api/docs (spec: /api/docs.json). Not exposed in production.
+if (process.env.NODE_ENV !== 'production') mountSwagger(app);
 
 app.use('/api/chat', chatRoutes);
 app.use('/uploads', express.static(UPLOADS_DIR, {

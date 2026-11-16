@@ -1,0 +1,336 @@
+tags:
+  - name: Auth
+    description: Đăng ký OTP, đăng nhập, phiên làm việc, quên mật khẩu
+  - name: Social login
+    description: Đăng nhập bằng Google (Facebook vẫn còn ở backend nhưng không hiện trên giao diện)
+  - name: Health
+
+paths:
+  /api/health:
+    get:
+      tags: [Health]
+      summary: Kiểm tra API còn sống
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example: { status: ok, message: HAVIE Backend API is running, timestamp: '2026-11-16T08:00:00.000Z' }
+
+  /api/auth/register:
+    post:
+      tags: [Auth]
+      summary: (Đã ngừng dùng) Đăng ký trực tiếp
+      deprecated: true
+      description: Luôn trả 410. Dùng `/api/auth/register/request-otp` rồi `/api/auth/register/verify-otp`.
+      responses:
+        '410':
+          description: Cần xác minh email bằng OTP
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/auth/register/request-otp:
+    post:
+      tags: [Auth]
+      summary: Bước 1 đăng ký - gửi mã OTP 6 số qua email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fullName, email, password]
+              properties:
+                fullName: { type: string, example: Nguyễn Văn A }
+                email: { type: string, format: email, example: khachhang@example.com }
+                phone: { type: string, nullable: true, example: '0901234567' }
+                password: { type: string, format: password, example: MatKhau@123 }
+      responses:
+        '200':
+          description: Đã gửi OTP
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: object, additionalProperties: true }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+
+  /api/auth/register/verify-otp:
+    post:
+      tags: [Auth]
+      summary: Bước 2 đăng ký - xác minh OTP, tạo tài khoản và đăng nhập
+      description: Thành công thì server đặt cookie session.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, code]
+              properties:
+                email: { type: string, format: email }
+                code: { type: string, pattern: '^\d{6}$', example: '123456' }
+      responses:
+        '201':
+          description: Đã tạo tài khoản
+          headers:
+            Set-Cookie: { schema: { type: string }, description: Cookie `havie_session` }
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/SessionResult' }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Đăng nhập bằng email và mật khẩu
+      description: Thành công thì server đặt cookie `havie_session`. Các request sau trên trang này sẽ tự gửi kèm cookie.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email, example: khachhang@example.com }
+                password: { type: string, format: password }
+      responses:
+        '200':
+          description: Đăng nhập thành công
+          headers:
+            Set-Cookie: { schema: { type: string } }
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/SessionResult' }
+                  message: { type: string, example: Đăng nhập thành công. }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401':
+          description: Sai email hoặc mật khẩu (INVALID_CREDENTIALS)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '403':
+          description: Tài khoản bị khoá (ACCOUNT_DISABLED)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+
+  /api/auth/mock-admin:
+    post:
+      tags: [Auth]
+      summary: Đăng nhập admin giả lập (chỉ môi trường development)
+      description: Cần `NODE_ENV=development` và `MOCK_ADMIN_ENABLED=true`. Dùng email/mật khẩu trong `MOCK_ADMIN_EMAIL` và `MOCK_ADMIN_PASSWORD`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, format: password }
+      responses:
+        '200':
+          description: Đăng nhập thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/SessionResult' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/auth/me:
+    get:
+      tags: [Auth]
+      summary: Lấy tài khoản đang đăng nhập
+      description: Không gia hạn thời gian chờ của phiên. Giống `GET /api/me`.
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/User' }
+                  message: { type: string }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/me:
+    get:
+      tags: [Auth]
+      summary: Lấy tài khoản đang đăng nhập
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/User' }
+                  message: { type: string }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/auth/activity:
+    post:
+      tags: [Auth]
+      summary: Báo người dùng còn hoạt động để gia hạn phiên
+      description: Phiên hết hạn sau 30 phút không hoạt động. Cần thêm header `X-Havie-Activity` = `1`.
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - in: header
+          name: X-Havie-Activity
+          required: true
+          schema: { type: string, enum: ['1'] }
+      responses:
+        '200':
+          description: Đã gia hạn
+          content:
+            application/json:
+              example: { data: { expiresIn: 1800 } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/auth/logout:
+    post:
+      tags: [Auth]
+      summary: Đăng xuất và huỷ phiên trên server
+      security: [{ cookieAuth: [] }]
+      responses:
+        '200':
+          description: Đã đăng xuất
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MessageOnly' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/auth/password/forgot:
+    post:
+      tags: [Auth]
+      summary: Quên mật khẩu - gửi mã đặt lại qua email
+      description: Luôn trả cùng một thông báo dù email có tồn tại hay không.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+      responses:
+        '200':
+          description: Đã xử lý yêu cầu
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: object, additionalProperties: true }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+
+  /api/auth/password/reset:
+    post:
+      tags: [Auth]
+      summary: Đặt lại mật khẩu bằng mã trong email
+      description: Thành công thì mọi phiên đăng nhập cũ của tài khoản bị huỷ.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, code, newPassword]
+              properties:
+                email: { type: string, format: email }
+                code: { type: string, example: '123456' }
+                newPassword: { type: string, format: password }
+      responses:
+        '200':
+          description: Đã đổi mật khẩu
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: object, additionalProperties: true }
+                  message: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
+  /api/auth/providers:
+    get:
+      tags: [Social login]
+      summary: Xem nhà cung cấp đăng nhập nào đã được cấu hình
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example: { data: { google: true, facebook: false } }
+
+  /api/auth/social/{provider}/start:
+    post:
+      tags: [Social login]
+      summary: Bắt đầu đăng nhập/liên kết bằng Google hoặc Facebook
+      description: |
+        Trả về `data.url`. Frontend chuyển trình duyệt sang URL đó.
+        Với `mode: link` thì phải đang đăng nhập (liên kết vào tài khoản hiện tại).
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema: { type: string, enum: [google, facebook] }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mode: { type: string, enum: [login, link], default: login }
+                returnTo: { type: string, example: /account }
+      responses:
+        '200':
+          description: URL đăng nhập của nhà cung cấp
+          content:
+            application/json:
+              example: { data: { url: 'https://accounts.google.com/o/oauth2/v2/auth?...' } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/auth/social/{provider}/callback:
+    get:
+      tags: [Social login]
+      summary: Callback do Google/Facebook gọi về (không gọi trực tiếp)
+      description: Luôn chuyển hướng về `/auth?social=success` hoặc `/auth?socialError=<CODE>` trên frontend.
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema: { type: string, enum: [google, facebook] }
+        - { in: query, name: code, schema: { type: string } }
+        - { in: query, name: state, schema: { type: string } }
+        - { in: query, name: error, schema: { type: string } }
+      responses:
+        '302':
+          description: Chuyển hướng về frontend

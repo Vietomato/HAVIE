@@ -1,0 +1,123 @@
+tags:
+  - name: Catalog
+    description: Danh mục, thương hiệu, sản phẩm (public, có cache 10 giây)
+
+paths:
+  /api/categories:
+    get:
+      tags: [Catalog]
+      summary: Danh sách danh mục
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/Category' } }
+                  message: { type: string }
+
+  /api/brands:
+    get:
+      tags: [Catalog]
+      summary: Danh sách thương hiệu
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/Brand' } }
+                  message: { type: string }
+
+  /api/products:
+    get:
+      tags: [Catalog]
+      summary: Tìm kiếm, lọc và phân trang sản phẩm
+      description: |
+        Lọc theo thuộc tính biến thể bằng query `attribute.<tên>`, ví dụ
+        `/api/products?attribute.weight=4U&attribute.grip=G5`.
+      parameters:
+        - $ref: '#/components/parameters/PageQuery'
+        - $ref: '#/components/parameters/PageSizeQuery'
+        - in: query
+          name: q
+          description: Từ khoá (tên, mô tả, danh mục), tối đa 100 ký tự
+          schema: { type: string, maxLength: 100 }
+        - in: query
+          name: category
+          description: Slug, id hoặc tên danh mục
+          schema: { type: string, example: vot-cau-long }
+        - in: query
+          name: brand
+          description: Slug hoặc id thương hiệu
+          schema: { type: string, example: yonex }
+        - { in: query, name: minPrice, schema: { type: integer, minimum: 0 } }
+        - { in: query, name: maxPrice, schema: { type: integer, minimum: 0 } }
+        - in: query
+          name: inStock
+          schema: { type: string, enum: ['true', 'false'] }
+        - in: query
+          name: sort
+          schema: { type: string, enum: [featured, price_asc, price_desc, rating_desc, newest], default: featured }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/Product' } }
+                  meta: { $ref: '#/components/schemas/PageMeta' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
+  /api/products/{slug}:
+    get:
+      tags: [Catalog]
+      summary: Chi tiết sản phẩm
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          description: Slug hoặc id sản phẩm
+          schema: { type: string, example: yonex-astrox-77-pro }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: '#/components/schemas/Product' }
+                  message: { type: string }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/products/{slug}/reviews:
+    get:
+      tags: [Catalog, Reviews]
+      summary: Đánh giá của một sản phẩm (public)
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          description: Slug hoặc id sản phẩm
+          schema: { type: string }
+        - $ref: '#/components/parameters/PageQuery'
+        - $ref: '#/components/parameters/PageSizeQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/Review' } }
+                  meta: { $ref: '#/components/schemas/PageMeta' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
