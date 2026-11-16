@@ -55,7 +55,11 @@ export async function embedLocally(texts, {
   timeoutMs = 45000,
 } = {}) {
   const url = new URL(baseUrl);
-  if (!["localhost", "127.0.0.1", "[::1]"].includes(url.hostname) ||
+  // Exact private hostnames (e.g. the "ollama" compose service) may be allowed
+  // explicitly; anything not listed stays rejected so no text leaves the network.
+  const allowedHosts = ["localhost", "127.0.0.1", "[::1]",
+    ...(process.env.HAVIE_EMBEDDING_ALLOWED_HOSTS ?? "").split(",").map((host) => host.trim().toLowerCase()).filter(Boolean)];
+  if (!allowedHosts.includes(url.hostname) ||
       !["http:", "https:"].includes(url.protocol) || url.username || url.password) {
     throw new Error("Embedding endpoint must be local");
   }

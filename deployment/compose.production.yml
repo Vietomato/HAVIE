@@ -21,6 +21,16 @@ services:
       interval: 5s
       retries: 20
     restart: unless-stopped
+  # Local embeddings for semantic search. Not published; only the API reaches it.
+  # First run: docker compose -f deployment/compose.production.yml exec ollama ollama pull bge-m3
+  ollama:
+    image: ollama/ollama:latest
+    volumes: ["ollama:/root/.ollama"]
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      retries: 10
+    restart: unless-stopped
   api:
     build: ../backend
     env_file: ${HAVIE_RUNTIME_FILE:?Set path to backend runtime configuration outside source control}
@@ -33,11 +43,15 @@ services:
       CORS_ORIGIN: ${HAVIE_APP_ORIGIN}
       TRUST_PROXY_HOPS: 1
       CHAT_MAX_CONCURRENT: 2
-      HAVIE_SEMANTIC_SEARCH: "false"
+      HAVIE_SEMANTIC_SEARCH: "true"
+      HAVIE_EMBEDDING_URL: http://ollama:11434
+      HAVIE_EMBEDDING_ALLOWED_HOSTS: ollama
+      HAVIE_EMBEDDING_MODEL: bge-m3
     volumes: ["uploads:/app/uploads"]
     depends_on:
       database: { condition: service_healthy }
       redis: { condition: service_healthy }
+      ollama: { condition: service_healthy }
     deploy: { replicas: 2 }
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
@@ -53,3 +67,4 @@ volumes:
   database:
   redis:
   uploads:
+  ollama:
