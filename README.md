@@ -2,7 +2,11 @@
 
 An e-commerce platform for badminton equipment with an AI-assisted product advisor (**BOTMINTON**).
 
-Badminton equipment has many technical parameters (weight class, balance, shaft stiffness, string tension), so beginners find it hard to choose without advice. HAVIE covers the whole shopping journey: customers browse rackets, shoes, strings and accessories, pay by bank-transfer QR (payOS) and track their orders. A built-in chat assistant recommends products from the real catalog and answers string-tension questions with safety rules, without inventing specifications. Admins manage products, vouchers and orders from a dashboard.
+## Why HAVIE
+
+Choosing badminton equipment is hard for recreational players, especially people who have just started. A racket has many technical parameters (weight class, balance, shaft stiffness, string tension), and gear that is too heavy, too stiff or too tightly strung can strain the arm and shoulder. Existing nationwide shop chains, marketplace storefronts and online communities offer products and opinions, but none of them gives automated, personalised advice for choosing a racket, shoes and strings. HAVIE was developed to fill this gap.
+
+HAVIE covers the whole shopping journey: customers browse rackets, shoes, strings and accessories, pay by bank-transfer QR (payOS) and track their orders. A built-in chat assistant recommends products from the real catalog and answers string-tension questions with safety rules, without inventing specifications. Admins manage products, vouchers and orders from a dashboard.
 
 | | |
 | --- | --- |
@@ -11,16 +15,20 @@ Badminton equipment has many technical parameters (weight class, balance, shaft 
 | **Course** | Web Development, MSIS207.R12.CTTT (Instructor: Dr. Nguyen Thanh Binh) |
 | **Team (Group 9)** | Dinh Hoang Viet, Nguyen Vu Hieu |
 
+## Screenshots
+
+Home page, product detail, QR payment and the BOTMINTON advisor chat:
+
 ![HAVIE screenshots](docs/diagrams/6-ui-screenshots.png)
 
 ## Features
 
 - **Storefront**: home page, category listing with filters and pagination, product detail with variants (size, weight, grip), favorites, cart and checkout with a searchable province → district → ward address picker.
-- **Accounts**: email/password sign-up confirmed by an OTP email, password reset, and Google login. Sessions are HttpOnly cookies with a 30-minute idle expiry and a 12-hour absolute limit. (Facebook login code exists in the backend but is not offered in the interface.)
+- **Accounts**: email/password sign-up confirmed by an OTP email, password reset, and Google login. Sessions are HttpOnly cookies with a 30-minute idle expiry and a 12-hour absolute limit.
 - **Payments**: bank-transfer QR through [payOS](https://payos.vn). An order is marked paid only after a signed webhook is verified. Unpaid payment links expire.
 - **Orders**: order history, status tracking and customer-side cancellation (only in allowed states). Cancelling an already paid order records `REFUND_PENDING`; refunds are made manually.
 - **Reviews**: customers with a completed purchase can rate products from 1 to 5 stars. One verified review per purchase.
-- **AI advisor (BOTMINTON)**: conversational recommendations grounded in the catalog. Conversations are stored per account in PostgreSQL. See [How the AI advisor works](#how-the-ai-advisor-works).
+- **AI advisor (BOTMINTON)**: conversational recommendations grounded in the catalog, with rule-based safety answers. Conversations are stored per account in PostgreSQL. It is a decision aid, not medical advice. See [How the AI advisor works](#how-the-ai-advisor-works).
 - **Admin dashboard**: create, edit and hide products and variants, upload images, manage vouchers, update order status, and review the audit log.
 
 ### Who can do what
@@ -47,17 +55,26 @@ Browser → Caddy (HTTPS, host) → Nginx (static React + load balancer)
 External: payOS · Groq Cloud · Google OAuth · Gmail SMTP
 ```
 
+The production deployment is shown in [docs/diagrams/7-deployment.png](docs/diagrams/7-deployment.png).
+
 ### Data model
 
-The database has 23 Prisma models and 6 enums in four groups: identity and security (8), catalog (6), sales (7) and AI advisor (2). The core tables are shown in [docs/diagrams/3-erd.png](docs/diagrams/3-erd.png).
+The database has 23 Prisma models and 6 enums in four groups: identity and security (8), catalog (6), sales (7) and AI advisor (2). The core tables and their relationships are shown in [docs/diagrams/3-erd.png](docs/diagrams/3-erd.png).
+
+- **Identity and security**: `User`, `Address`, `OAuthIdentity`, `AuthRecord` (sessions), `RateCounter`, `RuntimeLease`, `EmailVerificationChallenge`, `PasswordResetChallenge`.
+- **Catalog**: `Category`, `Brand`, `Product`, `ProductVariant`, `StockMovement`, `ProductAdvisorNote`.
+- **Sales**: `Cart`, `CartItem`, `Order`, `OrderItem`, `Voucher`, `Review`, `AuditLog`.
+- **AI advisor**: `AdvisorConversation`, `AdvisorMessage`.
+
+The ERD leaves out seven supporting tables for clarity: `OAuthIdentity`, `AuthRecord`, `RateCounter`, `RuntimeLease`, the two challenge tables and `AuditLog`.
 
 - Prices are stored as integer VND to avoid floating-point errors.
-- An order keeps a snapshot of the recipient, address, amounts, voucher and payOS link.
+- An order keeps a snapshot of the recipient, address, amounts, voucher and payOS link. Each order item copies the product name, variant name and price at purchase time.
 - `OrderStatus`: `PENDING_PAYMENT` → `PENDING_CONFIRMATION` → `CONFIRMED` → `SHIPPING` → `COMPLETED`, or `CANCELLED` / `REFUND_PENDING`.
 - `PaymentStatus`: `PENDING`, `PAID`, `FAILED`, `EXPIRED`, `REFUND_PENDING`, `REFUNDED`.
 - A partial unique index allows only one verified review per purchase.
 
-![Checkout and payment sequence](docs/diagrams/4-sequence-checkout.png)
+Checkout and payment sequence: [docs/diagrams/4-sequence-checkout.png](docs/diagrams/4-sequence-checkout.png).
 
 ## Tech stack
 
@@ -75,7 +92,7 @@ The database has 23 Prisma models and 6 enums in four groups: identity and secur
 
 ## How the AI advisor works
 
-The language model understands and words the answer; **the catalog decides** what is recommended. Prices and specifications are never invented.
+The language model understands and words the answer; **the catalog decides** what is recommended. Prices and specifications are never invented. Safety topics such as string tension and arm pain are answered by rules, not by the model. The advisor helps a player choose equipment; it does not give medical advice, and a player with pain should see a doctor.
 
 Flow diagram: [docs/diagrams/5-advisor-flow.png](docs/diagrams/5-advisor-flow.png).
 
@@ -137,7 +154,7 @@ Optional variables:
 | `ADMIN_EMAIL_ALLOWLIST` | Comma-separated emails that get the Admin role after verification |
 | `CLOUDINARY_URL` | `cloudinary://KEY:SECRET@CLOUD`. If empty, uploads go to `backend/uploads` |
 | `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY` | payOS credentials |
-| `AI_PROVIDER` | `groq` or `ollama` (default) |
+| `AI_PROVIDER` | `groq` or `ollama`. The code default is `ollama`, but `.env.example` sets `groq`, so a copied `.env` uses Groq unless you change it |
 | `GROQ_API_KEY`, `GROQ_MODEL`, `GROQ_EXTRACT_MODEL` | Used when `AI_PROVIDER=groq` |
 | `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | Used when `AI_PROVIDER=ollama` |
 | `HAVIE_SEMANTIC_SEARCH`, `HAVIE_EMBEDDING_URL`, `HAVIE_EMBEDDING_MODEL` | Semantic search with local embeddings (`bge-m3` on Ollama) |
@@ -209,7 +226,7 @@ docker compose -f deployment/compose.production.yml up -d --build
 docker compose -f deployment/compose.production.yml exec ollama ollama pull bge-m3
 ```
 
-Deployment is manual; there is no CI/CD pipeline yet. See [deployment/README.md](deployment/README.md) for environment variables, session settings, Google/Facebook login setup and the isolated load test.
+Deployment is manual; there is no CI/CD pipeline yet. See [deployment/README.md](deployment/README.md) for environment variables, session settings, social login setup and the isolated load test.
 
 ## API documentation
 
@@ -325,6 +342,7 @@ More detail on migrations, the AI provider and catalog tooling is in [backend/RE
 - The advisor covers only the products and knowledge in its data and does not give medical advice.
 - The load test did not include real AI or payment traffic and is not a sustained production soak test.
 - No shipping-carrier integration.
+- Facebook login code exists in the backend but is not enabled in the interface.
 - Planned: automatic refunds and shipping tracking; order notifications by email or Zalo; a recommendation engine based on purchase history; monitoring and alerting, automated backups, CI/CD and a CDN; a PWA or mobile app and multilingual support.
 
 ## Conventions
