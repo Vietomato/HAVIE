@@ -1,6 +1,20 @@
-# HAVIE
+<p align="center">
+  <img src="docs/logos/uit.png" alt="UIT" height="64">
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/logos/yonex.png" alt="Yonex" height="40">
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/logos/victor.png" alt="Victor" height="40">
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/logos/lining.png" alt="Li-Ning" height="40">
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/logos/havie.png" alt="HAVIE" height="64">
+</p>
 
-An e-commerce platform for badminton equipment with an AI-assisted product advisor (**BOTMINTON**).
+<h1 align="center">HAVIE</h1>
+
+<p align="center">
+  An e-commerce platform for badminton equipment with an AI-assisted product advisor (<b>BOTMINTON</b>).
+</p>
 
 ## Why HAVIE
 
